@@ -15,7 +15,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "gm",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -75,8 +75,10 @@
               "browserTarget": "game-mapster:build:production"
             },
             "development": {
-              "browserTarget": "game-mapster:build:development"
+              "browserTarget": "game-mapster:build:development",
+              "port": 4211
             }
+            
           },
           "defaultConfiguration": "development"
         },
