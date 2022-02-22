@@ -8,11 +8,16 @@ import { GSM } from './game-state-manager.service';
 })
 export class GameComponent implements OnInit {
 
-  constructor(gameStateManager: GSM) { 
-    gameStateManager.newGame("firstGame")
+  constructor(public gameStateManager: GSM) {
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.gameStateManager.newGame("firstGame", 50, 50, "forrest")
+    })
   }
 
 }

@@ -1,99 +1,102 @@
-// import { LargeCanvasImage } from "../painters/large-image.paint"
-// import { MotionAsset } from "./assets.model"
-// import { Cell, DefaultMapSettings } from "./cell.model"
+import { GSM } from "../game-state-manager.service";
+import { Cell, Grid, Size } from "../models/map";
 
-// export class GameMap {
-//   public id? = "1"
-//   public name? = "newGrid"
-//   public height = 15
-//   public width = 15
-//   public grid: { [cell: string]: Cell } = {}
-//   public defaultSettings: DefaultMapSettings
-//   public gridDisplay: Cell[][] = [];
-//   public widthPx = 0
-//   public heightPx = 0
-//   public gridLoaded = false
-//   public includeGridLines = false
-//   public largeImage: LargeCanvasImage
-//   public selectedGameComponent: MotionAsset
+export class GridController {
+  public grid: Grid
+  public loadedGrids: {[gridId: string]: Grid} = {}
+  public autoGenerateTerrain: boolean
 
-//   public changePageXOffset: number
-//   public changePageYOffset: number
+  public iterateAllCells(callBack: (cell: Cell) => void) {
+    for (let i = 0; i < this.grid.size.height; i++) {
+      for (let l = 0; l < this.grid.size.width; l++) {
+        callBack(this.grid.cells[`x${l}:y${i}`])
+      }
+    }
+  }
 
-//   constructor(width: number, height: number, defaultMapSettings: DefaultMapSettings) {
-//     this.width = width
-//     this.height = height
-//     this.defaultSettings = defaultMapSettings
-//     this.generateGridFeatures()
-//     this.gridLoaded = true
-//   }
+  public iterateVisibleCells(callBack: (cell: Cell) => void) {
+    for (let i = 0; i < this.grid.size.height; i++) {
+      for (let l = 0; l < this.grid.size.width; l++) {
+        callBack(this.grid.cells[`x${l}:y${i}`])
+      }
+    }
+  }
+
+  public setupGrid(size: Size): void {
+    this.grid = new Grid(size)
+    this.grid.id = Math.random().toString()
+
+    for (let i = 0; i < this.grid.size.height; i++) {
+        for (let l = 0; l < this.grid.size.width; l++) {
+          this.grid.cells[`x${l}:y${i}`] = {
+              x: l,
+              y: i,
+              posX: l * GSM.Settings.blockSize,
+              posY: i * GSM.Settings.blockSize,
+              id: `x${l}:y${i}`,
+            };
+        }
+      }
+    
   
-//   public getGridCellByCoordinate(x: number, y: number): Cell {
-//     while (x % (32 * 1) !== 0) {
-//       x--
-//     }
-//     while (y % (32 * 1) !== 0) {
-//       y--
-//     }
-//     return this.grid[`x${x / (32 * 1)}:y${y / (32 * 1)}`]
-//   }
+    this.loadedGrids[this.grid.id] = this.grid
+  }
+    // private addNeighbors() {
+    //   for (let i = 0; i < this.height; i++) {
+    //     for (let l = 0; l < this.width; l++) {
+    //       const cell = this.grid[`x${l}:y${i}`];
+    //       cell.neighbors = [];
+    //       cell.neighbors[5] = this.grid[`x${l + 1}:y${i + 1}`];
+    //       cell.neighbors[0] = this.grid[`x${l}:y${i - 1}`];
+    //       cell.neighbors[2] = this.grid[`x${l}:y${i + 1}`];
+    //       cell.neighbors[4] = this.grid[`x${l + 1}:y${i - 1}`];
+    //       cell.neighbors[1] = this.grid[`x${l + 1}:y${i}`];
+    //       cell.neighbors[6] = this.grid[`x${l - 1}:y${i + 1}`];
+    //       cell.neighbors[3] = this.grid[`x${l - 1}:y${i}`];
+    //       cell.neighbors[7] = this.grid[`x${l - 1}:y${i - 1}`];
+    //     }
+    //   }
+    // }
+  }
+  // public maps: {[gridId: string]: GameMap} = {}
+  // public mapIds: string[] = []
+  // public activeMap: GameMap
+  // public hoveringCell: Cell
 
-//   public getCell(x: number, y: number): Cell {
-//     return this.grid[`x${x}:y${y}`]
-//   }
-  
-//   private generateGridFeatures() {
-//     this.createDisplayArray()
-//     this.addNeighbors()
-//   }
+  // private index = 0
 
-//   private createDisplayArray() {
-//     let imgIndexX = 1
-//     let imgIndexY = 1
+  // public switchGrid(gridId: string): GameMap {
+  //   if(GSM.Map.activeMap) {
+  //     GSM.Map.activeMap.changePageXOffset = GSM.Canvas.canvasViewPortOffsetX
+  //     GSM.Map.activeMap.changePageYOffset = GSM.Canvas.canvasViewPortOffsetY
+  //   }
+    
+  //   this.activeMap = this.maps[gridId]   
 
-//     for (let i = 0; i < this.height; i++) {
-//       this.gridDisplay[i] = [];
+  //   GSM.Canvas.resetViewport()
+    
+  //   if((GSM.Map.activeMap.changePageXOffset || GSM.Map.activeMap.changePageXOffset === 0) || (GSM.Map.activeMap.changePageXOffset || GSM.Map.activeMap.changePageYOffset === 0)) {
+  //     GSM.Canvas.pageChangeAdjust(this.activeMap)
+  //   }
+    
+  //   return this.activeMap
+  // }
 
-//       for (let l = 0; l < this.width; l++) {
-//         this.grid[`x${l}:y${i}`] = this.grid[`x${l}:y${i}`]
-//           || {
-//             x: l,
-//             y: i,
-//             posX: l * 32,
-//             posY: i * 32,
-//             obstacle: this.defaultSettings.inverted ? true : false,
-//             id: `x${l}:y${i}`,
-//             spriteTypeId: this.defaultSettings.inverted ? this.defaultSettings.terrainTypeId : undefined
-//           };
-
-//         imgIndexX++
-
-//         if (imgIndexX > 3 && imgIndexY < 3) {
-//           imgIndexX = 1
-//           imgIndexY++
-//         } else if (imgIndexX > 3 && imgIndexY >= 3) {
-//           imgIndexX = 1
-//           imgIndexY = 1
-//         }
-//         this.gridDisplay[i][l] = this.grid[`x${l}:y${i}`];
-//       }
-//     }
-//   }
-
-//   private addNeighbors() {
-//     for (let i = 0; i < this.height; i++) {
-//       for (let l = 0; l < this.width; l++) {
-//         const cell = this.grid[`x${l}:y${i}`];
-//         cell.neighbors = [];
-//         cell.neighbors[5] = this.grid[`x${l + 1}:y${i + 1}`];
-//         cell.neighbors[0] = this.grid[`x${l}:y${i - 1}`];
-//         cell.neighbors[2] = this.grid[`x${l}:y${i + 1}`];
-//         cell.neighbors[4] = this.grid[`x${l + 1}:y${i - 1}`];
-//         cell.neighbors[1] = this.grid[`x${l + 1}:y${i}`];
-//         cell.neighbors[6] = this.grid[`x${l - 1}:y${i + 1}`];
-//         cell.neighbors[3] = this.grid[`x${l - 1}:y${i}`];
-//         cell.neighbors[7] = this.grid[`x${l - 1}:y${i - 1}`];
-//       }
-//     }
-//   }
+  // public createNewGrid(width: number, height: number, defaultMapSettings: DefaultMapSettings, autoSwitchMap: boolean = false): GameMap {
+  //    // Grid Setup
+  //   const newMap = new GameMap(width, height, defaultMapSettings)
+    
+  //   newMap.largeImage = new LargeCanvasImage(GSM.Canvas.drawingCanvas, GSM.Canvas.drawingCTX)
+  //   newMap.id = this.index.toString()
+  //   this.index++
+   
+  //   // Set Grid
+  //   this.mapIds.push(newMap.id)
+  //   this.maps[newMap.id] = newMap
+  //   if(autoSwitchMap) {
+  //     GSM.Map.switchGrid(newMap.id)
+  //     GSM.Canvas.resetViewport()
+  //   }
+  //   return newMap
+  // }  
 // }

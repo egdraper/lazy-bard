@@ -135,8 +135,9 @@ export class CanvasComponent implements AfterViewInit {
   private setupCanvas(): void {
     const specs = this.calculateCanvasSpecs()
     // Background
+
     GSM.CanvasController.backgroundCanvas = this.backgroundCanvas
-    GSM.CanvasController.backgroundCTX = this.backgroundCanvas.nativeElement.getContext('2d', { alpha: false }) as CanvasRenderingContext2D;
+    GSM.CanvasController.backgroundCTX = this.backgroundCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
     GSM.CanvasController.backgroundCTX.canvas.height = specs.height
     GSM.CanvasController.backgroundCTX.canvas.width = specs.width
     
@@ -167,7 +168,23 @@ export class CanvasComponent implements AfterViewInit {
   private calculateCanvasSpecs(): CanvasSpecs  {
     let perfectHeight = document.getElementsByClassName("game-view")[0].clientHeight
     let perfectWidth = document.getElementsByClassName("game-view")[0].clientWidth
+    let container = document.getElementById("canvas-container")
 
+    
+    // sets the width of canvas if grid is less than screen size
+    if(perfectWidth > GSM.GridController.grid.size.width * GSM.Settings.blockSize) {
+      perfectWidth = GSM.GridController.grid.size.width * GSM.Settings.blockSize
+      
+      // sets the container div's width to match grid size for centering
+      if(container) {
+        container.style.width = `${perfectWidth.toString()}px`
+      }      
+    }
+    if(perfectHeight > GSM.GridController.grid.size.height * GSM.Settings.blockSize) {
+      perfectHeight = GSM.GridController.grid.size.height * GSM.Settings.blockSize
+    }
+    
+    // sets the canvas width to line up with the grid's edges if grid is larger than canvas
     while (perfectHeight % GSM.Settings.blockSize !== 0) {
       perfectHeight--
     }
@@ -175,7 +192,7 @@ export class CanvasComponent implements AfterViewInit {
       perfectWidth--
     }
 
-    return {width: perfectWidth, height: perfectHeight}
+    return { width: perfectWidth, height: perfectHeight }
   }
   
 }
