@@ -3,6 +3,7 @@ import { Cell } from "../../models/map";
 import { Painter } from "../../models/painter";
 
 export class GridLinesPainter implements Painter {
+  public layer = "base"
   public id = "gridLinePainter"
   public ctx = GSM.CanvasController.backgroundCTX
 
