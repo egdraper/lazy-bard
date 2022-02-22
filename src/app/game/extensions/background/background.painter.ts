@@ -5,6 +5,7 @@ import { TextureSprite } from "../../models/sprites"
 import { BackgroundRandomGenerator } from "./background.generator"
 
 export class BackgroundPainter implements Painter {
+  public layer = "baseLayer"
   public ctx = GSM.CanvasController.backgroundCTX
   public images: { [imageUrl: string]: HTMLImageElement; } = {}
   public baseTexture: TextureSprite

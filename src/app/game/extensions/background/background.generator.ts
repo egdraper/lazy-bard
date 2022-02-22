@@ -1,6 +1,5 @@
 import { GSM } from "../../game-state-manager.service"
 import { ImageTile } from "../../models/map"
-import { Painter } from "../../models/painter"
 import { TextureSprite } from "../../models/sprites"
 
 export class BackgroundRandomGenerator {
