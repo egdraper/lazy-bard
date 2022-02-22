@@ -1,5 +1,8 @@
 <div class="game">
+    <div class="left-toolbar-view">
+
+    </div>
     <div class="game-view">
-      <gm-canvas></gm-canvas>
+      <gm-canvas *ngIf="gameStateManager.loadingFinished"></gm-canvas>
     </div>
   </div>
