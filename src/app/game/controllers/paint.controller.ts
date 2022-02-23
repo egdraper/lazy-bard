@@ -21,6 +21,7 @@ export class PaintController {
       this.painters.forEach(painter => {
         if(painter.ctx) {
           painter.ctx.clearRect(0,0, GSM.GridController.grid.size.width * GSM.Settings.blockSize, GSM.GridController.grid.size.height * GSM.Settings.blockSize)
+          painter.ctx.imageSmoothingEnabled = false
         }
       })
       

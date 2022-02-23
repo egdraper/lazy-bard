@@ -3,6 +3,7 @@ import { CanvasController } from './controllers/canvas.controller';
 import { GridController } from './controllers/grid.controller';
 import { KeyEventController } from './controllers/key-event.controller';
 import { PaintController } from './controllers/paint.controller';
+import { AssetController } from './controllers/asset.controller';
 import { FrameController } from './controllers/timing.controller';
 import { Extensions } from './extensions/extensions';
 import { Grid } from './models/map';
@@ -20,6 +21,7 @@ export class GSM {
   public static GridController: GridController
   public static PaintController: PaintController
   public static KeyEventController: KeyEventController
+  public static AssetController: AssetController
   
   public loadingFinished = false
 
@@ -48,6 +50,7 @@ export class GSM {
     GSM.PaintController.startPainter()
 
     GSM.KeyEventController = new KeyEventController()
+    GSM.AssetController = new AssetController()
     
     this.loadingFinished = true
     

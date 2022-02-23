@@ -95,7 +95,7 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   public onMouseDown(event: MouseEvent): void {
-    // GSM.GameEvent.keyPressDetails.mouseDown = true
+    GSM.KeyEventController.mouseDown.next(event)
     // GSM.GameEvent.update()
   }
 

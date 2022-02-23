@@ -22,6 +22,16 @@ export class GridController {
     }
   }
 
+  public getGridCellByCoordinate(x: number, y: number): Cell {
+    while (x % GSM.Settings.blockSize !== 0) {
+        x--
+      }
+      while (y % GSM.Settings.blockSize !== 0) {
+        y--
+      }
+      return this.grid.cells[`x${x / GSM.Settings.blockSize}:y${y / GSM.Settings.blockSize}`]
+  }
+
   public setupGrid(size: Size): void {
     this.grid = new Grid(size)
     this.grid.id = Math.random().toString()
