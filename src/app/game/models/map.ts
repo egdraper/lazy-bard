@@ -18,7 +18,10 @@ export interface Cell {
   y: number; // Y Grid Coordinates
   posX: number; // X Pixel Coordinates
   posY: number; // Y Pixel Coordinates 
-  tile?: ImageTile
+  tile?: ImageTile,
+  obstacle?: boolean,
+  destination?: boolean,
+  neighbors?: Cell[];
 }
 
 export class ImageTile {

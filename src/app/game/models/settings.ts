@@ -3,6 +3,7 @@ export class Settings {
   public commonTextureWidth = 3
   public commonTextureOdds = 100
   public regularAnimatedCharacterFramePosition = [0, 26, 52, 26]
+  public speed = 2
 }
 
 export class CanvasSpecs {

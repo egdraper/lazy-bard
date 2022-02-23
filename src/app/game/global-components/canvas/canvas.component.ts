@@ -21,6 +21,7 @@ export class CanvasComponent implements AfterViewInit {
 
   @HostListener("document:keydown", ["$event"])
   public onKeyDown(event: KeyboardEvent): void {
+    GSM.KeyEventController.keyDown.next(event)
     // if (GSM.Assets.selectedGameComponent) {
     //   GSM.Assets.selectedGameComponent.setDirection(event)
     // }
@@ -58,6 +59,7 @@ export class CanvasComponent implements AfterViewInit {
 
   @HostListener("document:keyup", ["$event"])
   public onKeyUp(event: KeyboardEvent): void {
+    GSM.KeyEventController.keyUp.next(event)
     // switch (event.key) {
     //   case "Delete":
     //     GSM.Assets.removeGameComponent()
@@ -92,6 +94,11 @@ export class CanvasComponent implements AfterViewInit {
     //     break;
     // }
     // GSM.GameEvent.update()
+  }
+
+  public onCellClick(event: MouseEvent): void {
+    const cell = GSM.GridController.getGridCellByCoordinate(event.offsetX, event.offsetY)
+    GSM.KeyEventController.cellClick.next(cell)
   }
 
   public onMouseDown(event: MouseEvent): void {

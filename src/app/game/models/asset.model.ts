@@ -5,5 +5,6 @@ export class Asset {
   id: string
   imageUrl: string
   gridId: string
+  selected: boolean
 }
 

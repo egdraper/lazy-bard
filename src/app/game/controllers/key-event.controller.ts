@@ -2,8 +2,8 @@ import { Subject } from "rxjs";
 import { Cell } from "../models/map";
 
 export class KeyEventController {
-    public keyDown = new Subject<string>()
-    public keyUp = new Subject<string>()
+    public keyDown = new Subject<KeyboardEvent>()
+    public keyUp = new Subject<KeyboardEvent>()
 
     public mouseDown = new Subject()
     public mouseUp = new Subject()

@@ -48,25 +48,25 @@ export class GridController {
         }
       }
     
-  
+    this.addNeighbors()
     this.loadedGrids[this.grid.id] = this.grid
   }
-    // private addNeighbors() {
-    //   for (let i = 0; i < this.height; i++) {
-    //     for (let l = 0; l < this.width; l++) {
-    //       const cell = this.grid[`x${l}:y${i}`];
-    //       cell.neighbors = [];
-    //       cell.neighbors[5] = this.grid[`x${l + 1}:y${i + 1}`];
-    //       cell.neighbors[0] = this.grid[`x${l}:y${i - 1}`];
-    //       cell.neighbors[2] = this.grid[`x${l}:y${i + 1}`];
-    //       cell.neighbors[4] = this.grid[`x${l + 1}:y${i - 1}`];
-    //       cell.neighbors[1] = this.grid[`x${l + 1}:y${i}`];
-    //       cell.neighbors[6] = this.grid[`x${l - 1}:y${i + 1}`];
-    //       cell.neighbors[3] = this.grid[`x${l - 1}:y${i}`];
-    //       cell.neighbors[7] = this.grid[`x${l - 1}:y${i - 1}`];
-    //     }
-    //   }
-    // }
+    private addNeighbors() {
+        for (let i = 0; i < this.grid.size.height; i++) {
+          for (let l = 0; l < this.grid.size.width; l++) {
+          const cell = this.grid.cells[`x${l}:y${i}`];
+          cell.neighbors = [];
+          cell.neighbors[5] = this.grid[`x${l + 1}:y${i + 1}`];
+          cell.neighbors[0] = this.grid[`x${l}:y${i - 1}`];
+          cell.neighbors[2] = this.grid[`x${l}:y${i + 1}`];
+          cell.neighbors[4] = this.grid[`x${l + 1}:y${i - 1}`];
+          cell.neighbors[1] = this.grid[`x${l + 1}:y${i}`];
+          cell.neighbors[6] = this.grid[`x${l - 1}:y${i + 1}`];
+          cell.neighbors[3] = this.grid[`x${l - 1}:y${i}`];
+          cell.neighbors[7] = this.grid[`x${l - 1}:y${i - 1}`];
+        }
+      }
+    }
   }
   // public maps: {[gridId: string]: GameMap} = {}
   // public mapIds: string[] = []
