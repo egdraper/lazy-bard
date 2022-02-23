@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { GSM } from './game-state-manager.service';
 
 @Component({
@@ -6,18 +6,13 @@ import { GSM } from './game-state-manager.service';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
-export class GameComponent implements OnInit {
-
+export class GameComponent implements AfterViewInit{
   constructor(public gameStateManager: GSM) {
-  }
-
-  ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame("firstGame", 50, 50, "forrest")
+      this.gameStateManager.newGame("firstGame", 50, 50, "forest")
     })
   }
-
 }

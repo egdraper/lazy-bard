@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanvasController } from './controllers/canvas.controller';
 import { GridController } from './controllers/grid.controller';
+import { KeyEventController } from './controllers/key-event.controller';
 import { PaintController } from './controllers/paint.controller';
 import { FrameController } from './controllers/timing.controller';
 import { Extensions } from './extensions/extensions';
@@ -18,7 +19,8 @@ export class GSM {
   public static Extensions: Extensions
   public static GridController: GridController
   public static PaintController: PaintController
-
+  public static KeyEventController: KeyEventController
+  
   public loadingFinished = false
 
   constructor() {
@@ -44,6 +46,8 @@ export class GSM {
 
     GSM.PaintController = new PaintController() 
     GSM.PaintController.startPainter()
+
+    GSM.KeyEventController = new KeyEventController()
     
     this.loadingFinished = true
     
