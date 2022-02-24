@@ -1,3 +1,4 @@
+import { GSM } from "../../game-state-manager.service";
 import { Cell } from "../../models/map";
 import { PlayableAsset } from "./playable-character";
 
@@ -58,7 +59,7 @@ export class ShortestPath {
         if (!visited[visitedCell].checked) {
           const store: number[] = [ ];
 
-          visited[visitedCell].cell.neighbors.forEach((cell: Cell, index: number) => {
+          GSM.GridController.getAllNeighbors(visited[visitedCell].cell).forEach((cell: Cell, index: number) => {
             if (!cell) {
               return;
             }
@@ -79,30 +80,30 @@ export class ShortestPath {
               }
             }
 
-          if (index === 0 && cell.obstacle) {
-            // skip 7 4
-            store.push(7);
-            store.push(4);
-          }
-
-          if (index === 1 && cell.obstacle) {
-            // skip 4 5
-            store.push(4);
-            store.push(5);
-          }
-
-          if (index === 2 && cell.obstacle) {
-            // skip 5 6
-            store.push(5);
-            store.push(6);
-          }
-
-          if (index === 3 && cell.obstacle) {
-            // skip 6 7
-            store.push(6);
-            store.push(7);
-          }
-        });
+            if (index === 0 && cell.obstacle) {
+              // skip 7 4
+              store.push(7);
+              store.push(4);
+            }
+  
+            if (index === 1 && cell.obstacle) {
+              // skip 4 5
+              store.push(4);
+              store.push(5);
+            }
+  
+            if (index === 2 && cell.obstacle) {
+              // skip 5 6
+              store.push(5);
+              store.push(6);
+            }
+  
+            if (index === 3 && cell.obstacle) {
+              // skip 6 7
+              store.push(6);
+              store.push(7);
+            }
+          });
       }
       this.searchIndex++
       visited[visitedCell].checked = true;
@@ -112,7 +113,7 @@ export class ShortestPath {
 
   public static verifyClosetLocation(start: Cell, end: Cell): Cell {
     if(this.isBadLocation(end)) { 
-      const possibleAlternatives = end.neighbors.filter(a => !this.isBadLocation(a))
+      const possibleAlternatives = GSM.GridController.getAllNeighbors(end).filter(a => !this.isBadLocation(a))
       if(possibleAlternatives) {
         let newEndCell
         let shortest = 1000000

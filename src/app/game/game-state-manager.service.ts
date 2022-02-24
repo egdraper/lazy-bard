@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanvasController } from './controllers/canvas.controller';
-import { GridController } from './controllers/grid.controller';
-import { KeyEventController } from './controllers/key-event.controller';
+import { MapController } from './controllers/map.controller';
+import { KeyEventController } from './controllers/event.controller';
 import { PaintController } from './controllers/paint.controller';
 import { AssetController } from './controllers/asset.controller';
 import { FrameController } from './controllers/timing.controller';
@@ -18,7 +18,7 @@ export class GSM {
   public static Settings: Settings
   public static FrameController: FrameController
   public static Extensions: Extensions
-  public static GridController: GridController
+  public static GridController: MapController
   public static PaintController: PaintController
   public static KeyEventController: KeyEventController
   public static AssetController: AssetController
@@ -38,9 +38,9 @@ export class GSM {
     GSM.Settings = new Settings()
     GSM.CanvasController = new CanvasController()
     
-    GSM.GridController = new GridController()
-    GSM.GridController.setupGrid({width, height})
-    GSM.GridController.grid.baseTexture = baseTexture
+    GSM.GridController = new MapController()
+    GSM.GridController.setupNewMap({width, height})
+    GSM.GridController.gameMap.baseTexture = baseTexture
     GSM.GridController.autoGenerateTerrain = autoGenerateTerrain
 
     GSM.FrameController = new FrameController()

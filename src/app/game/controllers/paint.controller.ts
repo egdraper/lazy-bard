@@ -17,17 +17,17 @@ export class PaintController {
   } 
 
   public startPainter(): void {
-    this.engineSubscription = GSM.FrameController.fire.subscribe(() => {
+    this.engineSubscription = GSM.FrameController.fire.subscribe(frame => {
       this.painters.forEach(painter => {
         if(painter.ctx) {
-          painter.ctx.clearRect(0,0, GSM.GridController.grid.size.width * GSM.Settings.blockSize, GSM.GridController.grid.size.height * GSM.Settings.blockSize)
+          painter.ctx.clearRect(0,0, GSM.GridController.gameMap.size.width * GSM.Settings.blockSize, GSM.GridController.gameMap.size.height * GSM.Settings.blockSize)
           painter.ctx.imageSmoothingEnabled = false
         }
       })
       
       GSM.GridController.iterateVisibleCells(cell => {
         this.painters.forEach(painter => {
-          painter.paint(cell)
+          painter.paint(cell, frame)
         })
       })
     })

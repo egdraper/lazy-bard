@@ -27,7 +27,7 @@ export class BackgroundExtension {
   }
 
   private loadBaseTextureSpriteIntoPainter(textureSprites: TextureSprite[]): void {
-    const textureSprite = textureSprites.find(sprite => sprite.baseTexture === GSM.GridController.grid.baseTexture)
+    const textureSprite = textureSprites.find(sprite => sprite.baseTexture === GSM.GridController.gameMap.baseTexture)
     if(textureSprite) {
       this.painter.baseTexture = textureSprite
     } else {

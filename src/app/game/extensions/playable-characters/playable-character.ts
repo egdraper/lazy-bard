@@ -1,3 +1,4 @@
+import { Subscription } from "rxjs"
 import { GSM } from "../../game-state-manager.service"
 import { Asset } from "../../models/asset.model"
 import { Cell } from "../../models/map"
@@ -20,6 +21,7 @@ export class PlayableAsset extends Asset {
   private redirection: { start: Cell, end: Cell, charactersOnGrid: PlayableAsset[] }
   private nextCell: Cell
   private prevCell: Cell
+  private movementSubscription: Subscription
 
   public set spriteDirection(value: string) {
     if (value === "down") { this.frameYPosition = 0 }
@@ -60,7 +62,7 @@ export class PlayableAsset extends Asset {
 
 
   public startMovement(startCell: Cell, endCell: Cell, charactersOnGrid: PlayableAsset[], onFinished?: ()=> void): void {
-    if(onFinished) { this.onFinished = onFinished }
+    if (onFinished) { this.onFinished = onFinished }
 
     if (this.moving) {
       this.redirection = { start: undefined, end: endCell, charactersOnGrid: charactersOnGrid }
@@ -71,18 +73,26 @@ export class PlayableAsset extends Asset {
 
     this.currentPath = ShortestPath.find(startCell, endCell, charactersOnGrid)
     if(this.currentPath.length === 0) { return }
+    
     this.moving = true
     this.prevCell = this.currentPath.pop() // removes cell the character is standing on
     this.nextCell = this.currentPath.pop()
 
     this.setSpriteDirection()
     this.animationFrame = 8
+    
+    this.movementSubscription = GSM.FrameController.fire.subscribe(frame => {
+      if(this.moving) {
+        this.move()
+      }
+    })
   }
 
   public endMovement(): void {
     this.currentPath = null
     this.moving = false
     this.animationFrame = 16
+    this.movementSubscription.unsubscribe()
   }
 
   public move() {

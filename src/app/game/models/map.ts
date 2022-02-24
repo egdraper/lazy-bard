@@ -1,15 +1,34 @@
 export class GameMap {
   id: string
+  grids: {[layer: string]: Grid} = {}
   name: string
-  grid: Grid
+  baseTexture: string
+  
+  constructor(public size: Size) { }
+}
+
+export enum Neighbor {
+  top,
+  topRight,
+  right,
+  bottomRight,
+}
+
+export enum ElevationLayers {
+  baseLayer = "baseLayer",
+  terrainLayer = "terrainLayer",
+  structureLayer = "structureLayer",
+  partitionLayer = "partitionLayer",
+  ceilingObjectLayer = "ceilingObjectLayer",
+  floorObjectLayer = "floorObjectLayer",
+  suspendedObjectLayer = "suspendedObjectLayer",
+  wallObjectLayer = "wallObjectLayer",
+  gatewayLayer = "gatewayLayer"
 }
 
 export class Grid {
-  public id: string
-  public cells: { [cell: string]: Cell } = {}
-  public baseTexture: string
-    
-  constructor(public size: Size) {}
+  id: string
+  cells: { [cell: string]: Cell } = {}
 }
 
 export interface Cell {

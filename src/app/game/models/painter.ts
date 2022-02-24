@@ -5,5 +5,5 @@ export abstract class Painter {
   public ctx: CanvasRenderingContext2D
   public images?: {[imageId: string]: HTMLImageElement}
 
-  public abstract paint(cell: Cell): void
+  public abstract paint(cell: Cell, frame?: number): void
 }

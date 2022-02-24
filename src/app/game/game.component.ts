@@ -12,7 +12,7 @@ export class GameComponent implements AfterViewInit{
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame("firstGame", 50, 50, "forest")
+      this.gameStateManager.newGame("firstGame", 20, 20, "forest")
     })
   }
 }
