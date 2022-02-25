@@ -1,6 +1,6 @@
 import { GSM } from "../../game-state-manager.service";
 import { Cell } from "../../models/map";
-import { PlayableAsset } from "./playable-character";
+import { MovableAsset } from "./movable-asset";
 
 export interface Visited {
   cell?: Cell
@@ -17,9 +17,8 @@ export class ShortestPath {
   private static maxSearches = 2000000
   private static searchIndex = 0
 
-  public static find(start: Cell, end: Cell, creaturesOnGrid: Array<PlayableAsset> ): Cell[] {
+  public static find(start: Cell, end: Cell, creaturesOnGrid: Array<MovableAsset> ): Cell[] {
     this.creaturesOnGrid = creaturesOnGrid
-    end.destination = true; // css styling
     end = this.verifyClosetLocation(start, end)
     return this.start(start, end)
   }

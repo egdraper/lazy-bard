@@ -1,15 +1,14 @@
 import { GSM } from '../../game-state-manager.service';
-import { PlayableAsset } from './playable-character';
+import { MovableAsset } from './movable-asset';
 
-export class PlayableCharacterAnimator {
-
+export class MovableAssetAnimator {
   constructor() {
     this.setupCharacterAnimation()
   }
 
   public setupCharacterAnimation(): void {
-    GSM.FrameController.fire.subscribe((frame) => {
-      GSM.AssetController.assets.forEach((asset: PlayableAsset) => {
+    GSM.FrameController.frameFire.subscribe((frame) => {
+      GSM.AssetController.assets.forEach((asset: MovableAsset) => {
         if (asset.animating) {
           if (frame % asset.animationFrame === 0) {
             asset.updateAnimation();

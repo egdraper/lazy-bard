@@ -4,7 +4,7 @@ import { Asset } from "../../models/asset.model"
 import { Cell } from "../../models/map"
 import { ShortestPath } from "./shortest-path"
 
-export class PlayableAsset extends Asset {
+export class MovableAsset extends Asset {
   // animation
   public frameXPosition = [0, 26, 52, 26]
   public frameYPosition = 0
@@ -14,13 +14,13 @@ export class PlayableAsset extends Asset {
 
   // movement
   public moving = false
-  public currentPath: Cell[] = []
   public positionX = 0
   public positionY = 0
-  public onFinished: () => void  
-  private redirection: { start: Cell, end: Cell, charactersOnGrid: PlayableAsset[] }
+  
+  private onFinished: () => void  
+  private currentPath: Cell[] = []
+  private redirection: { start: Cell, end: Cell, charactersOnGrid: MovableAsset[] }
   private nextCell: Cell
-  private prevCell: Cell
   private movementSubscription: Subscription
 
   public set spriteDirection(value: string) {
@@ -32,6 +32,7 @@ export class PlayableAsset extends Asset {
 
   constructor() {
     super()
+    GSM.KeyEventController.keyDown.subscribe(this.setDirection.bind(this))
   }
 
   public updateAnimation() {
@@ -61,7 +62,7 @@ export class PlayableAsset extends Asset {
   }
 
 
-  public startMovement(startCell: Cell, endCell: Cell, charactersOnGrid: PlayableAsset[], onFinished?: ()=> void): void {
+  public startMovement(startCell: Cell, endCell: Cell, charactersOnGrid: MovableAsset[], onFinished?: ()=> void): void {
     if (onFinished) { this.onFinished = onFinished }
 
     if (this.moving) {
@@ -75,13 +76,13 @@ export class PlayableAsset extends Asset {
     if(this.currentPath.length === 0) { return }
     
     this.moving = true
-    this.prevCell = this.currentPath.pop() // removes cell the character is standing on
+    this.currentPath.pop() // removes cell the character is standing on
     this.nextCell = this.currentPath.pop()
 
     this.setSpriteDirection()
     this.animationFrame = 8
     
-    this.movementSubscription = GSM.FrameController.fire.subscribe(frame => {
+    this.movementSubscription = GSM.FrameController.frameFire.subscribe(frame => {
       if(this.moving) {
         this.move()
       }
@@ -117,7 +118,6 @@ export class PlayableAsset extends Asset {
       // if(!GameSettings.gm) {
       //   GSM.Canvas.trackAsset(this.nextCell.x - this.prevCell.x, this.nextCell.y - this.prevCell.y, this, true)
       // }
-      this.prevCell = this.nextCell
       
       this.nextCell = this.currentPath.length > 0
         ? this.currentPath.pop()

@@ -1,5 +1,5 @@
 import { GSM } from "../game-state-manager.service";
-import { Cell, ElevationLayers, GameMap, Grid, Size } from "../models/map";
+import { Cell, ElevationLayers, GameMap, Grid, NeighborLocation, Size, TerrainLayerGrid } from "../models/map";
 
 export class MapController {
   public gameMap: GameMap
@@ -9,7 +9,7 @@ export class MapController {
   public iterateAllCells(callBack: (cell: Cell) => void) {
     for (let i = 0; i < this.gameMap.size.height; i++) {
       for (let l = 0; l < this.gameMap.size.width; l++) {
-        callBack(this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${l}:y${i}`])
+        callBack(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${l}:y${i}`])
       }
     }
   }
@@ -17,7 +17,7 @@ export class MapController {
   public iterateVisibleCells(callBack: (cell: Cell) => void) {
     for (let i = 0; i < this.gameMap.size.height; i++) {
       for (let l = 0; l < this.gameMap.size.width; l++) {
-        callBack(this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${l}:y${i}`])
+        callBack(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${l}:y${i}`])
       }
     }
   }
@@ -29,40 +29,38 @@ export class MapController {
       while (y % GSM.Settings.blockSize !== 0) {
         y--
       }
-      return this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${x / GSM.Settings.blockSize}:y${y / GSM.Settings.blockSize}`]
+      return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${x / GSM.Settings.blockSize}:y${y / GSM.Settings.blockSize}`]
   }
 
   public getAllNeighbors(cell: Cell): Cell[] {
     const cells = []
-    cells.push(this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${cell.x}:y${cell.y - 1}`])
-    cells.push(this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${cell.x + 1}:y${cell.y}`])
-    cells.push(this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${cell.x}:y${cell.y + 1}`])
-    cells.push(this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${cell.x - 1}:y${cell.y}`])
-    cells.push(this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${cell.x + 1}:y${cell.y - 1}`])
-    cells.push(this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${cell.x + 1}:y${cell.y + 1}`])
-    cells.push(this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${cell.x - 1}:y${cell.y + 1}`])
-    cells.push(this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${cell.x - 1}:y${cell.y - 1}`])  
-
-
+    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x}:y${cell.y - 1}`])
+    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x + 1}:y${cell.y}`])
+    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x}:y${cell.y + 1}`])
+    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x - 1}:y${cell.y}`])
+    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x + 1}:y${cell.y - 1}`])
+    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x + 1}:y${cell.y + 1}`])
+    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x - 1}:y${cell.y + 1}`])
+    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x - 1}:y${cell.y - 1}`])  
     return cells
   } 
 
   public setupNewMap(size: Size): void {
     this.gameMap = new GameMap(size)
-    this.gameMap.grids[ElevationLayers.baseLayer] = new Grid()
-    this.gameMap.grids[ElevationLayers.ceilingObjectLayer] = new Grid()
-    this.gameMap.grids[ElevationLayers.floorObjectLayer] = new Grid()
-    this.gameMap.grids[ElevationLayers.gatewayLayer] = new Grid()
-    this.gameMap.grids[ElevationLayers.partitionLayer] = new Grid()
-    this.gameMap.grids[ElevationLayers.structureLayer] = new Grid()
-    this.gameMap.grids[ElevationLayers.suspendedObjectLayer] = new Grid()
-    this.gameMap.grids[ElevationLayers.terrainLayer] = new Grid()
-    this.gameMap.grids[ElevationLayers.wallObjectLayer] = new Grid()    
+    this.gameMap.grids[ElevationLayers.BaseLayer] = new Grid()
+    this.gameMap.grids[ElevationLayers.CeilingObjectLayer] = new Grid()
+    this.gameMap.grids[ElevationLayers.FloorObjectLayer] = new Grid()
+    this.gameMap.grids[ElevationLayers.GatewayLayer] = new Grid()
+    this.gameMap.grids[ElevationLayers.PartitionLayer] = new Grid()
+    this.gameMap.grids[ElevationLayers.StructureLayer] = new Grid()
+    this.gameMap.grids[ElevationLayers.SuspendedObjectLayer] = new Grid()
+    this.gameMap.grids[ElevationLayers.TerrainLayer] = new TerrainLayerGrid()
+    this.gameMap.grids[ElevationLayers.WallObjectLayer] = new Grid()    
     this.gameMap.id = Math.random().toString()
 
     for (let i = 0; i < this.gameMap.size.height; i++) {
         for (let l = 0; l < this.gameMap.size.width; l++) {
-          this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${l}:y${i}`] = {
+          this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${l}:y${i}`] = {
               x: l,
               y: i,
               posX: l * GSM.Settings.blockSize,
@@ -73,23 +71,8 @@ export class MapController {
       }
       this.loadedMaps[this.gameMap.id] = this.gameMap
   }
-    private addNeighbors() {
-        for (let i = 0; i < this.gameMap.size.height; i++) {
-          for (let l = 0; l < this.gameMap.size.width; l++) {
-          const cell = this.gameMap.grids[ElevationLayers.baseLayer].cells[`x${l}:y${i}`];
-          cell.neighbors = [];
-          cell.neighbors[5] = this.gameMap[`x${l + 1}:y${i + 1}`];
-          cell.neighbors[0] = this.gameMap[`x${l}:y${i - 1}`];
-          cell.neighbors[2] = this.gameMap[`x${l}:y${i + 1}`];
-          cell.neighbors[4] = this.gameMap[`x${l + 1}:y${i - 1}`];
-          cell.neighbors[1] = this.gameMap[`x${l + 1}:y${i}`];
-          cell.neighbors[6] = this.gameMap[`x${l - 1}:y${i + 1}`];
-          cell.neighbors[3] = this.gameMap[`x${l - 1}:y${i}`];
-          cell.neighbors[7] = this.gameMap[`x${l - 1}:y${i - 1}`];
-        }
-      }
-    }
-  }
+}
+  
   // public maps: {[gridId: string]: GameMap} = {}
   // public mapIds: string[] = []
   // public activeMap: GameMap

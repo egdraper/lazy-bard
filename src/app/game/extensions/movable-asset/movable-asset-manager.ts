@@ -1,16 +1,16 @@
 import { GSM } from '../../game-state-manager.service';
 import { Cell } from '../../models/map';
-import { PlayableAsset } from './playable-character';
+import { MovableAsset } from './movable-asset';
 
-export class PlayableCharacterManager {
-  public selectedPlayableAssets: PlayableAsset[] = []
+export class MovableAssetManager {
+  public selectedPlayableAssets: MovableAsset[] = []
 
   constructor() {
     GSM.AssetController.assetClicked.subscribe(this.onAssetClicked.bind(this))
     GSM.KeyEventController.emptyCellClicked.subscribe(this.onEmptyCellClicked.bind(this))
   }
 
-  public onAssetClicked(asset: PlayableAsset) {
+  public onAssetClicked(asset: MovableAsset) {
     asset.selected = !asset.selected
   }
 
@@ -22,14 +22,14 @@ export class PlayableCharacterManager {
     
     const selectedAssets = GSM.AssetController.getSelectedAssets()
     if(selectedAssets) {
-      selectedAssets.forEach((asset: PlayableAsset) => {
-        asset.startMovement(asset.cell, cell, GSM.AssetController.assets as PlayableAsset[]  )
+      selectedAssets.forEach((asset: MovableAsset) => {
+        asset.startMovement(asset.cell, cell, GSM.AssetController.assets as MovableAsset[]  )
       })
     }
   }
 
   public addPlayableCharacter(cell: Cell): void {
-      const playerAsset = new PlayableAsset();
+      const playerAsset = new MovableAsset();
       playerAsset.cell = cell;
       playerAsset.positionX = cell.posX;
       playerAsset.positionY = cell.posY;

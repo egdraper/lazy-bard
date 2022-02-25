@@ -8,6 +8,7 @@ import { FrameController } from './controllers/timing.controller';
 import { Extensions } from './extensions/extensions';
 import { Grid } from './models/map';
 import { Settings } from './models/settings';
+import { EditorController } from './controllers/editor.controller';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,7 @@ export class GSM {
   public static PaintController: PaintController
   public static KeyEventController: KeyEventController
   public static AssetController: AssetController
+  public static editorController: EditorController
   
   public loadingFinished = false
 
@@ -46,11 +48,11 @@ export class GSM {
     GSM.FrameController = new FrameController()
     GSM.FrameController.start()   
 
-    GSM.PaintController = new PaintController() 
-    GSM.PaintController.startPainter()
+    GSM.PaintController = new PaintController()
 
     GSM.KeyEventController = new KeyEventController()
     GSM.AssetController = new AssetController()
+    GSM.editorController = new EditorController()
     
     this.loadingFinished = true
     
