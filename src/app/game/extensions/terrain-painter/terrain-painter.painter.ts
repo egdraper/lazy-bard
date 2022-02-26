@@ -1,3 +1,4 @@
+import { drawableItems } from "../../db/drawable-items.db"
 import { GSM } from "../../game-state-manager.service"
 import { DrawableItem, ElevationLayers, TerrainCell } from "../../models/map"
 import { Painter } from "../../models/painter"
@@ -7,12 +8,15 @@ export class TerrainPainterPainter implements Painter {
   public layer = ElevationLayers.TerrainLayer
   public paintOrder = 1
   public ctx = GSM.CanvasController.foregroundCTX
-  public images: { [imageUrl: string]: HTMLImageElement; } = {}
-  
-  private drawableItem: DrawableItem
+  public images: { [imageUrl: string]: HTMLImageElement; } = {}  
+  private drawableItem: DrawableItem = drawableItems[0]
 
   constructor() {
-    GSM.editorController.selectedDrawableItem.subscribe(drawableItem => this.drawableItem = drawableItem)
+    GSM.editorController.selectedAction.subscribe(action => {
+      if(action.name === "paintingTerrain") {
+        this.drawableItem = action.data as DrawableItem
+      }
+    })
   }
 
   public paint(cell: TerrainCell): void {

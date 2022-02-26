@@ -1,7 +1,12 @@
 import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 import { drawableItems } from "../db/drawable-items.db";
-import { DrawableItem } from "../models/map";
+import { Cell, DrawableItem } from "../models/map";
+
+export class SelectedAction {
+    name: string
+    data: unknown
+}
 
 export class EditorController { 
-    public selectedDrawableItem: BehaviorSubject<DrawableItem> = new BehaviorSubject(drawableItems[0])
+  public selectedAction: BehaviorSubject<SelectedAction> = new BehaviorSubject({name: "", data: null})
 }

@@ -1,13 +1,14 @@
 import { drawableItems } from '../../db/drawable-items.db';
 import { GSM } from '../../game-state-manager.service';
-import { Cell, DrawableItem, TerrainCell } from '../../models/map';
+import { DrawableItem } from '../../models/map';
+import { TerrainPainterEventHandler } from './terrain-painter.event-handler';
 import { TerrainPainterPainter } from './terrain-painter.painter';
 
 export class TerrainPainterExtension {
   private painter = new TerrainPainterPainter();
 
   constructor() {
-    GSM.KeyEventController.emptyCellClicked.subscribe(this.onEmptyCellClicked.bind(this))
+    new TerrainPainterEventHandler();
     this.setupImages();
   }
 
@@ -23,10 +24,6 @@ export class TerrainPainterExtension {
       image.src = drawableItems.imageUrl;
       this.painter.images[drawableItems.imageUrl] = image;
     });
-  }
-
-  private onEmptyCellClicked(cell: TerrainCell): void {
-    cell.drawableTileId = GSM.editorController.selectedDrawableItem.value.id
   }
 
   // MOCKS DB call from Server

@@ -1,6 +1,6 @@
 import { GSM } from '../../game-state-manager.service';
 import { Cell } from '../../models/map';
-import { MovableAssetManager } from './movable-asset-manager';
+import { MovableAssetManager } from './movable-asset.event-handler';
 import { MovableAssetAnimator } from './movable-asset.animator';
 import { MovableAssetPainter } from './movable-asset.painter';
 

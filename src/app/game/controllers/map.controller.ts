@@ -24,24 +24,45 @@ export class MapController {
 
   public getGridCellByCoordinate(x: number, y: number): Cell {
     while (x % GSM.Settings.blockSize !== 0) {
-        x--
+      x--
+    }
+    while (y % GSM.Settings.blockSize !== 0) {
+      y--
       }
-      while (y % GSM.Settings.blockSize !== 0) {
-        y--
-      }
-      return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${x / GSM.Settings.blockSize}:y${y / GSM.Settings.blockSize}`]
+    return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${x / GSM.Settings.blockSize}:y${y / GSM.Settings.blockSize}`]
+  }
+
+  public getNeighbor(cell: Cell, neighborLocation: NeighborLocation): Cell {
+    switch(neighborLocation) {
+      case NeighborLocation.Top:
+        return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x}:y${cell.y - 1}`]
+      case NeighborLocation.Right:
+        return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x + 1}:y${cell.y}`]
+      case NeighborLocation.Bottom:
+        return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x}:y${cell.y + 1}`]
+      case NeighborLocation.Left:
+        return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x - 1}:y${cell.y}`]
+      case NeighborLocation.TopRight:
+        return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x + 1}:y${cell.y - 1}`]
+      case NeighborLocation.BottomRight:
+        return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x + 1}:y${cell.y + 1}`]
+      case NeighborLocation.BottomLeft:
+        return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x - 1}:y${cell.y + 1}`]
+      case NeighborLocation.TopLeft:
+        return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x - 1}:y${cell.y - 1}`]  
+    }
   }
 
   public getAllNeighbors(cell: Cell): Cell[] {
     const cells = []
-    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x}:y${cell.y - 1}`])
-    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x + 1}:y${cell.y}`])
-    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x}:y${cell.y + 1}`])
-    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x - 1}:y${cell.y}`])
-    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x + 1}:y${cell.y - 1}`])
-    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x + 1}:y${cell.y + 1}`])
-    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x - 1}:y${cell.y + 1}`])
-    cells.push(this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${cell.x - 1}:y${cell.y - 1}`])  
+    cells.push(this.getNeighbor(cell, NeighborLocation.Top))
+    cells.push(this.getNeighbor(cell, NeighborLocation.Right))
+    cells.push(this.getNeighbor(cell, NeighborLocation.Bottom))
+    cells.push(this.getNeighbor(cell, NeighborLocation.Left))
+    cells.push(this.getNeighbor(cell, NeighborLocation.TopRight))
+    cells.push(this.getNeighbor(cell, NeighborLocation.BottomRight))
+    cells.push(this.getNeighbor(cell, NeighborLocation.BottomLeft))
+    cells.push(this.getNeighbor(cell, NeighborLocation.TopLeft))
     return cells
   } 
 

@@ -12,29 +12,31 @@ export class MovableAssetManager {
 
   public onAssetClicked(asset: MovableAsset) {
     asset.selected = !asset.selected
+    GSM.editorController.selectedAction.next({
+      name: "characterSelected",
+      data: null
+    })
   }
 
   public onEmptyCellClicked(cell: Cell): void {
-    if(GSM.KeyEventController.keysPressed.has("AltLeft")) {
+    if(GSM.editorController.selectedAction.value.name === "addCharacter") {
       this.addPlayableCharacter(cell)
-      return
     }
-    
-    const selectedAssets = GSM.AssetController.getSelectedAssets()
-    if(selectedAssets) {
+
+    if(GSM.editorController.selectedAction.value.name === "characterSelected") {
+      const selectedAssets = GSM.AssetController.getSelectedAssets()
       selectedAssets.forEach((asset: MovableAsset) => {
         asset.startMovement(asset.cell, cell, GSM.AssetController.assets as MovableAsset[]  )
       })
-    }
+    }      
   }
 
   public addPlayableCharacter(cell: Cell): void {
-      const playerAsset = new MovableAsset();
-      playerAsset.cell = cell;
-      playerAsset.positionX = cell.posX;
-      playerAsset.positionY = cell.posY;
-      playerAsset.imageUrl = 'assets/images/character_001.png';
-      GSM.AssetController.assets.push(playerAsset);
-
+    const playerAsset = new MovableAsset();
+    playerAsset.cell = cell;
+    playerAsset.positionX = cell.posX;
+    playerAsset.positionY = cell.posY;
+    playerAsset.imageUrl = 'assets/images/character_001.png';
+    GSM.AssetController.assets.push(playerAsset);
   }
 }

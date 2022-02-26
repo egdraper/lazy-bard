@@ -1,8 +1,6 @@
 <div class="game">
-    <div class="left-toolbar-view">
-
-    </div>
-    <div class="game-view">
-      <gm-canvas *ngIf="gameStateManager.loadingFinished"></gm-canvas>
-    </div>
+  <h1 style="color:white; position: absolute;">{{selected}}</h1>
+  <div class="game-view">
+    <gm-canvas *ngIf="gameStateManager.loadingFinished"></gm-canvas>
   </div>
+</div>
