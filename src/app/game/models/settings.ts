@@ -10,3 +10,8 @@ export class CanvasSpecs {
   public width: number
   public height: number
 }
+
+export class GeneralAction<T = unknown> {
+  name: string
+  data: T
+}

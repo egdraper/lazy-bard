@@ -32,6 +32,10 @@ export class MapController {
     return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${x / GSM.Settings.blockSize}:y${y / GSM.Settings.blockSize}`]
   }
 
+  public getCell(x: number, y: number): Cell {
+    return this.gameMap.grids[ElevationLayers.BaseLayer].cells[`x${x}:y${y}`]
+  }
+
   public getNeighbor(cell: Cell, neighborLocation: NeighborLocation): Cell {
     switch(neighborLocation) {
       case NeighborLocation.Top:

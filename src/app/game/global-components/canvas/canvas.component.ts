@@ -13,6 +13,7 @@ export class CanvasComponent implements AfterViewInit {
   @ViewChild('fogCanvas') fogCanvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('blackoutCanvas') blackoutCanvas: ElementRef<HTMLCanvasElement>;
 
+  private hoveringCellId = ""
 
   // this needs to be put in a public function so we can pass in grid information 
   public ngAfterViewInit(): void {
@@ -21,8 +22,8 @@ export class CanvasComponent implements AfterViewInit {
 
   @HostListener("document:keydown", ["$event"])
   public onKeyDown(event: KeyboardEvent): void {
-    GSM.KeyEventController.keyDown.next(event)
-    GSM.KeyEventController.keysPressed.add(event.code)
+    GSM.EventController.keyDown.next(event)
+    GSM.EventController.keysPressed.add(event.code)
     // if (GSM.Assets.selectedGameComponent) {
     //   GSM.Assets.selectedGameComponent.setDirection(event)
     // }
@@ -60,8 +61,8 @@ export class CanvasComponent implements AfterViewInit {
 
   @HostListener("document:keyup", ["$event"])
   public onKeyUp(event: KeyboardEvent): void {
-    GSM.KeyEventController.keyUp.next(event)
-    GSM.KeyEventController.keysPressed.delete(event.code)
+    GSM.EventController.keyUp.next(event)
+    GSM.EventController.keysPressed.delete(event.code)
 
     // switch (event.key) {
     //   case "Delete":
@@ -101,20 +102,22 @@ export class CanvasComponent implements AfterViewInit {
 
   public onCellClick(event: MouseEvent): void {
     const cell = GSM.GridController.getGridCellByCoordinate(event.offsetX, event.offsetY)
-    GSM.KeyEventController.cellClick.next(cell)
+    GSM.EventController.cellClick.next(cell)
     
     const occupiedCell = GSM.AssetController.getAssetByCell(cell)
     if(!occupiedCell) {
-      GSM.KeyEventController.emptyCellClicked.next(cell)
+      GSM.EventController.emptyCellClicked.next(cell)
     }
   }
 
   public onMouseDown(event: MouseEvent): void {
-    GSM.KeyEventController.mouseDown.next(event)
+    GSM.EventController.mouseDown.next(event)
+    GSM.EventController.keysPressed.add("mouseDown")
     // GSM.GameEvent.update()
   }
-
+  
   public onMouseUp(event: MouseEvent): void {
+    GSM.EventController.keysPressed.delete("mouseDown")
     // GSM.GameEvent.keyPressDetails.mouseDown = false
     // GSM.GameEvent.update()
   }
@@ -122,10 +125,14 @@ export class CanvasComponent implements AfterViewInit {
   public onMouseMove(event: MouseEvent): void {
     // if (!GSM.Map.activeMap) { return }
 
-    // const mousePosX = event.offsetX + (-1 * GSM.Canvas.canvasViewPortOffsetX * GameSettings.scale)
-    // const mousePosY = event.offsetY + (-1 * GSM.Canvas.canvasViewPortOffsetY * GameSettings.scale)
-    // this.hoveringCell = GSM.Map.activeMap.getGridCellByCoordinate(mousePosX, mousePosY)
-
+    const mousePosX = event.offsetX // + (-1 * GSM.Canvas.canvasViewPortOffsetX * GameSettings.scale)
+    const mousePosY = event.offsetY // + (-1 * GSM.Canvas.canvasViewPortOffsetY * GameSettings.scale)
+    
+    const hoveringCell = GSM.GridController.getGridCellByCoordinate(mousePosX, mousePosY)
+    if(this.hoveringCellId !== hoveringCell.id) {
+      GSM.EventController.cellMouseEntered.next(hoveringCell)
+      this.hoveringCellId = hoveringCell.id
+    }
     // // Game Marker (required here because mouseDetails depends on this check being called beforehand)
     // GSM.GameMarker.checkForHover()
     // GSM.GameMarker.mouseX = mousePosX

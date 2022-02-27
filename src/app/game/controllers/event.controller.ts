@@ -1,7 +1,8 @@
-import { Subject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 import { Cell } from "../models/map";
+import { GeneralAction } from "../models/settings";
 
-export class KeyEventController {
+export class EventController {
     public keysPressed: Set<string> = new Set()
     public keyDown = new Subject<KeyboardEvent>()
     public keyUp = new Subject<KeyboardEvent>()
@@ -12,4 +13,7 @@ export class KeyEventController {
     
     public cellClick = new Subject<Cell>()
     public emptyCellClicked = new Subject<Cell>()
+    public cellMouseEntered = new Subject<Cell>()
+    public generalActionFire: BehaviorSubject<GeneralAction> = new BehaviorSubject({name: "", data: null})
+
 }

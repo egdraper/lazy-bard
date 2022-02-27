@@ -7,23 +7,28 @@ export class MovableAssetManager {
 
   constructor() {
     GSM.AssetController.assetClicked.subscribe(this.onAssetClicked.bind(this))
-    GSM.KeyEventController.emptyCellClicked.subscribe(this.onEmptyCellClicked.bind(this))
+    GSM.EventController.emptyCellClicked.subscribe(this.onEmptyCellClicked.bind(this))
   }
 
   public onAssetClicked(asset: MovableAsset) {
+    console.log(GSM.EventController.keysPressed)
+    if(!GSM.EventController.keysPressed.has("MetaLeft")) {
+      GSM.AssetController.deselectAllAssets()
+    }
+
     asset.selected = !asset.selected
-    GSM.editorController.selectedAction.next({
+    GSM.EventController.generalActionFire.next({
       name: "characterSelected",
       data: null
     })
   }
 
   public onEmptyCellClicked(cell: Cell): void {
-    if(GSM.editorController.selectedAction.value.name === "addCharacter") {
+    if(GSM.EventController.generalActionFire.value.name === "addCharacter") {
       this.addPlayableCharacter(cell)
     }
 
-    if(GSM.editorController.selectedAction.value.name === "characterSelected") {
+    if(GSM.EventController.generalActionFire.value.name === "characterSelected") {
       const selectedAssets = GSM.AssetController.getSelectedAssets()
       selectedAssets.forEach((asset: MovableAsset) => {
         asset.startMovement(asset.cell, cell, GSM.AssetController.assets as MovableAsset[]  )
@@ -31,7 +36,7 @@ export class MovableAssetManager {
     }      
   }
 
-  public addPlayableCharacter(cell: Cell): void {
+  private addPlayableCharacter(cell: Cell): void {
     const playerAsset = new MovableAsset();
     playerAsset.cell = cell;
     playerAsset.positionX = cell.posX;

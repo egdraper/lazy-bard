@@ -12,7 +12,7 @@ export class TerrainPainterPainter implements Painter {
   private drawableItem: DrawableItem = drawableItems[0]
 
   constructor() {
-    GSM.editorController.selectedAction.subscribe(action => {
+    GSM.EventController.generalActionFire.subscribe(action => {
       if(action.name === "paintingTerrain") {
         this.drawableItem = action.data as DrawableItem
       }

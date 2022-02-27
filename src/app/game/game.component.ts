@@ -15,8 +15,8 @@ export class GameComponent implements AfterViewInit{
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame("firstGame", 20, 20, "forest")
-      GSM.editorController.selectedAction.subscribe(action => {
+      this.gameStateManager.newGame("firstGame", 60, 60, "forest")
+      GSM.EventController.generalActionFire.subscribe(action => {
         this.selected = action.name 
       })
     })
@@ -26,19 +26,34 @@ export class GameComponent implements AfterViewInit{
   @HostListener("document:keyup", ["$event"])
   public keyPress(event: KeyboardEvent) {
     if(event.code === "Escape") {
-      GSM.editorController.selectedAction.next({
+      GSM.EventController.generalActionFire.next({
         name: "",
         data: null
       })
     }
     if(event.code === "KeyQ") {
-      GSM.editorController.selectedAction.next({
+      GSM.EventController.generalActionFire.next({
         name: "addCharacter",
         data: null
       })
     }
+    if(event.code === "KeyZ") {
+      GSM.EventController.generalActionFire.next({
+        name: "deleteTerrain",
+        data: null
+      })
+    }
+    if(event.code === "KeyT") {
+      GSM.EventController.generalActionFire.next({
+        name: "generateTerrain",
+        data: {
+          terrainId: "Trees-GreenBase",
+          backgroundId: "greenGrass"
+        }
+      })
+    }
     if(event.code === "KeyE") {
-      GSM.editorController.selectedAction.next({
+      GSM.EventController.generalActionFire.next({
         name: "paintingTerrain",
         data: {
           id: "Trees-GrassBase",

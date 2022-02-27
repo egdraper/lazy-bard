@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanvasController } from './controllers/canvas.controller';
 import { MapController } from './controllers/map.controller';
-import { KeyEventController } from './controllers/event.controller';
+import { EventController } from './controllers/event.controller';
 import { PaintController } from './controllers/paint.controller';
 import { AssetController } from './controllers/asset.controller';
 import { FrameController } from './controllers/timing.controller';
@@ -21,7 +21,7 @@ export class GSM {
   public static Extensions: Extensions
   public static GridController: MapController
   public static PaintController: PaintController
-  public static KeyEventController: KeyEventController
+  public static EventController: EventController
   public static AssetController: AssetController
   public static editorController: EditorController
   
@@ -50,7 +50,7 @@ export class GSM {
 
     GSM.PaintController = new PaintController()
 
-    GSM.KeyEventController = new KeyEventController()
+    GSM.EventController = new EventController()
     GSM.AssetController = new AssetController()
     GSM.editorController = new EditorController()
     

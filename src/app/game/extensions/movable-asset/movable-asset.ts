@@ -32,7 +32,7 @@ export class MovableAsset extends Asset {
 
   constructor() {
     super()
-    GSM.KeyEventController.keyDown.subscribe(this.setDirection.bind(this))
+    GSM.EventController.keyDown.subscribe(this.setDirection.bind(this))
   }
 
   public updateAnimation() {

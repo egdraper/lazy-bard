@@ -8,7 +8,7 @@ export class AssetController {
   public assetClicked = new Subject<Asset>()
 
   constructor() {
-    GSM.KeyEventController.cellClick.subscribe(this.onCellClicked.bind(this))
+    GSM.EventController.cellClick.subscribe(this.onCellClicked.bind(this))
   }
 
   public getAssetByCell(cell: Cell): Asset | undefined {
@@ -17,6 +17,10 @@ export class AssetController {
 
   public getSelectedAssets(): Asset[] {
     return this.assets.filter(asset => asset.selected)
+  }
+
+  public deselectAllAssets(): void {
+    this.assets.forEach(asset => asset.selected = false)
   }
 
   private onCellClicked(cell: Cell): void {
