@@ -5,10 +5,10 @@ import { EventController } from './controllers/event.controller';
 import { PaintController } from './controllers/paint.controller';
 import { AssetController } from './controllers/asset.controller';
 import { FrameController } from './controllers/timing.controller';
-import { Extensions } from './extensions/extensions';
-import { Grid } from './models/map';
+
 import { Settings } from './models/settings';
-import { EditorController } from './controllers/editor.controller';
+import { LayerController } from './controllers/layer.controller';
+import { Extensions } from './extensions/extensions';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +23,8 @@ export class GSM {
   public static PaintController: PaintController
   public static EventController: EventController
   public static AssetController: AssetController
-  public static editorController: EditorController
-  
+  public static LayerController: LayerController
   public loadingFinished = false
-
   constructor() {
   }
   
@@ -35,30 +33,36 @@ export class GSM {
     width: number,
     height: number,
     baseTexture: string = "forest",
-    autoGenerateTerrain: boolean = false
   ): void {
+    // Order Matters
+    debugger
     GSM.Settings = new Settings()
-    GSM.CanvasController = new CanvasController()
+    GSM.CanvasController = new CanvasController()    
     
-    GSM.GridController = new MapController()
-    GSM.GridController.setupNewMap({width, height})
-    GSM.GridController.gameMap.baseTexture = baseTexture
-    GSM.GridController.autoGenerateTerrain = autoGenerateTerrain
-
     GSM.FrameController = new FrameController()
-    GSM.FrameController.start()   
-
-    GSM.PaintController = new PaintController()
-
     GSM.EventController = new EventController()
+    GSM.LayerController = new LayerController()
+    GSM.PaintController = new PaintController()    
+    GSM.GridController = new MapController()
+    GSM.GridController.createGameMap({width, height})
+    GSM.GridController.gameMap.baseTexture = baseTexture
+    
+    //Order Doesn't Matter
     GSM.AssetController = new AssetController()
-    GSM.editorController = new EditorController()
     
     this.loadingFinished = true
     
-    setTimeout(() => {
-      GSM.Extensions = new Extensions()
-    }, 1000);
+    GSM.CanvasController.setupComplete.subscribe(() => {      
+      GSM.Extensions = new Extensions() 
+      
+      setTimeout(()=> {
+        GSM.GridController.setupMap()
+        GSM.FrameController.start()  
+      })
+    })
+  }
+  
+  public onCanvasSetupComplete(): void {
   }
 
   public loadGame(name: string): void {

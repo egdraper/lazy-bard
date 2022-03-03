@@ -1,11 +1,10 @@
-import { drawableItems } from "../../db/drawable-items.db"
-import { GSM } from "../../game-state-manager.service"
-import { DrawableItem, ElevationLayers, TerrainCell } from "../../models/map"
-import { Painter } from "../../models/painter"
+import { drawableItems } from "../../../../db/drawable-items.db"
+import { GSM } from "../../../../game-state-manager.service"
+import { Cell, DrawableItem, TerrainCell } from "../../../../models/map"
+import { Painter } from "../../../../models/painter"
 import { TerrainEdgeCalculator } from "./terrain-edge-calculator"
 
 export class TerrainPainterPainter implements Painter {
-  public layer = ElevationLayers.TerrainLayer
   public paintOrder = 1
   public ctx = GSM.CanvasController.foregroundCTX
   public images: { [imageUrl: string]: HTMLImageElement; } = {}  

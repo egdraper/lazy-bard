@@ -1,11 +1,10 @@
-import { GSM } from "../../game-state-manager.service"
-import { Cell, ElevationLayers, ImageTile } from "../../models/map"
-import { Painter } from "../../models/painter"
-import { TextureSprite } from "../../models/sprites"
+import { GSM } from "../../../../game-state-manager.service"
+import { Cell, ImageTile } from "../../../../models/map"
+import { Painter } from "../../../../models/painter"
+import { TextureSprite } from "../../../../models/sprites"
 import { BackgroundRandomGenerator } from "./background.generator"
 
 export class BackgroundPainter implements Painter {
-  public layer = ElevationLayers.BaseLayer
   public paintOrder = 1
   public ctx = GSM.CanvasController.backgroundCTX
   public images: { [imageUrl: string]: HTMLImageElement; } = {}

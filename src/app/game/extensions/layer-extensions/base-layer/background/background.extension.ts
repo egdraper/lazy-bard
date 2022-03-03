@@ -1,10 +1,11 @@
-import { backgroundSprites } from "../../db/background.db"
-import { GSM } from "../../game-state-manager.service"
-import { TextureSprite } from "../../models/sprites"
+import { Extension } from "../../../../../game/models/extension.model"
+import { backgroundSprites } from "../../../../db/background.db"
+import { GSM } from "../../../../game-state-manager.service"
+import { TextureSprite } from "../../../../models/sprites"
 import { BackgroundPainter } from "./background.painter"
 
-export class BackgroundExtension {
-  private painter = new BackgroundPainter()
+export class BackgroundExtension implements Extension {
+  public painter = new BackgroundPainter()
 
   constructor() {
     this.setupImages()
@@ -14,8 +15,6 @@ export class BackgroundExtension {
     const textureSprites = await this.getBackgroundImages()
     this.loadImagesIntoPainter(textureSprites)    
     this.loadBaseTextureSpriteIntoPainter(textureSprites)
-
-    GSM.PaintController.registerPainter(this.painter)
   }
 
   private loadImagesIntoPainter(textureSprites: TextureSprite[]): void {
@@ -36,11 +35,7 @@ export class BackgroundExtension {
   } 
 
   // MOCKS DB call from Server
-  private getBackgroundImages(): Promise<TextureSprite[]> {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(backgroundSprites.filter(sprite => sprite.textureType === "background"))
-      }, 200)
-    })
+  private getBackgroundImages(): TextureSprite[] {
+    return backgroundSprites.filter(sprite => sprite.textureType === "background")
   }
 }

@@ -1,11 +1,11 @@
-import { drawableItems } from '../../db/drawable-items.db';
-import { GSM } from '../../game-state-manager.service';
-import { DrawableItem } from '../../models/map';
+import { Extension } from 'src/app/game/models/extension.model';
+import { drawableItems } from '../../../../db/drawable-items.db';
+import { DrawableItem } from '../../../../models/map';
 import { TerrainPainterEventHandler } from './terrain-painter.event-handler';
 import { TerrainPainterPainter } from './terrain-painter.painter';
 
-export class TerrainPainterExtension {
-  private painter = new TerrainPainterPainter();
+export class TerrainPainterExtension implements Extension {
+  public painter = new TerrainPainterPainter();
 
   constructor() {
     new TerrainPainterEventHandler();
@@ -15,7 +15,6 @@ export class TerrainPainterExtension {
   private async setupImages(): Promise<void> {
     const drawableItems = await this.getDrawableImages();
     this.loadImagesIntoPainter(drawableItems);
-    GSM.PaintController.registerPainter(this.painter);
   }
 
   private loadImagesIntoPainter(drawableItems: DrawableItem[]): void {

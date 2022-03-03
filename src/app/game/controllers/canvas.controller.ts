@@ -1,6 +1,8 @@
 import { ElementRef } from "@angular/core";
+import { Subject } from "rxjs";
 
 export class CanvasController {
+  public setupComplete = new Subject()
   public canvasSizeX = 969
   public canvasSizeY = 969
   public maxCellCountX = 0

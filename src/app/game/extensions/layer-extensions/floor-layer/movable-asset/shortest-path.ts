@@ -1,5 +1,5 @@
-import { GSM } from "../../game-state-manager.service";
-import { Cell } from "../../models/map";
+import { GSM } from "../../../../game-state-manager.service";
+import { Cell, ElevationLayers } from "../../../../models/map";
 import { MovableAsset } from "./movable-asset";
 
 export interface Visited {
@@ -58,7 +58,7 @@ export class ShortestPath {
         if (!visited[visitedCell].checked) {
           const store: number[] = [ ];
 
-          GSM.GridController.getAllNeighbors(visited[visitedCell].cell).forEach((cell: Cell, index: number) => {
+          GSM.GridController.getAllNeighbors(visited[visitedCell].cell, ElevationLayers.FloorObjectLayer).forEach((cell: Cell, index: number) => {
             if (!cell) {
               return;
             }
@@ -112,7 +112,7 @@ export class ShortestPath {
 
   public static verifyClosetLocation(start: Cell, end: Cell): Cell {
     if(this.isBadLocation(end)) { 
-      const possibleAlternatives = GSM.GridController.getAllNeighbors(end).filter(a => !this.isBadLocation(a))
+      const possibleAlternatives = GSM.GridController.getAllNeighbors(end, ElevationLayers.FloorObjectLayer).filter(a => !this.isBadLocation(a))
       if(possibleAlternatives) {
         let newEndCell
         let shortest = 1000000

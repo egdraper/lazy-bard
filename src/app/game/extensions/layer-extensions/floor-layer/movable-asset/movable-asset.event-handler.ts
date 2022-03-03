@@ -1,5 +1,5 @@
-import { GSM } from '../../game-state-manager.service';
-import { Cell } from '../../models/map';
+import { GSM } from '../../../../game-state-manager.service';
+import { Cell, ElevationLayers } from '../../../../models/map';
 import { MovableAsset } from './movable-asset';
 
 export class MovableAssetManager {
@@ -23,22 +23,24 @@ export class MovableAssetManager {
     })
   }
 
-  public onEmptyCellClicked(cell: Cell): void {
+  public onEmptyCellClicked(cellId: string): void {
     if(GSM.EventController.generalActionFire.value.name === "addCharacter") {
-      this.addPlayableCharacter(cell)
+      this.addPlayableCharacter(cellId)
     }
 
     if(GSM.EventController.generalActionFire.value.name === "characterSelected") {
       const selectedAssets = GSM.AssetController.getSelectedAssets()
+      const cell = GSM.GridController.getCellAtLayer(cellId, ElevationLayers.FloorObjectLayer)
       selectedAssets.forEach((asset: MovableAsset) => {
         asset.startMovement(asset.cell, cell, GSM.AssetController.assets as MovableAsset[]  )
       })
     }      
   }
 
-  private addPlayableCharacter(cell: Cell): void {
+  private addPlayableCharacter(cellId: string): void {
     const playerAsset = new MovableAsset();
-    playerAsset.cell = cell;
+    const cell = GSM.GridController.getCellAtLayer(cellId, ElevationLayers.FloorObjectLayer)
+    playerAsset.cell = cell
     playerAsset.positionX = cell.posX;
     playerAsset.positionY = cell.posY;
     playerAsset.imageUrl = 'assets/images/character_001.png';

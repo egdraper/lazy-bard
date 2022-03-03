@@ -1,3 +1,6 @@
+import { ElevationLayers } from "./map"
+import { Painter } from "./painter"
+
 export const layer: string[] = [
     "base",
     "terrain",
@@ -5,3 +8,4 @@ export const layer: string[] = [
     "structure",
     "gateway"
 ]
+

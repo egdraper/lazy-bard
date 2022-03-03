@@ -1,9 +1,9 @@
-import { GSM } from "../../game-state-manager.service"
-import { Cell, DrawableItem, NeighborLocation, SpriteTile, TerrainCell } from "../../models/map"
+import { GSM } from "../../../../game-state-manager.service"
+import { Cell, DrawableItem, ElevationLayers, NeighborLocation, SpriteTile, TerrainCell, TerrainLayerGrid } from "../../../../models/map"
 
 export class TerrainEdgeCalculator {
   public static calculateTerrainEdges(selectedCell: TerrainCell, drawableItem: DrawableItem ): void {
-    const neighboringCell = GSM.GridController.getAllNeighbors(selectedCell) as TerrainCell[]
+    const neighboringCell = GSM.GridController.getAllNeighbors(selectedCell, ElevationLayers.TerrainLayer) as TerrainCell[]
     const topNeighbor = neighboringCell[NeighborLocation.Top]
     const topRightNeighbor = neighboringCell[NeighborLocation.TopRight]
     const rightNeighbor = neighboringCell[NeighborLocation.Right]

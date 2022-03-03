@@ -1,5 +1,5 @@
-import { GSM } from '../../game-state-manager.service';
-import { NeighborLocation, TerrainCell } from '../../models/map';
+import { GSM } from '../../../../game-state-manager.service';
+import { ElevationLayers, NeighborLocation, TerrainCell } from '../../../../models/map';
 
 export class TerrainPainterEventHandler {
   constructor() {
@@ -8,11 +8,13 @@ export class TerrainPainterEventHandler {
   }
 
   // adds the paintable terrain id to the cell clicked
-  private onEmptyCellClicked(cell: TerrainCell): void {
+  private onEmptyCellClicked(cellId: string): void {
+
+    const cell = GSM.GridController.gameMap.grids[ElevationLayers.TerrainLayer].cells[cellId] as TerrainCell
     if(GSM.EventController.generalActionFire.value.name === "paintingTerrain") {
-      const topCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Top) as TerrainCell
-      const topRightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.TopRight) as TerrainCell
-      const rightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Right) as TerrainCell
+      const topCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Top, ElevationLayers.TerrainLayer) as TerrainCell
+      const topRightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.TopRight, ElevationLayers.TerrainLayer) as TerrainCell
+      const rightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Right, ElevationLayers.TerrainLayer) as TerrainCell
       
       cell.drawableTileId = "1" //GSM.editorController.selectedAction.value
       cell.obstacle = true
@@ -30,11 +32,11 @@ export class TerrainPainterEventHandler {
     }
   }
 
-  private onMouseEnteredCell(cell: TerrainCell): void {
+  private onMouseEnteredCell(cellId: string): void {
     const actionName = GSM.EventController.generalActionFire.value.name    
     if(actionName !== "paintingTerrain" && actionName !== "deleteTerrain") { return }
     if(!GSM.EventController.keysPressed.has("mouseDown")) { return }
 
-    this.onEmptyCellClicked(cell)
+    this.onEmptyCellClicked(cellId)
   }
 }

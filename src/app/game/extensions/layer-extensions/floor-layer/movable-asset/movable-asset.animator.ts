@@ -1,4 +1,4 @@
-import { GSM } from '../../game-state-manager.service';
+import { GSM } from '../../../../game-state-manager.service';
 import { MovableAsset } from './movable-asset';
 
 export class MovableAssetAnimator {

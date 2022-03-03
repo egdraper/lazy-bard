@@ -1,7 +1,7 @@
 import { Subscription } from "rxjs"
-import { GSM } from "../../game-state-manager.service"
-import { Asset } from "../../models/asset.model"
-import { Cell } from "../../models/map"
+import { GSM } from "../../../../game-state-manager.service"
+import { Asset } from "../../../../models/asset.model"
+import { Cell, ElevationLayers } from "../../../../models/map"
 import { ShortestPath } from "./shortest-path"
 
 export class MovableAsset extends Asset {
@@ -112,7 +112,7 @@ export class MovableAsset extends Asset {
     // }
 
     if (this.positionY % (32) === 0 && this.positionX % (32) === 0) {
-      this.cell = GSM.GridController.getGridCellByCoordinate(this.positionX, this.positionY)
+      this.cell = GSM.GridController.getGridCellByCoordinate(this.positionX, this.positionY, ElevationLayers.FloorObjectLayer)
       
       // sets screen position for scrolling
       // if(!GameSettings.gm) {

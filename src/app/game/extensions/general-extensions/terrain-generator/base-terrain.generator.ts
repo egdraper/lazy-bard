@@ -1,5 +1,5 @@
-import { GSM } from "../../game-state-manager.service"
-import { NeighborLocation, TerrainCell } from "../../models/map"
+import { GSM } from "../../../game-state-manager.service"
+import { ElevationLayers, NeighborLocation, TerrainCell } from "../../../models/map"
 
 export class BaseTerrainGenerator {
   public autoPopulateForegroundTerrain(terrainId: string, randomLeft?: number, randomRight?: number): void {
@@ -38,7 +38,7 @@ export class BaseTerrainGenerator {
     
 
   private createRandomizedBoarder(terrainId: string): void {
-    GSM.GridController.iterateAllCells((cell: TerrainCell) => {
+    GSM.GridController.iterateLayerCell(ElevationLayers.TerrainLayer, (cell: TerrainCell) => {
       // Outer most layer
       if (cell.x < 2 || cell.x > GSM.GridController.gameMap.size.width - 3) {
         cell.obstacle = true
@@ -56,9 +56,9 @@ export class BaseTerrainGenerator {
 
       // left side 3rd layer
       if (cell.x === 3 
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.Left).obstacle 
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.Top)
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.TopLeft).obstacle
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.Left, ElevationLayers.TerrainLayer).obstacle 
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.Top, ElevationLayers.TerrainLayer)
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.TopLeft, ElevationLayers.TerrainLayer).obstacle
       ) {
         this.setEdgeLayerRandomization(cell, NeighborLocation.Top, terrainId)
       }
@@ -70,16 +70,16 @@ export class BaseTerrainGenerator {
 
       // Top side 3rd Layer
       if (cell.y === 4 
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.Top).obstacle 
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.Right)
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.TopRight)
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.Top, ElevationLayers.TerrainLayer).obstacle 
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.Right, ElevationLayers.TerrainLayer)
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.TopRight, ElevationLayers.TerrainLayer)
       ) {
         this.setEdgeLayerRandomization(cell, NeighborLocation.Right, terrainId)
       }
     })
 
 
-    GSM.GridController.iterateAllCells((cell: TerrainCell) => {
+    GSM.GridController.iterateLayerCell(ElevationLayers.TerrainLayer, (cell: TerrainCell) => {
       // right side 2nd layers
       if (cell.x === GSM.GridController.gameMap.size.width - 3) {
         this.setEdgeLayerRandomization(cell, NeighborLocation.Bottom, terrainId)
@@ -92,20 +92,20 @@ export class BaseTerrainGenerator {
     })
     
 
-    GSM.GridController.iterateAllCells((cell: TerrainCell) => {
+    GSM.GridController.iterateLayerCell(ElevationLayers.TerrainLayer, (cell: TerrainCell) => {
       // right side 3rd layer
       if (cell.x === GSM.GridController.gameMap.size.width - 4 
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.Right).obstacle 
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.Bottom) 
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.BottomRight).obstacle
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.Right, ElevationLayers.TerrainLayer).obstacle 
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.Bottom, ElevationLayers.TerrainLayer) 
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.BottomRight, ElevationLayers.TerrainLayer).obstacle
       ) {
         this.setEdgeLayerRandomization(cell, NeighborLocation.Bottom, terrainId)
       }
       // bottom side 3rd layer
       if (cell.y === GSM.GridController.gameMap.size.height - 4 
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.Bottom).obstacle 
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.Right) 
-        && GSM.GridController.getNeighbor(cell, NeighborLocation.BottomRight).obstacle) {
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.Bottom, ElevationLayers.TerrainLayer).obstacle 
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.Right, ElevationLayers.TerrainLayer) 
+        && GSM.GridController.getNeighbor(cell, NeighborLocation.BottomRight, ElevationLayers.TerrainLayer).obstacle) {
         this.setEdgeLayerRandomization(cell, NeighborLocation.Right, terrainId)
       }
     })
@@ -114,7 +114,7 @@ export class BaseTerrainGenerator {
   private setEdgeLayerRandomization(cell: TerrainCell, neighborIndex: NeighborLocation, terrainId: string): void {
     const random = !Math.floor(Math.random() * 2)
     if (random) {
-      const neighbor = GSM.GridController.getNeighbor(cell, neighborIndex) as TerrainCell
+      const neighbor = GSM.GridController.getNeighbor(cell, neighborIndex, ElevationLayers.TerrainLayer) as TerrainCell
       if (neighbor) {
         neighbor.obstacle = true
         neighbor.drawableTileId = terrainId
@@ -139,11 +139,11 @@ export class BaseTerrainGenerator {
       const randomY = Math.floor(Math.random() * GSM.GridController.gameMap.size.height)
       const randomX = Math.floor(Math.random() * GSM.GridController.gameMap.size.height)
 
-      const startCell = GSM.GridController.getCell(randomX, randomY) as TerrainCell
+      const startCell = GSM.GridController.getCell(randomX, randomY, ElevationLayers.TerrainLayer) as TerrainCell
       startCell.obstacle = true
       startCell.drawableTileId = terrainId
 
-      const neighbors = GSM.GridController.getAllNeighbors(startCell) as TerrainCell[]
+      const neighbors = GSM.GridController.getAllNeighbors(startCell, ElevationLayers.TerrainLayer) as TerrainCell[]
       for (let i = 0; i < 8; i++) {
         if (neighbors[i]) {
           neighbors[i].obstacle = true
@@ -156,12 +156,12 @@ export class BaseTerrainGenerator {
   }
 
   private terrainCleanup(): void {
-    GSM.GridController.iterateAllCells((cell: TerrainCell) => {
+    GSM.GridController.iterateLayerCell(ElevationLayers.TerrainLayer, (cell: TerrainCell) => {
       if(cell.drawableTileId) {  
-        const rightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Right) as TerrainCell
-        const leftCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Left) as TerrainCell
-        const topCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Top) as TerrainCell
-        const bottomCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Bottom) as TerrainCell
+        const rightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Right, ElevationLayers.TerrainLayer) as TerrainCell
+        const leftCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Left, ElevationLayers.TerrainLayer) as TerrainCell
+        const topCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Top, ElevationLayers.TerrainLayer) as TerrainCell
+        const bottomCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Bottom, ElevationLayers.TerrainLayer) as TerrainCell
 
         if(rightCell && !rightCell.drawableTileId && leftCell && !leftCell.drawableTileId) {
           cell.drawableTileId = undefined
@@ -179,16 +179,16 @@ export class BaseTerrainGenerator {
   private populateCell(cell: TerrainCell, neighborIndex: number, weight: number, terrainId: string): void {
     const isPlaced = !Math.floor(Math.random() * weight)
     if (!cell) { return }
-    if (GSM.GridController.getNeighbor(cell, neighborIndex) && neighborIndex < 8 && isPlaced) {
-      const neighbor = GSM.GridController.getNeighbor(cell, neighborIndex)
-      const neighbors = GSM.GridController.getAllNeighbors(neighbor) as TerrainCell[]
+    if (GSM.GridController.getNeighbor(cell, neighborIndex, ElevationLayers.TerrainLayer) && neighborIndex < 8 && isPlaced) {
+      const neighbor = GSM.GridController.getNeighbor(cell, neighborIndex, ElevationLayers.TerrainLayer)
+      const neighbors = GSM.GridController.getAllNeighbors(neighbor, ElevationLayers.TerrainLayer) as TerrainCell[]
 
       for (let i = 0; i < 8; i++) {
         if (neighbors[i]) {
           const startCell = neighbors[i] as TerrainCell
-          const topCell = GSM.GridController.getNeighbor(startCell, NeighborLocation.Top) as TerrainCell
-          const rightCell = GSM.GridController.getNeighbor(startCell, NeighborLocation.Right) as TerrainCell
-          const topRightCell = GSM.GridController.getNeighbor(startCell, NeighborLocation.TopRight) as TerrainCell
+          const topCell = GSM.GridController.getNeighbor(startCell, NeighborLocation.Top, ElevationLayers.TerrainLayer) as TerrainCell
+          const rightCell = GSM.GridController.getNeighbor(startCell, NeighborLocation.Right, ElevationLayers.TerrainLayer) as TerrainCell
+          const topRightCell = GSM.GridController.getNeighbor(startCell, NeighborLocation.TopRight, ElevationLayers.TerrainLayer) as TerrainCell
           
           startCell.obstacle = true
           startCell.drawableTileId = terrainId

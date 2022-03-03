@@ -1,6 +1,6 @@
-import { GSM } from '../../game-state-manager.service';
-import { Cell, ElevationLayers } from '../../models/map';
-import { Painter } from '../../models/painter';
+import { GSM } from '../../../../game-state-manager.service';
+import { Cell, ElevationLayers } from '../../../../models/map';
+import { Painter } from '../../../../models/painter';
 import { MovableAsset } from './movable-asset';
 
 export class MovableAssetPainter implements Painter {
@@ -10,7 +10,7 @@ export class MovableAssetPainter implements Painter {
   public images: { [imageUrl: string]: HTMLImageElement } = {};
 
   public paint(cell: Cell): void {
-    const playableAsset = GSM.AssetController.getAssetByCell(cell) as MovableAsset;
+    const playableAsset = GSM.AssetController.getAssetByCellId(cell.id) as MovableAsset;
     if (!playableAsset) { return; }
 
     let image = this.images[playableAsset.imageUrl];

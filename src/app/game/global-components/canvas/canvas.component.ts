@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { GSM } from '../../game-state-manager.service';
+import { ElevationLayers } from '../../models/map';
 import { CanvasSpecs } from '../../models/settings';
 
 @Component({
@@ -18,6 +19,7 @@ export class CanvasComponent implements AfterViewInit {
   // this needs to be put in a public function so we can pass in grid information 
   public ngAfterViewInit(): void {
     this.setupCanvas()
+    GSM.CanvasController.setupComplete.next(true)
   }
 
   @HostListener("document:keydown", ["$event"])
@@ -101,12 +103,12 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   public onCellClick(event: MouseEvent): void {
-    const cell = GSM.GridController.getGridCellByCoordinate(event.offsetX, event.offsetY)
-    GSM.EventController.cellClick.next(cell)
+    const cell = GSM.GridController.getGridCellByCoordinate(event.offsetX, event.offsetY, ElevationLayers.BaseLayer)
+    GSM.EventController.cellClick.next(cell.id)
     
-    const occupiedCell = GSM.AssetController.getAssetByCell(cell)
+    const occupiedCell = GSM.AssetController.getAssetByCellId(cell.id)
     if(!occupiedCell) {
-      GSM.EventController.emptyCellClicked.next(cell)
+      GSM.EventController.emptyCellClicked.next(cell.id)
     }
   }
 
@@ -128,9 +130,9 @@ export class CanvasComponent implements AfterViewInit {
     const mousePosX = event.offsetX // + (-1 * GSM.Canvas.canvasViewPortOffsetX * GameSettings.scale)
     const mousePosY = event.offsetY // + (-1 * GSM.Canvas.canvasViewPortOffsetY * GameSettings.scale)
     
-    const hoveringCell = GSM.GridController.getGridCellByCoordinate(mousePosX, mousePosY)
+    const hoveringCell = GSM.GridController.getGridCellByCoordinate(mousePosX, mousePosY, ElevationLayers.BaseLayer)
     if(this.hoveringCellId !== hoveringCell.id) {
-      GSM.EventController.cellMouseEntered.next(hoveringCell)
+      GSM.EventController.cellMouseEntered.next(hoveringCell.id)
       this.hoveringCellId = hoveringCell.id
     }
     // // Game Marker (required here because mouseDetails depends on this check being called beforehand)

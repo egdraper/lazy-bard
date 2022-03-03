@@ -11,8 +11,8 @@ export class AssetController {
     GSM.EventController.cellClick.subscribe(this.onCellClicked.bind(this))
   }
 
-  public getAssetByCell(cell: Cell): Asset | undefined {
-    return this.assets.find(asset => asset.cell.id === cell.id)
+  public getAssetByCellId(cellId: string): Asset | undefined {
+    return this.assets.find(asset => asset.cell.id === cellId)
   }
 
   public getSelectedAssets(): Asset[] {
@@ -23,8 +23,8 @@ export class AssetController {
     this.assets.forEach(asset => asset.selected = false)
   }
 
-  private onCellClicked(cell: Cell): void {
-    const asset = this.getAssetByCell(cell)
+  private onCellClicked(cellId: string): void {
+    const asset = this.getAssetByCellId(cellId)
     if (asset) {
       this.assetClicked.next(asset)
     }

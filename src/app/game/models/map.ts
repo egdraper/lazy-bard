@@ -1,3 +1,5 @@
+import { Painter } from "./painter"
+
 export class GameMap {
   id: string
   grids: {[layer: string]: Grid} = {}
@@ -45,7 +47,8 @@ export class Cell {
   y: number // Y Grid Coordinates
   posX: number // X Pixel Coordinates
   posY: number // Y Pixel Coordinates 
-  obstacle?: boolean
+  obstacle?: boolean 
+  painters: Painter[]
   
   tile?: ImageTile
 }

@@ -1,5 +1,5 @@
-import { GSM } from "../../game-state-manager.service";
-import { GeneralAction } from "../../models/settings";
+import { GSM } from "../../../game-state-manager.service";
+import { GeneralAction } from "../../../models/settings";
 import { BaseTerrainGenerator } from "./base-terrain.generator";
 
 class TerrainGenerateInfo {
@@ -13,7 +13,7 @@ export class TerrainGeneratorExtension {
   }
 
   public onGenerateTerrain(generateInfo: GeneralAction<TerrainGenerateInfo>): void {
-    
+    if(generateInfo.name !== "generateTerrain") { return }
     const generator = new BaseTerrainGenerator()
     generator.autoPopulateForegroundTerrain(generateInfo.data.terrainId)
   }

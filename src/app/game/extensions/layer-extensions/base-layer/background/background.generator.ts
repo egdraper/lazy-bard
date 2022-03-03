@@ -1,6 +1,6 @@
-import { GSM } from "../../game-state-manager.service"
-import { ImageTile } from "../../models/map"
-import { TextureSprite } from "../../models/sprites"
+import { GSM } from "../../../../game-state-manager.service"
+import { ImageTile } from "../../../../models/map"
+import { TextureSprite } from "../../../../models/sprites"
 
 export class BackgroundRandomGenerator {
   public static autoFillBackgroundTerrain(tile: ImageTile, baseTexture: TextureSprite) {
