@@ -1,12 +1,10 @@
 import { GSM } from '../../../../game-state-manager.service';
 import { Cell, ElevationLayers } from '../../../../models/map';
-import { Painter } from '../../../../models/painter';
+import { ImagePainter } from '../../../../models/painter';
 import { MovableAsset } from './movable-asset';
 
-export class MovableAssetPainter implements Painter {
-  public layer = ElevationLayers.FloorObjectLayer;
+export class MovableAssetPainter extends ImagePainter {
   public paintOrder = 1
-  public ctx = GSM.CanvasController.foregroundCTX;
   public images: { [imageUrl: string]: HTMLImageElement } = {};
 
   public paint(cell: Cell): void {

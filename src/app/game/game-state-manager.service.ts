@@ -9,7 +9,6 @@ import { FrameController } from './controllers/timing.controller';
 import { Settings } from './models/settings';
 import { LayerController } from './controllers/layer.controller';
 import { Extensions } from './extensions/extensions';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -35,14 +34,13 @@ export class GSM {
     baseTexture: string = "forest",
   ): void {
     // Order Matters
-    debugger
     GSM.Settings = new Settings()
-    GSM.CanvasController = new CanvasController()    
-    
+    GSM.CanvasController = new CanvasController()
     GSM.FrameController = new FrameController()
     GSM.EventController = new EventController()
     GSM.LayerController = new LayerController()
     GSM.PaintController = new PaintController()    
+    GSM.Extensions = new Extensions() 
     GSM.GridController = new MapController()
     GSM.GridController.createGameMap({width, height})
     GSM.GridController.gameMap.baseTexture = baseTexture
@@ -52,10 +50,9 @@ export class GSM {
     
     this.loadingFinished = true
     
-    GSM.CanvasController.setupComplete.subscribe(() => {      
-      GSM.Extensions = new Extensions() 
-      
+    GSM.CanvasController.setupComplete.subscribe(() => {            
       setTimeout(()=> {
+        GSM.Extensions.init()
         GSM.GridController.setupMap()
         GSM.FrameController.start()  
       })

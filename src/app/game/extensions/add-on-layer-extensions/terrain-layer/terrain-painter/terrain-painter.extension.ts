@@ -1,13 +1,15 @@
-import { Extension } from 'src/app/game/models/extension.model';
+import { AddOnExtension, Extension } from 'src/app/game/models/extension.model';
 import { drawableItems } from '../../../../db/drawable-items.db';
 import { DrawableItem } from '../../../../models/map';
+import { LayerAddOn } from '../../../layer-extension';
 import { TerrainPainterEventHandler } from './terrain-painter.event-handler';
 import { TerrainPainterPainter } from './terrain-painter.painter';
 
-export class TerrainPainterExtension implements Extension {
+export class TerrainPainterExtension implements AddOnExtension {
+  public id = "TerrainPainterExtension"
   public painter = new TerrainPainterPainter();
 
-  constructor() {
+  public init(): void {
     new TerrainPainterEventHandler();
     this.setupImages();
   }

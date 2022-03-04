@@ -2,7 +2,7 @@ import { GSM } from '../../../../game-state-manager.service';
 import { Cell, ElevationLayers } from '../../../../models/map';
 import { MovableAsset } from './movable-asset';
 
-export class MovableAssetManager {
+export class MovableAssetEventHandler {
   public selectedPlayableAssets: MovableAsset[] = []
 
   constructor() {

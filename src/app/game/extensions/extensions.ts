@@ -1,15 +1,18 @@
-import { GSM } from '../game-state-manager.service';
-import { ElevationLayers } from '../models/map';
-import { Painter } from '../models/painter';
-import { BaseLayerExtension } from './layer-extensions/base-layer/base-layer.extension';
-import { FloorLayerExtension } from './layer-extensions/floor-layer/floor-layer.extension';
-import { TerrainLayerExtension } from './layer-extensions/terrain-layer/terrain-layer.extension';
+import { BaseLayerAddOn } from './add-on-layer-extensions/base-layer/base-layer.extension';
+import { FloorLayerAddOn } from './add-on-layer-extensions/floor-layer/floor-layer.extension';
+import { TerrainLayerAddOn } from './add-on-layer-extensions/terrain-layer/terrain-layer.addon';
 
 
 export class Extensions {
-    public baseLayerExtension = new BaseLayerExtension();
-    public floorLayer = new FloorLayerExtension()
-    public terrainLayer = new TerrainLayerExtension()
+    public baseLayerExtension = new BaseLayerAddOn();
+    public floorLayerExtension = new FloorLayerAddOn()
+    public terrainLayerExtension = new TerrainLayerAddOn()
+
+    public init() {
+      this.baseLayerExtension.init()
+      this.floorLayerExtension.init()
+      this.terrainLayerExtension.init()
+    }
   }
 
 

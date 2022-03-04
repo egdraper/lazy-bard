@@ -17,12 +17,22 @@ export class PaintController {
   private onFrameFire(frame: number): void {
     this.clearCanvases()     
 
+    this.runPainterByFrame(frame)
+
     GSM.GridController.iterateVisibleCells((cell) => {
-      this.runPainters(cell, frame)
+      this.runPaintersByCell(cell, frame)
     })
   }
 
-  private runPainters(cell: Cell, frame: number) {
+  private runPainterByFrame(frame): void {
+    GSM.LayerController.layers.forEach(layer => {
+      layer.getLargeImagePainters().forEach(painter => {
+        painter.paint(frame)
+      })
+    })
+  }
+
+  private runPaintersByCell(cell: Cell, frame: number) {
     if(!cell.painters) { return }
 
     cell.painters.forEach(painter => {

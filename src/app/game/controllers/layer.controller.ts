@@ -1,11 +1,11 @@
-import { LayerExtension } from '../extensions/layer-extension';
+import { LayerAddOn } from '../extensions/layer-extension';
 import { ElevationLayers, Grid } from '../models/map';
 
 export class LayerController {
   public selectedLayer: Grid = null;
-  public layers: LayerExtension[] = [];
+  public layers: LayerAddOn[] = [];
 
-  public registerLayer(layerExtension: LayerExtension) {
+  public registerLayer(layerExtension: LayerAddOn) {
     this.layers.push(layerExtension);
     this.layers.sort((a, b) => a.zIndex - b.zIndex);
   }

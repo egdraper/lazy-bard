@@ -1,11 +1,10 @@
 import { GSM } from "../../../../game-state-manager.service";
-import { Cell, ElevationLayers } from "../../../../models/map";
+import { Cell } from "../../../../models/map";
 import { Painter } from "../../../../models/painter";
 import { MovableAsset } from "../../floor-layer/movable-asset/movable-asset";
 
-export class SelectionIndicatorPainter implements Painter {
+export class SelectionIndicatorPainter extends Painter {
   public paintOrder = 10
-  public ctx = GSM.CanvasController.backgroundCTX
   
   private posX 
   private posY

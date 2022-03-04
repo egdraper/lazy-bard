@@ -1,16 +1,16 @@
 import { drawableItems } from "../../../../db/drawable-items.db"
 import { GSM } from "../../../../game-state-manager.service"
 import { Cell, DrawableItem, TerrainCell } from "../../../../models/map"
-import { Painter } from "../../../../models/painter"
+import { ImagePainter, Painter } from "../../../../models/painter"
 import { TerrainEdgeCalculator } from "./terrain-edge-calculator"
 
-export class TerrainPainterPainter implements Painter {
+export class TerrainPainterPainter extends ImagePainter {
   public paintOrder = 1
-  public ctx = GSM.CanvasController.foregroundCTX
   public images: { [imageUrl: string]: HTMLImageElement; } = {}  
   private drawableItem: DrawableItem = drawableItems[0]
 
   constructor() {
+    super()
     GSM.EventController.generalActionFire.subscribe(action => {
       if(action.name === "paintingTerrain") {
         this.drawableItem = action.data as DrawableItem
