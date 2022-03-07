@@ -1,7 +1,7 @@
-import { AddOnExtension, Extension } from 'src/app/game/models/extension.model';
+import { GSM } from 'src/app/game/game-state-manager.service';
+import { AddOnExtension } from 'src/app/game/models/extension.model';
 import { drawableItems } from '../../../../db/drawable-items.db';
 import { DrawableItem } from '../../../../models/map';
-import { LayerAddOn } from '../../../layer-extension';
 import { TerrainPainterEventHandler } from './terrain-painter.event-handler';
 import { TerrainPainterPainter } from './terrain-painter.painter';
 
@@ -21,9 +21,7 @@ export class TerrainPainterExtension implements AddOnExtension {
 
   private loadImagesIntoPainter(drawableItems: DrawableItem[]): void {
     drawableItems.forEach((drawableItems) => {
-      const image = new Image();
-      image.src = drawableItems.imageUrl;
-      this.painter.images[drawableItems.imageUrl] = image;
+      GSM.ImageController.addImageBySrcUrl(drawableItems.imageUrl)
     });
   }
 

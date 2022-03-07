@@ -1,16 +1,14 @@
 import { Cell, ElevationLayers, ImageTile } from "src/app/game/models/map"
-import { AddOnExtension, Extension } from "../../../../models/extension.model"
+import { AddOnExtension } from "../../../../models/extension.model"
 import { backgroundSprites } from "../../../../db/background.db"
 import { GSM } from "../../../../game-state-manager.service"
 import { TextureSprite } from "../../../../models/sprites"
-import { LargeBackgroundPainter } from "../base-layer.frame-painter"
-import { BackgroundPainter } from "./background.cell-painter"
+import { BackgroundPainter } from "./background.painter"
 import { BackgroundRandomGenerator } from "./background.generator"
 
 export class BackgroundExtension implements AddOnExtension {
   public id = "BackgroundExtension"
   public painter = new BackgroundPainter()
-  public largeImagePainter = new LargeBackgroundPainter()
   public baseTexture: TextureSprite
 
   public init() {
@@ -19,16 +17,14 @@ export class BackgroundExtension implements AddOnExtension {
 
   public async setupImages(): Promise<void> {
     const textureSprites = await this.getBackgroundImages()
-    this.loadImagesIntoPainter(textureSprites)    
+    this.loadImagesIntoImageController(textureSprites)    
     this.loadBaseTextureSpriteIntoPainter(textureSprites)
     this.setBackgroundImages()
   }
 
-  private loadImagesIntoPainter(textureSprites: TextureSprite[]): void {
+  private loadImagesIntoImageController(textureSprites: TextureSprite[]): void {
     textureSprites.forEach(textureSprite => {
-      const image = new Image()
-      image.src = textureSprite.imageUrl
-      this.painter.images[textureSprite.imageUrl] = image
+      GSM.ImageController.addImageBySrcUrl(textureSprite.imageUrl)
     })    
   }
 

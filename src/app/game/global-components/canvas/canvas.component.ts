@@ -13,6 +13,7 @@ export class CanvasComponent implements AfterViewInit {
   @ViewChild('foregroundCanvas') foregroundCanvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('fogCanvas') fogCanvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('blackoutCanvas') blackoutCanvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('fullImageCanvas') fullImageCanvas: ElementRef<HTMLCanvasElement>;
 
   private hoveringCellId = ""
 
@@ -182,6 +183,11 @@ export class CanvasComponent implements AfterViewInit {
     GSM.CanvasController.blackoutCTX = this.blackoutCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
     GSM.CanvasController.blackoutCTX.canvas.height = specs.height
     GSM.CanvasController.blackoutCTX.canvas.width = specs.width
+
+    // Large Image Canvas
+    GSM.CanvasController.fullImageCanvas = this.fullImageCanvas
+    GSM.CanvasController.fullImageCTX = this.fullImageCanvas.nativeElement.getContext('2d');
+  
  
     GSM.CanvasController.maxCellCountX = specs.width / GSM.Settings.blockSize
     GSM.CanvasController.maxCellCountY = specs.height / GSM.Settings.blockSize

@@ -9,6 +9,7 @@ import { FrameController } from './controllers/timing.controller';
 import { Settings } from './models/settings';
 import { LayerController } from './controllers/layer.controller';
 import { Extensions } from './extensions/extensions';
+import { ImagesController } from './controllers/images.controller';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +24,7 @@ export class GSM {
   public static EventController: EventController
   public static AssetController: AssetController
   public static LayerController: LayerController
+  public static ImageController: ImagesController
   public loadingFinished = false
   constructor() {
   }
@@ -39,7 +41,8 @@ export class GSM {
     GSM.FrameController = new FrameController()
     GSM.EventController = new EventController()
     GSM.LayerController = new LayerController()
-    GSM.PaintController = new PaintController()    
+    GSM.PaintController = new PaintController() 
+    GSM.ImageController = new ImagesController()   
     GSM.Extensions = new Extensions() 
     GSM.GridController = new MapController()
     GSM.GridController.createGameMap({width, height})

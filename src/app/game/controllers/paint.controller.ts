@@ -1,7 +1,7 @@
 import { Subscription } from "rxjs"
+import { LayerAddOn } from "../extensions/layer-extension"
 import { GSM } from "../game-state-manager.service"
-import { Cell, ElevationLayers } from "../models/map"
-import { Painter } from "../models/painter"
+import { Cell } from "../models/map"
 
 export class PaintController {
   private engineSubscription: Subscription
@@ -16,27 +16,23 @@ export class PaintController {
 
   private onFrameFire(frame: number): void {
     this.clearCanvases()     
+    
+    GSM.LayerController.layerAddOns.forEach(layerAddon => {
+      if(layerAddon.paintLayerAsSingleImage) {
+        layerAddon.layerPainter.paint()
+      } else {
+        this.runPaintersByCell(layerAddon, frame)
+      }
 
-    this.runPainterByFrame(frame)
-
-    GSM.GridController.iterateVisibleCells((cell) => {
-      this.runPaintersByCell(cell, frame)
+    
     })
   }
-
-  private runPainterByFrame(frame): void {
-    GSM.LayerController.layers.forEach(layer => {
-      layer.getLargeImagePainters().forEach(painter => {
-        painter.paint(frame)
+  
+  private runPaintersByCell(layerAddon: LayerAddOn, frame: number) {
+    GSM.GridController.iterateAllVisibleLayerCells(layerAddon.layerName, (cell) => {
+      cell.painters.forEach(painter => {
+        painter.paint(cell, frame)
       })
-    })
-  }
-
-  private runPaintersByCell(cell: Cell, frame: number) {
-    if(!cell.painters) { return }
-
-    cell.painters.forEach(painter => {
-      painter.paint(cell, frame)
     })
   }
   

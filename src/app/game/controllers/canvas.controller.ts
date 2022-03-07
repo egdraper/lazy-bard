@@ -19,4 +19,7 @@ export class CanvasController {
   
   public blackoutCanvas: ElementRef<HTMLCanvasElement>;
   public blackoutCTX: CanvasRenderingContext2D;
+
+  public fullImageCanvas: ElementRef<HTMLCanvasElement>;
+  public fullImageCTX: CanvasRenderingContext2D;
 }

@@ -1,6 +1,9 @@
-<div class="game">
-  <h1 style="color:white; position: absolute;">{{selected}}</h1>
+<div class="game" *ngIf="gameStateManager.loadingFinished">
+  <h1 style="color:white; position: absolute; top: 300px">{{selected}}</h1>
+  <div>
+    <gm-editor-side-nav></gm-editor-side-nav>
+  </div>
   <div class="game-view">
-    <gm-canvas *ngIf="gameStateManager.loadingFinished"></gm-canvas>
+    <gm-canvas></gm-canvas>
   </div>
 </div>

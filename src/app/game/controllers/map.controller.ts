@@ -10,26 +10,34 @@ export class MapController {
   public gameMap: GameMap;
   public loadedMaps: { [gameMapId: string]: GameMap } = {};
   public autoGenerateTerrain: boolean;
-  private gridIterator: Cell[] = [];
+  private gridIterator: {[ layer: string ]: Cell[] } = {};
 
   public iterateLayerCell(layer: string, callBack: (cell: Cell) => void): void {
-    for (let i = 0; i < this.gameMap.size.height; i++) {
-      for (let l = 0; l < this.gameMap.size.width; l++) {
-        callBack(this.gameMap.grids[layer].cells[`x${l}:y${i}`]);
-      }
-    }
+    this.gridIterator[layer].forEach((cell) => {
+      callBack(cell);
+    })
   }
 
   public iterateAllCells(callBack: (cell: Cell) => void) {
-    this.gridIterator.forEach((cell) => {
-      callBack(cell);
-    });
+    GSM.LayerController.layerAddOns.forEach(layer => {
+      this.gridIterator[layer.layerName].forEach((cell) => {
+        callBack(cell);
+      });
+    })
   }
 
-  public iterateVisibleCells(callBack: (cell: Cell) => void) {
-    this.gridIterator.forEach((cell) => {
+  public iterateAllVisibleCells(callBack: (cell: Cell) => void) {
+    GSM.LayerController.layerAddOns.forEach(layer => {
+      this.gridIterator[layer.layerName].forEach((cell) => {
+        callBack(cell);
+      });
+    })
+  }
+
+  public iterateAllVisibleLayerCells(layer: string, callBack: (cell: Cell) => void) {
+    this.gridIterator[layer].forEach((cell) => {
       callBack(cell);
-    });
+    })
   }
 
   public getGridCellByCoordinate(
@@ -50,6 +58,14 @@ export class MapController {
 
   public getCell(x: number, y: number, layer: ElevationLayers): Cell {
     return this.gameMap.grids[layer].cells[`x${x}:y${y}`];
+  }
+
+  public getLayeredCells(baseCell: Cell): Cell[] {
+    const cell = []
+    GSM.LayerController.layerAddOns.forEach(layer => {
+      cell.push(this.getCellAtLayer(baseCell.id, layer.layerName))
+    })
+    return cell
   }
 
   public getCellAtLayer(cellId: string, layer: ElevationLayers): Cell {
@@ -102,8 +118,19 @@ export class MapController {
   public setupMap(): void {
     for (let i = 0; i < this.gameMap.size.height; i++) {
       for (let l = 0; l < this.gameMap.size.width; l++) {
-        const layers = GSM.LayerController.layers
+        const layers = GSM.LayerController.layerAddOns
         layers.forEach((layer) => {
+          // Creates grid at layer if doesn't exist
+          if(!this.gameMap.grids[layer.layerName]) {
+            this.gameMap.grids[layer.layerName] = new Grid()
+          }
+          
+          // creates iterator at layer if doesn't exist
+          if(!this.gridIterator[layer.layerName]) {
+            this.gridIterator[layer.layerName] = []
+          }
+          
+          // creates cell
           const cell = {
             x: l,
             y: i,
@@ -112,12 +139,10 @@ export class MapController {
             id: `x${l}:y${i}`,
             painters: layer.getPainters(),
           };
-          if(!this.gameMap.grids[layer.layer]) {
-            this.gameMap.grids[layer.layer] = new Grid()
-          }
 
-          this.gameMap.grids[layer.layer].cells[`x${l}:y${i}`] = cell;
-          this.gridIterator.push(cell);
+          // adds cell to grid at layer
+          this.gameMap.grids[layer.layerName].cells[`x${l}:y${i}`] = cell;
+          this.gridIterator[layer.layerName].push(cell);
         });
       }
     }

@@ -3,19 +3,19 @@ import { ElevationLayers, Grid } from '../models/map';
 
 export class LayerController {
   public selectedLayer: Grid = null;
-  public layers: LayerAddOn[] = [];
+  public layerAddOns: LayerAddOn[] = [];
 
   public registerLayer(layerExtension: LayerAddOn) {
-    this.layers.push(layerExtension);
-    this.layers.sort((a, b) => a.zIndex - b.zIndex);
+    this.layerAddOns.push(layerExtension);
+    this.layerAddOns.sort((a, b) => a.zIndex - b.zIndex);
   }
 
   public removeLayer(layerName: ElevationLayers) {
-    delete this.layers[layerName];
+    delete this.layerAddOns[layerName];
   }
 
   public switchLayer(layer: ElevationLayers): void {
-    this.selectedLayer = this.layers[layer];
+    this.selectedLayer = this.layerAddOns[layer];
   }
 
   public createStaticImageOfLayer(): void {}

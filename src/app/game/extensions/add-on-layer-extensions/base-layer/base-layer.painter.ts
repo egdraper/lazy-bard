@@ -1,13 +1,8 @@
 import { GSM } from "../../../game-state-manager.service"
-import { Cell, ImageTile } from "../../../models/map"
-import { FramePainter, Painter } from "../../../models/painter"
-import { TextureSprite } from "../../../models/sprites"
-import { BackgroundRandomGenerator } from "./background/background.generator"
 
-export class LargeBackgroundPainter implements FramePainter {
-  public paintOrder = 1
+export class LayerPainter {
   public ctx = GSM.CanvasController.backgroundCTX
-  public image: CanvasImageSource
+  public image: HTMLImageElement
 
   public paint(): void {
     this.ctx.imageSmoothingEnabled = false

@@ -8,7 +8,6 @@ export interface Extension {
 
 export interface AddOnExtension extends Extension {
   painter: Painter
-  largeImagePainters?: Painter
 }
 
 export enum CanvasCTX {

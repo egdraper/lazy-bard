@@ -1,10 +1,10 @@
 import { GSM } from "../../../../game-state-manager.service";
 import { Cell } from "../../../../models/map";
 import { Painter } from "../../../../models/painter";
-import { MovableAsset } from "../../floor-layer/movable-asset/movable-asset";
+import { MovableAsset } from "../movable-asset/movable-asset";
 
 export class SelectionIndicatorPainter extends Painter {
-  public paintOrder = 10
+  public paintOrder = 1
   
   private posX 
   private posY
@@ -12,17 +12,16 @@ export class SelectionIndicatorPainter extends Painter {
   private height
 
   public paint(cell: Cell, frame: number): void {
-    const selectedAssets = GSM.AssetController.getSelectedAssets()
+    const asset = GSM.AssetController.getSelectedAssets().find(asset => asset.cell.id === cell.id) as MovableAsset 
+    if(!asset) { return } 
     
-    selectedAssets.forEach((asset: MovableAsset) => {
-      this.animateMarker(asset, frame)
-      this.ctx.beginPath()
-      this.ctx.moveTo(asset.positionX, asset.positionY)
-      this.ctx.rect(this.posX, this.posY, this.width, this.height)    
-      this.ctx.lineWidth = 5;
-      this.ctx.strokeStyle = "rgba(255, 0 , 0, .1)"
-      this.ctx.stroke()
-    })
+    this.animateMarker(asset, frame)
+    this.ctx.beginPath()
+    this.ctx.moveTo(asset.positionX, asset.positionY)
+    this.ctx.rect(this.posX, this.posY, this.width, this.height)    
+    this.ctx.lineWidth = 5;
+    this.ctx.strokeStyle = "rgba(255, 0 , 0, .5)"
+    this.ctx.stroke()
   }
 
   private animateMarker(asset: MovableAsset, frame: number): void {

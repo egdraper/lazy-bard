@@ -6,7 +6,8 @@ import { TerrainPainterExtension } from "./terrain-painter/terrain-painter.exten
 
 export class TerrainLayerAddOn extends LayerAddOn {
   public id = "TerrainLayerAddOn"
-  public layer = ElevationLayers.TerrainLayer
+  public visibleName = "Terrain Layer"
+  public layerName = ElevationLayers.TerrainLayer
   public zIndex: number = 3
   public largeImage: HTMLImageElement = null
   public ctx = CanvasCTX.Foreground

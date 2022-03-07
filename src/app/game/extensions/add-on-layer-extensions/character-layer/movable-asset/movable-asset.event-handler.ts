@@ -30,20 +30,22 @@ export class MovableAssetEventHandler {
 
     if(GSM.EventController.generalActionFire.value.name === "characterSelected") {
       const selectedAssets = GSM.AssetController.getSelectedAssets()
-      const cell = GSM.GridController.getCellAtLayer(cellId, ElevationLayers.FloorObjectLayer)
+      const cell = GSM.GridController.getCellAtLayer(cellId, ElevationLayers.CharacterLayer)
       selectedAssets.forEach((asset: MovableAsset) => {
         asset.startMovement(asset.cell, cell, GSM.AssetController.assets as MovableAsset[]  )
       })
     }      
   }
 
+  // MOCK This will be a database thing
   private addPlayableCharacter(cellId: string): void {
     const playerAsset = new MovableAsset();
-    const cell = GSM.GridController.getCellAtLayer(cellId, ElevationLayers.FloorObjectLayer)
+    const cell = GSM.GridController.getCellAtLayer(cellId, ElevationLayers.CharacterLayer)
     playerAsset.cell = cell
     playerAsset.positionX = cell.posX;
     playerAsset.positionY = cell.posY;
     playerAsset.imageUrl = 'assets/images/character_001.png';
     GSM.AssetController.assets.push(playerAsset);
+    GSM.ImageController.addImageBySrcUrl(playerAsset.imageUrl)
   }
 }

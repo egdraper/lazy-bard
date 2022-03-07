@@ -1,12 +1,11 @@
 import { drawableItems } from "../../../../db/drawable-items.db"
 import { GSM } from "../../../../game-state-manager.service"
-import { Cell, DrawableItem, TerrainCell } from "../../../../models/map"
-import { ImagePainter, Painter } from "../../../../models/painter"
+import { DrawableItem, TerrainCell } from "../../../../models/map"
+import { Painter } from "../../../../models/painter"
 import { TerrainEdgeCalculator } from "./terrain-edge-calculator"
 
-export class TerrainPainterPainter extends ImagePainter {
+export class TerrainPainterPainter extends Painter {
   public paintOrder = 1
-  public images: { [imageUrl: string]: HTMLImageElement; } = {}  
   private drawableItem: DrawableItem = drawableItems[0]
 
   constructor() {
@@ -24,7 +23,7 @@ export class TerrainPainterPainter extends ImagePainter {
 
     this.ctx.imageSmoothingEnabled = false
     this.ctx.drawImage(
-      this.images[cell.imageTile.imageUrl],
+      GSM.ImageController.getImage(cell.imageTile.imageUrl),
       cell.imageTile.spriteGridPosX * GSM.Settings.blockSize,
       cell.imageTile.spriteGridPosY * GSM.Settings.blockSize,
       cell.imageTile.tileWidth * GSM.Settings.blockSize,

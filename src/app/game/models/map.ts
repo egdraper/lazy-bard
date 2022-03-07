@@ -22,6 +22,7 @@ export enum NeighborLocation {
 
 export enum ElevationLayers {
   BaseLayer = "baseLayer",
+  CharacterLayer = "characterLayer",
   TerrainLayer = "terrainLayer",
   StructureLayer = "structureLayer",
   PartitionLayer = "partitionLayer",

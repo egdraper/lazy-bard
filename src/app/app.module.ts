@@ -7,6 +7,7 @@ import { CanvasComponent } from './game/global-components/canvas/canvas.componen
 import { LoginComponent } from './login/login.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { GameComponent } from './game/game.component';
+import { EditorSideNavComponent } from './game/global-components/editor-side-nav/editor-side-nav.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { GameComponent } from './game/game.component';
     CanvasComponent,
     LoginComponent,
     UserPageComponent,
-    GameComponent
+    GameComponent,
+    EditorSideNavComponent
   ],
   imports: [
     BrowserModule,
