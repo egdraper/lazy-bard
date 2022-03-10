@@ -3,7 +3,7 @@ import { Cell, DrawableItem, ElevationLayers, NeighborLocation, SpriteTile, Terr
 
 export class TerrainEdgeCalculator {
   public static calculateTerrainEdges(selectedCell: TerrainCell, drawableItem: DrawableItem ): void {
-    const neighboringCell = GSM.GridController.getAllNeighbors(selectedCell, ElevationLayers.TerrainLayer) as TerrainCell[]
+    const neighboringCell = GSM.GridController.getAllNeighbors(selectedCell, 0) as TerrainCell[]
     const topNeighbor = neighboringCell[NeighborLocation.Top]
     const topRightNeighbor = neighboringCell[NeighborLocation.TopRight]
     const rightNeighbor = neighboringCell[NeighborLocation.Right]

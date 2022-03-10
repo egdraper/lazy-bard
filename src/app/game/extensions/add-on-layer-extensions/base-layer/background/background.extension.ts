@@ -1,4 +1,4 @@
-import { Cell, ElevationLayers, ImageTile } from "src/app/game/models/map"
+import { Cell, ImageTile } from "src/app/game/models/map"
 import { AddOnExtension } from "../../../../models/extension.model"
 import { backgroundSprites } from "../../../../db/background.db"
 import { GSM } from "../../../../game-state-manager.service"
@@ -43,11 +43,11 @@ export class BackgroundExtension implements AddOnExtension {
   }
 
   private setBackgroundImages(): void {
-    GSM.GridController.iterateLayerCell(ElevationLayers.BaseLayer, (cell: Cell) => {
-      if (!cell.tile) { 
-        cell.tile = new ImageTile()  
-        cell.tile.imageUrl = this.baseTexture?.imageUrl || ""
-        BackgroundRandomGenerator.autoFillBackgroundTerrain(cell.tile, this.baseTexture)
+    GSM.GridController.iterateLayerCell((cell: Cell) => {
+      if (!cell.backgroundTile) { 
+        cell.backgroundTile = new ImageTile()  
+        cell.backgroundTile.imageUrl = this.baseTexture?.imageUrl || ""
+        BackgroundRandomGenerator.autoFillBackgroundTerrain(cell.backgroundTile, this.baseTexture)
       }
     })
   }

@@ -104,7 +104,7 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   public onCellClick(event: MouseEvent): void {
-    const cell = GSM.GridController.getGridCellByCoordinate(event.offsetX, event.offsetY, ElevationLayers.BaseLayer)
+    const cell = GSM.GridController.getGridCellByCoordinate(event.offsetX, event.offsetY, 0)
     GSM.EventController.cellClick.next(cell.id)
     
     const occupiedCell = GSM.AssetController.getAssetByCellId(cell.id)
@@ -131,7 +131,7 @@ export class CanvasComponent implements AfterViewInit {
     const mousePosX = event.offsetX // + (-1 * GSM.Canvas.canvasViewPortOffsetX * GameSettings.scale)
     const mousePosY = event.offsetY // + (-1 * GSM.Canvas.canvasViewPortOffsetY * GameSettings.scale)
     
-    const hoveringCell = GSM.GridController.getGridCellByCoordinate(mousePosX, mousePosY, ElevationLayers.BaseLayer)
+    const hoveringCell = GSM.GridController.getGridCellByCoordinate(mousePosX, mousePosY, 0)
     if(this.hoveringCellId !== hoveringCell.id) {
       GSM.EventController.cellMouseEntered.next(hoveringCell.id)
       this.hoveringCellId = hoveringCell.id

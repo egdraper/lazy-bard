@@ -15,21 +15,21 @@ export class PaintController {
   }
 
   private onFrameFire(frame: number): void {
-    this.clearCanvases()     
+    if(!(GSM.LayerController.layerAddOns && GSM.LayerController.layerAddOns.length !== 0)) { return }
+    this.clearCanvases()    
+    this.addOrderedPainters()
     
     GSM.LayerController.layerAddOns.forEach(layerAddon => {
       if(layerAddon.paintLayerAsSingleImage) {
         layerAddon.layerPainter.paint()
       } else {
         this.runPaintersByCell(layerAddon, frame)
-      }
-
-    
+      }    
     })
   }
   
   private runPaintersByCell(layerAddon: LayerAddOn, frame: number) {
-    GSM.GridController.iterateAllVisibleLayerCells(layerAddon.layerName, (cell) => {
+    GSM.GridController.iterateAllVisibleLayerCells((cell) => {
       cell.painters.forEach(painter => {
         painter.paint(cell, frame)
       })
@@ -42,5 +42,20 @@ export class PaintController {
     canvas.backgroundCTX.imageSmoothingEnabled = false
     canvas.foregroundCTX.clearRect(0,0, GSM.GridController.gameMap.size.width * GSM.Settings.blockSize, GSM.GridController.gameMap.size.height * GSM.Settings.blockSize)
     canvas.foregroundCTX.imageSmoothingEnabled = false   
+  }
+
+  
+
+  public addOrderedPainters(): void {
+    if(GSM.GridController.getCell(0,0,0).painters.length === 0) {
+      GSM.GridController.iterateAllVisibleLayerCells(cell => {
+        GSM.LayerController.layerAddOns.forEach(LayerAddOn => {
+          if(LayerAddOn.id === "BaseLayerAddOn") { return }
+          LayerAddOn.getPainters().forEach(painter => {
+            cell.painters.push(painter)
+          })
+        })
+      })
+    }
   }
 }

@@ -15,7 +15,7 @@ export class GameComponent implements AfterViewInit{
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame("firstGame", 60, 60, "forest")
+      this.gameStateManager.newGame("firstGame", 30, 30, "forest")
       GSM.EventController.generalActionFire.subscribe(action => {
         this.selected = action.name 
       })

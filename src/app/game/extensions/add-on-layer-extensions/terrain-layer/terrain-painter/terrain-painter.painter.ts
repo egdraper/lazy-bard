@@ -19,7 +19,9 @@ export class TerrainPainterPainter extends Painter {
 
   public paint(cell: TerrainCell): void {
     if(!cell.drawableTileId) { return }
-    TerrainEdgeCalculator.calculateTerrainEdges(cell, this.drawableItem)
+    if(GSM.EventController.generalActionFire.value.name === "paintingTerrain") {
+      TerrainEdgeCalculator.calculateTerrainEdges(cell, this.drawableItem)
+    }
 
     this.ctx.imageSmoothingEnabled = false
     this.ctx.drawImage(

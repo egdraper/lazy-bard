@@ -30,7 +30,7 @@ export class MovableAssetEventHandler {
 
     if(GSM.EventController.generalActionFire.value.name === "characterSelected") {
       const selectedAssets = GSM.AssetController.getSelectedAssets()
-      const cell = GSM.GridController.getCellAtLayer(cellId, ElevationLayers.CharacterLayer)
+      const cell = GSM.GridController.getCellAtLayer(cellId, 0)
       selectedAssets.forEach((asset: MovableAsset) => {
         asset.startMovement(asset.cell, cell, GSM.AssetController.assets as MovableAsset[]  )
       })
@@ -40,7 +40,7 @@ export class MovableAssetEventHandler {
   // MOCK This will be a database thing
   private addPlayableCharacter(cellId: string): void {
     const playerAsset = new MovableAsset();
-    const cell = GSM.GridController.getCellAtLayer(cellId, ElevationLayers.CharacterLayer)
+    const cell = GSM.GridController.getCellAtLayer(cellId, 0)
     playerAsset.cell = cell
     playerAsset.positionX = cell.posX;
     playerAsset.positionY = cell.posY;

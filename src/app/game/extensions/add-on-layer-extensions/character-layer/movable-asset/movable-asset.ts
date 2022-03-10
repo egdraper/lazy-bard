@@ -112,7 +112,7 @@ export class MovableAsset extends Asset {
     // }
 
     if (this.positionY % (32) === 0 && this.positionX % (32) === 0) {
-      this.cell = GSM.GridController.getGridCellByCoordinate(this.positionX, this.positionY, ElevationLayers.CharacterLayer)
+      this.cell = GSM.GridController.getGridCellByCoordinate(this.positionX, this.positionY, 0)
       
       // sets screen position for scrolling
       // if(!GameSettings.gm) {

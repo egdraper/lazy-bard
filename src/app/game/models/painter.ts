@@ -1,4 +1,4 @@
-import { Cell } from "./map"
+import { Cell, TerrainCell } from "./map"
 
 export abstract class PaintBase {
   public abstract paintOrder: number
@@ -6,6 +6,7 @@ export abstract class PaintBase {
 }
 
 export abstract class Painter extends PaintBase {  
+  public drawGrid: {[id: string]: TerrainCell}
   public abstract paint(cell: Cell, frame?: number): void
 }
 

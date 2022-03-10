@@ -1,8 +1,9 @@
 import { Painter } from "./painter"
 
+
 export class GameMap {
   id: string
-  grids: {[layer: string]: Grid} = {}
+  elevations: {[elevation: number]: Grid} = {}
   name: string
   baseTexture: string
   
@@ -49,9 +50,8 @@ export class Cell {
   posX: number // X Pixel Coordinates
   posY: number // Y Pixel Coordinates 
   obstacle?: boolean 
-  painters: Painter[]
-  
-  tile?: ImageTile
+  backgroundTile?: ImageTile
+  painters?: Painter[]  
 }
 
 export class TerrainCell extends Cell {

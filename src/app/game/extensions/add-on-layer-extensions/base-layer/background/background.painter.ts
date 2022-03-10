@@ -7,9 +7,9 @@ export class BackgroundPainter extends Painter {
 
   public paint(cell: Cell): void {
     this.ctx.drawImage(
-      GSM.ImageController.getImage(cell.tile.imageUrl),
-      cell.tile.tilePosX,
-      cell.tile.tilePosY,
+      GSM.ImageController.getImage(cell.backgroundTile.imageUrl),
+      cell.backgroundTile.tilePosX,
+      cell.backgroundTile.tilePosY,
       32,
       32,
       cell.posX,

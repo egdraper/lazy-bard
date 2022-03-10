@@ -10,11 +10,11 @@ export class TerrainPainterEventHandler {
   // adds the paintable terrain id to the cell clicked
   private onEmptyCellClicked(cellId: string): void {
 
-    const cell = GSM.GridController.gameMap.grids[ElevationLayers.TerrainLayer].cells[cellId] as TerrainCell
+    const cell = GSM.GridController.gameMap.elevations[0].cells[cellId] as TerrainCell
     if(GSM.EventController.generalActionFire.value.name === "paintingTerrain") {
-      const topCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Top, ElevationLayers.TerrainLayer) as TerrainCell
-      const topRightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.TopRight, ElevationLayers.TerrainLayer) as TerrainCell
-      const rightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Right, ElevationLayers.TerrainLayer) as TerrainCell
+      const topCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Top, 0) as TerrainCell
+      const topRightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.TopRight, 0) as TerrainCell
+      const rightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Right, 0) as TerrainCell
       
       cell.drawableTileId = "1" //GSM.editorController.selectedAction.value
       cell.obstacle = true
