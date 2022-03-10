@@ -10,7 +10,7 @@ export class TerrainPainterExtension implements AddOnExtension {
   public painter = new TerrainPainterPainter();
 
   public init(): void {
-    new TerrainPainterEventHandler();
+    new TerrainPainterEventHandler(this.painter);
     this.setupImages();
   }
 

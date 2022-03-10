@@ -1,9 +1,9 @@
-import { GSM } from "../../game-state-manager.service";
-import { ElevationLayers } from "../../models/map";
-import { Painter } from "../../models/painter";
+import { GSM } from "../game-state-manager.service";
+import { ElevationLayers } from "../models/map";
+import { Painter } from "../models/painter";
 
-export class LayerImageGenerator {
-  public static generateLayerImage(painters: Painter[], layer: ElevationLayers): HTMLImageElement {
+export class ImageGenerator {
+  public static generateLayerImage(painters: Painter[]): HTMLImageElement {
     GSM.CanvasController.fullImageCTX.canvas.width = GSM.GridController.gameMap.size.width * GSM.Settings.blockSize
     GSM.CanvasController.fullImageCTX.canvas.height = GSM.GridController.gameMap.size.height * GSM.Settings.blockSize
        

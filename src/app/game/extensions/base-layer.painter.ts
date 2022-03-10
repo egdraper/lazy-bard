@@ -1,4 +1,4 @@
-import { GSM } from "../../../game-state-manager.service"
+import { GSM } from "../game-state-manager.service"
 
 export class LayerPainter {
   public ctx = GSM.CanvasController.backgroundCTX

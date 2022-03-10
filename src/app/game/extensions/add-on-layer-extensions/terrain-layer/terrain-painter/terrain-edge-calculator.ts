@@ -1,9 +1,9 @@
 import { GSM } from "../../../../game-state-manager.service"
-import { Cell, DrawableItem, ElevationLayers, NeighborLocation, SpriteTile, TerrainCell, TerrainLayerGrid } from "../../../../models/map"
+import { Cell, DrawableItem, ElevationLayers, NeighborLocation, SpriteTile, MapAssetImageCell } from "../../../../models/map"
 
 export class TerrainEdgeCalculator {
-  public static calculateTerrainEdges(selectedCell: TerrainCell, drawableItem: DrawableItem ): void {
-    const neighboringCell = GSM.GridController.getAllNeighbors(selectedCell, 0) as TerrainCell[]
+  public static calculateTerrainEdges(cell: Cell, terrainCell: MapAssetImageCell, drawGrid: {[id: string]: MapAssetImageCell}, drawableItem: DrawableItem ): void {
+    const neighboringCell = GSM.GridController.getAllNeighbors(cell, 0)
     const topNeighbor = neighboringCell[NeighborLocation.Top]
     const topRightNeighbor = neighboringCell[NeighborLocation.TopRight]
     const rightNeighbor = neighboringCell[NeighborLocation.Right]
@@ -14,14 +14,14 @@ export class TerrainEdgeCalculator {
     const topLeftNeighbor = neighboringCell[NeighborLocation.TopLeft]
         
     const neighborsTerrain = {
-      topLeftMatch: topLeftNeighbor?.drawableTileId === selectedCell.drawableTileId,
-      topCenterMatch: topNeighbor?.drawableTileId === selectedCell.drawableTileId,
-      topRightMatch: topRightNeighbor?.drawableTileId === selectedCell.drawableTileId,
-      centerLeftMatch: leftNeighbor?.drawableTileId === selectedCell.drawableTileId,
-      centerRightMatch: rightNeighbor?.drawableTileId === selectedCell.drawableTileId,
-      bottomLeftMatch: bottomLeftNeighbor?.drawableTileId === selectedCell.drawableTileId,
-      bottomCenterMatch: bottomNeighbor?.drawableTileId === selectedCell.drawableTileId,
-      bottomRightMatch: bottomRightNeighbor?.drawableTileId === selectedCell.drawableTileId
+      topLeftMatch: drawGrid[topLeftNeighbor?.id]?.drawableTileId === terrainCell.drawableTileId,
+      topCenterMatch: drawGrid[topNeighbor?.id]?.drawableTileId === terrainCell.drawableTileId,
+      topRightMatch: drawGrid[topRightNeighbor?.id]?.drawableTileId === terrainCell.drawableTileId,
+      centerLeftMatch: drawGrid[leftNeighbor?.id]?.drawableTileId === terrainCell.drawableTileId,
+      centerRightMatch: drawGrid[rightNeighbor?.id]?.drawableTileId === terrainCell.drawableTileId,
+      bottomLeftMatch: drawGrid[bottomLeftNeighbor?.id]?.drawableTileId === terrainCell.drawableTileId,
+      bottomCenterMatch: drawGrid[bottomNeighbor?.id]?.drawableTileId === terrainCell.drawableTileId,
+      bottomRightMatch: drawGrid[bottomRightNeighbor?.id]?.drawableTileId === terrainCell.drawableTileId
     }
         
     let tile = drawableItem.drawingRules.find((spriteTile: SpriteTile) => {
@@ -49,6 +49,6 @@ export class TerrainEdgeCalculator {
       tile = drawableItem.drawingRules.find((tile: SpriteTile) => tile.default)
     }
     tile.imageUrl = drawableItem.imageUrl
-    selectedCell.imageTile = tile
+    terrainCell.imageTile = tile
   }
 }

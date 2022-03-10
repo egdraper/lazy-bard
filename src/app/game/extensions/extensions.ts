@@ -1,5 +1,5 @@
 import { BaseLayerAddOn } from './add-on-layer-extensions/base-layer/base-layer.extension';
-import { CharacterLayerAddon } from './add-on-layer-extensions/character-layer/floor-layer.extension';
+import { CharacterLayerAddon } from './add-on-layer-extensions/character-layer/character-layer.extension';
 import { TerrainLayerAddOn } from './add-on-layer-extensions/terrain-layer/terrain-layer.addon';
 
 

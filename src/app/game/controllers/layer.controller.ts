@@ -5,6 +5,7 @@ export class LayerController {
   public selectedLayer: Grid = null;
   public layerAddOns: LayerAddOn[] = [];
 
+
   public registerLayer(layerExtension: LayerAddOn) {
     this.layerAddOns.push(layerExtension);
     this.layerAddOns.sort((a, b) => a.zIndex - b.zIndex);

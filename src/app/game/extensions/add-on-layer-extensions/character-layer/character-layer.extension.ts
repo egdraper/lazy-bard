@@ -12,6 +12,8 @@ export class CharacterLayerAddon extends LayerAddOn {
   public zIndex: number = 10
   public largeImage: HTMLImageElement = null
   public ctx = CanvasCTX.Foreground
+ 
+  public override excludeFromSingleImagePainting: boolean = true
 
   public extensions: Extension[] = [
     new MovableAssetExtension(),

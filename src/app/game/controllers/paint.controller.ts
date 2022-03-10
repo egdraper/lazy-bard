@@ -1,52 +1,94 @@
 import { Subscription } from "rxjs"
+import { LayerPainter } from "../extensions/base-layer.painter";
+import { ImageGenerator } from "../extensions/image.generator";
 import { LayerAddOn } from "../extensions/layer-extension"
 import { GSM } from "../game-state-manager.service"
-import { Cell } from "../models/map"
+import { CanvasCTX } from "../models/extension.model";
+import { Painter } from "../models/painter";
 
 export class PaintController {
-  private engineSubscription: Subscription
+  public layerPainter: LayerPainter;
+  public allIncludedPainters: Painter[] = [];
+  public allExcludedPainters: Painter[] = []
+  public paintLayerAsSingleImage = false;
 
+  private subscriptions: Subscription[] = []
+  
   constructor() { 
-    this.engineSubscription = GSM.FrameController.frameFire.subscribe(this.onFrameFire.bind(this))
+    this.subscriptions.push(GSM.FrameController.frameFire.subscribe(this.onFrameFire.bind(this)))
+    this.subscriptions.push(GSM.EventController.generalActionFire.subscribe(this.onGenerateBackground.bind(this)))
+  }
+
+  public init() {
+    GSM.LayerController.layerAddOns.filter((addon) =>
+      addon.getPainters().forEach((painter) => {
+        this.setupPainters(addon)
+        if(!addon.excludeFromSingleImagePainting) { 
+          this.allIncludedPainters.push(painter)
+        }
+      })
+    );
   }
   
   public stop(): void {
-    this.engineSubscription.unsubscribe()
+    this.subscriptions.forEach(subscription => subscription.unsubscribe())
   }
+    
+  public generateLayerImage(): HTMLImageElement {
+    const image = ImageGenerator.generateLayerImage(this.allIncludedPainters);
+    return image;
+  }
+
 
   private onFrameFire(frame: number): void {
     if(!(GSM.LayerController.layerAddOns && GSM.LayerController.layerAddOns.length !== 0)) { return }
     this.clearCanvases()    
-    this.addOrderedPainters()
+    this.addOrderedPaintersToCells()
     
+    if(this.paintLayerAsSingleImage) {
+      this.renderAddonAsSingleImage(frame)
+    } else {
+      this.renderAllLayersAndCellsIndependently(frame)
+    }
+  }
+
+  private renderAddonAsSingleImage(frame: number): void {
+    // renders the background and any included Addons as a single image
+    this.layerPainter.paint()
+
+    // renders any excluded addons from being painted as part of the single image
     GSM.LayerController.layerAddOns.forEach(layerAddon => {
-      if(layerAddon.paintLayerAsSingleImage) {
-        layerAddon.layerPainter.paint()
-      } else {
-        this.runPaintersByCell(layerAddon, frame)
-      }    
+      if(layerAddon.excludeFromSingleImagePainting) {
+        this.runPainterForException(layerAddon, frame)
+      }
     })
   }
-  
-  private runPaintersByCell(layerAddon: LayerAddOn, frame: number) {
+
+  private renderAllLayersAndCellsIndependently(frame: number): void {
     GSM.GridController.iterateAllVisibleLayerCells((cell) => {
       cell.painters.forEach(painter => {
         painter.paint(cell, frame)
       })
     })
   }
-  
+
+  private runPainterForException(layerAddon: LayerAddOn, frame: number): void {
+    GSM.GridController.iterateAllVisibleLayerCells(cell => {
+      layerAddon.getPainters().forEach(painter => {
+        painter.paint(cell, frame)
+      })
+    })
+  }
+    
   private clearCanvases(): void {
     const canvas = GSM.CanvasController
     canvas.backgroundCTX.clearRect(0,0, GSM.GridController.gameMap.size.width * GSM.Settings.blockSize, GSM.GridController.gameMap.size.height * GSM.Settings.blockSize)
     canvas.backgroundCTX.imageSmoothingEnabled = false
     canvas.foregroundCTX.clearRect(0,0, GSM.GridController.gameMap.size.width * GSM.Settings.blockSize, GSM.GridController.gameMap.size.height * GSM.Settings.blockSize)
     canvas.foregroundCTX.imageSmoothingEnabled = false   
-  }
+  }  
 
-  
-
-  public addOrderedPainters(): void {
+  public addOrderedPaintersToCells(): void {
     if(GSM.GridController.getCell(0,0,0).painters.length === 0) {
       GSM.GridController.iterateAllVisibleLayerCells(cell => {
         GSM.LayerController.layerAddOns.forEach(LayerAddOn => {
@@ -57,5 +99,37 @@ export class PaintController {
         })
       })
     }
+  }
+
+  private onGenerateBackground(action): void {
+    if (action.name === 'generateBackground') {
+      const image = this.generateLayerImage();
+      this.paintLayerAsSingleImage = true;
+      this.layerPainter.image = image;
+    }
+  }
+
+
+  private setupPainters(addon: LayerAddOn): void {
+    this.layerPainter = new LayerPainter()  
+       
+    addon.getPainters().forEach(painter=> {
+      if(addon.ctx === CanvasCTX.Background) {
+        painter.ctx = GSM.CanvasController.backgroundCTX
+        this.layerPainter.ctx = painter.ctx
+      }
+      if(addon.ctx === CanvasCTX.Foreground) {
+        painter.ctx = GSM.CanvasController.foregroundCTX
+        this.layerPainter.ctx = painter.ctx
+      }
+      if(addon.ctx === CanvasCTX.Fog) {
+        painter.ctx = GSM.CanvasController.fogCTX
+        this.layerPainter.ctx = painter.ctx
+      }
+      if(addon.ctx === CanvasCTX.BlackoutFog) {
+        painter.ctx = GSM.CanvasController.blackoutCTX
+        this.layerPainter.ctx = painter.ctx
+      }
+    })
   }
 }

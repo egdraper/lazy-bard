@@ -4,7 +4,7 @@ import {
   ElevationLayers,
   GameMap, Grid, NeighborLocation,
   Size,
-  TerrainCell
+  MapAssetImageCell
 } from '../models/map';
 
 export class MapController {
@@ -131,7 +131,7 @@ export class MapController {
 
           // adds cell to grid at layer
           this.gameMap.elevations[0].cells[`x${l}:y${i}`] = cell;
-          this.gridIterator.push(cell);
+          this.gridIterator.push(cell)
   
       }
     }

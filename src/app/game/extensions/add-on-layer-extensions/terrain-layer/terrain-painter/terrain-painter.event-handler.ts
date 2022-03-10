@@ -1,8 +1,9 @@
+import { Painter } from 'src/app/game/models/painter';
 import { GSM } from '../../../../game-state-manager.service';
-import { ElevationLayers, NeighborLocation, TerrainCell } from '../../../../models/map';
+import { ElevationLayers, NeighborLocation, MapAssetImageCell } from '../../../../models/map';
 
 export class TerrainPainterEventHandler {
-  constructor() {
+  constructor(private painter: Painter) {
     GSM.EventController.emptyCellClicked.subscribe(this.onEmptyCellClicked.bind(this));
     GSM.EventController.cellMouseEntered.subscribe(this.onMouseEnteredCell.bind(this));
   }
@@ -10,25 +11,31 @@ export class TerrainPainterEventHandler {
   // adds the paintable terrain id to the cell clicked
   private onEmptyCellClicked(cellId: string): void {
 
-    const cell = GSM.GridController.gameMap.elevations[0].cells[cellId] as TerrainCell
+    const cell = GSM.GridController.gameMap.elevations[0].cells[cellId]
     if(GSM.EventController.generalActionFire.value.name === "paintingTerrain") {
-      const topCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Top, 0) as TerrainCell
-      const topRightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.TopRight, 0) as TerrainCell
-      const rightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Right, 0) as TerrainCell
+      const topCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Top, 0)
+      const topRightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.TopRight, 0)
+      const rightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Right, 0)
       
-      cell.drawableTileId = "1" //GSM.editorController.selectedAction.value
+      const drawCell = this.painter.mapAssets[cellId] = new MapAssetImageCell
+      drawCell.drawableTileId = "1"
       cell.obstacle = true
-      topCell.drawableTileId = "1" //GSM.editorController.selectedAction.value
+
+      const drawTopCell = this.painter.mapAssets[topCell.id] = new MapAssetImageCell
+      drawTopCell.drawableTileId = "1"
       topCell.obstacle = true
-      topRightCell.drawableTileId = "1" //GSM.editorController.selectedAction.value
+
+      const drawRightCell = this.painter.mapAssets[rightCell.id] = new MapAssetImageCell
+      drawRightCell.drawableTileId = "1"
+      rightCell.obstacle = true
+    
+      const drawTopRightCell = this.painter.mapAssets[topRightCell.id] = new MapAssetImageCell
+      drawTopRightCell.drawableTileId = "1"
       topRightCell.obstacle = true
-      rightCell.drawableTileId = "1" //GSM.editorController.selectedAction.value
-      rightCell.obstacle = true    
     }  
 
     if(GSM.EventController.generalActionFire.value.name === "deleteTerrain") {
-      cell.drawableTileId = undefined
-      cell.obstacle = false
+      delete this.painter.mapAssets[cell.id]
     }
   }
 

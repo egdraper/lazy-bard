@@ -57,6 +57,7 @@ export class GSM {
       setTimeout(()=> {
         GSM.Extensions.init()
         GSM.GridController.setupMap()
+        GSM.PaintController.init()
         GSM.FrameController.start()  
       })
     })

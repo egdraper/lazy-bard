@@ -1,6 +1,6 @@
 import { Painter } from 'src/app/game/models/painter';
 import { GSM } from '../../../../game-state-manager.service';
-import { Cell, TerrainCell } from '../../../../models/map';
+import { Cell } from '../../../../models/map';
 
 import { MovableAsset } from './movable-asset';
 

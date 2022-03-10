@@ -21,12 +21,5 @@ export class BaseLayerAddOn extends LayerAddOn {
 
   constructor() {
     super()
-    GSM.EventController.generalActionFire.subscribe(action => {
-      if(action.name === "generateBackground") {
-        const image = this.generateLayerImage()
-        this.paintLayerAsSingleImage = true
-        this.layerPainter.image = image
-      }
-    })
   }
 }

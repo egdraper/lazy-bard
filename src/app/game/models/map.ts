@@ -39,10 +39,6 @@ export class Grid {
   cells: { [cell: string]: Cell } = {}
 }
 
-export class TerrainLayerGrid extends Grid {
-  override cells: { [cell: string]: TerrainCell } = {}
-}
-
 export class Cell {
   id: string
   x: number // X Grid Coordinates
@@ -54,7 +50,8 @@ export class Cell {
   painters?: Painter[]  
 }
 
-export class TerrainCell extends Cell {
+export class MapAssetImageCell {
+  id: string
   imageTile: SpriteTile
   drawableTileId?: string
 }
