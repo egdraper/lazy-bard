@@ -20,7 +20,7 @@ export class MapController {
   }
 
   public iterateAllCells(callBack: (cell: Cell) => void) {
-    GSM.LayerController.layerAddOns.forEach(layer => {
+    GSM.LayerController.addOns.forEach(layer => {
       this.gridIterator[layer.layerName].forEach((cell) => {
         callBack(cell);
       });
@@ -28,7 +28,7 @@ export class MapController {
   }
 
   public iterateAllVisibleCells(callBack: (cell: Cell) => void) {
-    GSM.LayerController.layerAddOns.forEach(layer => {
+    GSM.LayerController.addOns.forEach(layer => {
       this.gridIterator[layer.layerName].forEach((cell) => {
         callBack(cell);
       });

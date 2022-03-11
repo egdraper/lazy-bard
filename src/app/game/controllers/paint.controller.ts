@@ -1,13 +1,13 @@
 import { Subscription } from "rxjs"
-import { LayerPainter } from "../extensions/base-layer.painter";
-import { ImageGenerator } from "../extensions/image.generator";
-import { LayerAddOn } from "../extensions/layer-extension"
+import { AddonPainter } from "../extensions/drawable-addons/addon.painter";
+import { ImageGenerator } from "../extensions/drawable-addons/image.generator";
+import { AddOnBase } from "../extensions/addon-base"
 import { GSM } from "../game-state-manager.service"
 import { CanvasCTX } from "../models/extension.model";
 import { Painter } from "../models/painter";
 
 export class PaintController {
-  public layerPainter: LayerPainter;
+  public layerPainter: AddonPainter;
   public allIncludedPainters: Painter[] = [];
   public allExcludedPainters: Painter[] = []
   public paintLayerAsSingleImage = false;
@@ -20,7 +20,7 @@ export class PaintController {
   }
 
   public init() {
-    GSM.LayerController.layerAddOns.filter((addon) =>
+    GSM.LayerController.addOns.filter((addon) =>
       addon.getPainters().forEach((painter) => {
         this.setupPainters(addon)
         if(!addon.excludeFromSingleImagePainting) { 
@@ -41,7 +41,7 @@ export class PaintController {
 
 
   private onFrameFire(frame: number): void {
-    if(!(GSM.LayerController.layerAddOns && GSM.LayerController.layerAddOns.length !== 0)) { return }
+    if(!(GSM.LayerController.addOns && GSM.LayerController.addOns.length !== 0)) { return }
     this.clearCanvases()    
     this.addOrderedPaintersToCells()
     
@@ -57,7 +57,7 @@ export class PaintController {
     this.layerPainter.paint()
 
     // renders any excluded addons from being painted as part of the single image
-    GSM.LayerController.layerAddOns.forEach(layerAddon => {
+    GSM.LayerController.addOns.forEach(layerAddon => {
       if(layerAddon.excludeFromSingleImagePainting) {
         this.runPainterForException(layerAddon, frame)
       }
@@ -72,7 +72,7 @@ export class PaintController {
     })
   }
 
-  private runPainterForException(layerAddon: LayerAddOn, frame: number): void {
+  private runPainterForException(layerAddon: AddOnBase, frame: number): void {
     GSM.GridController.iterateAllVisibleLayerCells(cell => {
       layerAddon.getPainters().forEach(painter => {
         painter.paint(cell, frame)
@@ -91,7 +91,7 @@ export class PaintController {
   public addOrderedPaintersToCells(): void {
     if(GSM.GridController.getCell(0,0,0).painters.length === 0) {
       GSM.GridController.iterateAllVisibleLayerCells(cell => {
-        GSM.LayerController.layerAddOns.forEach(LayerAddOn => {
+        GSM.LayerController.addOns.forEach(LayerAddOn => {
           if(LayerAddOn.id === "BaseLayerAddOn") { return }
           LayerAddOn.getPainters().forEach(painter => {
             cell.painters.push(painter)
@@ -110,8 +110,8 @@ export class PaintController {
   }
 
 
-  private setupPainters(addon: LayerAddOn): void {
-    this.layerPainter = new LayerPainter()  
+  private setupPainters(addon: AddOnBase): void {
+    this.layerPainter = new AddonPainter()  
        
     addon.getPainters().forEach(painter=> {
       if(addon.ctx === CanvasCTX.Background) {

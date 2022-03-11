@@ -7,8 +7,8 @@ import { AssetController } from './controllers/asset.controller';
 import { FrameController } from './controllers/timing.controller';
 
 import { Settings } from './models/settings';
-import { LayerController } from './controllers/layer.controller';
-import { Extensions } from './extensions/extensions';
+import { AddOnController } from './controllers/layer.controller';
+import { Extensions } from './extensions.register';
 import { ImagesController } from './controllers/images.controller';
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class GSM {
   public static PaintController: PaintController
   public static EventController: EventController
   public static AssetController: AssetController
-  public static LayerController: LayerController
+  public static LayerController: AddOnController
   public static ImageController: ImagesController
   public loadingFinished = false
   constructor() {
@@ -40,7 +40,7 @@ export class GSM {
     GSM.CanvasController = new CanvasController()
     GSM.FrameController = new FrameController()
     GSM.EventController = new EventController()
-    GSM.LayerController = new LayerController()
+    GSM.LayerController = new AddOnController()
     GSM.PaintController = new PaintController() 
     GSM.ImageController = new ImagesController()   
     GSM.Extensions = new Extensions() 

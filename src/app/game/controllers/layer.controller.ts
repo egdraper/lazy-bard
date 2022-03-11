@@ -1,23 +1,15 @@
-import { LayerAddOn } from '../extensions/layer-extension';
+import { AddOnBase } from '../extensions/addon-base';
 import { ElevationLayers, Grid } from '../models/map';
 
-export class LayerController {
-  public selectedLayer: Grid = null;
-  public layerAddOns: LayerAddOn[] = [];
+export class AddOnController {
+  public addOns: AddOnBase[] = [];
 
-
-  public registerLayer(layerExtension: LayerAddOn) {
-    this.layerAddOns.push(layerExtension);
-    this.layerAddOns.sort((a, b) => a.zIndex - b.zIndex);
+  public registerAddon(layerExtension: AddOnBase) {
+    this.addOns.push(layerExtension);
+    this.addOns.sort((a, b) => a.zIndex - b.zIndex);
   }
 
-  public removeLayer(layerName: ElevationLayers) {
-    delete this.layerAddOns[layerName];
+  public removeAddon(layerName: ElevationLayers) {
+    delete this.addOns[layerName];
   }
-
-  public switchLayer(layer: ElevationLayers): void {
-    this.selectedLayer = this.layerAddOns[layer];
-  }
-
-  public createStaticImageOfLayer(): void {}
 }

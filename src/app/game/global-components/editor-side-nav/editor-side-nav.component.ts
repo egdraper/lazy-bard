@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LayerAddOn } from '../../extensions/layer-extension';
+import { AddOnBase } from '../../extensions/addon-base';
 import { GSM } from '../../game-state-manager.service';
 
 @Component({
@@ -8,12 +8,12 @@ import { GSM } from '../../game-state-manager.service';
   styleUrls: ['./editor-side-nav.component.scss']
 })
 export class EditorSideNavComponent implements OnInit {
-  public layers: LayerAddOn[] = []
+  public layers: AddOnBase[] = []
 
   constructor() { }
 
   ngOnInit(): void {
-    this.layers = GSM.LayerController.layerAddOns
+    this.layers = GSM.LayerController.addOns
   }
 
 }
