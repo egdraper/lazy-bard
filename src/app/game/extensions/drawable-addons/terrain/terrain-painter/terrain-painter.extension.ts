@@ -2,24 +2,24 @@ import { GSM } from '../../../../game-state-manager.service';
 import { AddOnExtension } from '../../../../models/extension.model';
 import { drawableItems } from '../../../../db/drawable-items.db';
 import { DrawableItem } from '../../../../models/map';
-import { TerrainPaintBrushEventHandler } from './terrain-paint-brush.event-handler';
-import { TerrainPaintBrushRenderer } from './terrain-paint-brush.renderer';
+import { TerrainPainterEventHandler } from './terrain-painter.event-handler';
+import { TerrainPainterPainter } from './terrain-painter.painter';
 
-export class TerrainPaintBrushExtension implements AddOnExtension {
-  public id = "TerrainPaintBrushExtension"
-  public renderer = new TerrainPaintBrushRenderer();
+export class TerrainPainterExtension implements AddOnExtension {
+  public id = "TerrainPainterExtension"
+  public renderer = new TerrainPainterPainter();
 
-  public async init(): Promise<void> {
-    new TerrainPaintBrushEventHandler(this.renderer);
-    await this.setupImages();
+  public init(): void {
+    new TerrainPainterEventHandler(this.renderer);
+    this.setupImages();
   }
 
   private async setupImages(): Promise<void> {
     const drawableItems = await this.getDrawableImages();
-    this.loadImagesIntoRenderer(drawableItems);
+    this.loadImagesIntoPainter(drawableItems);
   }
 
-  private loadImagesIntoRenderer(drawableItems: DrawableItem[]): void {
+  private loadImagesIntoPainter(drawableItems: DrawableItem[]): void {
     drawableItems.forEach((drawableItems) => {
       GSM.ImageController.addImageBySrcUrl(drawableItems.imageUrl)
     });

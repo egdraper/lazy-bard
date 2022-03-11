@@ -1,11 +1,11 @@
 import { GSM } from "../../../../game-state-manager.service";
 import { Cell } from "../../../../models/map";
-import { Painter } from "../../../../models/painter";
+import { Renderer } from "../../../../models/renderer";
 
-export class GridLinesPainter extends Painter {
+export class GridLinesRenderer extends Renderer {
   public paintOrder = 2
 
-  public paint(cell: Cell): void {
+  public draw(cell: Cell): void {
     this.ctx.beginPath()
     this.ctx.moveTo(cell.posX, cell.posY)
     this.ctx.lineTo(cell.posX, (cell.posY) + GSM.Settings.blockSize)

@@ -1,13 +1,13 @@
 import { AddOnExtension } from 'src/app/game/models/extension.model';
 import { PlayableAssetAnimator } from './playable-asset.animator';
 import { PlayableAssetEventHandler } from './playable-asset.event-handler';
-import { PlayableAssetPainter } from './playable-asset.painter';
+import { PlayableAssetRenderer } from './playable-asset.renderer';
 
 export class PlayableAssetExtension implements AddOnExtension{
   public id = "PlayableAssetExtension"
-  public painter = new PlayableAssetPainter();
+  public renderer = new PlayableAssetRenderer();
 
-  init(): void {
+  public async init(): Promise<void> {
     new PlayableAssetEventHandler()
     new PlayableAssetAnimator()
   }

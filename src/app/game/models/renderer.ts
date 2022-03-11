@@ -1,12 +1,12 @@
 import { Cell, MapAssetImageCell } from "./map"
 
-export abstract class PaintBase {
+export abstract class RendererBase {
   public abstract paintOrder: number
   public ctx: CanvasRenderingContext2D
 }
 
-export abstract class Painter extends PaintBase {  
+export abstract class Renderer extends RendererBase {  
   public mapAssets: {[id: string]: MapAssetImageCell} = {}
-  public abstract paint(cell: Cell, frame?: number): void
+  public abstract draw(cell: Cell, frame?: number): void
 }
 

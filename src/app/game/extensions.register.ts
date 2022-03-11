@@ -4,14 +4,14 @@ import { TerrainLayerAddOn } from './extensions/drawable-addons/terrain/terrain.
 
 
 export class Extensions {
-    public baseLayerExtension = new BaseLayerAddOn();
+    public baseLayerExtension = new BaseLayerAddOn()
     public floorLayerExtension = new MovableItemsAddon()
     public terrainLayerExtension = new TerrainLayerAddOn()
 
-    public init() {
-      this.baseLayerExtension.init()
-      this.floorLayerExtension.init()
-      this.terrainLayerExtension.init()
+    public async init(): Promise<void> {
+      await this.baseLayerExtension.init()
+      await this.floorLayerExtension.init()
+      await this.terrainLayerExtension.init()
     }
   }
 

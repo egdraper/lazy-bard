@@ -1,10 +1,10 @@
 import { drawableItems } from "../../../../db/drawable-items.db"
 import { GSM } from "../../../../game-state-manager.service"
 import { Cell, DrawableItem } from "../../../../models/map"
-import { Painter } from "../../../../models/painter"
+import { Renderer } from "../../../../models/renderer"
 import { TerrainEdgeCalculator } from "./terrain-edge-calculator"
 
-export class TerrainPainterPainter extends Painter {
+export class TerrainPaintBrushRenderer extends Renderer {
   public paintOrder = 1
   private drawableItem: DrawableItem = drawableItems[0]
 
@@ -17,7 +17,7 @@ export class TerrainPainterPainter extends Painter {
     })
   }
 
-  public paint(cell: Cell): void {
+  public draw(cell: Cell): void {
     const mapAsset = this.mapAssets[cell.id]
     if(!mapAsset) { return }
 

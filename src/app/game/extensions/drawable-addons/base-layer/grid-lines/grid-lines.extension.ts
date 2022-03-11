@@ -1,7 +1,7 @@
 import { AddOnExtension } from "src/app/game/models/extension.model";
-import { GridLinesPainter } from "./grid-lines.painter";
+import { GridLinesRenderer } from "./grid-lines.renderer";
 
 export class GridLineExtension implements AddOnExtension {
   public id = "GridLineExtension"
-  public painter = new GridLinesPainter()
+  public renderer = new GridLinesRenderer()
 }

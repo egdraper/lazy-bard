@@ -1,13 +1,13 @@
-import { Painter } from "./painter";
+import { Renderer } from "./renderer";
 
 
 export interface Extension {
   id: string
-  init?: () => void
+  init?: () => Promise<void>
 }
 
 export interface AddOnExtension extends Extension {
-  painter: Painter
+  renderer: Renderer
 }
 
 export enum CanvasCTX {

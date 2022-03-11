@@ -13,7 +13,7 @@ export class EditorSideNavComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.layers = GSM.LayerController.addOns
+    this.layers = GSM.AddonController.addOns
   }
 
 }

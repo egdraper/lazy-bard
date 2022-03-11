@@ -1,9 +1,9 @@
 import { GSM } from "../../../../game-state-manager.service";
 import { Cell } from "../../../../models/map";
-import { Painter } from "../../../../models/painter";
+import { Renderer } from "../../../../models/renderer";
 import { PlayableAsset } from "../playable-asset/playable-asset.model";
 
-export class SelectionIndicatorPainter extends Painter {
+export class SelectionIndicatorRenderer extends Renderer {
   public paintOrder = 1
   
   private posX 
@@ -11,7 +11,7 @@ export class SelectionIndicatorPainter extends Painter {
   private width
   private height
 
-  public paint(cell: Cell, frame: number): void {
+  public draw(cell: Cell, frame: number): void {
     const asset = GSM.AssetController.getSelectedAssets().find(asset => asset.cell.id === cell.id) as PlayableAsset 
     if(!asset) { return } 
     

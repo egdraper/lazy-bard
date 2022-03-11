@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanvasController } from './controllers/canvas.controller';
 import { MapController } from './controllers/map.controller';
 import { EventController } from './controllers/event.controller';
-import { PaintController } from './controllers/paint.controller';
+import { RendererController } from './controllers/paint.controller';
 import { AssetController } from './controllers/asset.controller';
 import { FrameController } from './controllers/timing.controller';
 
@@ -20,10 +20,10 @@ export class GSM {
   public static FrameController: FrameController
   public static Extensions: Extensions
   public static GridController: MapController
-  public static PaintController: PaintController
+  public static RendererController: RendererController
   public static EventController: EventController
   public static AssetController: AssetController
-  public static LayerController: AddOnController
+  public static AddonController: AddOnController
   public static ImageController: ImagesController
   public loadingFinished = false
   constructor() {
@@ -40,8 +40,8 @@ export class GSM {
     GSM.CanvasController = new CanvasController()
     GSM.FrameController = new FrameController()
     GSM.EventController = new EventController()
-    GSM.LayerController = new AddOnController()
-    GSM.PaintController = new PaintController() 
+    GSM.AddonController = new AddOnController()
+    GSM.RendererController = new RendererController() 
     GSM.ImageController = new ImagesController()   
     GSM.Extensions = new Extensions() 
     GSM.GridController = new MapController()
@@ -54,10 +54,10 @@ export class GSM {
     this.loadingFinished = true
     
     GSM.CanvasController.setupComplete.subscribe(() => {            
-      setTimeout(()=> {
-        GSM.Extensions.init()
+      setTimeout(async ()=> {
         GSM.GridController.setupMap()
-        GSM.PaintController.init()
+        await GSM.Extensions.init()
+        GSM.RendererController.init()
         GSM.FrameController.start()  
       })
     })

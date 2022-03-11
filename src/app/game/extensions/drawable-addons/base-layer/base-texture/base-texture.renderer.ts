@@ -1,11 +1,11 @@
 import { GSM } from "../../../../game-state-manager.service"
 import { Cell } from "../../../../models/map"
-import { Painter } from "../../../../models/painter"
+import { Renderer } from "../../../../models/renderer"
 
-export class BaseTexturePainter extends Painter {
+export class BaseTextureRenderer extends Renderer {
   public paintOrder = 1
 
-  public paint(cell: Cell): void {
+  public draw(cell: Cell): void {
     const assetCell = this.mapAssets[cell.id]
 
     this.ctx.drawImage(

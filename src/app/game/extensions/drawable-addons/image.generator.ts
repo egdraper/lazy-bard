@@ -1,21 +1,21 @@
 import { GSM } from "../../game-state-manager.service";
 import { ElevationLayers } from "../../models/map";
-import { Painter } from "../../models/painter";
+import { Renderer } from "../../models/renderer";
 
 export class ImageGenerator {
-  public static generateLayerImage(painters: Painter[]): HTMLImageElement {
+  public static generateLayerImage(renderers: Renderer[]): HTMLImageElement {
     GSM.CanvasController.fullImageCTX.canvas.width = GSM.GridController.gameMap.size.width * GSM.Settings.blockSize
     GSM.CanvasController.fullImageCTX.canvas.height = GSM.GridController.gameMap.size.height * GSM.Settings.blockSize
        
     let tempCTX 
-    painters.forEach((painter)=> {
-      tempCTX = painter.ctx
-      painter.ctx = GSM.CanvasController.fullImageCTX
+    renderers.forEach((renderer)=> {
+      tempCTX = renderer.ctx
+      renderer.ctx = GSM.CanvasController.fullImageCTX
 
       GSM.GridController.iterateCells(cell => {
-        painter.paint(cell)
+        renderer.draw(cell)
       })
-      painter.ctx = tempCTX
+      renderer.ctx = tempCTX
     })
 
     const layerImageBase64 = GSM.CanvasController.fullImageCanvas.nativeElement.toDataURL("image/png")

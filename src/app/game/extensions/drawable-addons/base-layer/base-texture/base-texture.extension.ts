@@ -3,22 +3,22 @@ import { AddOnExtension } from "../../../../models/extension.model"
 import { backgroundSprites } from "../../../../db/background.db"
 import { GSM } from "../../../../game-state-manager.service"
 import { TextureSprite } from "../../../../models/sprites"
-import { BaseTexturePainter } from "./base-texture.painter"
+import { BaseTextureRenderer } from "./base-texture.renderer"
 import { BaseTextureRandomGenerator } from "./base-texture.generator"
 
 export class BaseTextureExtension implements AddOnExtension {
   public id = "BaseTextureExtension"
-  public painter = new BaseTexturePainter()
+  public renderer = new BaseTextureRenderer()
   public baseTexture: TextureSprite
 
-  public init() {
-    this.setupImages()
+  public async init(): Promise<void> {
+    await this.setupImages()
   }
 
   public async setupImages(): Promise<void> {
     const textureSprites = await this.getBackgroundImages()
     this.loadImagesIntoImageController(textureSprites)    
-    this.loadBaseTextureSpriteIntoPainter(textureSprites)
+    this.loadBaseTextureSpriteIntoRenderer(textureSprites)
     this.setBackgroundImages()
   }
 
@@ -28,7 +28,7 @@ export class BaseTextureExtension implements AddOnExtension {
     })    
   }
 
-  private loadBaseTextureSpriteIntoPainter(textureSprites: TextureSprite[]): void {
+  private loadBaseTextureSpriteIntoRenderer(textureSprites: TextureSprite[]): void {
     const textureSprite = textureSprites.find(sprite => sprite.baseTexture === GSM.GridController.gameMap.baseTexture)
     if(textureSprite) {
       this.baseTexture = textureSprite
@@ -49,7 +49,7 @@ export class BaseTextureExtension implements AddOnExtension {
       assetCell.imageTile.imageUrl = this.baseTexture?.imageUrl || ""
       BaseTextureRandomGenerator.autoFillBackgroundTerrain(assetCell.imageTile, this.baseTexture)
 
-      this.painter.mapAssets[cell.id] = assetCell
+      this.renderer.mapAssets[cell.id] = assetCell
     })
   }
 }

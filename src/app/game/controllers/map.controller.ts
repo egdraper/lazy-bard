@@ -1,43 +1,21 @@
-import { GSM } from '../game-state-manager.service';
-import {
-  Cell,
-  ElevationLayers,
-  GameMap, Grid, NeighborLocation,
-  Size,
-  MapAssetImageCell
-} from '../models/map';
+import { GSM } from '../game-state-manager.service'
+import {Cell, GameMap, Grid, NeighborLocation, Size } from '../models/map'
 
 export class MapController {
-  public gameMap: GameMap;
-  public loadedMaps: { [gameMapId: string]: GameMap } = {};
-  public autoGenerateTerrain: boolean;
-  private gridIterator: Cell[] = [];
+  public gameMap: GameMap
+  public loadedMaps: { [gameMapId: string]: GameMap } = {}
+  public autoGenerateTerrain: boolean
+  private gridIterator: Cell[] = []
 
   public iterateCells(callBack: (cell: Cell) => void): void {
     this.gridIterator.forEach((cell) => {
-      callBack(cell);
-    })
-  }
-
-  public iterateAllCells(callBack: (cell: Cell) => void) {
-    GSM.LayerController.addOns.forEach(layer => {
-      this.gridIterator[layer.layerName].forEach((cell) => {
-        callBack(cell);
-      });
+      callBack(cell)
     })
   }
 
   public iterateAllVisibleCells(callBack: (cell: Cell) => void) {
-    GSM.LayerController.addOns.forEach(layer => {
-      this.gridIterator[layer.layerName].forEach((cell) => {
-        callBack(cell);
-      });
-    })
-  }
-
-  public iterateAllVisibleLayerCells(callBack: (cell: Cell) => void) {
     this.gridIterator.forEach((cell) => {
-      callBack(cell);
+      callBack(cell)
     })
   }
 
@@ -47,22 +25,22 @@ export class MapController {
     elevation: number
   ): Cell {
     while (x % GSM.Settings.blockSize !== 0) {
-      x--;
+      x--
     }
     while (y % GSM.Settings.blockSize !== 0) {
-      y--;
+      y--
     }
     return this.gameMap.elevations[elevation].cells[
       `x${x / GSM.Settings.blockSize}:y${y / GSM.Settings.blockSize}`
-    ];
+    ]
   }
 
   public getCell(x: number, y: number, elevationLayer: number): Cell {
-    return this.gameMap.elevations[elevationLayer].cells[`x${x}:y${y}`];
+    return this.gameMap.elevations[elevationLayer].cells[`x${x}:y${y}`]
   }
 
   public getCellAtLayer(cellId: string, layer: number): Cell {
-    return this.gameMap.elevations[layer].cells[cellId];
+    return this.gameMap.elevations[layer].cells[cellId]
   }
 
   public getNeighbor(
@@ -72,66 +50,81 @@ export class MapController {
   ): Cell {
     switch (neighborLocation) {
       case NeighborLocation.Top:
-        return this.gameMap.elevations[layer].cells[`x${cell.x}:y${cell.y - 1}`];
+        return this.gameMap.elevations[layer].cells[
+          `x${cell.x}:y${cell.y - 1}`
+        ]
       case NeighborLocation.Right:
-        return this.gameMap.elevations[layer].cells[`x${cell.x + 1}:y${cell.y}`];
+        return this.gameMap.elevations[layer].cells[
+          `x${cell.x + 1}:y${cell.y}`
+        ]
       case NeighborLocation.Bottom:
-        return this.gameMap.elevations[layer].cells[`x${cell.x}:y${cell.y + 1}`];
+        return this.gameMap.elevations[layer].cells[
+          `x${cell.x}:y${cell.y + 1}`
+        ]
       case NeighborLocation.Left:
-        return this.gameMap.elevations[layer].cells[`x${cell.x - 1}:y${cell.y}`];
+        return this.gameMap.elevations[layer].cells[
+          `x${cell.x - 1}:y${cell.y}`
+        ]
       case NeighborLocation.TopRight:
-        return this.gameMap.elevations[layer].cells[`x${cell.x + 1}:y${cell.y - 1}`];
+        return this.gameMap.elevations[layer].cells[
+          `x${cell.x + 1}:y${cell.y - 1}`
+        ]
       case NeighborLocation.BottomRight:
-        return this.gameMap.elevations[layer].cells[`x${cell.x + 1}:y${cell.y + 1}`];
+        return this.gameMap.elevations[layer].cells[
+          `x${cell.x + 1}:y${cell.y + 1}`
+        ]
       case NeighborLocation.BottomLeft:
-        return this.gameMap.elevations[layer].cells[`x${cell.x - 1}:y${cell.y + 1}`];
+        return this.gameMap.elevations[layer].cells[
+          `x${cell.x - 1}:y${cell.y + 1}`
+        ]
       case NeighborLocation.TopLeft:
-        return this.gameMap.elevations[layer].cells[`x${cell.x - 1}:y${cell.y - 1}`];
+        return this.gameMap.elevations[layer].cells[
+          `x${cell.x - 1}:y${cell.y - 1}`
+        ]
     }
   }
 
   public getAllNeighbors(cell: Cell, layer: number): Cell[] {
-    const cells = [];
-    cells.push(this.getNeighbor(cell, NeighborLocation.Top, layer));
-    cells.push(this.getNeighbor(cell, NeighborLocation.Right, layer));
-    cells.push(this.getNeighbor(cell, NeighborLocation.Bottom, layer));
-    cells.push(this.getNeighbor(cell, NeighborLocation.Left, layer));
-    cells.push(this.getNeighbor(cell, NeighborLocation.TopRight, layer));
-    cells.push(this.getNeighbor(cell, NeighborLocation.BottomRight, layer));
-    cells.push(this.getNeighbor(cell, NeighborLocation.BottomLeft, layer));
-    cells.push(this.getNeighbor(cell, NeighborLocation.TopLeft, layer));
-    return cells;
+    const cells = []
+    cells.push(this.getNeighbor(cell, NeighborLocation.Top, layer))
+    cells.push(this.getNeighbor(cell, NeighborLocation.Right, layer))
+    cells.push(this.getNeighbor(cell, NeighborLocation.Bottom, layer))
+    cells.push(this.getNeighbor(cell, NeighborLocation.Left, layer))
+    cells.push(this.getNeighbor(cell, NeighborLocation.TopRight, layer))
+    cells.push(this.getNeighbor(cell, NeighborLocation.BottomRight, layer))
+    cells.push(this.getNeighbor(cell, NeighborLocation.BottomLeft, layer))
+    cells.push(this.getNeighbor(cell, NeighborLocation.TopLeft, layer))
+    return cells
   }
 
   public createGameMap(size: Size): void {
     this.gameMap = new GameMap(size)
-    this.gameMap.id = Math.random().toString();
+    this.gameMap.id = Math.random().toString()
   }
 
   public setupMap(): void {
     for (let i = 0; i < this.gameMap.size.height; i++) {
-      for (let l = 0; l < this.gameMap.size.width; l++) {  
-          if(!this.gameMap.elevations[0]) {
-            this.gameMap.elevations[0] = new Grid()
-          }
+      for (let l = 0; l < this.gameMap.size.width; l++) {
+        if (!this.gameMap.elevations[0]) {
+          this.gameMap.elevations[0] = new Grid()
+        }
 
-          // creates cell
-          const cell = {
-            x: l,
-            y: i,
-            posX: l * GSM.Settings.blockSize,
-            posY: i * GSM.Settings.blockSize,
-            id: `x${l}:y${i}`,
-            painters: []
-          };
+        // creates cell
+        const cell = {
+          x: l,
+          y: i,
+          posX: l * GSM.Settings.blockSize,
+          posY: i * GSM.Settings.blockSize,
+          id: `x${l}:y${i}`,
+          renderers: [],
+        }
 
-          // adds cell to grid at layer
-          this.gameMap.elevations[0].cells[`x${l}:y${i}`] = cell;
-          this.gridIterator.push(cell)
-  
+        // adds cell to grid at layer
+        this.gameMap.elevations[0].cells[`x${l}:y${i}`] = cell
+        this.gridIterator.push(cell)
       }
     }
-    this.loadedMaps[this.gameMap.id] = this.gameMap;
+    this.loadedMaps[this.gameMap.id] = this.gameMap
   }
 }
 

@@ -1,7 +1,7 @@
 import { AddOnExtension } from 'src/app/game/models/extension.model';
-import { SelectionIndicatorPainter } from './selection-indicator.painter';
+import { SelectionIndicatorRenderer } from './selection-indicator.renderer';
 
 export class SelectionIndicatorExtension implements AddOnExtension {
   public id = "SelectionIndicatorExtension"
-  public painter = new SelectionIndicatorPainter()
+  public renderer = new SelectionIndicatorRenderer()
 }

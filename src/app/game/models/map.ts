@@ -1,4 +1,4 @@
-import { Painter } from "./painter"
+import { Renderer } from "./renderer"
 
 
 export class GameMap {
@@ -46,7 +46,7 @@ export class Cell {
   posX: number // X Pixel Coordinates
   posY: number // Y Pixel Coordinates 
   obstacle?: boolean 
-  painters?: Painter[]  
+  renderers?: Renderer[]  
 }
 
 export class MapAssetImageCell {
@@ -58,11 +58,6 @@ export class MapAssetImageCell {
 export class Size {
   width: number
   height: number
-}
-
-export class GridImages {
-  imageUrl: string
-  painterId: string
 }
 
 export class SpriteTile {

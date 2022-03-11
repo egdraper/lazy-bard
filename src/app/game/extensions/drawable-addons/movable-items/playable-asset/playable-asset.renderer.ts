@@ -1,13 +1,13 @@
-import { Painter } from 'src/app/game/models/painter';
+import { Renderer } from '../../../../models/renderer';
 import { GSM } from '../../../../game-state-manager.service';
 import { Cell } from '../../../../models/map';
 
 import { PlayableAsset } from './playable-asset.model';
 
-export class PlayableAssetPainter extends Painter {
+export class PlayableAssetRenderer extends Renderer {
   public paintOrder = 2
 
-  public paint(cell: Cell): void {
+  public draw(cell: Cell): void {
     const playableAsset = GSM.AssetController.getAssetByCellId(cell.id) as PlayableAsset;
     if (!playableAsset) { return; }
 

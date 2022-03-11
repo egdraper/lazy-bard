@@ -8,7 +8,6 @@ import { SelectionIndicatorExtension } from "./selection-indicator/selection-ind
 export class MovableItemsAddon extends AddOnBase {
   public id = "MovableItemsAddOn"
   public visibleName = "Movable Items"
-  public layerName = ElevationLayers.CharacterLayer
   public zIndex: number = 10
   public largeImage: HTMLImageElement = null
   public ctx = CanvasCTX.Foreground
