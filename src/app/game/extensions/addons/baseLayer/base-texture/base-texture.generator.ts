@@ -1,9 +1,9 @@
 import { GSM } from "../../../../game-state-manager.service"
-import { ImageTile } from "../../../../models/map"
+import { SpriteTile } from "../../../../models/map"
 import { TextureSprite } from "../../../../models/sprites"
 
-export class BackgroundRandomGenerator {
-  public static autoFillBackgroundTerrain(tile: ImageTile, baseTexture: TextureSprite) {
+export class BaseTextureRandomGenerator {
+  public static autoFillBackgroundTerrain(tile: SpriteTile, baseTexture: TextureSprite) {
     const lessCommonTextureWidth = baseTexture.fullImageWidth - GSM.Settings.commonTextureWidth
     const commonTextureWidth = GSM.Settings.commonTextureWidth
     const odds = Math.floor(Math.random() * GSM.Settings.commonTextureOdds)
@@ -15,8 +15,8 @@ export class BackgroundRandomGenerator {
       tileX = Math.floor(Math.random() * commonTextureWidth)
     }
 
-    tile.tilePosX = tileX * GSM.Settings.blockSize
-    tile.tilePosY = 0    
+    tile.spriteGridPosX = tileX * GSM.Settings.blockSize
+    tile.spriteGridPosY = 0    
   }    
 }
 

@@ -46,7 +46,6 @@ export class Cell {
   posX: number // X Pixel Coordinates
   posY: number // Y Pixel Coordinates 
   obstacle?: boolean 
-  backgroundTile?: ImageTile
   painters?: Painter[]  
 }
 
@@ -54,12 +53,6 @@ export class MapAssetImageCell {
   id: string
   imageTile: SpriteTile
   drawableTileId?: string
-}
-
-export class ImageTile {
-  tilePosX: number
-  tilePosY: number
-  imageUrl: string
 }
 
 export class Size {

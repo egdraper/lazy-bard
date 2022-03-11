@@ -38,7 +38,7 @@ export class BaseTerrainGenerator {
     
 
   private createRandomizedBoarder(terrainId: string): void {
-    GSM.GridController.iterateLayerCell(ElevationLayers.TerrainLayer, (cell: MapAssetImageCell) => {
+    GSM.GridController.iterateCells(ElevationLayers.TerrainLayer, (cell: MapAssetImageCell) => {
       // Outer most layer
       if (cell.x < 2 || cell.x > GSM.GridController.gameMap.size.width - 3) {
         cell.obstacle = true
@@ -79,7 +79,7 @@ export class BaseTerrainGenerator {
     })
 
 
-    GSM.GridController.iterateLayerCell(ElevationLayers.TerrainLayer, (cell: MapAssetImageCell) => {
+    GSM.GridController.iterateCells(ElevationLayers.TerrainLayer, (cell: MapAssetImageCell) => {
       // right side 2nd layers
       if (cell.x === GSM.GridController.gameMap.size.width - 3) {
         this.setEdgeLayerRandomization(cell, NeighborLocation.Bottom, terrainId)
@@ -92,7 +92,7 @@ export class BaseTerrainGenerator {
     })
     
 
-    GSM.GridController.iterateLayerCell(ElevationLayers.TerrainLayer, (cell: MapAssetImageCell) => {
+    GSM.GridController.iterateCells(ElevationLayers.TerrainLayer, (cell: MapAssetImageCell) => {
       // right side 3rd layer
       if (cell.x === GSM.GridController.gameMap.size.width - 4 
         && GSM.GridController.getNeighbor(cell, NeighborLocation.Right, ElevationLayers.TerrainLayer).obstacle 
@@ -156,7 +156,7 @@ export class BaseTerrainGenerator {
   }
 
   private terrainCleanup(): void {
-    GSM.GridController.iterateLayerCell(ElevationLayers.TerrainLayer, (cell: MapAssetImageCell) => {
+    GSM.GridController.iterateCells(ElevationLayers.TerrainLayer, (cell: MapAssetImageCell) => {
       if(cell.drawableTileId) {  
         const rightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Right, ElevationLayers.TerrainLayer) as MapAssetImageCell
         const leftCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Left, ElevationLayers.TerrainLayer) as MapAssetImageCell

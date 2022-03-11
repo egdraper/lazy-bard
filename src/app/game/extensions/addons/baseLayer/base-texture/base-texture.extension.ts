@@ -1,14 +1,14 @@
-import { Cell, ImageTile } from "src/app/game/models/map"
+import { Cell, MapAssetImageCell, SpriteTile } from "src/app/game/models/map"
 import { AddOnExtension } from "../../../../models/extension.model"
 import { backgroundSprites } from "../../../../db/background.db"
 import { GSM } from "../../../../game-state-manager.service"
 import { TextureSprite } from "../../../../models/sprites"
-import { BackgroundPainter } from "./background.painter"
-import { BackgroundRandomGenerator } from "./background.generator"
+import { BaseTexturePainter } from "./base-texture.painter"
+import { BaseTextureRandomGenerator } from "./base-texture.generator"
 
-export class BackgroundExtension implements AddOnExtension {
-  public id = "BackgroundExtension"
-  public painter = new BackgroundPainter()
+export class BaseTextureExtension implements AddOnExtension {
+  public id = "BaseTextureExtension"
+  public painter = new BaseTexturePainter()
   public baseTexture: TextureSprite
 
   public init() {
@@ -43,12 +43,13 @@ export class BackgroundExtension implements AddOnExtension {
   }
 
   private setBackgroundImages(): void {
-    GSM.GridController.iterateLayerCell((cell: Cell) => {
-      if (!cell.backgroundTile) { 
-        cell.backgroundTile = new ImageTile()  
-        cell.backgroundTile.imageUrl = this.baseTexture?.imageUrl || ""
-        BackgroundRandomGenerator.autoFillBackgroundTerrain(cell.backgroundTile, this.baseTexture)
-      }
+    GSM.GridController.iterateCells((cell: Cell) => {
+      const assetCell = new MapAssetImageCell()
+      assetCell.imageTile = new SpriteTile()  
+      assetCell.imageTile.imageUrl = this.baseTexture?.imageUrl || ""
+      BaseTextureRandomGenerator.autoFillBackgroundTerrain(assetCell.imageTile, this.baseTexture)
+
+      this.painter.mapAssets[cell.id] = assetCell
     })
   }
 }

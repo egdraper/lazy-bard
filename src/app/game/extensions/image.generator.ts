@@ -12,7 +12,7 @@ export class ImageGenerator {
       tempCTX = painter.ctx
       painter.ctx = GSM.CanvasController.fullImageCTX
 
-      GSM.GridController.iterateLayerCell(cell => {
+      GSM.GridController.iterateCells(cell => {
         painter.paint(cell)
       })
       painter.ctx = tempCTX

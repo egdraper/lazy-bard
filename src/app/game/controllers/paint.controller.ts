@@ -104,7 +104,7 @@ export class PaintController {
   private onGenerateBackground(action): void {
     if (action.name === 'generateBackground') {
       const image = this.generateLayerImage();
-      this.paintLayerAsSingleImage = true;
+      this.paintLayerAsSingleImage = !this.paintLayerAsSingleImage;
       this.layerPainter.image = image;
     }
   }

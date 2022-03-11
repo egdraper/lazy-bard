@@ -1,6 +1,6 @@
-import { BaseLayerAddOn } from './add-on-layer-extensions/base-layer/base-layer.extension';
-import { CharacterLayerAddon } from './add-on-layer-extensions/character-layer/character-layer.extension';
-import { TerrainLayerAddOn } from './add-on-layer-extensions/terrain-layer/terrain-layer.addon';
+import { BaseLayerAddOn } from './addons/baseLayer/base-layer.addon';
+import { CharacterLayerAddon } from './addons/movable-item/movable-item.addon';
+import { TerrainLayerAddOn } from './addons/terrain/terrain.addon';
 
 
 export class Extensions {

@@ -13,7 +13,7 @@ export class MapController {
   public autoGenerateTerrain: boolean;
   private gridIterator: Cell[] = [];
 
-  public iterateLayerCell(callBack: (cell: Cell) => void): void {
+  public iterateCells(callBack: (cell: Cell) => void): void {
     this.gridIterator.forEach((cell) => {
       callBack(cell);
     })
@@ -39,10 +39,6 @@ export class MapController {
     this.gridIterator.forEach((cell) => {
       callBack(cell);
     })
-  }
-
-  public iterateDrawGridCells(callBack: (cell: Cell) => void) {
-    
   }
 
   public getGridCellByCoordinate(
