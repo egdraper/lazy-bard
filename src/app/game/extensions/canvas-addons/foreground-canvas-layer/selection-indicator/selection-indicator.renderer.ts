@@ -1,17 +1,18 @@
 import { GSM } from "../../../../game-state-manager.service";
-import { Cell } from "../../../../models/map";
+import { Cell, ElevationLayers, SpriteTile } from "../../../../models/map";
 import { Renderer } from "../../../../models/renderer";
 import { PlayableAsset } from "../playable-asset/playable-asset.model";
 
 export class SelectionIndicatorRenderer extends Renderer {
-  public paintOrder = 1
+  public elevationLayer: ElevationLayers = ElevationLayers.CharacterLayer
+  public override excludeFromSingleImagePainting: boolean = true
   
   private posX 
   private posY
   private width
   private height
 
-  public draw(cell: Cell, frame: number): void {
+  public onDraw(cell: Cell, spriteTile: SpriteTile, frame: number): void {
     const asset = GSM.AssetController.getSelectedAssets().find(asset => asset.cell.id === cell.id) as PlayableAsset 
     if(!asset) { return } 
     

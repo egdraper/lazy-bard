@@ -1,4 +1,5 @@
 import { DrawableItem } from "../models/map";
+import { RockWall } from "./rock-wall-terrain.db";
 import { trees } from "./trees.db";
 
 export const drawableItems: DrawableItem[] = [
@@ -8,12 +9,11 @@ export const drawableItems: DrawableItem[] = [
     spriteType: "DrawableNaturalWall",
     imageUrl: "assets/images/tree-transparent-base.png",
     drawingRules: trees
-  },
-  {
-    id: "Trees-GrassBase2",
-    name: "Green Trees with Grass Base2",
+  }, {
+    id: "StoneCliff-StoneBase",
+    name: "Stone Cliff with Stone Base",
     spriteType: "DrawableNaturalWall",
-    imageUrl: "assets/images/tree-transparent-base.png",
-    drawingRules: trees
-  }
+    imageUrl: "assets/images/RockWallGrassBase.png",
+    drawingRules: RockWall
+  },
 ]

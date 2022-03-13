@@ -12,8 +12,8 @@ export class ImageGenerator {
       tempCTX = renderer.ctx
       renderer.ctx = GSM.CanvasController.fullImageCTX
 
-      GSM.GridController.iterateCells(cell => {
-        renderer.draw(cell)
+      GSM.GridController.iterateCellsWithLayer((cell, layer) => {
+        renderer.draw(cell, layer)
       })
       renderer.ctx = tempCTX
     })

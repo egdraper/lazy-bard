@@ -60,13 +60,17 @@ export class GameComponent implements AfterViewInit{
     }
     if(event.code === "KeyE") {
       GSM.EventController.generalActionFire.next({
-        name: "paintingTerrain",
+        name: "paintingTreeTerrain",
         data: {
           id: "Trees-GrassBase",
-          name: "Green Trees with Grass Base",
-          spriteType: "DrawableNaturalWall",
-          imageUrl: "assets/images/tree-transparent-base.png",
-          drawingRules: trees
+        }
+      })
+    }
+    if(event.code === "KeyR") {
+      GSM.EventController.generalActionFire.next({
+        name: "paintingCliffTerrain",
+        data: {
+          id: "StoneCliff-StoneBase",
         }
       })
     }

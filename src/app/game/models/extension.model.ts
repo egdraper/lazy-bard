@@ -1,13 +1,9 @@
+import { Extensions } from "../extensions.register";
 import { Renderer } from "./renderer";
 
-
-export interface Extension {
-  id: string
-  init?: () => Promise<void>
-}
-
-export interface AddOnExtension extends Extension {
-  renderer: Renderer
+export class Extension {
+  public excludeFromSingleImagePainting: boolean = true
+  public init(): Promise<void> { return null }
 }
 
 export enum CanvasCTX {

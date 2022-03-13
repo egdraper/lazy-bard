@@ -1,11 +1,12 @@
 import { GSM } from "../../../../game-state-manager.service";
-import { Cell } from "../../../../models/map";
+import { Cell, ElevationLayers } from "../../../../models/map";
 import { Renderer } from "../../../../models/renderer";
 
 export class GridLinesRenderer extends Renderer {
-  public paintOrder = 2
+  public elevationLayer: ElevationLayers = ElevationLayers.BaseLayer
+  public override excludeFromIndividualCellPainting: boolean = true
 
-  public draw(cell: Cell): void {
+  public onDraw(cell: Cell): void {
     this.ctx.beginPath()
     this.ctx.moveTo(cell.posX, cell.posY)
     this.ctx.lineTo(cell.posX, (cell.posY) + GSM.Settings.blockSize)

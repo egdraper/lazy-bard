@@ -1,27 +1,19 @@
 import { GSM } from "src/app/game/game-state-manager.service";
-import { AddOnExtension, CanvasCTX, Extension } from "../../../models/extension.model";
-import { ElevationLayers } from "../../../models/map";
-import { AddOnBase } from "../../addon-base";
-import { ImageGenerator } from "../image.generator";
+import { CanvasLayerExtension } from "src/app/game/models/renderer";
+import { CanvasCTX } from "../../../models/extension.model";
+import { CanvasModule } from "../../addon-base";
+import { ImageGenerator } from "../image-generator.util";
 import { BaseTextureExtension } from "./base-texture/base-texture.extension";
 import { GridLineExtension } from "./grid-lines/grid-lines.extension";
 
-export class BaseLayerAddOn extends AddOnBase {
-  public id = "BaseLayerAddOn"
-  public visibleName = "Base Layer"
-  public zIndex: number = 1
-  public largeImage: HTMLImageElement = null
+export class BaseCanvasModule extends CanvasModule {
   public ctx = CanvasCTX.Background
-  public override excludeFromIndividualCellPainting = true
-  
-  public extensions: AddOnExtension[] = [
+ 
+  // order matters for rendering
+  public extensions: CanvasLayerExtension[] = [
     new BaseTextureExtension(),
     new GridLineExtension(),
   ]
-
-  constructor() {
-    super()
-  }
 
   public override async init(): Promise<void> {
     await super.init()
@@ -33,6 +25,6 @@ export class BaseLayerAddOn extends AddOnBase {
   private onGenerateBackground(): void {
     const renderers = this.extensions.map(extension => extension.renderer)
     const image = ImageGenerator.generateLayerImage(renderers)
-    GSM.RendererController.BaseCanvasRenderer.image = image    
+    GSM.RendererController.baseCanvasRenderer.image = image    
   }
 }

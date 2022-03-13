@@ -1,16 +1,16 @@
 import { Subscription } from "rxjs"
-import { AddonRenderer } from "../extensions/drawable-addons/addon.renderer"
-import { ImageGenerator } from "../extensions/drawable-addons/image.generator"
-import { AddOnBase } from "../extensions/addon-base"
+import { AddonRenderer } from "../extensions/canvas-addons/addon-renderer.util"
+import { ImageGenerator } from "../extensions/canvas-addons/image-generator.util"
+import { CanvasModule } from "../extensions/addon-base"
 import { GSM } from "../game-state-manager.service"
 import { CanvasCTX } from "../models/extension.model"
 import { Renderer } from "../models/renderer"
 
 export class RendererController {
-  public AddonRenderer: AddonRenderer
-  public BaseCanvasRenderer: AddonRenderer
+  public foregroundCanvasRenderer: AddonRenderer
+  public baseCanvasRenderer: AddonRenderer
   public allIncludedRenderer: Renderer[] = []
-  public renderAddOnAsSingleImage = false
+  public renderForegroundCanvasAsSingleImage = false
 
   private subscriptions: Subscription[] = []
   
@@ -19,11 +19,11 @@ export class RendererController {
     this.subscriptions.push(GSM.EventController.generalActionFire.subscribe(this.onGenerateBackground.bind(this)))
   }
 
-  public init() {
-    GSM.AddonController.addOns.forEach((addon) =>
-      addon.getRenderers().forEach((renderer) => {
-        this.setupRenderers(addon)
-        if(!addon.excludeFromSingleImagePainting && !addon.excludeFromIndividualCellPainting) { 
+  public processRenderers() {
+    GSM.CanvasModuleController.canvasModules.forEach((canvasModule) =>
+      canvasModule.renderers.forEach((renderer) => {
+        this.setupRenderers(canvasModule)
+        if(!renderer.excludeFromSingleImagePainting && !renderer.excludeFromIndividualCellPainting) { 
           this.allIncludedRenderer.push(renderer)
         }
       })
@@ -35,48 +35,47 @@ export class RendererController {
   }
     
   private onFrameFire(frame: number): void {
-    if(!(GSM.AddonController.addOns && GSM.AddonController.addOns.length !== 0)) { return }
+    if(!(GSM.CanvasModuleController.canvasModules && GSM.CanvasModuleController.canvasModules.length !== 0)) { return }
     
     this.clearCanvases()    
     this.addOrderedRenderersToCells()
     this.renderBaseCanvasImages()
     
-    if(this.renderAddOnAsSingleImage) {
-      this.renderAddonAsSingleImage(frame)
+    if(this.renderForegroundCanvasAsSingleImage) {
+      this.renderForegroundAsSingleImage(frame)
     } else {
       this.renderAllLayersAndCellsIndependently(frame)
     }
   }
 
   private renderBaseCanvasImages() {
-    this.BaseCanvasRenderer.draw()
+    this.baseCanvasRenderer.draw()
   }
 
-  private renderAddonAsSingleImage(frame: number): void {
-    // renders the background and any included Addons as a single image
-    this.AddonRenderer.draw()
+  private renderForegroundAsSingleImage(frame: number): void {
+    this.foregroundCanvasRenderer.draw()
 
     // renders any excluded addons from being painted as part of the single image
-    GSM.AddonController.addOns.forEach(layerAddon => {
-      if(layerAddon.excludeFromSingleImagePainting) {
-        this.runRendererForExcludedAddons(layerAddon, frame)
-      }
+    GSM.CanvasModuleController.canvasModules.forEach(canvasModule => {
+      this.runRendererForExcludedAddons(canvasModule, frame)
     })
   }
 
   private renderAllLayersAndCellsIndependently(frame: number): void {
-    GSM.GridController.iterateAllVisibleCells((cell) => {
+    GSM.GridController.iterateCellsWithLayer((cell, layer) => {
       cell.renderers.forEach(renderer => {
-        renderer.draw(cell, frame)
+        renderer.draw(cell, layer, frame)
       })
     })
   }
 
-  private runRendererForExcludedAddons(layerAddon: AddOnBase, frame: number): void {
-    GSM.GridController.iterateAllVisibleCells(cell => {
-      layerAddon.getRenderers().forEach(renderer => {
-        renderer.draw(cell, frame)
-      })
+  private runRendererForExcludedAddons(canvasModule: CanvasModule, frame: number): void {
+    canvasModule.renderers.forEach(renderer => {
+      if(renderer.excludeFromSingleImagePainting) { 
+        GSM.GridController.iterateCellsWithLayer((cell, layer) => {
+          renderer.draw(cell, layer, frame)
+        })
+      }
     })
   }
     
@@ -92,9 +91,11 @@ export class RendererController {
     // if renderers have not been added to cells yet for performance, we add them
     if(GSM.GridController.getCell(0,0,0).renderers.length === 0) {
       GSM.GridController.iterateAllVisibleCells(cell => {
-        GSM.AddonController.addOns.forEach(addOn => {
-          if(addOn.excludeFromIndividualCellPainting) { return }
-          addOn.getRenderers().forEach(renderer => {
+        
+        GSM.CanvasModuleController.canvasModules.forEach(canvasModule => {
+          
+          canvasModule.renderers.forEach(renderer => {
+            if (renderer.excludeFromIndividualCellPainting) { return }
             cell.renderers.push(renderer)
           })
         })
@@ -105,32 +106,32 @@ export class RendererController {
   private onGenerateBackground(action): void {
     if (action.name === 'generateBackground') {
       const image = ImageGenerator.generateLayerImage(this.allIncludedRenderer)
-      this.renderAddOnAsSingleImage = !this.renderAddOnAsSingleImage
-      this.AddonRenderer.image = image
+      this.renderForegroundCanvasAsSingleImage = !this.renderForegroundCanvasAsSingleImage
+      this.foregroundCanvasRenderer.image = image
     }
   }
 
 
-  private setupRenderers(addon: AddOnBase): void {
-    this.AddonRenderer = new AddonRenderer()
-    this.BaseCanvasRenderer = new AddonRenderer()  
+  private setupRenderers(canvasModule: CanvasModule): void {
+    this.foregroundCanvasRenderer = new AddonRenderer()
+    this.baseCanvasRenderer = new AddonRenderer()  
        
-    addon.getRenderers().forEach(renderer=> {
-      if(addon.ctx === CanvasCTX.Background) {
+    canvasModule.renderers.forEach(renderer=> {
+      if(canvasModule.ctx === CanvasCTX.Background) {
         renderer.ctx = GSM.CanvasController.backgroundCTX
-        this.BaseCanvasRenderer.ctx = renderer.ctx
+        this.baseCanvasRenderer.ctx = renderer.ctx
       }
-      if(addon.ctx === CanvasCTX.Foreground) {
+      if(canvasModule.ctx === CanvasCTX.Foreground) {
         renderer.ctx = GSM.CanvasController.foregroundCTX
-        this.AddonRenderer.ctx = renderer.ctx
+        this.foregroundCanvasRenderer.ctx = renderer.ctx
       }
-      if(addon.ctx === CanvasCTX.Fog) {
+      if(canvasModule.ctx === CanvasCTX.Fog) {
         renderer.ctx = GSM.CanvasController.fogCTX
-        this.AddonRenderer.ctx = renderer.ctx
+        this.foregroundCanvasRenderer.ctx = renderer.ctx
       }
-      if(addon.ctx === CanvasCTX.BlackoutFog) {
+      if(canvasModule.ctx === CanvasCTX.BlackoutFog) {
         renderer.ctx = GSM.CanvasController.blackoutCTX
-        this.AddonRenderer.ctx = renderer.ctx
+        this.foregroundCanvasRenderer.ctx = renderer.ctx
       }
     })
   }

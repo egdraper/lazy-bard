@@ -1,25 +1,22 @@
 import { GSM } from '../../../../game-state-manager.service';
-import { AddOnExtension } from '../../../../models/extension.model';
 import { drawableItems } from '../../../../db/drawable-items.db';
 import { DrawableItem } from '../../../../models/map';
-import { TerrainPaintBrushEventHandler } from './terrain-paint-brush.event-handler';
-import { TerrainPaintBrushRenderer } from './terrain-paint-brush.renderer';
+import { TerrainPaintBrushRenderer } from './terrain-texture.renderer';
+import { CanvasLayerExtension } from 'src/app/game/models/renderer';
 
-export class TerrainPaintBrushExtension implements AddOnExtension {
-  public id = "TerrainPaintBrushExtension"
+export class TerrainTextureExtension extends CanvasLayerExtension {
   public renderer = new TerrainPaintBrushRenderer();
 
-  public async init(): Promise<void> {
-    new TerrainPaintBrushEventHandler(this.renderer);
+  public override async init(): Promise<void> {
     await this.setupImages();
   }
 
   private async setupImages(): Promise<void> {
     const drawableItems = await this.getDrawableImages();
-    this.loadImagesIntoRenderer(drawableItems);
+    this.catchImages(drawableItems);
   }
 
-  private loadImagesIntoRenderer(drawableItems: DrawableItem[]): void {
+  private catchImages(drawableItems: DrawableItem[]): void {
     drawableItems.forEach((drawableItems) => {
       GSM.ImageController.addImageBySrcUrl(drawableItems.imageUrl)
     });

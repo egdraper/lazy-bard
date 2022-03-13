@@ -1,15 +1,24 @@
 import { GSM } from '../game-state-manager.service'
-import {Cell, GameMap, Grid, NeighborLocation, Size } from '../models/map'
+import {Cell, ElevationLayers, GameMap, Grid, NeighborLocation, Size } from '../models/map'
 
 export class MapController {
   public gameMap: GameMap
   public loadedMaps: { [gameMapId: string]: GameMap } = {}
   public autoGenerateTerrain: boolean
+  public layerIterator: ElevationLayers[] = []
   private gridIterator: Cell[] = []
 
   public iterateCells(callBack: (cell: Cell) => void): void {
     this.gridIterator.forEach((cell) => {
       callBack(cell)
+    })
+  }
+
+  public iterateCellsWithLayer(callBack: (cell: Cell, layer: ElevationLayers) => void): void {
+    this.gridIterator.forEach((cell) => {
+      this.layerIterator.forEach((layer: ElevationLayers) => {
+        callBack(cell, layer)
+      })
     })
   }
 
@@ -117,6 +126,7 @@ export class MapController {
           posY: i * GSM.Settings.blockSize,
           id: `x${l}:y${i}`,
           renderers: [],
+          spriteTiles: {}
         }
 
         // adds cell to grid at layer
@@ -124,8 +134,14 @@ export class MapController {
         this.gridIterator.push(cell)
       }
     }
+
     this.loadedMaps[this.gameMap.id] = this.gameMap
+    Object.keys(ElevationLayers).forEach(key => {
+      GSM.GridController.layerIterator.push(ElevationLayers[key])
+    })
   }
+
+
 }
 
 // public maps: {[gridId: string]: GameMap} = {}

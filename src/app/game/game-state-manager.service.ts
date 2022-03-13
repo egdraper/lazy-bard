@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { CanvasController } from './controllers/canvas.controller';
 import { MapController } from './controllers/map.controller';
 import { EventController } from './controllers/event.controller';
-import { RendererController } from './controllers/paint.controller';
+import { RendererController } from './controllers/render.controller';
 import { AssetController } from './controllers/asset.controller';
 import { FrameController } from './controllers/timing.controller';
 
 import { Settings } from './models/settings';
-import { AddOnController } from './controllers/layer.controller';
+import { CanvasModuleController } from './controllers/canvas-module.controller';
 import { Extensions } from './extensions.register';
 import { ImagesController } from './controllers/images.controller';
 @Injectable({
@@ -23,7 +23,7 @@ export class GSM {
   public static RendererController: RendererController
   public static EventController: EventController
   public static AssetController: AssetController
-  public static AddonController: AddOnController
+  public static CanvasModuleController: CanvasModuleController
   public static ImageController: ImagesController
   public loadingFinished = false
   constructor() {
@@ -40,7 +40,7 @@ export class GSM {
     GSM.CanvasController = new CanvasController()
     GSM.FrameController = new FrameController()
     GSM.EventController = new EventController()
-    GSM.AddonController = new AddOnController()
+    GSM.CanvasModuleController = new CanvasModuleController()
     GSM.RendererController = new RendererController() 
     GSM.ImageController = new ImagesController()   
     GSM.Extensions = new Extensions() 
@@ -55,9 +55,16 @@ export class GSM {
     
     GSM.CanvasController.setupComplete.subscribe(() => {            
       setTimeout(async ()=> {
+        // sets up the maps
         GSM.GridController.setupMap()
+        
+        // sets up extension and their renderers
         await GSM.Extensions.init()
-        GSM.RendererController.init()
+        
+        // organizes renderers for drawing 
+        GSM.RendererController.processRenderers()
+
+        // starts the game graphics
         GSM.FrameController.start()  
       })
     })

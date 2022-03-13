@@ -1,31 +1,29 @@
 import { GSM } from "../game-state-manager.service";
-import { AddOnExtension, CanvasCTX, Extension } from "../models/extension.model";
-import { ElevationLayers } from "../models/map";
-import { Renderer } from "../models/renderer";
+import { CanvasCTX, Extension } from "../models/extension.model";
 
-export abstract class AddOnBase implements Extension {
-    public abstract id: string
-    public abstract visibleName: string
-    public abstract zIndex: number;
+import { ElevationLayers } from "../models/map";
+import { CanvasLayerExtension, Renderer } from "../models/renderer";
+
+export abstract class CanvasModule {
     public abstract extensions: Extension[];
     public abstract ctx: CanvasCTX    
-    public excludeFromSingleImagePainting: boolean = false // excludes this extension from background being rendered as part of a single image 
-    public excludeFromIndividualCellPainting: boolean = false // excludes this extension from background being rendered as part of a single image 
-    protected renderers: Renderer[] = []
+    
+    private _renderers: Renderer[] = []
+    public get renderers() {
+      return this._renderers
+    }
   
-    public async init(): Promise<void> {
-      GSM.AddonController.registerAddon(this);
-      
+    constructor() {
+      GSM.CanvasModuleController.registerAddon(this)
+    }
+    
+    public async init(): Promise<void> {      
       for(const extension of this.extensions) {
         if(extension.init) {
           await extension.init()
         }
       }
-      this.renderers = this.extensions.map((extension: AddOnExtension) => extension.renderer).filter(renderer => renderer);
+      this._renderers = this.extensions.map((extension: CanvasLayerExtension) => extension.renderer).filter(renderer => renderer);
     }
-      
-    public getRenderers(): Renderer[] {
-      return this.renderers
-    } 
   }
   

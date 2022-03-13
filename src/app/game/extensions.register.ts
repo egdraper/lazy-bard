@@ -1,17 +1,25 @@
-import { BaseLayerAddOn } from './extensions/drawable-addons/base-layer/base-layer.addon';
-import { MovableItemsAddon } from './extensions/drawable-addons/movable-items/movable-items.addon';
-import { TerrainLayerAddOn } from './extensions/drawable-addons/terrain/terrain.addon';
+import { BaseCanvasModule } from './extensions/canvas-addons/base-canvas-layer/base-canvas-layer.module';
+import { ForegroundCanvasModule } from './extensions/canvas-addons/foreground-canvas-layer/forground-canvas-layer.module';
+import { TerrainCliffBrushExtension } from './extensions/structural-addons/terrain-cliff-brush/terrain-cliff-brush.extension';
+import { TerrainTreeBrushExtension } from './extensions/structural-addons/terrain-tree-brush/terrain-tree-brush.extension';
+
 
 
 export class Extensions {
-    public baseLayerExtension = new BaseLayerAddOn()
-    public floorLayerExtension = new MovableItemsAddon()
-    public terrainLayerExtension = new TerrainLayerAddOn()
+    public addon = [
+      new BaseCanvasModule(),
+      new ForegroundCanvasModule(),
+      new TerrainTreeBrushExtension(),
+      new TerrainCliffBrushExtension()
+    ]
 
     public async init(): Promise<void> {
-      await this.baseLayerExtension.init()
-      await this.floorLayerExtension.init()
-      await this.terrainLayerExtension.init()
+      const promises = []
+      this.addon.forEach(addon => {
+        promises.push(addon.init())
+      })
+
+      await Promise.all(promises)
     }
   }
 

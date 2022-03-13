@@ -2,12 +2,23 @@ import { Renderer } from "./renderer"
 
 
 export class GameMap {
-  id: string
-  elevations: {[elevation: number]: Grid} = {}
-  name: string
-  baseTexture: string
+  public id: string
+  public name: string
+  public elevations: {[elevation: number]: Grid} = {}
+  public baseTexture: string
   
   constructor(public size: Size) { }
+}
+
+export class Cell {
+  id: string
+  x: number // X Grid Coordinates
+  y: number // Y Grid Coordinates
+  posX: number // X Pixel Coordinates
+  posY: number // Y Pixel Coordinates 
+  obstacle?: boolean 
+  renderers?: Renderer[]  
+  spriteTiles?: {[layer: string ]: SpriteTile} = {}
 }
 
 export enum NeighborLocation {
@@ -23,8 +34,8 @@ export enum NeighborLocation {
 
 export enum ElevationLayers {
   BaseLayer = "baseLayer",
-  CharacterLayer = "characterLayer",
   TerrainLayer = "terrainLayer",
+  CharacterLayer = "characterLayer",
   StructureLayer = "structureLayer",
   PartitionLayer = "partitionLayer",
   CeilingObjectLayer = "ceilingObjectLayer",
@@ -35,24 +46,8 @@ export enum ElevationLayers {
 }
 
 export class Grid {
-  id: string
-  cells: { [cell: string]: Cell } = {}
-}
-
-export class Cell {
-  id: string
-  x: number // X Grid Coordinates
-  y: number // Y Grid Coordinates
-  posX: number // X Pixel Coordinates
-  posY: number // Y Pixel Coordinates 
-  obstacle?: boolean 
-  renderers?: Renderer[]  
-}
-
-export class MapAssetImageCell {
-  id: string
-  imageTile: SpriteTile
-  drawableTileId?: string
+  public id: string
+  public cells: { [cell: string]: Cell } = {}
 }
 
 export class Size {
@@ -62,13 +57,14 @@ export class Size {
 
 export class SpriteTile {
   id: string
+  drawableTileId?: string
   spriteGridPosX: number
   spriteGridPosY: number
   imageUrl?: string
-  tileHeight: number
-  tileWidth: number
-  tileOffsetX: number
-  tileOffsetY: number
+  tileHeight?: number
+  tileWidth?: number
+  tileOffsetX?: number
+  tileOffsetY?: number
   sizeAdjustment?: number
   visionBlocking?: boolean
   obstacle: boolean

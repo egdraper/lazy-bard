@@ -1,17 +1,18 @@
-import { Cell, MapAssetImageCell, SpriteTile } from "src/app/game/models/map"
-import { AddOnExtension } from "../../../../models/extension.model"
+import { Cell, ElevationLayers, SpriteTile } from "src/app/game/models/map"
 import { backgroundSprites } from "../../../../db/background.db"
 import { GSM } from "../../../../game-state-manager.service"
 import { TextureSprite } from "../../../../models/sprites"
 import { BaseTextureRenderer } from "./base-texture.renderer"
 import { BaseTextureRandomGenerator } from "./base-texture.generator"
+import { CanvasLayerExtension } from "../../../../models/renderer"
 
-export class BaseTextureExtension implements AddOnExtension {
-  public id = "BaseTextureExtension"
+export class BaseTextureExtension extends CanvasLayerExtension {
+  public override excludeFromIndividualCellPainting = true
   public renderer = new BaseTextureRenderer()
-  public baseTexture: TextureSprite
+  
+  private baseTexture: TextureSprite
 
-  public async init(): Promise<void> {
+  public override async init(): Promise<void> {
     await this.setupImages()
   }
 
@@ -44,12 +45,11 @@ export class BaseTextureExtension implements AddOnExtension {
 
   private setBackgroundImages(): void {
     GSM.GridController.iterateCells((cell: Cell) => {
-      const assetCell = new MapAssetImageCell()
-      assetCell.imageTile = new SpriteTile()  
-      assetCell.imageTile.imageUrl = this.baseTexture?.imageUrl || ""
-      BaseTextureRandomGenerator.autoFillBackgroundTerrain(assetCell.imageTile, this.baseTexture)
+      const spriteTile = new SpriteTile()
+      spriteTile.imageUrl = this.baseTexture?.imageUrl || ""
+      BaseTextureRandomGenerator.autoFillBackgroundTerrain(spriteTile, this.baseTexture)
 
-      this.renderer.mapAssets[cell.id] = assetCell
+      cell.spriteTiles[ElevationLayers.BaseLayer] = spriteTile
     })
   }
 }

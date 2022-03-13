@@ -1,3 +1,4 @@
+import { Extension } from "src/app/game/models/extension.model";
 import { GSM } from "../../../game-state-manager.service";
 import { GeneralAction } from "../../../models/settings";
 // import { BaseTerrainGenerator } from "./base-terrain.generator";
