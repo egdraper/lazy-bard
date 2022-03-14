@@ -1,6 +1,4 @@
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
-import { drawableItems } from './db/drawable-items.db';
-import { trees } from './db/trees.db';
+import { AfterViewInit, Component, HostListener } from '@angular/core';
 import { GSM } from './game-state-manager.service';
 
 @Component({
@@ -15,7 +13,7 @@ export class GameComponent implements AfterViewInit{
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame("firstGame", 100, 100, "forest")
+      this.gameStateManager.newGame("firstGame", 30, 30, "forest")
       GSM.EventController.generalActionFire.subscribe(action => {
         this.selected = action.name 
       })
@@ -65,6 +63,18 @@ export class GameComponent implements AfterViewInit{
           id: "Trees-GrassBase",
         }
       })
+    }
+    if(event.code === "Digit2") {
+      GSM.GridController.layerIndex++
+      if(!GSM.GridController.gameMap.elevations[GSM.GridController.layerIndex]) {
+        GSM.GridController.setupMap()
+      }
+    }
+    if(event.code === "Digit1") {
+      GSM.GridController.layerIndex--
+      if(!GSM.GridController.gameMap.elevations[GSM.GridController.layerIndex]) {
+        GSM.GridController.setupMap()
+      }
     }
     if(event.code === "KeyR") {
       GSM.EventController.generalActionFire.next({

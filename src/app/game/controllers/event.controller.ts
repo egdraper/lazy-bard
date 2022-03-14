@@ -1,5 +1,4 @@
 import { BehaviorSubject, Subject } from "rxjs";
-import { Cell } from "../models/map";
 import { GeneralAction } from "../models/settings";
 
 export class EventController {

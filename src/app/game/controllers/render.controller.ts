@@ -89,7 +89,7 @@ export class RendererController {
 
   public addOrderedRenderersToCells(): void {
     // if renderers have not been added to cells yet for performance, we add them
-    if(GSM.GridController.getCell(0,0,0).renderers.length === 0) {
+    if(GSM.GridController.getCell(0,0,GSM.GridController.layerIndex).renderers.length === 0) {
       GSM.GridController.iterateAllVisibleCells(cell => {
         
         GSM.CanvasModuleController.canvasModules.forEach(canvasModule => {

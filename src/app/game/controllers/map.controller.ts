@@ -5,7 +5,9 @@ export class MapController {
   public gameMap: GameMap
   public loadedMaps: { [gameMapId: string]: GameMap } = {}
   public autoGenerateTerrain: boolean
-  public layerIterator: ElevationLayers[] = []
+  public layerIndex: number = 0
+
+  private layerIterator: ElevationLayers[] = []
   private gridIterator: Cell[] = []
 
   public iterateCells(callBack: (cell: Cell) => void): void {
@@ -114,8 +116,8 @@ export class MapController {
   public setupMap(): void {
     for (let i = 0; i < this.gameMap.size.height; i++) {
       for (let l = 0; l < this.gameMap.size.width; l++) {
-        if (!this.gameMap.elevations[0]) {
-          this.gameMap.elevations[0] = new Grid()
+        if (!this.gameMap.elevations[this.layerIndex]) {
+          this.gameMap.elevations[this.layerIndex] = new Grid()
         }
 
         // creates cell
@@ -130,7 +132,7 @@ export class MapController {
         }
 
         // adds cell to grid at layer
-        this.gameMap.elevations[0].cells[`x${l}:y${i}`] = cell
+        this.gameMap.elevations[this.layerIndex].cells[`x${l}:y${i}`] = cell
         this.gridIterator.push(cell)
       }
     }
