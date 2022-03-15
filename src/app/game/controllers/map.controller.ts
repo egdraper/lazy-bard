@@ -1,13 +1,14 @@
 import { GSM } from '../game-state-manager.service'
-import {Cell, ElevationLayers, GameMap, Grid, NeighborLocation, Size } from '../models/map'
+import {Cell, RenderingLayers, GameMap, Grid, NeighborLocation, Size } from '../models/map'
 
 export class MapController {
   public gameMap: GameMap
   public loadedMaps: { [gameMapId: string]: GameMap } = {}
   public autoGenerateTerrain: boolean
   public layerIndex: number = 0
+  public baseLayer: number = 0
 
-  private layerIterator: ElevationLayers[] = []
+  private layerIterator: RenderingLayers[] = []
   private gridIterator: Cell[] = []
 
   public iterateCells(callBack: (cell: Cell) => void): void {
@@ -16,9 +17,9 @@ export class MapController {
     })
   }
 
-  public iterateCellsWithLayer(callBack: (cell: Cell, layer: ElevationLayers) => void): void {
+  public iterateCellsWithRenderingLayer(callBack: (cell: Cell, layer: RenderingLayers) => void): void {
     this.gridIterator.forEach((cell) => {
-      this.layerIterator.forEach((layer: ElevationLayers) => {
+      this.layerIterator.forEach((layer: RenderingLayers) => {
         callBack(cell, layer)
       })
     })
@@ -95,16 +96,16 @@ export class MapController {
     }
   }
 
-  public getAllNeighbors(cell: Cell, layer: number): Cell[] {
+  public getAllNeighbors(cell: Cell, elevationIndex: number): Cell[] {
     const cells = []
-    cells.push(this.getNeighbor(cell, NeighborLocation.Top, layer))
-    cells.push(this.getNeighbor(cell, NeighborLocation.Right, layer))
-    cells.push(this.getNeighbor(cell, NeighborLocation.Bottom, layer))
-    cells.push(this.getNeighbor(cell, NeighborLocation.Left, layer))
-    cells.push(this.getNeighbor(cell, NeighborLocation.TopRight, layer))
-    cells.push(this.getNeighbor(cell, NeighborLocation.BottomRight, layer))
-    cells.push(this.getNeighbor(cell, NeighborLocation.BottomLeft, layer))
-    cells.push(this.getNeighbor(cell, NeighborLocation.TopLeft, layer))
+    cells.push(this.getNeighbor(cell, NeighborLocation.Top, elevationIndex))
+    cells.push(this.getNeighbor(cell, NeighborLocation.Right, elevationIndex))
+    cells.push(this.getNeighbor(cell, NeighborLocation.Bottom, elevationIndex))
+    cells.push(this.getNeighbor(cell, NeighborLocation.Left, elevationIndex))
+    cells.push(this.getNeighbor(cell, NeighborLocation.TopRight, elevationIndex))
+    cells.push(this.getNeighbor(cell, NeighborLocation.BottomRight, elevationIndex))
+    cells.push(this.getNeighbor(cell, NeighborLocation.BottomLeft, elevationIndex))
+    cells.push(this.getNeighbor(cell, NeighborLocation.TopLeft, elevationIndex))
     return cells
   }
 
@@ -113,12 +114,18 @@ export class MapController {
     this.gameMap.id = Math.random().toString()
   }
 
-  public setupMap(): void {
+  public setupMap(layerDirection: "up" | "down" | "init"): void {
+    if(layerDirection === "init" || layerDirection === "up") {
+      this.gameMap.elevations.push(new Grid())
+    }
+
+    if (layerDirection === "down") {
+      this.baseLayer++
+      this.gameMap.elevations.unshift(new Grid())
+    }
+    
     for (let i = 0; i < this.gameMap.size.height; i++) {
       for (let l = 0; l < this.gameMap.size.width; l++) {
-        if (!this.gameMap.elevations[this.layerIndex]) {
-          this.gameMap.elevations[this.layerIndex] = new Grid()
-        }
 
         // creates cell
         const cell = {
@@ -133,13 +140,27 @@ export class MapController {
 
         // adds cell to grid at layer
         this.gameMap.elevations[this.layerIndex].cells[`x${l}:y${i}`] = cell
-        this.gridIterator.push(cell)
       }
     }
+    
+    this.gridIterator = []
+    
+    this.gameMap.elevations.forEach((elevation, index)=> {
+      for (let i = 0; i < this.gameMap.size.height; i++) {
+        for (let l = 0; l < this.gameMap.size.width; l++) {
+          const cell = this.gameMap.elevations[index].cells[`x${l}:y${i}`]
+          cell.elevationIndex = index
+          this.gridIterator.push(cell)
+        }
+      }
+    })
 
-    this.loadedMaps[this.gameMap.id] = this.gameMap
-    Object.keys(ElevationLayers).forEach(key => {
-      GSM.GridController.layerIterator.push(ElevationLayers[key])
+    if(layerDirection === "init") {
+      this.loadedMaps[this.gameMap.id] = this.gameMap
+    }
+
+    Object.keys(RenderingLayers).forEach(key => {
+      GSM.GridController.layerIterator.push(RenderingLayers[key])
     })
   }
 

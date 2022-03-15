@@ -1,6 +1,6 @@
 import { Sprite } from 'src/app/game/models/sprites';
 import { GSM } from '../../../game-state-manager.service';
-import { SpriteTile, NeighborLocation, ElevationLayers } from '../../../models/map';
+import { SpriteTile, NeighborLocation, RenderingLayers } from '../../../models/map';
 
 export class TerrainCliffBrushEventHandler {
   constructor() {
@@ -20,25 +20,25 @@ export class TerrainCliffBrushEventHandler {
       const topRightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.TopRight, elevation)
       const rightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Right, elevation)
       
-      const drawCell = cell.spriteTiles[ElevationLayers.TerrainLayer] = new SpriteTile()
+      const drawCell = cell.spriteTiles[RenderingLayers.TerrainLayer] = new SpriteTile()
       drawCell.drawableTileId = drawableTile.id
       cell.obstacle = true
 
-      const drawTopCell = topCell.spriteTiles[ElevationLayers.TerrainLayer] = new SpriteTile()
+      const drawTopCell = topCell.spriteTiles[RenderingLayers.TerrainLayer] = new SpriteTile()
       drawTopCell.drawableTileId = drawableTile.id
       topCell.obstacle = true
 
-      const drawRightCell = rightCell.spriteTiles[ElevationLayers.TerrainLayer] = new SpriteTile()
+      const drawRightCell = rightCell.spriteTiles[RenderingLayers.TerrainLayer] = new SpriteTile()
       drawRightCell.drawableTileId = drawableTile.id
       rightCell.obstacle = true
     
-      const drawTopRightCell = topRightCell.spriteTiles[ElevationLayers.TerrainLayer] = new SpriteTile()
+      const drawTopRightCell = topRightCell.spriteTiles[RenderingLayers.TerrainLayer] = new SpriteTile()
       drawTopRightCell.drawableTileId = drawableTile.id
       topRightCell.obstacle = true
     }  
 
     if(GSM.EventController.generalActionFire.value.name === "deleteTerrain") {
-      delete cell.spriteTiles[ElevationLayers.TerrainLayer]
+      delete cell.spriteTiles[RenderingLayers.TerrainLayer]
     }
   }
 

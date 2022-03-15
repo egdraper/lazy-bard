@@ -1,9 +1,9 @@
 import { GSM } from "../../../../game-state-manager.service";
-import { Cell, ElevationLayers } from "../../../../models/map";
+import { Cell, RenderingLayers } from "../../../../models/map";
 import { Renderer } from "../../../../models/renderer";
 
 export class GridLinesRenderer extends Renderer {
-  public elevationLayer: ElevationLayers = ElevationLayers.BaseLayer
+  public elevationLayer: RenderingLayers = RenderingLayers.BaseLayer
   public override excludeFromIndividualCellPainting: boolean = true
 
   public onDraw(cell: Cell): void {

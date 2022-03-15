@@ -62,9 +62,9 @@ export class RendererController {
   }
 
   private renderAllLayersAndCellsIndependently(frame: number): void {
-    GSM.GridController.iterateCellsWithLayer((cell, layer) => {
+    GSM.GridController.iterateCellsWithRenderingLayer((cell, layer) => {
       cell.renderers.forEach(renderer => {
-        renderer.draw(cell, layer, frame)
+        renderer.draw(cell, layer, cell.elevationIndex, frame)
       })
     })
   }
@@ -72,8 +72,8 @@ export class RendererController {
   private runRendererForExcludedAddons(canvasModule: CanvasModule, frame: number): void {
     canvasModule.renderers.forEach(renderer => {
       if(renderer.excludeFromSingleImagePainting) { 
-        GSM.GridController.iterateCellsWithLayer((cell, layer) => {
-          renderer.draw(cell, layer, frame)
+        GSM.GridController.iterateCellsWithRenderingLayer((cell, layer) => {
+          renderer.draw(cell, layer, cell.elevationIndex, frame)
         })
       }
     })

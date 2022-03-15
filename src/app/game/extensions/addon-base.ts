@@ -1,7 +1,7 @@
 import { GSM } from "../game-state-manager.service";
 import { CanvasCTX, Extension } from "../models/extension.model";
 
-import { ElevationLayers } from "../models/map";
+import { RenderingLayers } from "../models/map";
 import { CanvasLayerExtension, Renderer } from "../models/renderer";
 
 export abstract class CanvasModule {

@@ -1,10 +1,10 @@
 import { GSM } from "../../../../game-state-manager.service";
-import { Cell, ElevationLayers, SpriteTile } from "../../../../models/map";
+import { Cell, RenderingLayers, SpriteTile } from "../../../../models/map";
 import { Renderer } from "../../../../models/renderer";
 import { PlayableAsset } from "../playable-asset/playable-asset.model";
 
 export class SelectionIndicatorRenderer extends Renderer {
-  public elevationLayer: ElevationLayers = ElevationLayers.CharacterLayer
+  public elevationLayer: RenderingLayers = RenderingLayers.CharacterLayer
   public override excludeFromSingleImagePainting: boolean = true
   
   private posX 
@@ -12,7 +12,7 @@ export class SelectionIndicatorRenderer extends Renderer {
   private width
   private height
 
-  public onDraw(cell: Cell, spriteTile: SpriteTile, frame: number): void {
+  public onDraw(cell: Cell, spriteTile: SpriteTile, layerIndex: number, frame: number): void {
     const asset = GSM.AssetController.getSelectedAssets().find(asset => asset.cell.id === cell.id) as PlayableAsset 
     if(!asset) { return } 
     

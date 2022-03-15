@@ -1,4 +1,4 @@
-import { Cell, ElevationLayers, SpriteTile } from "src/app/game/models/map"
+import { Cell, RenderingLayers, SpriteTile } from "src/app/game/models/map"
 import { backgroundSprites } from "../../../../db/background.db"
 import { GSM } from "../../../../game-state-manager.service"
 import { TextureSprite } from "../../../../models/sprites"
@@ -49,7 +49,7 @@ export class BaseTextureExtension extends CanvasLayerExtension {
       spriteTile.imageUrl = this.baseTexture?.imageUrl || ""
       BaseTextureRandomGenerator.autoFillBackgroundTerrain(spriteTile, this.baseTexture)
 
-      cell.spriteTiles[ElevationLayers.BaseLayer] = spriteTile
+      cell.spriteTiles[RenderingLayers.BaseLayer] = spriteTile
     })
   }
 }

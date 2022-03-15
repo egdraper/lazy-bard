@@ -1,9 +1,9 @@
 import { GSM } from "../../../../game-state-manager.service"
-import { Cell, ElevationLayers, SpriteTile } from "../../../../models/map"
+import { Cell, RenderingLayers, SpriteTile } from "../../../../models/map"
 import { Renderer } from "../../../../models/renderer"
 
 export class BaseTextureRenderer extends Renderer {
-  public elevationLayer: ElevationLayers = ElevationLayers.BaseLayer
+  public elevationLayer: RenderingLayers = RenderingLayers.BaseLayer
   public override excludeFromIndividualCellPainting: boolean = true
 
   public onDraw(cell: Cell, spriteTile: SpriteTile): void {

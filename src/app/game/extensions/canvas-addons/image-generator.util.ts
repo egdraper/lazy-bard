@@ -1,5 +1,5 @@
 import { GSM } from "../../game-state-manager.service";
-import { ElevationLayers } from "../../models/map";
+import { RenderingLayers } from "../../models/map";
 import { Renderer } from "../../models/renderer";
 
 export class ImageGenerator {
@@ -12,8 +12,11 @@ export class ImageGenerator {
       tempCTX = renderer.ctx
       renderer.ctx = GSM.CanvasController.fullImageCTX
 
-      GSM.GridController.iterateCellsWithLayer((cell, layer) => {
-        renderer.draw(cell, layer)
+      GSM.GridController.iterateCellsWithRenderingLayer((cell, layer) => {
+        const elevationCount = GSM.GridController.gameMap.elevations.length
+        for(let elevationIndex = 0; elevationIndex < elevationCount; elevationIndex++) {
+          renderer.draw(cell, layer, elevationIndex)
+        }
       })
       renderer.ctx = tempCTX
     })

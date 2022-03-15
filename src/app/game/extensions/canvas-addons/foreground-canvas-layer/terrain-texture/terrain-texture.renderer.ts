@@ -1,17 +1,17 @@
 import { drawableItems } from "../../../../db/drawable-items.db"
 import { GSM } from "../../../../game-state-manager.service"
-import { Cell, DrawableItem, ElevationLayers, SpriteTile } from "../../../../models/map"
+import { Cell, DrawableItem, RenderingLayers, SpriteTile } from "../../../../models/map"
 import { Renderer } from "../../../../models/renderer"
 import { TerrainEdgeCalculator } from "./terrain-edge-calculator"
 
 export class TerrainPaintBrushRenderer extends Renderer {
-  public elevationLayer: ElevationLayers = ElevationLayers.TerrainLayer
+  public elevationLayer: RenderingLayers = RenderingLayers.TerrainLayer
 
-  public onDraw(cell: Cell, spriteTile: SpriteTile): void {
+  public onDraw(cell: Cell, spriteTile: SpriteTile, elevationIndex: number): void {
     if(!spriteTile) { return }
 
     if(GSM.EventController.generalActionFire.value.name.includes("Terrain")) {
-      spriteTile = TerrainEdgeCalculator.calculateTerrainEdges(cell, spriteTile, drawableItems.find(item => item.id === spriteTile.drawableTileId))
+      spriteTile = TerrainEdgeCalculator.calculateTerrainEdges(cell, spriteTile, drawableItems.find(item => item.id === spriteTile.drawableTileId), elevationIndex)
     }
 
     this.ctx.imageSmoothingEnabled = false

@@ -4,7 +4,7 @@ import { Renderer } from "./renderer"
 export class GameMap {
   public id: string
   public name: string
-  public elevations: {[elevation: number]: Grid} = {}
+  public elevations: Grid[] = []
   public baseTexture: string
   
   constructor(public size: Size) { }
@@ -16,6 +16,7 @@ export class Cell {
   y: number // Y Grid Coordinates
   posX: number // X Pixel Coordinates
   posY: number // Y Pixel Coordinates 
+  elevationIndex?: number
   obstacle?: boolean 
   renderers?: Renderer[]  
   spriteTiles?: {[layer: string ]: SpriteTile} = {}
@@ -32,17 +33,17 @@ export enum NeighborLocation {
   TopLeft
 }
 
-export enum ElevationLayers {
+export enum RenderingLayers {
   BaseLayer = "baseLayer",
   TerrainLayer = "terrainLayer",
   CharacterLayer = "characterLayer",
-  StructureLayer = "structureLayer",
-  PartitionLayer = "partitionLayer",
-  CeilingObjectLayer = "ceilingObjectLayer",
-  FloorObjectLayer = "floorObjectLayer",
-  SuspendedObjectLayer = "suspendedObjectLayer",
-  WallObjectLayer = "wallObjectLayer",
-  GatewayLayer = "gatewayLayer"
+  // StructureLayer = "structureLayer",
+  // PartitionLayer = "partitionLayer",
+  // CeilingObjectLayer = "ceilingObjectLayer",
+  // FloorObjectLayer = "floorObjectLayer",
+  // SuspendedObjectLayer = "suspendedObjectLayer",
+  // WallObjectLayer = "wallObjectLayer",
+  // GatewayLayer = "gatewayLayer"
 }
 
 export class Grid {

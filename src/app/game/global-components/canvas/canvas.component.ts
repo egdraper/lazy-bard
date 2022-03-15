@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { GSM } from '../../game-state-manager.service';
-import { ElevationLayers } from '../../models/map';
+import { RenderingLayers } from '../../models/map';
 import { CanvasSpecs } from '../../models/settings';
 
 @Component({

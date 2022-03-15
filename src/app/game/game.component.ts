@@ -67,13 +67,13 @@ export class GameComponent implements AfterViewInit{
     if(event.code === "Digit2") {
       GSM.GridController.layerIndex++
       if(!GSM.GridController.gameMap.elevations[GSM.GridController.layerIndex]) {
-        GSM.GridController.setupMap()
+        GSM.GridController.setupMap("up")
       }
     }
     if(event.code === "Digit1") {
       GSM.GridController.layerIndex--
       if(!GSM.GridController.gameMap.elevations[GSM.GridController.layerIndex]) {
-        GSM.GridController.setupMap()
+        GSM.GridController.setupMap("down")
       }
     }
     if(event.code === "KeyR") {

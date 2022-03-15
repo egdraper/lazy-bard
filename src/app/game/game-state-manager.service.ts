@@ -56,7 +56,7 @@ export class GSM {
     GSM.CanvasController.setupComplete.subscribe(() => {            
       setTimeout(async ()=> {
         // sets up the maps
-        GSM.GridController.setupMap()
+        GSM.GridController.setupMap("init")
         
         // sets up extension and their renderers
         await GSM.Extensions.init()
