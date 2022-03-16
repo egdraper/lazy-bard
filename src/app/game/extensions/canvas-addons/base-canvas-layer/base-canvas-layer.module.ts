@@ -1,5 +1,7 @@
+import { ThisReceiver } from "@angular/compiler";
 import { GSM } from "src/app/game/game-state-manager.service";
 import { CanvasLayerExtension } from "src/app/game/models/renderer";
+import { GeneralAction } from "src/app/game/models/settings";
 import { CanvasCTX } from "../../../models/extension.model";
 import { CanvasModule } from "../../addon-base";
 import { ImageGenerator } from "../image-generator.util";
@@ -15,16 +17,18 @@ export class BaseCanvasModule extends CanvasModule {
     new GridLineExtension(),
   ]
 
-  public override async init(): Promise<void> {
-    await super.init()
-    setTimeout(() => {
-      this.onGenerateBackground()
-    }, 500)
+
+  constructor() {
+    super()
+    GSM.EventController.generalActionFire.subscribe(this.onGenerateBackground.bind(this))
   }
 
-  private onGenerateBackground(): void {
+  private onGenerateBackground(event: GeneralAction): void {
+    if (event.name !== "startGame") { return }
     const renderers = this.extensions.map(extension => extension.renderer)
-    const image = ImageGenerator.generateLayerImage(renderers)
-    GSM.RendererController.baseCanvasRenderer.image = image    
+    renderers.forEach(renderer => renderer.excludeFromIndividualCellPainting = false)
+    
+    GSM.ImageController.baseLayerImage = GSM.ImageController.generateElevationImage(renderers, GSM.GridController.baseElevationLayerIndex)
+    renderers.forEach(renderer => renderer.excludeFromIndividualCellPainting = true)
   }
 }

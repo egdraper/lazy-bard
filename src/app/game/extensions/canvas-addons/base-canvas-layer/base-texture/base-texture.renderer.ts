@@ -3,7 +3,7 @@ import { Cell, RenderingLayers, SpriteTile } from "../../../../models/map"
 import { Renderer } from "../../../../models/renderer"
 
 export class BaseTextureRenderer extends Renderer {
-  public elevationLayer: RenderingLayers = RenderingLayers.BaseLayer
+  public renderingLayer: RenderingLayers = RenderingLayers.BaseLayer
   public override excludeFromIndividualCellPainting: boolean = true
 
   public onDraw(cell: Cell, spriteTile: SpriteTile): void {

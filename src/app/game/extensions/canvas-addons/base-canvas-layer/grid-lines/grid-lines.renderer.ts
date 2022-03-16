@@ -3,7 +3,7 @@ import { Cell, RenderingLayers } from "../../../../models/map";
 import { Renderer } from "../../../../models/renderer";
 
 export class GridLinesRenderer extends Renderer {
-  public elevationLayer: RenderingLayers = RenderingLayers.BaseLayer
+  public renderingLayer: RenderingLayers = RenderingLayers.BaseLayer
   public override excludeFromIndividualCellPainting: boolean = true
 
   public onDraw(cell: Cell): void {

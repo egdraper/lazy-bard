@@ -8,14 +8,12 @@ export abstract class RendererBase {
 
 export abstract class Renderer extends RendererBase {
   public abstract onDraw(cell: Cell, spriteTile: SpriteTile, elevationIndex: number, frame?: number)
-  public abstract elevationLayer: RenderingLayers
+  public abstract renderingLayer: RenderingLayers
   public excludeFromSingleImagePainting: boolean = false // excludes this extension from background being rendered as part of a single image 
   public excludeFromIndividualCellPainting: boolean = false // excludes this extension from background being rendered as part of a single image 
   
-  public draw(cell: Cell, layer: RenderingLayers, elevationIndex: number, frame?: number): void {
-    if(this.elevationLayer !== layer) { return }
-    
-    const spriteTile = cell.spriteTiles[layer]
+  public draw(cell: Cell, elevationIndex: number, frame?: number): void {
+   const spriteTile = cell.spriteTiles[this.renderingLayer]
     this.onDraw(cell, spriteTile, elevationIndex, frame )
   }
 }

@@ -4,7 +4,7 @@ import { Renderer } from "../../../../models/renderer";
 import { PlayableAsset } from "../playable-asset/playable-asset.model";
 
 export class SelectionIndicatorRenderer extends Renderer {
-  public elevationLayer: RenderingLayers = RenderingLayers.CharacterLayer
+  public renderingLayer: RenderingLayers = RenderingLayers.CharacterLayer
   public override excludeFromSingleImagePainting: boolean = true
   
   private posX 

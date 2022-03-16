@@ -9,7 +9,7 @@ export class TerrainCliffBrushEventHandler {
   }
 
   // adds the paintable terrain id to the cell clicked
-  private onEmptyCellClicked(cellId: string, elevation: number = GSM.GridController.layerIndex): void {
+  private onEmptyCellClicked(cellId: string, elevation: number = GSM.GridController.currentElevationLayerIndex): void {
 
     
 

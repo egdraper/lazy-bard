@@ -4,7 +4,7 @@ import { Renderer } from "./renderer"
 export class GameMap {
   public id: string
   public name: string
-  public elevations: Grid[] = []
+  public elevations: {[elevationIndx: number]: Grid} = {}
   public baseTexture: string
   
   constructor(public size: Size) { }
@@ -16,10 +16,11 @@ export class Cell {
   y: number // Y Grid Coordinates
   posX: number // X Pixel Coordinates
   posY: number // Y Pixel Coordinates 
-  elevationIndex?: number
   obstacle?: boolean 
-  renderers?: Renderer[]  
   spriteTiles?: {[layer: string ]: SpriteTile} = {}
+
+  renderers?: Renderer[]  // not saved
+  elevationIndex?: number // not saved
 }
 
 export enum NeighborLocation {
@@ -48,6 +49,7 @@ export enum RenderingLayers {
 
 export class Grid {
   public id: string
+  public elevationIndex: number
   public cells: { [cell: string]: Cell } = {}
 }
 
@@ -66,14 +68,11 @@ export class SpriteTile {
   tileWidth?: number
   tileOffsetX?: number
   tileOffsetY?: number
-  sizeAdjustment?: number
-  visionBlocking?: boolean
-  obstacle: boolean
   obstacleObstructionX?: number
   obstacleObstructionY?: number
+  selectableAreaX?: number
+  selectableAreaY?: number
   default?: boolean
-  allowForPassThrough?: boolean
-  addon?: string
   drawWhen?: {
     topNeighbor: boolean,
     topRightNeighbor: boolean,

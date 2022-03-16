@@ -44,7 +44,7 @@ export class BaseTextureExtension extends CanvasLayerExtension {
   }
 
   private setBackgroundImages(): void {
-    GSM.GridController.iterateCells((cell: Cell) => {
+    GSM.GridController.iterateCells(0, (cell: Cell) => {
       const spriteTile = new SpriteTile()
       spriteTile.imageUrl = this.baseTexture?.imageUrl || ""
       BaseTextureRandomGenerator.autoFillBackgroundTerrain(spriteTile, this.baseTexture)

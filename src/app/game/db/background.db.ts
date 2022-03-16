@@ -1,7 +1,5 @@
 import { TextureSprite } from "../models/sprites"
 
-
-
 export const backgroundSprites: TextureSprite[] = [
   {
     id: "greenGrass",

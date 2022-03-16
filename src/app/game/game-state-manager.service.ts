@@ -42,10 +42,10 @@ export class GSM {
     GSM.EventController = new EventController()
     GSM.CanvasModuleController = new CanvasModuleController()
     GSM.RendererController = new RendererController() 
-    GSM.ImageController = new ImagesController()   
     GSM.Extensions = new Extensions() 
     GSM.GridController = new MapController()
     GSM.GridController.createGameMap({width, height})
+    GSM.ImageController = new ImagesController()   
     GSM.GridController.gameMap.baseTexture = baseTexture
     
     //Order Doesn't Matter
@@ -55,17 +55,10 @@ export class GSM {
     
     GSM.CanvasController.setupComplete.subscribe(() => {            
       setTimeout(async ()=> {
-        // sets up the maps
-        GSM.GridController.setupMap("init")
+
         
         // sets up extension and their renderers
         await GSM.Extensions.init()
-        
-        // organizes renderers for drawing 
-        GSM.RendererController.processRenderers()
-
-        // starts the game graphics
-        GSM.FrameController.start()  
       })
     })
   }

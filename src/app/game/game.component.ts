@@ -9,7 +9,7 @@ import { GSM } from './game-state-manager.service';
 export class GameComponent implements AfterViewInit{
   public selected = "nothing"
   constructor(public gameStateManager: GSM) {
-  }
+}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -65,16 +65,22 @@ export class GameComponent implements AfterViewInit{
       })
     }
     if(event.code === "Digit2") {
-      GSM.GridController.layerIndex++
-      if(!GSM.GridController.gameMap.elevations[GSM.GridController.layerIndex]) {
-        GSM.GridController.setupMap("up")
-      }
+      GSM.EventController.generalActionFire.next({
+        name: "addElevationUp",
+        data: {
+          leavingLayer: GSM.GridController.currentElevationLayerIndex,
+          newLayer: GSM.GridController.currentElevationLayerIndex + 1
+        }
+      })
     }
     if(event.code === "Digit1") {
-      GSM.GridController.layerIndex--
-      if(!GSM.GridController.gameMap.elevations[GSM.GridController.layerIndex]) {
-        GSM.GridController.setupMap("down")
-      }
+      GSM.EventController.generalActionFire.next({
+        name: "addElevationDown",
+        data: {
+          leavingLayer: GSM.GridController.currentElevationLayerIndex,
+          newLayer: GSM.GridController.currentElevationLayerIndex - 1
+        }
+      })
     }
     if(event.code === "KeyR") {
       GSM.EventController.generalActionFire.next({
@@ -84,6 +90,15 @@ export class GameComponent implements AfterViewInit{
         }
       })
     }
+    if(event.code === "KeyG") {
+      this.selected = "starting Game"
+      GSM.EventController.generalActionFire.next({
+        name: "startGame",
+        data: null
+      })
 
+      GSM.RendererController.start()
+      GSM.FrameController.start()  
+    }
   }
 }

@@ -5,7 +5,7 @@ import { Cell, RenderingLayers } from '../../../../models/map';
 import { PlayableAsset } from './playable-asset.model';
 
 export class PlayableAssetRenderer extends Renderer {
-  public elevationLayer: RenderingLayers = RenderingLayers.CharacterLayer
+  public renderingLayer: RenderingLayers = RenderingLayers.CharacterLayer
   public override excludeFromSingleImagePainting: boolean = true
 
   public onDraw(cell: Cell): void {

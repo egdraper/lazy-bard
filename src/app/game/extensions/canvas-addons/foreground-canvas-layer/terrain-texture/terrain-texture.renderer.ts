@@ -5,7 +5,7 @@ import { Renderer } from "../../../../models/renderer"
 import { TerrainEdgeCalculator } from "./terrain-edge-calculator"
 
 export class TerrainPaintBrushRenderer extends Renderer {
-  public elevationLayer: RenderingLayers = RenderingLayers.TerrainLayer
+  public renderingLayer: RenderingLayers = RenderingLayers.TerrainLayer
 
   public onDraw(cell: Cell, spriteTile: SpriteTile, elevationIndex: number): void {
     if(!spriteTile) { return }
@@ -23,8 +23,8 @@ export class TerrainPaintBrushRenderer extends Renderer {
       spriteTile.tileHeight * GSM.Settings.blockSize,
       cell.posX + spriteTile.tileOffsetX,
       cell.posY + spriteTile.tileOffsetY,
-      spriteTile.tileWidth * (spriteTile.sizeAdjustment || GSM.Settings.blockSize),
-      spriteTile.tileHeight * (spriteTile.sizeAdjustment || GSM.Settings.blockSize)
+      spriteTile.tileWidth * GSM.Settings.blockSize,
+      spriteTile.tileHeight * GSM.Settings.blockSize
     )
   }
 }

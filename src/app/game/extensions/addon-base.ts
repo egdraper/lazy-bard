@@ -14,7 +14,7 @@ export abstract class CanvasModule {
     }
   
     constructor() {
-      GSM.CanvasModuleController.registerAddon(this)
+      GSM.CanvasModuleController.registerModule(this)
     }
     
     public async init(): Promise<void> {      
