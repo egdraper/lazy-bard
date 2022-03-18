@@ -9,6 +9,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -30,6 +31,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -50,6 +52,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -71,6 +74,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -91,6 +95,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -112,6 +117,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -132,6 +138,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -154,6 +161,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -175,6 +183,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -196,6 +205,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -217,6 +227,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -238,6 +249,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -260,10 +272,10 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
-
       topNeighbor: true,
       topRightNeighbor: true,
       rightNeighbor: true,
@@ -282,6 +294,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -304,6 +317,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -325,6 +339,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -346,6 +361,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -367,6 +383,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {
@@ -388,6 +405,7 @@ export const trees: SpriteTile[] = [
     tileWidth: 1,
     tileOffsetX: -16,
     tileOffsetY: -64,
+    selectableArea: {width: 32, height: 96},
     obstacleObstructionX: 1,
     obstacleObstructionY: 1,
     drawWhen: {

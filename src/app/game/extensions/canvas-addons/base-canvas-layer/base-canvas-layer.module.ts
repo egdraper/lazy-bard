@@ -1,10 +1,8 @@
-import { ThisReceiver } from "@angular/compiler";
 import { GSM } from "src/app/game/game-state-manager.service";
 import { CanvasLayerExtension } from "src/app/game/models/renderer";
 import { GeneralAction } from "src/app/game/models/settings";
 import { CanvasCTX } from "../../../models/extension.model";
 import { CanvasModule } from "../../addon-base";
-import { ImageGenerator } from "../image-generator.util";
 import { BaseTextureExtension } from "./base-texture/base-texture.extension";
 import { GridLineExtension } from "./grid-lines/grid-lines.extension";
 

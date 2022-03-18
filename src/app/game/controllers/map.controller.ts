@@ -12,8 +12,8 @@ export class MapController {
   public topMostElevationLayerIndex: number = 0
   public bottomMostElevationLayerIndex: number = 0
   public newGridCreated: Subject<Grid> = new Subject<Grid>()
-
-  private layerIterator: RenderingLayers[] = []
+  
+  public layerIterator: RenderingLayers[] = []
   private gridIterator: {[elevationIndex: number]: Cell[] } = []
 
   constructor() {
@@ -113,13 +113,16 @@ export class MapController {
   }
 
   public createGameMap(size: Size): void {
-
     this.gameMap = new GameMap(size)
     this.gameMap.id = Math.random().toString()
     this.setupMap(0)
     this.setupMap(1)
     this.topMostElevationLayerIndex = 1
     this.currentElevationLayerIndex = 1
+
+    Object.keys(RenderingLayers).forEach(key => {
+      GSM.GridController.layerIterator.push(RenderingLayers[key])
+    })
   }
 
   private onElevationChange(event: GeneralAction<any>) {
@@ -175,10 +178,7 @@ export class MapController {
         this.gridIterator[elevation].push(cell)
       }
     }
-    
-    Object.keys(RenderingLayers).forEach(key => {
-      GSM.GridController.layerIterator.push(RenderingLayers[key])
-    })
+
     this.newGridCreated.next(this.gameMap.elevations[elevation])
   }
 

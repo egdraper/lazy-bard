@@ -18,7 +18,6 @@ export class Cell {
   posY: number // Y Pixel Coordinates 
   obstacle?: boolean 
   spriteTiles?: {[layer: string ]: SpriteTile} = {}
-
   renderers?: Renderer[]  // not saved
   elevationIndex?: number // not saved
 }
@@ -68,10 +67,9 @@ export class SpriteTile {
   tileWidth?: number
   tileOffsetX?: number
   tileOffsetY?: number
+  selectableArea: Size
   obstacleObstructionX?: number
   obstacleObstructionY?: number
-  selectableAreaX?: number
-  selectableAreaY?: number
   default?: boolean
   drawWhen?: {
     topNeighbor: boolean,

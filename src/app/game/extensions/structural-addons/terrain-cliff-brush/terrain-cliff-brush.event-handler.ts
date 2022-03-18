@@ -36,10 +36,6 @@ export class TerrainCliffBrushEventHandler {
       drawTopRightCell.drawableTileId = drawableTile.id
       topRightCell.obstacle = true
     }  
-
-    if(GSM.EventController.generalActionFire.value.name === "deleteTerrain") {
-      delete cell.spriteTiles[RenderingLayers.TerrainLayer]
-    }
   }
 
   private onMouseEnteredCell(cellId: string): void {

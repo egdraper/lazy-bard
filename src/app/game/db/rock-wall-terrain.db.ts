@@ -10,6 +10,7 @@ export const RockWall: SpriteTile[] = [
       tileWidth: 1,
       tileOffsetX: 16,
       tileOffsetY: -64,
+      selectableArea: {width: 32, height: 96},
       obstacleObstructionX: 1,
       obstacleObstructionY: 1,
       drawWhen: {
@@ -31,6 +32,7 @@ export const RockWall: SpriteTile[] = [
       tileWidth: 1,
       tileOffsetX: 16,
       tileOffsetY: -64,
+      selectableArea: {width: 32, height: 96},
       obstacleObstructionX: 1,
       obstacleObstructionY: 1,
       drawWhen: {
@@ -52,6 +54,7 @@ export const RockWall: SpriteTile[] = [
       tileWidth: 1,
       tileOffsetX: 16,
       tileOffsetY: -64,
+      selectableArea: {width: 32, height: 96},
       obstacleObstructionX: 1,
       obstacleObstructionY: 1,
       drawWhen: {
@@ -73,6 +76,7 @@ export const RockWall: SpriteTile[] = [
       tileWidth: 1,
       tileOffsetX: 16,
       tileOffsetY: -64,
+      selectableArea: {width: 32, height: 96},
       obstacleObstructionX: 1,
       obstacleObstructionY: 1,
       drawWhen: {
@@ -95,6 +99,7 @@ export const RockWall: SpriteTile[] = [
         tileOffsetX: 16,
         tileOffsetY: -64,
         default: true,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {
@@ -116,6 +121,7 @@ export const RockWall: SpriteTile[] = [
         tileWidth: 1,
         tileOffsetX: 16,
         tileOffsetY: -64,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {
@@ -137,6 +143,7 @@ export const RockWall: SpriteTile[] = [
         tileWidth: 1,
         tileOffsetX: 16,
         tileOffsetY: -64,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {
@@ -158,6 +165,7 @@ export const RockWall: SpriteTile[] = [
         tileWidth: 1,
         tileOffsetX: 16,
         tileOffsetY: -64,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {
@@ -179,6 +187,7 @@ export const RockWall: SpriteTile[] = [
         tileWidth: 1,
         tileOffsetX: 16,
         tileOffsetY: -64,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {
@@ -192,7 +201,6 @@ export const RockWall: SpriteTile[] = [
           topLeftNeighbor: null,
         },
       },
-
       {
         id: 'FontLeftAttach',
         spriteGridPosX: 3,
@@ -201,6 +209,7 @@ export const RockWall: SpriteTile[] = [
         tileWidth: 1,
         tileOffsetX: 16,
         tileOffsetY: -64,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {
@@ -222,6 +231,7 @@ export const RockWall: SpriteTile[] = [
         tileWidth: 1,
         tileOffsetX: 16,
         tileOffsetY: -64,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {
@@ -243,6 +253,7 @@ export const RockWall: SpriteTile[] = [
         tileWidth: 1,
         tileOffsetX: 16,
         tileOffsetY: -64,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {
@@ -264,6 +275,7 @@ export const RockWall: SpriteTile[] = [
         tileWidth: 1,
         tileOffsetX: 16,
         tileOffsetY: -64,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {
@@ -285,6 +297,7 @@ export const RockWall: SpriteTile[] = [
         tileWidth: 1,
         tileOffsetX: 16,
         tileOffsetY: -64,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {
@@ -306,6 +319,7 @@ export const RockWall: SpriteTile[] = [
         tileWidth: 1,
         tileOffsetX: 16,
         tileOffsetY: -64,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {
@@ -327,6 +341,7 @@ export const RockWall: SpriteTile[] = [
         tileWidth: 1,
         tileOffsetX: 16,
         tileOffsetY: -64,
+        selectableArea: {width: 32, height: 96},
         obstacleObstructionX: 1,
         obstacleObstructionY: 1,
         drawWhen: {

@@ -9,8 +9,8 @@ export class ImagesController {
   public elevationLayersImages: {[elevation: number]: HTMLImageElement } = {} 
 
   constructor() {
-    GSM.EventController.generalActionFire.subscribe(this.onGridChange.bind(this))
-    GSM.GridController.newGridCreated.subscribe(this.onGridChange.bind(this))
+    GSM.EventController.generalActionFire.subscribe(this.refreshAllImages.bind(this))
+    GSM.GridController.newGridCreated.subscribe(this.refreshAllImages.bind(this))
   }
 
   public getImage(url: string): HTMLImageElement {
@@ -31,7 +31,7 @@ export class ImagesController {
     delete this.images[url];
   }
 
-  private onGridChange(event: GeneralAction<any>) {
+  public refreshAllImages() {
     if(!GSM?.GridController?.gameMap) { return }
 
     GSM.GridController.iterateElevations(elevation => {
@@ -64,7 +64,6 @@ export class ImagesController {
     const layerImageBase64 = GSM.CanvasController.fullImageCanvas.nativeElement.toDataURL("image/png")
     const layerImage = new Image()
     layerImage.src = layerImageBase64
-
 
     return layerImage
   }

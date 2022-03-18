@@ -1,10 +1,9 @@
 import { Subscription } from "rxjs"
-import { AddonRenderer } from "../extensions/canvas-addons/addon-renderer.util"
-import { ImageGenerator } from "../extensions/canvas-addons/image-generator.util"
 import { CanvasModule } from "../extensions/addon-base"
 import { GSM } from "../game-state-manager.service"
 import { CanvasCTX } from "../models/extension.model"
 import { Renderer } from "../models/renderer"
+import { AddonRenderer } from "./utils/addon-renderer.util"
 
 export class RendererController {
   public foregroundCanvasRenderer: AddonRenderer

@@ -1,4 +1,3 @@
-import { ThisReceiver } from "@angular/compiler"
 import { GSM } from "../../game-state-manager.service"
 
 export class AddonRenderer {
@@ -8,7 +7,11 @@ export class AddonRenderer {
     if(!image) { return }
     
     this.ctx.imageSmoothingEnabled = false
-    this.ctx.globalAlpha = 1 - (Math.abs(GSM.GridController.currentElevationLayerIndex - elevation) * .2)
+    // this.ctx.globalAlpha = 1 - (Math.abs(GSM.GridController.currentElevationLayerIndex - elevation) * .3)
+    this.ctx.globalAlpha = GSM.GridController.currentElevationLayerIndex < elevation ? .5 : 1
+    this.ctx.filter = GSM.GridController.currentElevationLayerIndex > elevation ? 'grayscale(.6)' : "";
+    this.ctx.filter = GSM.GridController.currentElevationLayerIndex < elevation ? 'grayscale(.6)' : "";
+
     this.ctx.drawImage(
       image,
       0,
@@ -21,5 +24,6 @@ export class AddonRenderer {
       GSM.GridController.gameMap.size.height * GSM.Settings.blockSize,
     )
     this.ctx.globalAlpha = 1
+    this.ctx.filter = "none";
   }
 }

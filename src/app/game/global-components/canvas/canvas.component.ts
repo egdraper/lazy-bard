@@ -104,8 +104,13 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   public onCellClick(event: MouseEvent): void {
+    const mousePosX = event.offsetX
+    const mousePosY = event.offsetY
+    
     const cell = GSM.GridController.getGridCellByCoordinate(event.offsetX, event.offsetY, GSM.GridController.currentElevationLayerIndex)
+    
     GSM.EventController.cellClick.next(cell.id)
+    GSM.EventController.mouseClick.next({x: mousePosX, y: mousePosY})
     
     const occupiedCell = GSM.AssetController.getAssetByCellId(cell.id)
     if(!occupiedCell) {
