@@ -1,8 +1,7 @@
 import { Subject } from "rxjs";
 import { GSM } from "../game-state-manager.service";
 import { Asset } from "../models/asset.model";
-import { Cell, Grid } from "../models/map";
-import { Settings } from "../models/settings";
+import { Cell } from "../models/map";
 
 export class AssetController {
   public assets: Asset[] = []

@@ -1,23 +1,23 @@
 import { GSM } from "../../../../game-state-manager.service";
 import { Cell, RenderingLayers } from "../../../../models/map";
-import { Renderer } from "../../../../models/renderer";
+import { Renderer, RenderOptionsEvent } from "../../../../models/renderer";
 
 export class GridLinesRenderer extends Renderer {
   public renderingLayer: RenderingLayers = RenderingLayers.BaseLayer
   public override excludeFromIndividualCellPainting: boolean = true
 
-  public onDraw(cell: Cell): void {
+  public onDraw(event: RenderOptionsEvent): void {
     this.ctx.beginPath()
-    this.ctx.moveTo(cell.posX, cell.posY)
-    this.ctx.lineTo(cell.posX, (cell.posY) + GSM.Settings.blockSize)
+    this.ctx.moveTo(event.cell.posX, event.cell.posY)
+    this.ctx.lineTo(event.cell.posX, (event.cell.posY) + GSM.Settings.blockSize)
     this.ctx.strokeStyle = "rgba(75, 75, 75)"
     this.ctx.lineWidth = 1;
     this.ctx.stroke()
 
     // Vertical Lines
     this.ctx.beginPath()
-    this.ctx.moveTo(cell.posX, cell.posY)
-    this.ctx.lineTo((cell.posX) + GSM.Settings.blockSize, cell.posY)
+    this.ctx.moveTo(event.cell.posX, event.cell.posY)
+    this.ctx.lineTo((event.cell.posX) + GSM.Settings.blockSize, event.cell.posY)
     this.ctx.strokeStyle = "rgba(75, 75, 75)"
     this.ctx.lineWidth = 1;
     this.ctx.stroke()

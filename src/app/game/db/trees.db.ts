@@ -418,5 +418,5 @@ export const trees: SpriteTile[] = [
       leftNeighbor: true,
       topLeftNeighbor: true,
     } 
-  },
+  }  
 ]

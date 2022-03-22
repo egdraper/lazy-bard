@@ -1,4 +1,4 @@
-import { Renderer } from '../../../../models/renderer';
+import { Renderer, RenderOptionsEvent } from '../../../../models/renderer';
 import { GSM } from '../../../../game-state-manager.service';
 import { Cell, RenderingLayers } from '../../../../models/map';
 
@@ -8,8 +8,8 @@ export class PlayableAssetRenderer extends Renderer {
   public renderingLayer: RenderingLayers = RenderingLayers.CharacterLayer
   public override excludeFromSingleImagePainting: boolean = true
 
-  public onDraw(cell: Cell): void {
-    const playableAsset = GSM.AssetController.getAssetByCellId(cell.id) as PlayableAsset;
+  public onDraw(event: RenderOptionsEvent): void {
+    const playableAsset = GSM.AssetController.getAssetByCellId(event.cell.id) as PlayableAsset;
     
     if (!playableAsset) { return; }
 

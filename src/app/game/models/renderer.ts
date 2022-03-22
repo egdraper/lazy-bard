@@ -6,15 +6,23 @@ export abstract class RendererBase {
   public ctx: CanvasRenderingContext2D
 }
 
+export class RenderOptionsEvent {
+  cell?: Cell
+  spriteTile?: SpriteTile
+  elevationIndex?: number
+  frame?: number
+}
+
 export abstract class Renderer extends RendererBase {
-  public abstract onDraw(cell: Cell, spriteTile: SpriteTile, elevationIndex: number, frame?: number)
+  public abstract onDraw(renderOptions: RenderOptionsEvent)
   public abstract renderingLayer: RenderingLayers
   public excludeFromSingleImagePainting: boolean = false // excludes this extension from background being rendered as part of a single image 
   public excludeFromIndividualCellPainting: boolean = false // excludes this extension from background being rendered as part of a single image 
+  public drawOnFrameOnly = false
   
-  public draw(cell: Cell, elevationIndex: number, frame?: number): void {
-   const spriteTile = cell.spriteTiles[this.renderingLayer]
-    this.onDraw(cell, spriteTile, elevationIndex, frame )
+  public draw(renderOption: RenderOptionsEvent): void {
+   renderOption.spriteTile = renderOption.cell.spriteTiles[this.renderingLayer]
+    this.onDraw(renderOption)
   }
 }
 

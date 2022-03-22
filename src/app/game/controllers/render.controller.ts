@@ -54,8 +54,13 @@ export class RendererController {
     this.iterateRenderers(renderer => {
       if(renderer.excludeFromIndividualCellPainting) { return }
 
+      if(renderer.drawOnFrameOnly) {
+        renderer.draw({frame})
+        return
+      }
+
       GSM.GridController.iterateCells(elevationIndex, (cell) => {
-        renderer.draw(cell, elevationIndex, frame)
+        renderer.draw({cell, elevationIndex, frame})
       })
     })
   }

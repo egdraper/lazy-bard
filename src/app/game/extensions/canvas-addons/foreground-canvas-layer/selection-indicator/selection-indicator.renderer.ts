@@ -1,6 +1,6 @@
 import { GSM } from "../../../../game-state-manager.service";
 import { Cell, RenderingLayers, SpriteTile } from "../../../../models/map";
-import { Renderer } from "../../../../models/renderer";
+import { Renderer, RenderOptionsEvent } from "../../../../models/renderer";
 import { PlayableAsset } from "../playable-asset/playable-asset.model";
 
 export class SelectionIndicatorRenderer extends Renderer {
@@ -12,11 +12,11 @@ export class SelectionIndicatorRenderer extends Renderer {
   private width
   private height
 
-  public onDraw(cell: Cell, spriteTile: SpriteTile, layerIndex: number, frame: number): void {
-    const asset = GSM.AssetController.getSelectedAssets().find(asset => asset.cell.id === cell.id) as PlayableAsset 
+  public onDraw(event: RenderOptionsEvent): void {
+    const asset = GSM.AssetController.getSelectedAssets().find(asset => asset.cell.id === event.cell.id) as PlayableAsset 
     if(!asset) { return } 
     
-    this.animateMarker(asset, frame)
+    this.animateMarker(asset, event.frame)
     this.ctx.beginPath()
     this.ctx.moveTo(asset.positionX, asset.positionY)
     this.ctx.rect(this.posX, this.posY, this.width, this.height)    

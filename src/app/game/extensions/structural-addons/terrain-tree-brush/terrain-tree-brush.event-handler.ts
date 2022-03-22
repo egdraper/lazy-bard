@@ -1,6 +1,6 @@
-import { Sprite } from 'src/app/game/models/sprites';
 import { GSM } from '../../../game-state-manager.service';
 import { SpriteTile, NeighborLocation, RenderingLayers } from '../../../models/map';
+import { terrainCleanup } from '../../../support/terrain-cleanup';
 
 export class TerrainTreeBrushEventHandler {
   constructor() {
@@ -8,7 +8,7 @@ export class TerrainTreeBrushEventHandler {
     GSM.EventController.cellMouseEntered.subscribe(this.onMouseEnteredCell.bind(this));
   }
 
-  // adds the paintable terrain id to the cell clicked
+  // adds the drawable terrain id to the cell clicked
   private onEmptyCellClicked(cellId: string, elevation: number = GSM.GridController.currentElevationLayerIndex): void {
     const cell = GSM.GridController.gameMap.elevations[elevation].cells[cellId]
     if(GSM.EventController.generalActionFire.value.name === "paintingTreeTerrain") {
@@ -33,6 +33,8 @@ export class TerrainTreeBrushEventHandler {
       drawTopRightCell.drawableTileId = drawableTile.id
       topRightCell.obstacle = true
     }  
+
+    terrainCleanup(RenderingLayers.TerrainLayer)
   }
 
   private onMouseEnteredCell(cellId: string): void {

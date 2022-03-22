@@ -1,7 +1,5 @@
 import { GSM } from "../game-state-manager.service";
-import { Grid } from "../models/map";
-import { Renderer } from "../models/renderer";
-import { GeneralAction } from "../models/settings";
+import { generateElevationImage } from "../support/create-layer-image";
 
 export class ImagesController {
   public images: { [imageUrl: string]: HTMLImageElement } = {};
@@ -36,35 +34,9 @@ export class ImagesController {
 
     GSM.GridController.iterateElevations(elevation => {
       GSM.CanvasModuleController.canvasModules.forEach(module => {
-        const image = this.generateElevationImage(module.renderers, elevation.elevationIndex)
+        const image = generateElevationImage(module.renderers, elevation.elevationIndex)
         this.elevationLayersImages[elevation.elevationIndex] = image
       })
     })
-  }
-
-  public generateElevationImage(renderers: Renderer[], elevationIndex: number): HTMLImageElement {
-    if(!GSM.CanvasController.fullImageCTX) { return null }
-
-    GSM.CanvasController.fullImageCTX.canvas.width = GSM.GridController.gameMap.size.width * GSM.Settings.blockSize
-    GSM.CanvasController.fullImageCTX.canvas.height = GSM.GridController.gameMap.size.height * GSM.Settings.blockSize
-       
-    let tempCTX 
-    renderers.forEach((renderer)=> {
-      if(renderer.excludeFromIndividualCellPainting) { return }
-     
-      tempCTX = renderer.ctx
-      renderer.ctx = GSM.CanvasController.fullImageCTX
-
-      GSM.GridController.iterateCells(elevationIndex, (cell) => {
-        renderer.draw(cell, elevationIndex)
-      })
-      renderer.ctx = tempCTX
-    })
-
-    const layerImageBase64 = GSM.CanvasController.fullImageCanvas.nativeElement.toDataURL("image/png")
-    const layerImage = new Image()
-    layerImage.src = layerImageBase64
-
-    return layerImage
   }
 }
