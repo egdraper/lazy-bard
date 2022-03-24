@@ -21,7 +21,7 @@ export abstract class Renderer extends RendererBase {
   public drawOnFrameOnly = false
   
   public draw(renderOption: RenderOptionsEvent): void {
-   renderOption.spriteTile = renderOption.cell.spriteTiles[this.renderingLayer]
+    renderOption.spriteTile = renderOption.cell.spriteTiles[this.renderingLayer]
     this.onDraw(renderOption)
   }
 }

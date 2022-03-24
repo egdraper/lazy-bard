@@ -10,7 +10,6 @@ export class PlayableAssetEventHandler {
   }
 
   public onAssetClicked(asset: PlayableAsset) {
-    console.log(GSM.EventController.keysPressed)
     if(!GSM.EventController.keysPressed.has("MetaLeft")) {
       GSM.AssetController.deselectAllAssets()
     }
@@ -29,7 +28,7 @@ export class PlayableAssetEventHandler {
 
     if(GSM.EventController.generalActionFire.value.name === "characterSelected") {
       const selectedAssets = GSM.AssetController.getSelectedAssets()
-      const cell = GSM.GridController.getCellAtLayer(cellId, GSM.GridController.currentElevationLayerIndex)
+      const cell = GSM.GridController.getCellAtLayer(cellId, GSM.ElevationController.currentElevationLayerIndex)
       selectedAssets.forEach((asset: PlayableAsset) => {
         asset.startMovement(asset.cell, cell, GSM.AssetController.assets as PlayableAsset[]  )
       })
@@ -39,7 +38,7 @@ export class PlayableAssetEventHandler {
   // MOCK This will be a database thing
   private addPlayableCharacter(cellId: string): void {
     const playerAsset = new PlayableAsset();
-    const cell = GSM.GridController.getCellAtLayer(cellId, GSM.GridController.currentElevationLayerIndex)
+    const cell = GSM.GridController.getCellAtLayer(cellId, GSM.ElevationController.currentElevationLayerIndex)
     playerAsset.cell = cell
     playerAsset.positionX = cell.posX;
     playerAsset.positionY = cell.posY;

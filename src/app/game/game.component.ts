@@ -13,7 +13,7 @@ export class GameComponent implements AfterViewInit{
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame("firstGame", 30, 30, "forest")
+      this.gameStateManager.newGame("firstGame", 10, 10, "forest")
       GSM.EventController.generalActionFire.subscribe(action => {
         this.selected = action.name 
       })
@@ -26,6 +26,12 @@ export class GameComponent implements AfterViewInit{
     if(event.code === "Escape") {
       GSM.EventController.generalActionFire.next({
         name: "",
+        data: null
+      })
+    }
+    if(event.code === "Delete") {
+      GSM.EventController.generalActionFire.next({
+        name: "delete",
         data: null
       })
     }
@@ -68,8 +74,8 @@ export class GameComponent implements AfterViewInit{
       GSM.EventController.generalActionFire.next({
         name: "addElevationUp",
         data: {
-          leavingLayer: GSM.GridController.currentElevationLayerIndex,
-          newLayer: GSM.GridController.currentElevationLayerIndex + 1
+          leavingLayer: GSM.ElevationController.currentElevationLayerIndex,
+          newLayer: GSM.ElevationController.currentElevationLayerIndex + 1
         }
       })
     }
@@ -77,8 +83,8 @@ export class GameComponent implements AfterViewInit{
       GSM.EventController.generalActionFire.next({
         name: "addElevationDown",
         data: {
-          leavingLayer: GSM.GridController.currentElevationLayerIndex,
-          newLayer: GSM.GridController.currentElevationLayerIndex - 1
+          leavingLayer: GSM.ElevationController.currentElevationLayerIndex,
+          newLayer: GSM.ElevationController.currentElevationLayerIndex - 1
         }
       })
     }
@@ -88,6 +94,12 @@ export class GameComponent implements AfterViewInit{
         data: {
           id: "StoneCliff-StoneBase",
         }
+      })
+    }
+    if(event.code === "KeyX") {
+      GSM.EventController.generalActionFire.next({
+        name: "selectTool",
+        data: null
       })
     }
     if(event.code === "KeyG") {

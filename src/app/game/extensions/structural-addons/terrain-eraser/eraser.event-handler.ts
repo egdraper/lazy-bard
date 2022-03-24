@@ -1,16 +1,23 @@
-import { terrainCleanup } from '../../../support/terrain-cleanup';
-import { GSM } from '../../../game-state-manager.service';
-import { Cell, RenderingLayers } from '../../../models/map';
+import { getClickedOnSpriteTile } from "src/app/game/controllers/utils/selected-sprite-tile"
+import { terrainCleanup } from "src/app/game/controllers/utils/terrain-cleanup"
+import { GSM } from "src/app/game/game-state-manager.service"
+import { RenderingLayers } from "src/app/game/models/map"
+
 
 export class EraserEventHandler {
   constructor() {
-    GSM.AssetController.spriteTileClicked.subscribe(this.spriteTileClicked.bind(this));
+    GSM.EventController.mouseDown.subscribe(this.selectSpriteTile.bind(this))
   }
 
-  private spriteTileClicked(event: {cell: Cell, layer: RenderingLayers}): void {    
+  private selectSpriteTile(event: MouseEvent) {
     if(GSM.EventController.generalActionFire.value.name === "deleteTerrain") {
-      delete event.cell.spriteTiles[RenderingLayers.TerrainLayer]
-      terrainCleanup(event.layer)     
+
+    const selectedSpriteTile = getClickedOnSpriteTile(event.offsetX, event.offsetY)
+    
+    if(selectedSpriteTile) {
+      delete selectedSpriteTile.cell.spriteTiles[RenderingLayers.TerrainLayer]
+      terrainCleanup(selectedSpriteTile.layer)     
+    }
     }
   }
 }

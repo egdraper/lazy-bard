@@ -6,11 +6,6 @@ import { GeneralAction } from '../models/settings'
 export class MapController {
   public gameMap: GameMap
   public loadedMaps: { [gameMapId: string]: GameMap } = {}
-  public autoGenerateTerrain: boolean
-  public currentElevationLayerIndex: number = 0
-  public baseElevationLayerIndex: number = 0
-  public topMostElevationLayerIndex: number = 0
-  public bottomMostElevationLayerIndex: number = 0
   public newGridCreated: Subject<Grid> = new Subject<Grid>()
   
   public layerIterator: RenderingLayers[] = []
@@ -117,8 +112,8 @@ export class MapController {
     this.gameMap.id = Math.random().toString()
     this.setupMap(0)
     this.setupMap(1)
-    this.topMostElevationLayerIndex = 1
-    this.currentElevationLayerIndex = 1
+    GSM.ElevationController.topMostElevationLayerIndex = 1
+    GSM.ElevationController.currentElevationLayerIndex = 1
 
     Object.keys(RenderingLayers).forEach(key => {
       GSM.GridController.layerIterator.push(RenderingLayers[key])
@@ -129,22 +124,22 @@ export class MapController {
     if(!this.gameMap) { return }
    
     if(event.name === "addElevationUp") {
-      if(this.currentElevationLayerIndex === this.topMostElevationLayerIndex) {
-        this.setupMap(++this.topMostElevationLayerIndex)
-        this.currentElevationLayerIndex = this.topMostElevationLayerIndex
+      if(GSM.ElevationController.currentElevationLayerIndex === GSM.ElevationController.topMostElevationLayerIndex) {
+        this.setupMap(++GSM.ElevationController.topMostElevationLayerIndex)
+        GSM.ElevationController.currentElevationLayerIndex = GSM.ElevationController.topMostElevationLayerIndex
         return
       } else {
-        this.currentElevationLayerIndex++
+        GSM.ElevationController.currentElevationLayerIndex++
       }
     }
 
     if(event.name === "addElevationDown") {
-      if(this.currentElevationLayerIndex === this.bottomMostElevationLayerIndex) {
-        this.setupMap(--this.bottomMostElevationLayerIndex)
-        this.currentElevationLayerIndex = this.bottomMostElevationLayerIndex
+      if(GSM.ElevationController.currentElevationLayerIndex === GSM.ElevationController.bottomMostElevationLayerIndex) {
+        this.setupMap(--GSM.ElevationController.bottomMostElevationLayerIndex)
+        GSM.ElevationController.currentElevationLayerIndex = GSM.ElevationController.bottomMostElevationLayerIndex
         return
       } else {
-        this.currentElevationLayerIndex--
+        GSM.ElevationController.currentElevationLayerIndex--
       }
     }
   }

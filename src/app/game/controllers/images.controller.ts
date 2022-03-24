@@ -1,5 +1,5 @@
 import { GSM } from "../game-state-manager.service";
-import { generateElevationImage } from "../support/create-layer-image";
+import { generateElevationImage } from "./utils/create-layer-image";
 
 export class ImagesController {
   public images: { [imageUrl: string]: HTMLImageElement } = {};

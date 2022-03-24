@@ -8,9 +8,9 @@ export class AddonRenderer {
     
     this.ctx.imageSmoothingEnabled = false
     // this.ctx.globalAlpha = 1 - (Math.abs(GSM.GridController.currentElevationLayerIndex - elevation) * .3)
-    this.ctx.globalAlpha = GSM.GridController.currentElevationLayerIndex < elevation ? .5 : 1
-    this.ctx.filter = GSM.GridController.currentElevationLayerIndex > elevation ? 'grayscale(.6)' : "";
-    this.ctx.filter = GSM.GridController.currentElevationLayerIndex < elevation ? 'grayscale(.6)' : "";
+    this.ctx.globalAlpha = GSM.ElevationController.currentElevationLayerIndex < elevation ? .5 : 1
+    this.ctx.filter = GSM.ElevationController.currentElevationLayerIndex > elevation ? 'grayscale(.6)' : "";
+    this.ctx.filter = GSM.ElevationController.currentElevationLayerIndex < elevation ? 'grayscale(.6)' : "";
 
     this.ctx.drawImage(
       image,

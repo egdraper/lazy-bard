@@ -71,6 +71,7 @@ export class SpriteTile {
   obstacleObstructionX?: number
   obstacleObstructionY?: number
   default?: boolean
+  selected?: boolean
   drawWhen?: {
     topNeighbor: boolean,
     topRightNeighbor: boolean,

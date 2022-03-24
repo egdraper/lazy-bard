@@ -10,6 +10,7 @@ import { Settings } from './models/settings';
 import { CanvasModuleController } from './controllers/canvas-module.controller';
 import { Extensions } from './extensions.register';
 import { ImagesController } from './controllers/images.controller';
+import { ElevationController } from './controllers/elevation.controller';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,6 +21,7 @@ export class GSM {
   public static FrameController: FrameController
   public static Extensions: Extensions
   public static GridController: MapController
+  public static ElevationController: ElevationController
   public static RendererController: RendererController
   public static EventController: EventController
   public static AssetController: AssetController
@@ -44,6 +46,7 @@ export class GSM {
     GSM.RendererController = new RendererController() 
     GSM.Extensions = new Extensions() 
     GSM.GridController = new MapController()
+    GSM.ElevationController = new ElevationController()
     GSM.GridController.createGameMap({width, height})
     GSM.ImageController = new ImagesController()   
     GSM.GridController.gameMap.baseTexture = baseTexture

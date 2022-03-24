@@ -42,7 +42,7 @@ export class RendererController {
     GSM.GridController.iterateElevations(elevation => {
       if(elevation.elevationIndex === 0) { return }
 
-      if(elevation.elevationIndex === GSM.GridController.currentElevationLayerIndex) {
+      if(elevation.elevationIndex === GSM.ElevationController.currentElevationLayerIndex) {
         this.runRendererForExcludedAddons(elevation.elevationIndex, frame)
       } else {
         this.foregroundCanvasRenderer.draw(GSM.ImageController.elevationLayersImages[elevation.elevationIndex], elevation.elevationIndex)

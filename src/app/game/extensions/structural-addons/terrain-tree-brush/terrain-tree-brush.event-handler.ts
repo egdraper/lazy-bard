@@ -1,6 +1,6 @@
+import { terrainCleanup } from 'src/app/game/controllers/utils/terrain-cleanup';
 import { GSM } from '../../../game-state-manager.service';
 import { SpriteTile, NeighborLocation, RenderingLayers } from '../../../models/map';
-import { terrainCleanup } from '../../../support/terrain-cleanup';
 
 export class TerrainTreeBrushEventHandler {
   constructor() {
@@ -9,7 +9,7 @@ export class TerrainTreeBrushEventHandler {
   }
 
   // adds the drawable terrain id to the cell clicked
-  private onEmptyCellClicked(cellId: string, elevation: number = GSM.GridController.currentElevationLayerIndex): void {
+  private onEmptyCellClicked(cellId: string, elevation: number = GSM.ElevationController.currentElevationLayerIndex): void {
     const cell = GSM.GridController.gameMap.elevations[elevation].cells[cellId]
     if(GSM.EventController.generalActionFire.value.name === "paintingTreeTerrain") {
       const drawableTile = GSM.EventController.generalActionFire.value.data as {id: string}

@@ -1,5 +1,5 @@
-import { GSM } from "../game-state-manager.service"
-import { Renderer } from "../models/renderer"
+import { GSM } from "../../game-state-manager.service"
+import { Renderer } from "../../models/renderer"
 
 export function generateElevationImage(renderers: Renderer[], elevationIndex: number): HTMLImageElement {
     if(!GSM.CanvasController.fullImageCTX) { return null }
