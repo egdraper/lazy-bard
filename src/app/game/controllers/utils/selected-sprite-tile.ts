@@ -3,7 +3,7 @@ import { RenderingLayers, Cell } from "../../models/map"
 
 export function getClickedOnSpriteTile(clickPosX: number, clickPosY: number): { layer: RenderingLayers, cell: Cell} {
   let selectedSpriteTile
-  GSM.GridController.iterateCells(GSM.ElevationController.currentElevationLayerIndex, cell => {
+  GSM.GridController.iterateCells(GSM.GridController.gameMap.currentElevationLayerIndex, cell => {
     if(Object.keys(cell.spriteTiles).length === 0) { return }
       
     GSM.GridController.layerIterator.forEach(layer => {

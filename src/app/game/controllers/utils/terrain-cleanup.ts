@@ -3,10 +3,10 @@ import { NeighborLocation, RenderingLayers, SpriteTile } from "../../models/map"
 
 export function terrainCleanup(layer: RenderingLayers) {
   for(let a = 0; a < 2; a++) {
-    GSM.GridController.iterateCells(GSM.ElevationController.currentElevationLayerIndex, (cell) => {          
+    GSM.GridController.iterateCells(GSM.GridController.gameMap.currentElevationLayerIndex, (cell) => {          
       if(!cell.spriteTiles[layer]) { return }     
   
-      const neighbors = GSM.GridController.getAllNeighbors(cell, GSM.ElevationController.currentElevationLayerIndex)
+      const neighbors = GSM.CellNeighborsController.getAllImmediateNeighbors(cell, GSM.GridController.gameMap.currentElevationLayerIndex)
       const cellTileId = cell.spriteTiles[layer].drawableTileId
   
       const leftTileId = neighbors[NeighborLocation.Left]?.spriteTiles[layer]?.drawableTileId 
@@ -32,7 +32,7 @@ export function terrainCleanup(layer: RenderingLayers) {
         neighbors[NeighborLocation.Bottom].spriteTiles[layer].drawableTileId = cell.spriteTiles[layer].drawableTileId
         neighbors[NeighborLocation.BottomRight].spriteTiles[layer] = new SpriteTile()
         neighbors[NeighborLocation.BottomRight].spriteTiles[layer].drawableTileId = cell.spriteTiles[layer].drawableTileId
-        const leftLeftCell = GSM.GridController.getCell(neighbors[NeighborLocation.Left].x - 1, neighbors[NeighborLocation.Left].y, GSM.ElevationController.currentElevationLayerIndex)
+        const leftLeftCell = GSM.GridController.getCell(neighbors[NeighborLocation.Left].x - 1, neighbors[NeighborLocation.Left].y, GSM.GridController.gameMap.currentElevationLayerIndex)
         leftLeftCell.spriteTiles[layer] = new SpriteTile()
         leftLeftCell.spriteTiles[layer].drawableTileId = cell.spriteTiles[layer].drawableTileId
       }

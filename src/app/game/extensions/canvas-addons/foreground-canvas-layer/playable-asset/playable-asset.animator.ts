@@ -3,18 +3,16 @@ import { PlayableAsset } from './playable-asset.model';
 
 export class PlayableAssetAnimator {
   constructor() {
-    this.setupCharacterAnimation()
+    GSM.FrameController.frameFire.subscribe(this.animateCharacter.bind(this));
   }
 
-  public setupCharacterAnimation(): void {
-    GSM.FrameController.frameFire.subscribe((frame) => {
-      GSM.AssetController.assets.forEach((asset: PlayableAsset) => {
-        if (asset.animating) {
-          if (frame % asset.animationFrame === 0) {
-            asset.updateAnimation();
-          }
+  public animateCharacter(frame: number): void {
+    GSM.AssetController.assets.forEach((asset: PlayableAsset) => {
+      if (asset.animating) {
+        if (frame % asset.animationFrame === 0) {
+          asset.updateAnimation();
         }
-      });
+      }
     });
   }
 }

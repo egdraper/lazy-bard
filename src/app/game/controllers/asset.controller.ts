@@ -1,12 +1,11 @@
 import { Subject } from "rxjs";
 import { GSM } from "../game-state-manager.service";
 import { Asset } from "../models/asset.model";
-import { Cell } from "../models/map";
+import { Cell, RenderingLayers } from "../models/map";
 
 export class AssetController {
   public assets: Asset[] = []
   public assetClicked = new Subject<Asset>()
-  public spriteTileClicked = new Subject<Cell>()
 
   constructor() {
     GSM.EventController.cellClick.subscribe(this.onCellClicked.bind(this))
@@ -30,5 +29,9 @@ export class AssetController {
       this.assetClicked.next(asset)
       return
     }
-  } 
+  }
+
+  private canAssetBePlacedHere(cell: Cell, elevation: number, renderLayer: RenderingLayers): boolean {
+    return null
+  }
 }

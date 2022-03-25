@@ -9,16 +9,16 @@ export class TerrainCliffBrushEventHandler {
   }
 
   // adds the paintable terrain id to the cell clicked
-  private onEmptyCellClicked(cellId: string, elevation: number = GSM.ElevationController.currentElevationLayerIndex): void {
+  private onEmptyCellClicked(cellId: string, elevation: number = GSM.GridController.gameMap.currentElevationLayerIndex): void {
 
     
 
     const cell = GSM.GridController.gameMap.elevations[elevation].cells[cellId]
     if(GSM.EventController.generalActionFire.value.name === "paintingCliffTerrain") {
-      const topCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Top, elevation)
+      const topCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.Top, elevation)
       const drawableTile = GSM.EventController.generalActionFire.value.data as {id: string}
-      const topRightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.TopRight, elevation)
-      const rightCell = GSM.GridController.getNeighbor(cell, NeighborLocation.Right, elevation)
+      const topRightCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.TopRight, elevation)
+      const rightCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.Right, elevation)
       
       const drawCell = cell.spriteTiles[RenderingLayers.TerrainLayer] = new SpriteTile()
       drawCell.drawableTileId = drawableTile.id

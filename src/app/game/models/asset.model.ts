@@ -2,9 +2,10 @@ import { Cell } from "./map"
 
 export class Asset {
   cell: Cell
+  gridId: string
+  elevationIndex: number
   id: string
   imageUrl: string
-  gridId: string
   selected: boolean
 }
 

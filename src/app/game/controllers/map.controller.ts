@@ -1,7 +1,6 @@
 import { Subject } from 'rxjs'
 import { GSM } from '../game-state-manager.service'
-import {Cell, RenderingLayers, GameMap, Grid, NeighborLocation, Size } from '../models/map'
-import { GeneralAction } from '../models/settings'
+import {Cell, RenderingLayers, GameMap, Grid, Size } from '../models/map'
 
 export class MapController {
   public gameMap: GameMap
@@ -10,10 +9,6 @@ export class MapController {
   
   public layerIterator: RenderingLayers[] = []
   private gridIterator: {[elevationIndex: number]: Cell[] } = []
-
-  constructor() {
-    GSM.EventController.generalActionFire.subscribe(this.onElevationChange.bind(this))
-  }  
 
   public iterateCells(elevationIndex: number, callBack: (cell: Cell) => void): void {
     this.gridIterator[elevationIndex].forEach((cell) => {
@@ -52,98 +47,19 @@ export class MapController {
   public getCellAtLayer(cellId: string, layer: number): Cell {
     return this.gameMap.elevations[layer].cells[cellId]
   }
-
-  public getNeighbor(
-    cell: Cell,
-    neighborLocation: NeighborLocation,
-    layer: number
-  ): Cell {
-    switch (neighborLocation) {
-      case NeighborLocation.Top:
-        return this.gameMap.elevations[layer].cells[
-          `x${cell.x}:y${cell.y - 1}`
-        ]
-      case NeighborLocation.Right:
-        return this.gameMap.elevations[layer].cells[
-          `x${cell.x + 1}:y${cell.y}`
-        ]
-      case NeighborLocation.Bottom:
-        return this.gameMap.elevations[layer].cells[
-          `x${cell.x}:y${cell.y + 1}`
-        ]
-      case NeighborLocation.Left:
-        return this.gameMap.elevations[layer].cells[
-          `x${cell.x - 1}:y${cell.y}`
-        ]
-      case NeighborLocation.TopRight:
-        return this.gameMap.elevations[layer].cells[
-          `x${cell.x + 1}:y${cell.y - 1}`
-        ]
-      case NeighborLocation.BottomRight:
-        return this.gameMap.elevations[layer].cells[
-          `x${cell.x + 1}:y${cell.y + 1}`
-        ]
-      case NeighborLocation.BottomLeft:
-        return this.gameMap.elevations[layer].cells[
-          `x${cell.x - 1}:y${cell.y + 1}`
-        ]
-      case NeighborLocation.TopLeft:
-        return this.gameMap.elevations[layer].cells[
-          `x${cell.x - 1}:y${cell.y - 1}`
-        ]
-    }
-  }
-
-  public getAllNeighbors(cell: Cell, elevationIndex: number): Cell[] {
-    const cells = []
-    cells.push(this.getNeighbor(cell, NeighborLocation.Top, elevationIndex))
-    cells.push(this.getNeighbor(cell, NeighborLocation.Right, elevationIndex))
-    cells.push(this.getNeighbor(cell, NeighborLocation.Bottom, elevationIndex))
-    cells.push(this.getNeighbor(cell, NeighborLocation.Left, elevationIndex))
-    cells.push(this.getNeighbor(cell, NeighborLocation.TopRight, elevationIndex))
-    cells.push(this.getNeighbor(cell, NeighborLocation.BottomRight, elevationIndex))
-    cells.push(this.getNeighbor(cell, NeighborLocation.BottomLeft, elevationIndex))
-    cells.push(this.getNeighbor(cell, NeighborLocation.TopLeft, elevationIndex))
-    return cells
-  }
-
+ 
   public createGameMap(size: Size): void {
     this.gameMap = new GameMap(size)
     this.gameMap.id = Math.random().toString()
     this.setupMap(0)
     this.setupMap(1)
-    GSM.ElevationController.topMostElevationLayerIndex = 1
-    GSM.ElevationController.currentElevationLayerIndex = 1
+    GSM.GridController.gameMap.topMostElevationLayerIndex = 1
+    GSM.GridController.gameMap.currentElevationLayerIndex = 1
 
     Object.keys(RenderingLayers).forEach(key => {
       GSM.GridController.layerIterator.push(RenderingLayers[key])
     })
   }
-
-  private onElevationChange(event: GeneralAction<any>) {
-    if(!this.gameMap) { return }
-   
-    if(event.name === "addElevationUp") {
-      if(GSM.ElevationController.currentElevationLayerIndex === GSM.ElevationController.topMostElevationLayerIndex) {
-        this.setupMap(++GSM.ElevationController.topMostElevationLayerIndex)
-        GSM.ElevationController.currentElevationLayerIndex = GSM.ElevationController.topMostElevationLayerIndex
-        return
-      } else {
-        GSM.ElevationController.currentElevationLayerIndex++
-      }
-    }
-
-    if(event.name === "addElevationDown") {
-      if(GSM.ElevationController.currentElevationLayerIndex === GSM.ElevationController.bottomMostElevationLayerIndex) {
-        this.setupMap(--GSM.ElevationController.bottomMostElevationLayerIndex)
-        GSM.ElevationController.currentElevationLayerIndex = GSM.ElevationController.bottomMostElevationLayerIndex
-        return
-      } else {
-        GSM.ElevationController.currentElevationLayerIndex--
-      }
-    }
-  }
-
 
   public setupMap(elevation: number): void {   
     for (let i = 0; i < this.gameMap.size.height; i++) {
@@ -176,8 +92,6 @@ export class MapController {
 
     this.newGridCreated.next(this.gameMap.elevations[elevation])
   }
-
-
 }
 
 // public maps: {[gridId: string]: GameMap} = {}

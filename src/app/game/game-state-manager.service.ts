@@ -11,6 +11,7 @@ import { CanvasModuleController } from './controllers/canvas-module.controller';
 import { Extensions } from './extensions.register';
 import { ImagesController } from './controllers/images.controller';
 import { ElevationController } from './controllers/elevation.controller';
+import { CellNeighborsController } from './controllers/cell-neighbors.controller';
 @Injectable({
   providedIn: 'root'
 })
@@ -27,9 +28,8 @@ export class GSM {
   public static AssetController: AssetController
   public static CanvasModuleController: CanvasModuleController
   public static ImageController: ImagesController
+  public static CellNeighborsController: CellNeighborsController
   public loadingFinished = false
-  constructor() {
-  }
   
   public newGame(
     name: string,
@@ -53,23 +53,14 @@ export class GSM {
     
     //Order Doesn't Matter
     GSM.AssetController = new AssetController()
+    GSM.CellNeighborsController = new CellNeighborsController()
     
     this.loadingFinished = true
     
     GSM.CanvasController.setupComplete.subscribe(() => {            
-      setTimeout(async ()=> {
-
-        
-        // sets up extension and their renderers
+      setTimeout(async ()=> {        
         await GSM.Extensions.init()
       })
     })
-  }
-  
-  public onCanvasSetupComplete(): void {
-  }
-
-  public loadGame(name: string): void {
-    //TODO
   }
 }

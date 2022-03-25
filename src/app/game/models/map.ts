@@ -6,6 +6,11 @@ export class GameMap {
   public name: string
   public elevations: {[elevationIndx: number]: Grid} = {}
   public baseTexture: string
+
+  public currentElevationLayerIndex: number = 0
+  public baseElevationLayerIndex: number = 0
+  public topMostElevationLayerIndex: number = 0
+  public bottomMostElevationLayerIndex: number = 0
   
   constructor(public size: Size) { }
 }

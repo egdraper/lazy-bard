@@ -8,7 +8,6 @@ import { AddonRenderer } from "./utils/addon-renderer.util"
 export class RendererController {
   public foregroundCanvasRenderer: AddonRenderer
   public baseCanvasRenderer: AddonRenderer
-  public renderForegroundCanvasAsSingleImage = false
 
   private subscriptions: Subscription[] = []
   
@@ -42,7 +41,7 @@ export class RendererController {
     GSM.GridController.iterateElevations(elevation => {
       if(elevation.elevationIndex === 0) { return }
 
-      if(elevation.elevationIndex === GSM.ElevationController.currentElevationLayerIndex) {
+      if(elevation.elevationIndex === GSM.GridController.gameMap.currentElevationLayerIndex) {
         this.runRendererForExcludedAddons(elevation.elevationIndex, frame)
       } else {
         this.foregroundCanvasRenderer.draw(GSM.ImageController.elevationLayersImages[elevation.elevationIndex], elevation.elevationIndex)
