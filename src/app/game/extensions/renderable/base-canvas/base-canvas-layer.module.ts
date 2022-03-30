@@ -27,7 +27,7 @@ export class BaseCanvasModule extends CanvasModule {
     const renderers = this.extensions.map(extension => extension.renderer)
     renderers.forEach(renderer => renderer.excludeFromIndividualCellPainting = false)
     
-    GSM.ImageController.baseLayerImage = generateElevationImage(renderers, GSM.GridController.gameMap.baseElevationLayerIndex)
+    GSM.ImageController.baseLayerImage = generateElevationImage(renderers, GSM.GameData.map.baseElevationLayerIndex)
     renderers.forEach(renderer => renderer.excludeFromIndividualCellPainting = true)
   }
 }

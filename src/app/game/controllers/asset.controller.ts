@@ -4,23 +4,23 @@ import { Asset } from "../models/asset.model";
 import { Cell, RenderingLayers } from "../models/map";
 
 export class AssetController {
-  public assets: Asset[] = []
   public assetClicked = new Subject<Asset>()
 
   constructor() {
     GSM.EventController.cellClick.subscribe(this.onCellClicked.bind(this))
+    GSM.FrameController.frameFire.subscribe(this.animateAsset.bind(this));
   }
 
   public getAssetByCellId(cellId: string): Asset | undefined {
-    return this.assets.find(asset => asset.cell.id === cellId)
+    return GSM.GameData.assets.find(asset => asset.cell.id === cellId)
   }
 
   public getSelectedAssets(): Asset[] {
-    return this.assets.filter(asset => asset.selected)
+    return GSM.GameData.assets.filter(asset => asset.selected)
   }
 
   public deselectAllAssets(): void {
-    this.assets.forEach(asset => asset.selected = false)
+    GSM.GameData.assets.forEach(asset => asset.selected = false)
   }
 
   private onCellClicked(cellId: string): void {
@@ -31,7 +31,13 @@ export class AssetController {
     }
   }
 
-  private canAssetBePlacedHere(cell: Cell, elevation: number, renderLayer: RenderingLayers): boolean {
-    return null
+  private animateAsset(frame: number): void {
+    GSM.GameData.assets.forEach((asset: Asset) => {
+      if (asset.animating) {
+        if (frame % asset.animationFrame === 0) {
+          asset.movement.updateAnimation();
+        }
+      }
+    });
   }
 }

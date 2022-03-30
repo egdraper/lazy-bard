@@ -12,23 +12,28 @@ import { Extensions } from './extensions.register';
 import { ImagesController } from './controllers/images.controller';
 import { ElevationController } from './controllers/elevation.controller';
 import { CellNeighborsController } from './controllers/cell-neighbors.controller';
+import { GameData } from './game-data';
 @Injectable({
   providedIn: 'root'
 })
 // Game State Manager
 export class GSM {
-  public static CanvasController: CanvasController
-  public static Settings: Settings
-  public static FrameController: FrameController
-  public static Extensions: Extensions
-  public static GridController: MapController
-  public static ElevationController: ElevationController
-  public static RendererController: RendererController
-  public static EventController: EventController
+  // Persisting Core Data
+  public static GameData: GameData
+
+  // App Function Controllers
   public static AssetController: AssetController
+  public static CanvasController: CanvasController
   public static CanvasModuleController: CanvasModuleController
-  public static ImageController: ImagesController
   public static CellNeighborsController: CellNeighborsController
+  public static ElevationController: ElevationController
+  public static EventController: EventController
+  public static Extensions: Extensions
+  public static FrameController: FrameController
+  public static GridController: MapController
+  public static ImageController: ImagesController
+  public static RendererController: RendererController
+  public static Settings: Settings
   public loadingFinished = false
   
   public newGame(
@@ -38,6 +43,7 @@ export class GSM {
     baseTexture: string = "forest",
   ): void {
     // Order Matters
+    GSM.GameData = new GameData()
     GSM.Settings = new Settings()
     GSM.CanvasController = new CanvasController()
     GSM.FrameController = new FrameController()
@@ -49,7 +55,7 @@ export class GSM {
     GSM.ElevationController = new ElevationController()
     GSM.GridController.createGameMap({width, height})
     GSM.ImageController = new ImagesController()   
-    GSM.GridController.gameMap.baseTexture = baseTexture
+    GSM.GameData.map.baseTexture = baseTexture
     
     //Order Doesn't Matter
     GSM.AssetController = new AssetController()

@@ -41,7 +41,7 @@ export class RendererController {
     GSM.GridController.iterateElevations(elevation => {
       if(elevation.elevationIndex === 0) { return }
 
-      if(elevation.elevationIndex === GSM.GridController.gameMap.currentElevationLayerIndex) {
+      if(elevation.elevationIndex === GSM.GameData.map.currentElevationLayerIndex) {
         this.runRendererForExcludedAddons(elevation.elevationIndex, frame)
       } else {
         this.foregroundCanvasRenderer.draw(GSM.ImageController.elevationLayersImages[elevation.elevationIndex], elevation.elevationIndex)
@@ -66,9 +66,9 @@ export class RendererController {
     
   private clearCanvases(): void {
     const canvas = GSM.CanvasController
-    canvas.backgroundCTX.clearRect(0,0, GSM.GridController.gameMap.size.width * GSM.Settings.blockSize, GSM.GridController.gameMap.size.height * GSM.Settings.blockSize)
+    canvas.backgroundCTX.clearRect(0,0, GSM.GameData.map.size.width * GSM.Settings.blockSize, GSM.GameData.map.size.height * GSM.Settings.blockSize)
     canvas.backgroundCTX.imageSmoothingEnabled = false
-    canvas.foregroundCTX.clearRect(0,0, GSM.GridController.gameMap.size.width * GSM.Settings.blockSize, GSM.GridController.gameMap.size.height * GSM.Settings.blockSize)
+    canvas.foregroundCTX.clearRect(0,0, GSM.GameData.map.size.width * GSM.Settings.blockSize, GSM.GameData.map.size.height * GSM.Settings.blockSize)
     canvas.foregroundCTX.imageSmoothingEnabled = false   
   }  
 

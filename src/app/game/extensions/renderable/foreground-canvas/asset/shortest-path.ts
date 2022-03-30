@@ -1,6 +1,6 @@
 import { GSM } from "../../../../game-state-manager.service";
+import { Asset } from "../../../../models/asset.model";
 import { Cell } from "../../../../models/map";
-import { PlayableAsset } from "./playable-asset.model";
 
 export interface Visited {
   cell?: Cell
@@ -12,18 +12,22 @@ export interface Visited {
   checked?: boolean;
 }
 
-export class ShortestPath {
-  public static creaturesOnGrid: any[] = []
-  private static maxSearches = 2000000
-  private static searchIndex = 0
+export abstract class TravelPath {
+  public abstract find(start: Cell, end: Cell, AssetObstacles: Array<Asset> ): Cell[] 
+} 
 
-  public static find(start: Cell, end: Cell, creaturesOnGrid: Array<PlayableAsset> ): Cell[] {
+export class ShortestPath extends TravelPath {
+  public creaturesOnGrid: any[] = []
+  private maxSearches = 2000000
+  private searchIndex = 0
+
+  public find(start: Cell, end: Cell, creaturesOnGrid: Array<Asset> ): Cell[] {
     this.creaturesOnGrid = creaturesOnGrid
     end = this.verifyClosetLocation(start, end)
     return this.start(start, end)
   }
 
-  private static start(start: Cell, end: Cell): Cell[] {
+  private start(start: Cell, end: Cell): Cell[] {
     if(!end) { return [] }
     this.searchIndex = 0
     const visited: any = { };
@@ -35,7 +39,7 @@ export class ShortestPath {
     return this.getShortestPath(visited[`x${end.x}:y${end.y}`], shortestPath);
   }
 
-  private static getShortestPath(cell: any, shortest: Cell[]) {
+  private getShortestPath(cell: any, shortest: Cell[]) {
     if (cell.prevCel) {
      shortest.push(cell.prevCel.cell);
      cell.prevCel.cell.path = true;
@@ -45,7 +49,7 @@ export class ShortestPath {
     return shortest;
   }
 
-  private static visitedNow(endingPoint: Cell, visited: any) {
+  private visitedNow(endingPoint: Cell, visited: any) {
     if(!endingPoint) { return }
     if(this.maxSearches < this.searchIndex) { return }
     
@@ -58,7 +62,7 @@ export class ShortestPath {
         if (!visited[visitedCell].checked) {
           const store: number[] = [ ];
 
-          GSM.CellNeighborsController.getAllImmediateNeighbors(visited[visitedCell].cell, GSM.GridController.gameMap.currentElevationLayerIndex).forEach((cell: Cell, index: number) => {
+          GSM.CellNeighborsController.getAllImmediateNeighbors(visited[visitedCell].cell, GSM.GameData.map.currentElevationLayerIndex).forEach((cell: Cell, index: number) => {
             if (!cell) {
               return;
             }
@@ -110,9 +114,9 @@ export class ShortestPath {
     this.visitedNow(endingPoint, visited);
   }
 
-  public static verifyClosetLocation(start: Cell, end: Cell): Cell {
+  public verifyClosetLocation(start: Cell, end: Cell): Cell {
     if(this.isBadLocation(end)) { 
-      const possibleAlternatives = GSM.CellNeighborsController.getAllImmediateNeighbors(end, GSM.GridController.gameMap.currentElevationLayerIndex).filter(a => !this.isBadLocation(a))
+      const possibleAlternatives = GSM.CellNeighborsController.getAllImmediateNeighbors(end, GSM.GameData.map.currentElevationLayerIndex).filter(a => !this.isBadLocation(a))
       if(possibleAlternatives) {
         let newEndCell
         let shortest = 1000000
@@ -131,11 +135,11 @@ export class ShortestPath {
     return end
   }
 
-  public static isBadLocation(end: Cell): boolean {
+  public isBadLocation(end: Cell): boolean {
     return end.obstacle || this.creaturesOnGrid.find(a => a.cell.id === end.id) 
   }
 
-  private static alternateDiagonal(visited: Visited, index: number): any {
+  private alternateDiagonal(visited: Visited, index: number): any {
     let newSteps
 
     if(index > 3) {

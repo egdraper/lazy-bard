@@ -107,7 +107,7 @@ export class CanvasComponent implements AfterViewInit {
     const mousePosX = event.offsetX
     const mousePosY = event.offsetY
     
-    const cell = GSM.GridController.getGridCellByCoordinate(event.offsetX, event.offsetY, GSM.GridController.gameMap.currentElevationLayerIndex)
+    const cell = GSM.GridController.getGridCellByCoordinate(event.offsetX, event.offsetY, GSM.GameData.map.currentElevationLayerIndex)
     
     GSM.EventController.cellClick.next(cell.id)
     GSM.EventController.mouseClick.next({x: mousePosX, y: mousePosY})
@@ -137,7 +137,7 @@ export class CanvasComponent implements AfterViewInit {
     const mousePosX = event.offsetX // + (-1 * GSM.Canvas.canvasViewPortOffsetX * GameSettings.scale)
     const mousePosY = event.offsetY // + (-1 * GSM.Canvas.canvasViewPortOffsetY * GameSettings.scale)
     
-    const hoveringCell = GSM.GridController.getGridCellByCoordinate(mousePosX, mousePosY, GSM.GridController.gameMap.currentElevationLayerIndex)
+    const hoveringCell = GSM.GridController.getGridCellByCoordinate(mousePosX, mousePosY, GSM.GameData.map.currentElevationLayerIndex)
     if(this.hoveringCellId !== hoveringCell.id) {
       GSM.EventController.cellMouseEntered.next(hoveringCell.id)
       this.hoveringCellId = hoveringCell.id
@@ -208,16 +208,16 @@ export class CanvasComponent implements AfterViewInit {
 
     
     // sets the width of canvas if grid is less than screen size
-    if(perfectWidth > GSM.GridController.gameMap.size.width * GSM.Settings.blockSize) {
-      perfectWidth = GSM.GridController.gameMap.size.width * GSM.Settings.blockSize
+    if(perfectWidth > GSM.GameData.map.size.width * GSM.Settings.blockSize) {
+      perfectWidth = GSM.GameData.map.size.width * GSM.Settings.blockSize
       
       // sets the container div's width to match grid size for centering
       if(container) {
         container.style.width = `${perfectWidth.toString()}px`
       }      
     }
-    if(perfectHeight > GSM.GridController.gameMap.size.height * GSM.Settings.blockSize) {
-      perfectHeight = GSM.GridController.gameMap.size.height * GSM.Settings.blockSize
+    if(perfectHeight > GSM.GameData.map.size.height * GSM.Settings.blockSize) {
+      perfectHeight = GSM.GameData.map.size.height * GSM.Settings.blockSize
     }
     
     // sets the canvas width to line up with the grid's edges if grid is larger than canvas

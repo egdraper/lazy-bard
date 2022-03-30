@@ -9,8 +9,8 @@ export class TerrainTreeBrushEventHandler {
   }
 
   // adds the drawable terrain id to the cell clicked
-  private onEmptyCellClicked(cellId: string, elevation: number = GSM.GridController.gameMap.currentElevationLayerIndex): void {
-    const cell = GSM.GridController.gameMap.elevations[elevation].cells[cellId]
+  private onEmptyCellClicked(cellId: string, elevation: number = GSM.GameData.map.currentElevationLayerIndex): void {
+    const cell = GSM.GameData.map.elevations[elevation].cells[cellId]
     if(GSM.EventController.generalActionFire.value.name === "paintingTreeTerrain") {
       const drawableTile = GSM.EventController.generalActionFire.value.data as {id: string}
       const topCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.Top, elevation)

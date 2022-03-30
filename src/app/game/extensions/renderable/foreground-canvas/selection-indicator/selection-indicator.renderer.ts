@@ -1,7 +1,7 @@
+import { Asset } from "src/app/game/models/asset.model";
 import { GSM } from "../../../../game-state-manager.service";
-import { Cell, RenderingLayers, SpriteTile } from "../../../../models/map";
+import { RenderingLayers } from "../../../../models/map";
 import { Renderer, RenderOptionsEvent } from "../../../../models/renderer";
-import { PlayableAsset } from "../playable-asset/playable-asset.model";
 
 export class SelectionIndicatorRenderer extends Renderer {
   public renderingLayer: RenderingLayers = RenderingLayers.CharacterLayer
@@ -13,7 +13,7 @@ export class SelectionIndicatorRenderer extends Renderer {
   private height
 
   public onDraw(event: RenderOptionsEvent): void {
-    const asset = GSM.AssetController.getSelectedAssets().find(asset => asset.cell.id === event.cell.id) as PlayableAsset 
+    const asset = GSM.AssetController.getSelectedAssets().find(asset => asset.cell.id === event.cell.id)
     if(!asset) { return } 
     
     this.animateMarker(asset, event.frame)
@@ -25,7 +25,7 @@ export class SelectionIndicatorRenderer extends Renderer {
     this.ctx.stroke()
   }
 
-  private animateMarker(asset: PlayableAsset, frame: number): void {
+  private animateMarker(asset: Asset, frame: number): void {
     if(frame <= 32) {
       this.posX = asset.positionX - Math.floor(frame / 6)
       this.posY = asset.positionY - Math.floor(frame / 6)

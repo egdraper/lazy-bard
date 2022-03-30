@@ -1,15 +1,16 @@
+import { Asset } from 'src/app/game/models/asset.model';
 import { GSM } from '../../../../game-state-manager.service';
-import { PlayableAsset } from './playable-asset.model';
+import { NormalWalking } from './normal-walking.movement';
 
 export class PlayableAssetEventHandler {
-  public selectedPlayableAssets: PlayableAsset[] = []
+  public selectedPlayableAssets: Asset[] = []
 
   constructor() {
     GSM.AssetController.assetClicked.subscribe(this.onAssetClicked.bind(this))
     GSM.EventController.emptyCellClicked.subscribe(this.onEmptyCellClicked.bind(this))
   }
 
-  public onAssetClicked(asset: PlayableAsset) {
+  public onAssetClicked(asset: Asset) {
     if(!GSM.EventController.keysPressed.has("MetaLeft")) {
       GSM.AssetController.deselectAllAssets()
     }
@@ -17,7 +18,7 @@ export class PlayableAssetEventHandler {
     asset.selected = !asset.selected
     GSM.EventController.generalActionFire.next({
       name: "characterSelected",
-      data: null
+      data: asset
     })
   }
 
@@ -28,22 +29,23 @@ export class PlayableAssetEventHandler {
 
     if(GSM.EventController.generalActionFire.value.name === "characterSelected") {
       const selectedAssets = GSM.AssetController.getSelectedAssets()
-      const cell = GSM.GridController.getCellAtLayer(cellId, GSM.GridController.gameMap.currentElevationLayerIndex)
-      selectedAssets.forEach((asset: PlayableAsset) => {
-        asset.startMovement(asset.cell, cell, GSM.AssetController.assets as PlayableAsset[]  )
+      const cell = GSM.GridController.getCellAtLayer(cellId, GSM.GameData.map.currentElevationLayerIndex)
+      selectedAssets.forEach((asset: Asset) => {
+        asset.movement.start(asset.cell, cell, GSM.GameData.assets as Asset[]  )
       })
     }      
   }
 
   // MOCK This will be a database thing
   private addPlayableCharacter(cellId: string): void {
-    const playerAsset = new PlayableAsset();
-    const cell = GSM.GridController.getCellAtLayer(cellId, GSM.GridController.gameMap.currentElevationLayerIndex)
+    const playerAsset = new Asset();
+    playerAsset.movement = new NormalWalking(playerAsset)
+    const cell = GSM.GridController.getCellAtLayer(cellId, GSM.GameData.map.currentElevationLayerIndex)
     playerAsset.cell = cell
     playerAsset.positionX = cell.posX;
     playerAsset.positionY = cell.posY;
     playerAsset.imageUrl = 'assets/images/character_001.png';
-    GSM.AssetController.assets.push(playerAsset);
+    GSM.GameData.assets.push(playerAsset);
     GSM.ImageController.addImageBySrcUrl(playerAsset.imageUrl)
   }
 }

@@ -74,8 +74,8 @@ export class GameComponent implements AfterViewInit{
       GSM.EventController.generalActionFire.next({
         name: "addElevationUp",
         data: {
-          leavingLayer: GSM.GridController.gameMap.currentElevationLayerIndex,
-          newLayer: GSM.GridController.gameMap.currentElevationLayerIndex + 1
+          leavingLayer: GSM.GameData.map.currentElevationLayerIndex,
+          newLayer: GSM.GameData.map.currentElevationLayerIndex + 1
         }
       })
     }
@@ -83,8 +83,8 @@ export class GameComponent implements AfterViewInit{
       GSM.EventController.generalActionFire.next({
         name: "addElevationDown",
         data: {
-          leavingLayer: GSM.GridController.gameMap.currentElevationLayerIndex,
-          newLayer: GSM.GridController.gameMap.currentElevationLayerIndex - 1
+          leavingLayer: GSM.GameData.map.currentElevationLayerIndex,
+          newLayer: GSM.GameData.map.currentElevationLayerIndex - 1
         }
       })
     }
