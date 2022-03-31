@@ -15,8 +15,8 @@ export abstract class Movement {
   protected speed: Speed = GSM.Settings.speed
   protected distanceToNextCell = 0
 
-  public assetCellPosX = 0
-  public assetCellPosY = 0
+  public cellTrackPosX = 0
+  public cellTrackPosY = 0
   
   protected onFinished: () => void
   
@@ -54,13 +54,13 @@ export abstract class Movement {
     this.setSpriteDirection()
     this.asset.spriteTile.animation.changeEveryNthFrame = 16
     this.distanceToNextCell = GSM.Settings.blockSize
-    this.assetCellPosX = this.asset.posX
-    this.assetCellPosY = this.asset.posY
+    this.cellTrackPosX = this.asset.posX
+    this.cellTrackPosY = this.asset.posY
 
     this.movementSubscription = GSM.FrameController.frameFire.subscribe(frame => {
       if(this.asset.moving) {
         this.trackCell()
-        const newPos = this.move({assetPosX: this.asset.posX, assetPosY: this.asset.posY, assetPosZ: this.asset.posZ, pathTrackPosX: this.assetCellPosX, pathTrackPosY: this.assetCellPosY, speed: this.speed, distanceToNextCell: this.distanceToNextCell, distanceToFinalCell: this.currentPath.length})
+        const newPos = this.move({assetPosX: this.asset.posX, assetPosY: this.asset.posY, assetPosZ: this.asset.posZ, pathTrackPosX: this.cellTrackPosX, pathTrackPosY: this.cellTrackPosY, speed: this.speed, distanceToNextCell: this.distanceToNextCell, distanceToFinalCell: this.currentPath.length})
         this.asset.posX = newPos.newPosX
         this.asset.posY = newPos.newPosY
         this.asset.posZ = newPos.newPosZ
@@ -85,8 +85,8 @@ export abstract class Movement {
       if (this.nextCell.x !== this.asset.cell.x) { nextXMove = this.nextCell.x > this.asset.cell.x ? this.speed : this.speed * -1 }
       if (this.nextCell.y !== this.asset.cell.y) { nextYMove = this.nextCell.y > this.asset.cell.y ? this.speed : this.speed * -1 }
   
-      this.assetCellPosX += nextXMove
-      this.assetCellPosY += nextYMove    
+      this.cellTrackPosX += nextXMove
+      this.cellTrackPosY += nextYMove    
   }
 
   protected setDirection(keyEvent: KeyboardEvent): void {
@@ -123,10 +123,10 @@ export abstract class Movement {
   }
 
   protected checkForFinishLocation(): void {    
-    if (this.assetCellPosX % (32) === 0 && this.assetCellPosY % (32) === 0) {
-      this.asset.cell = GSM.GridController.getGridCellByCoordinate(this.assetCellPosX, this.assetCellPosY, GSM.GameData.map.currentElevationLayerIndex)
-      this.asset.posX = this.assetCellPosX
-      this.asset.posY = this.assetCellPosY
+    if (this.cellTrackPosX % (32) === 0 && this.cellTrackPosY % (32) === 0) {
+      this.asset.cell = GSM.GridController.getGridCellByCoordinate(this.cellTrackPosX, this.cellTrackPosY, GSM.GameData.map.currentElevationLayerIndex)
+      this.asset.posX = this.cellTrackPosX
+      this.asset.posY = this.cellTrackPosY
       this.nextCell = this.currentPath.length > 0
         ? this.currentPath.pop()
         : null

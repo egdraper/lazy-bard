@@ -48,7 +48,7 @@ export class PlayableAssetEventHandler {
     const playerAsset = new Asset();
     playerAsset.spriteTile = new SpriteTile()
     playerAsset.spriteTile.animation = new SpriteAnimation()
-    playerAsset.movement = new Running(playerAsset)
+    playerAsset.movement = new Skip(playerAsset)
     playerAsset.cell = cell
     playerAsset.posX = cell.posX;
     playerAsset.posY = cell.posY;

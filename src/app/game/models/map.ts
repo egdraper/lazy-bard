@@ -20,8 +20,8 @@ export class Cell {
   id: string
   x: number // X Grid Coordinates
   y: number // Y Grid Coordinates
-  posX: number // X Pixel Coordinates
-  posY: number // Y Pixel Coordinates 
+  posX: number // X Pixel Coordinates // not saved
+  posY: number // Y Pixel Coordinates // not saved
   obstacle?: boolean 
   spriteTiles?: {[layer: string ]: SpriteTile} = {}
   renderers?: Renderer[]  // not saved
@@ -64,11 +64,22 @@ export class Size {
   z?: number
 }
 
+export class DrawWhen {
+  topNeighbor: boolean
+  topRightNeighbor: boolean
+  rightNeighbor: boolean
+  bottomRightNeighbor: boolean
+  bottomNeighbor:boolean
+  bottomLeftNeighbor: boolean
+  leftNeighbor: boolean
+  topLeftNeighbor: boolean
+}
+
 export class SpriteTile {
   id: string
-  drawableTileId?: string
   spritePosX: number
   spritePosY: number
+  drawableTileId?: string
   spriteSize: Size
   imageUrl?: string
   offsetX?: number
@@ -79,16 +90,7 @@ export class SpriteTile {
   default?: boolean
   selected?: boolean
   animation?: SpriteAnimation
-  drawWhen?: {
-    topNeighbor: boolean,
-    topRightNeighbor: boolean,
-    rightNeighbor: boolean,
-    bottomRightNeighbor: boolean
-    bottomNeighbor:boolean,
-    bottomLeftNeighbor: boolean,
-    leftNeighbor: boolean,
-    topLeftNeighbor: boolean,
-  }
+  drawWhen?: DrawWhen 
 }
 
 export interface DrawableItem {

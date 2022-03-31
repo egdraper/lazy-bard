@@ -8,7 +8,6 @@ export class Walking extends Movement {
   constructor(public asset: Asset) {
     super()
   }
-
   
   public move(event: {assetPosX: number, assetPosY: number, assetPosZ: number, pathTrackPosX: number, pathTrackPosY: number, speed: number, distanceToNextCell: number, distanceToFinalCell: number}): {newPosX: number, newPosY: number, newPosZ:number} {
     if(event.distanceToFinalCell === 0) {
