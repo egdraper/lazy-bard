@@ -1,8 +1,8 @@
 import { Subscription } from "rxjs"
-import { GSM } from "../../../../game-state-manager.service"
-import { Asset } from "../../../../models/asset.model"
-import { Cell } from "../../../../models/map"
-import { TravelPath } from "./shortest-path"
+import { GSM } from "../../../../../game-state-manager.service"
+import { Asset, Speed } from "../../../../../models/asset.model"
+import { Cell } from "../../../../../models/map"
+import { TravelPath } from "../shortest-path"
 
 export abstract class Movement {
   protected abstract asset: Asset  
@@ -12,27 +12,27 @@ export abstract class Movement {
   protected redirection: { start: Cell, end: Cell, charactersOnGrid: Asset[] }
   protected nextCell: Cell
   protected movementSubscription: Subscription
-  protected speed = GSM.Settings.speed
+  protected speed: Speed = GSM.Settings.speed
   protected distanceToNextCell = 0
 
-  protected assetCellPosX = 0
-  protected assetCellPosY = 0
+  public assetCellPosX = 0
+  public assetCellPosY = 0
   
   protected onFinished: () => void
   
     
   public set spriteDirection(value: string) {
-    if (value === "down") { this.asset.frameYPosition = 0 }
-    if (value === "up") { this.asset.frameYPosition = 108 }
-    if (value === "left") { this.asset.frameYPosition = 36 }
-    if (value === "right") { this.asset.frameYPosition = 72 }
+    if (value === "down") { this.asset.spriteTile.animation.spriteYPosition = 0 }
+    if (value === "up") { this.asset.spriteTile.animation.spriteYPosition = 108 }
+    if (value === "left") { this.asset.spriteTile.animation.spriteYPosition = 36 }
+    if (value === "right") { this.asset.spriteTile.animation.spriteYPosition = 72 }
   }
 
   constructor() {
     GSM.EventController.keyDown.subscribe(this.setDirection.bind(this))
   }
 
-  public abstract move(event: {assetPosX: number, assetPosY: number, pathTrackPosX: number, pathTrackPosY: number, speed: number, distanceToNextCell: number}): {newPosX: number, newPosY: number} 
+  public abstract move(event: {assetPosX: number, assetPosY: number, assetPosZ: number, pathTrackPosX: number, pathTrackPosY: number, speed: number, distanceToNextCell: number, distanceToFinalCell: number}): {newPosX: number, newPosY: number, newPosZ: number} 
 
   public start(startCell: Cell, endCell: Cell, charactersOnGrid: Asset[], onFinished?: ()=> void): void {
     if (onFinished) { this.onFinished = onFinished }
@@ -52,27 +52,29 @@ export abstract class Movement {
     this.nextCell = this.currentPath.pop()
 
     this.setSpriteDirection()
-    this.asset.animationFrame = 2
+    this.asset.spriteTile.animation.changeEveryNthFrame = 16
     this.distanceToNextCell = GSM.Settings.blockSize
-    this.assetCellPosX = this.asset.positionX
-    this.assetCellPosY = this.asset.positionY
+    this.assetCellPosX = this.asset.posX
+    this.assetCellPosY = this.asset.posY
 
     this.movementSubscription = GSM.FrameController.frameFire.subscribe(frame => {
       if(this.asset.moving) {
         this.trackCell()
-        const newPos = this.move({assetPosX: this.asset.positionX, assetPosY: this.asset.positionY, pathTrackPosX: this.assetCellPosX, pathTrackPosY: this.assetCellPosY, speed: this.speed, distanceToNextCell: this.distanceToNextCell})
-        this.asset.positionX = newPos.newPosX
-        this.asset.positionY = newPos.newPosY
+        const newPos = this.move({assetPosX: this.asset.posX, assetPosY: this.asset.posY, assetPosZ: this.asset.posZ, pathTrackPosX: this.assetCellPosX, pathTrackPosY: this.assetCellPosY, speed: this.speed, distanceToNextCell: this.distanceToNextCell, distanceToFinalCell: this.currentPath.length})
+        this.asset.posX = newPos.newPosX
+        this.asset.posY = newPos.newPosY
+        this.asset.posZ = newPos.newPosZ
+        this.distanceToNextCell = this.distanceToNextCell - this.speed
         this.checkForFinishLocation()
       }
     })
   }
 
   public updateAnimation() {
-    if (this.asset.frameCounter < 3) {
-      this.asset.frameCounter++
+    if (this.asset.spriteTile.animation.positionCounter < 3) {
+      this.asset.spriteTile.animation.positionCounter++
     } else {
-      this.asset.frameCounter = 0
+      this.asset.spriteTile.animation.positionCounter = 0
     }
   }
 
@@ -84,8 +86,7 @@ export abstract class Movement {
       if (this.nextCell.y !== this.asset.cell.y) { nextYMove = this.nextCell.y > this.asset.cell.y ? this.speed : this.speed * -1 }
   
       this.assetCellPosX += nextXMove
-      this.assetCellPosY += nextYMove
-    
+      this.assetCellPosY += nextYMove    
   }
 
   protected setDirection(keyEvent: KeyboardEvent): void {
@@ -109,7 +110,7 @@ export abstract class Movement {
   protected end(): void {
     this.currentPath = null
     this.asset.moving = false
-    this.asset.animationFrame = 16
+    this.asset.spriteTile.animation.changeEveryNthFrame = 16
     this.movementSubscription.unsubscribe()
   } 
 
@@ -123,7 +124,9 @@ export abstract class Movement {
 
   protected checkForFinishLocation(): void {    
     if (this.assetCellPosX % (32) === 0 && this.assetCellPosY % (32) === 0) {
-      this.asset.cell = GSM.GridController.getGridCellByCoordinate(this.asset.positionX, this.asset.positionY, GSM.GameData.map.currentElevationLayerIndex)
+      this.asset.cell = GSM.GridController.getGridCellByCoordinate(this.assetCellPosX, this.assetCellPosY, GSM.GameData.map.currentElevationLayerIndex)
+      this.asset.posX = this.assetCellPosX
+      this.asset.posY = this.assetCellPosY
       this.nextCell = this.currentPath.length > 0
         ? this.currentPath.pop()
         : null
@@ -142,8 +145,6 @@ export abstract class Movement {
         }
       } else {
         this.distanceToNextCell = GSM.Settings.blockSize
-        this.asset.positionX = this.assetCellPosX
-        this.asset.positionY = this.assetCellPosY
         this.setSpriteDirection()
       }
     }

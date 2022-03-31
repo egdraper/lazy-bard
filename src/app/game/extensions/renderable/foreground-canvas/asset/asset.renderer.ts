@@ -13,13 +13,13 @@ export class PlayableAssetRenderer extends Renderer {
     if (!playableAsset) { return; }
 
     this.ctx.drawImage(
-      GSM.ImageController.getImage(playableAsset.imageUrl),
-      playableAsset.frameXPosition[playableAsset.frameCounter],
-      playableAsset.frameYPosition,
+      GSM.ImageController.getImage(playableAsset.spriteTile.imageUrl),
+      playableAsset.spriteTile.animation.spriteXPosition[playableAsset.spriteTile.animation.positionCounter],
+      playableAsset.spriteTile.animation.spriteYPosition,
       25,
       36,
-      playableAsset.positionX - 8,
-      playableAsset.positionY - 56,
+      playableAsset.posX - 8,
+      playableAsset.posY - 56 + playableAsset.posZ,
       50,
       80
     );

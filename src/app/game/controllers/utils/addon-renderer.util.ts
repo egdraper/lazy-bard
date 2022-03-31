@@ -16,12 +16,12 @@ export class AddonRenderer {
       image,
       0,
       0,
-      GSM.GameData.map.size.width * GSM.Settings.blockSize,
-      GSM.GameData.map.size.height * GSM.Settings.blockSize,
+      GSM.GameData.map.size.x * GSM.Settings.blockSize,
+      GSM.GameData.map.size.y * GSM.Settings.blockSize,
       0,
       0,
-      GSM.GameData.map.size.width * GSM.Settings.blockSize,
-      GSM.GameData.map.size.height * GSM.Settings.blockSize,
+      GSM.GameData.map.size.x * GSM.Settings.blockSize,
+      GSM.GameData.map.size.y * GSM.Settings.blockSize,
     )
     this.ctx.globalAlpha = 1
     this.ctx.filter = "none";

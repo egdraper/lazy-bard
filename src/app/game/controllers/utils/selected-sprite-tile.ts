@@ -10,8 +10,8 @@ export function getClickedOnSpriteTile(clickPosX: number, clickPosY: number): { 
       if(!cell.spriteTiles[layer]) { return }
         
       const spriteTile = cell.spriteTiles[layer]
-      if((clickPosX > cell.posX && clickPosX < cell.posX + spriteTile.tileWidth * GSM.Settings.blockSize)
-        && (clickPosY > (cell.posY + spriteTile.tileOffsetY) && clickPosY < cell.posY + GSM.Settings.blockSize)) 
+      if((clickPosX > cell.posX && clickPosX < cell.posX + spriteTile.spriteSize.x * GSM.Settings.blockSize)
+        && (clickPosY > (cell.posY + spriteTile.offsetY) && clickPosY < cell.posY + GSM.Settings.blockSize)) 
       {
         selectedSpriteTile = {layer, cell}
       }

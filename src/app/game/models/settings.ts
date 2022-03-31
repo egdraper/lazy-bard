@@ -1,9 +1,11 @@
+import { Speed } from "./asset.model"
+
 export class Settings {
   public blockSize = 32
   public commonTextureWidth = 3
   public commonTextureOdds = 250
   public regularAnimatedCharacterFramePosition = [0, 26, 52, 26]
-  public speed = 2
+  public speed: Speed = 2
 }
 
 export class CanvasSpecs {

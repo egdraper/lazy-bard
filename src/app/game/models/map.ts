@@ -1,3 +1,4 @@
+import { SpriteAnimation } from "./asset.model"
 import { Renderer } from "./renderer"
 
 
@@ -58,25 +59,26 @@ export class Grid {
 }
 
 export class Size {
-  width: number
-  height: number
+  x: number
+  y: number
+  z?: number
 }
 
 export class SpriteTile {
   id: string
   drawableTileId?: string
-  spriteGridPosX: number
-  spriteGridPosY: number
+  spritePosX: number
+  spritePosY: number
+  spriteSize: Size
   imageUrl?: string
-  tileHeight?: number
-  tileWidth?: number
-  tileOffsetX?: number
-  tileOffsetY?: number
+  offsetX?: number
+  offsetY?: number
   selectableArea: Size
   obstacleObstructionX?: number
   obstacleObstructionY?: number
   default?: boolean
   selected?: boolean
+  animation?: SpriteAnimation
   drawWhen?: {
     topNeighbor: boolean,
     topRightNeighbor: boolean,

@@ -18,7 +18,7 @@ export class SelectionIndicatorRenderer extends Renderer {
     
     this.animateMarker(asset, event.frame)
     this.ctx.beginPath()
-    this.ctx.moveTo(asset.positionX, asset.positionY)
+    this.ctx.moveTo(asset.posX, asset.posY)
     this.ctx.rect(this.posX, this.posY, this.width, this.height)    
     this.ctx.lineWidth = 5;
     this.ctx.strokeStyle = "rgba(255, 0 , 0, .5)"
@@ -27,14 +27,14 @@ export class SelectionIndicatorRenderer extends Renderer {
 
   private animateMarker(asset: Asset, frame: number): void {
     if(frame <= 32) {
-      this.posX = asset.positionX - Math.floor(frame / 6)
-      this.posY = asset.positionY - Math.floor(frame / 6)
+      this.posX = asset.posX - Math.floor(frame / 6)
+      this.posY = asset.posY - Math.floor(frame / 6)
       this.width = 32 + Math.floor(frame / 3)
       this.height = 32 + Math.floor(frame / 3)
     }
     if(frame > 32) {
-      this.posX = asset.positionX - Math.abs(Math.floor(frame / 6) - 12)
-      this.posY = asset.positionY - Math.abs(Math.floor(frame / 6) - 12)
+      this.posX = asset.posX - Math.abs(Math.floor(frame / 6) - 12)
+      this.posY = asset.posY - Math.abs(Math.floor(frame / 6) - 12)
       this.width = 32 + Math.abs(Math.floor(frame / 3) - 24)
       this.height = 32 + Math.abs(Math.floor(frame / 3) - 24)
     }

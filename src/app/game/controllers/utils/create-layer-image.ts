@@ -4,8 +4,8 @@ import { Renderer } from "../../models/renderer"
 export function generateElevationImage(renderers: Renderer[], elevationIndex: number): HTMLImageElement {
     if(!GSM.CanvasController.fullImageCTX) { return null }
 
-    GSM.CanvasController.fullImageCTX.canvas.width = GSM.GameData.map.size.width * GSM.Settings.blockSize
-    GSM.CanvasController.fullImageCTX.canvas.height = GSM.GameData.map.size.height * GSM.Settings.blockSize
+    GSM.CanvasController.fullImageCTX.canvas.width = GSM.GameData.map.size.x * GSM.Settings.blockSize
+    GSM.CanvasController.fullImageCTX.canvas.height = GSM.GameData.map.size.y * GSM.Settings.blockSize
        
     let tempCTX 
     renderers.forEach((renderer)=> {

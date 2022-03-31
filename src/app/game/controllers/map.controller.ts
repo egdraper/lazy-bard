@@ -59,8 +59,8 @@ export class MapController {
   }
 
   public setupMap(elevation: number): void {   
-    for (let i = 0; i < GSM.GameData.map.size.height; i++) {
-      for (let l = 0; l < GSM.GameData.map.size.width; l++) {
+    for (let i = 0; i < GSM.GameData.map.size.y; i++) {
+      for (let l = 0; l < GSM.GameData.map.size.x; l++) {
         if(!GSM.GameData.map.elevations[elevation]) {
           GSM.GameData.map.elevations[elevation] = new Grid()
           GSM.GameData.map.elevations[elevation].elevationIndex = elevation

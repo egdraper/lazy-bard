@@ -1,6 +1,10 @@
-import { Asset } from 'src/app/game/models/asset.model';
+import { Asset, SpriteAnimation } from 'src/app/game/models/asset.model';
+import { SpriteTile } from 'src/app/game/models/map';
 import { GSM } from '../../../../game-state-manager.service';
-import { NormalWalking } from './normal-walking.movement';
+import { Jump } from './movement.ts/jump.movement';
+import { Running } from './movement.ts/run.movement';
+import { Skip } from './movement.ts/skip.movement';
+import { Walking } from './movement.ts/walking.movement';
 
 export class PlayableAssetEventHandler {
   public selectedPlayableAssets: Asset[] = []
@@ -38,14 +42,19 @@ export class PlayableAssetEventHandler {
 
   // MOCK This will be a database thing
   private addPlayableCharacter(cellId: string): void {
-    const playerAsset = new Asset();
-    playerAsset.movement = new NormalWalking(playerAsset)
     const cell = GSM.GridController.getCellAtLayer(cellId, GSM.GameData.map.currentElevationLayerIndex)
+    
+    // setup asset
+    const playerAsset = new Asset();
+    playerAsset.spriteTile = new SpriteTile()
+    playerAsset.spriteTile.animation = new SpriteAnimation()
+    playerAsset.movement = new Running(playerAsset)
     playerAsset.cell = cell
-    playerAsset.positionX = cell.posX;
-    playerAsset.positionY = cell.posY;
-    playerAsset.imageUrl = 'assets/images/character_001.png';
+    playerAsset.posX = cell.posX;
+    playerAsset.posY = cell.posY;
+    playerAsset.spriteTile.imageUrl = 'assets/images/character_001.png';
+    
     GSM.GameData.assets.push(playerAsset);
-    GSM.ImageController.addImageBySrcUrl(playerAsset.imageUrl)
+    GSM.ImageController.addImageBySrcUrl(playerAsset.spriteTile.imageUrl)
   }
 }

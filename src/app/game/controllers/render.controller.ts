@@ -66,9 +66,9 @@ export class RendererController {
     
   private clearCanvases(): void {
     const canvas = GSM.CanvasController
-    canvas.backgroundCTX.clearRect(0,0, GSM.GameData.map.size.width * GSM.Settings.blockSize, GSM.GameData.map.size.height * GSM.Settings.blockSize)
+    canvas.backgroundCTX.clearRect(0,0, GSM.GameData.map.size.x * GSM.Settings.blockSize, GSM.GameData.map.size.y * GSM.Settings.blockSize)
     canvas.backgroundCTX.imageSmoothingEnabled = false
-    canvas.foregroundCTX.clearRect(0,0, GSM.GameData.map.size.width * GSM.Settings.blockSize, GSM.GameData.map.size.height * GSM.Settings.blockSize)
+    canvas.foregroundCTX.clearRect(0,0, GSM.GameData.map.size.x * GSM.Settings.blockSize, GSM.GameData.map.size.y * GSM.Settings.blockSize)
     canvas.foregroundCTX.imageSmoothingEnabled = false   
   }  
 

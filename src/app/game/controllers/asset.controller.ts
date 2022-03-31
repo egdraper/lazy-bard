@@ -1,7 +1,6 @@
 import { Subject } from "rxjs";
 import { GSM } from "../game-state-manager.service";
 import { Asset } from "../models/asset.model";
-import { Cell, RenderingLayers } from "../models/map";
 
 export class AssetController {
   public assetClicked = new Subject<Asset>()
@@ -34,7 +33,7 @@ export class AssetController {
   private animateAsset(frame: number): void {
     GSM.GameData.assets.forEach((asset: Asset) => {
       if (asset.animating) {
-        if (frame % asset.animationFrame === 0) {
+        if (frame % asset.spriteTile.animation.changeEveryNthFrame === 0) {
           asset.movement.updateAnimation();
         }
       }

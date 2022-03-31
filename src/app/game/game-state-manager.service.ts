@@ -53,7 +53,7 @@ export class GSM {
     GSM.Extensions = new Extensions() 
     GSM.GridController = new MapController()
     GSM.ElevationController = new ElevationController()
-    GSM.GridController.createGameMap({width, height})
+    GSM.GridController.createGameMap({x: width, y: height})
     GSM.ImageController = new ImagesController()   
     GSM.GameData.map.baseTexture = baseTexture
     

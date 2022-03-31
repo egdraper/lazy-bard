@@ -208,16 +208,16 @@ export class CanvasComponent implements AfterViewInit {
 
     
     // sets the width of canvas if grid is less than screen size
-    if(perfectWidth > GSM.GameData.map.size.width * GSM.Settings.blockSize) {
-      perfectWidth = GSM.GameData.map.size.width * GSM.Settings.blockSize
+    if(perfectWidth > GSM.GameData.map.size.x * GSM.Settings.blockSize) {
+      perfectWidth = GSM.GameData.map.size.x * GSM.Settings.blockSize
       
       // sets the container div's width to match grid size for centering
       if(container) {
         container.style.width = `${perfectWidth.toString()}px`
       }      
     }
-    if(perfectHeight > GSM.GameData.map.size.height * GSM.Settings.blockSize) {
-      perfectHeight = GSM.GameData.map.size.height * GSM.Settings.blockSize
+    if(perfectHeight > GSM.GameData.map.size.y * GSM.Settings.blockSize) {
+      perfectHeight = GSM.GameData.map.size.y * GSM.Settings.blockSize
     }
     
     // sets the canvas width to line up with the grid's edges if grid is larger than canvas

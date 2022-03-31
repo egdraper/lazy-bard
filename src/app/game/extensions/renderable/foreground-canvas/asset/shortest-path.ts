@@ -56,8 +56,7 @@ export class ShortestPath extends TravelPath {
     if ((visited[`x${endingPoint.x}:y${endingPoint.y}`] && visited[`x${endingPoint.x}:y${endingPoint.y}`].cell === endingPoint)) {
       return;
     }
-    
-    
+        
     Object.keys(visited).forEach(visitedCell => {
         if (!visited[visitedCell].checked) {
           const store: number[] = [ ];
