@@ -23,7 +23,7 @@ export class Cell {
   posX: number // X Pixel Coordinates // not saved
   posY: number // Y Pixel Coordinates // not saved
   obstacle?: boolean 
-  spriteTiles?: {[layer: string ]: SpriteTile} = {}
+  terrainTiles?: {[layer: string ]: TerrainTile} = {}
   renderers?: Renderer[]  // not saved
   elevationIndex?: number // not saved
 }
@@ -75,13 +75,12 @@ export class DrawWhen {
   topLeftNeighbor: boolean
 }
 
-export class SpriteTile {
+export class Tile {
   id: string
+  imageUrl?: string
   spritePosX: number
   spritePosY: number
-  drawableTileId?: string
   spriteSize: Size
-  imageUrl?: string
   offsetX?: number
   offsetY?: number
   selectableArea: Size
@@ -89,8 +88,15 @@ export class SpriteTile {
   obstacleObstructionY?: number
   default?: boolean
   selected?: boolean
-  animation?: SpriteAnimation
+}
+
+export class TerrainTile extends Tile {
+  drawableTileId?: string
   drawWhen?: DrawWhen 
+}
+
+export class AssetTile extends Tile {
+  animation?: SpriteAnimation
 }
 
 export interface DrawableItem {
@@ -98,5 +104,5 @@ export interface DrawableItem {
   name: string
   imageUrl: string
   spriteType: string
-  drawingRules: SpriteTile[]
+  drawingRules: TerrainTile[]
 }

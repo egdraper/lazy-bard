@@ -22,10 +22,10 @@ export abstract class Movement {
   
     
   public set spriteDirection(value: string) {
-    if (value === "down") { this.asset.spriteTile.animation.spriteYPosition = 0 }
-    if (value === "up") { this.asset.spriteTile.animation.spriteYPosition = 108 }
-    if (value === "left") { this.asset.spriteTile.animation.spriteYPosition = 36 }
-    if (value === "right") { this.asset.spriteTile.animation.spriteYPosition = 72 }
+    if (value === "down") { this.asset.assetTile.animation.spriteYPosition = 0 }
+    if (value === "up") { this.asset.assetTile.animation.spriteYPosition = 108 }
+    if (value === "left") { this.asset.assetTile.animation.spriteYPosition = 36 }
+    if (value === "right") { this.asset.assetTile.animation.spriteYPosition = 72 }
   }
 
   constructor() {
@@ -52,7 +52,7 @@ export abstract class Movement {
     this.nextCell = this.currentPath.pop()
 
     this.setSpriteDirection()
-    this.asset.spriteTile.animation.changeEveryNthFrame = 16
+    this.asset.assetTile.animation.changeEveryNthFrame = 16
     this.distanceToNextCell = GSM.Settings.blockSize
     this.cellTrackPosX = this.asset.posX
     this.cellTrackPosY = this.asset.posY
@@ -71,10 +71,10 @@ export abstract class Movement {
   }
 
   public updateAnimation() {
-    if (this.asset.spriteTile.animation.positionCounter < 3) {
-      this.asset.spriteTile.animation.positionCounter++
+    if (this.asset.assetTile.animation.positionCounter < 3) {
+      this.asset.assetTile.animation.positionCounter++
     } else {
-      this.asset.spriteTile.animation.positionCounter = 0
+      this.asset.assetTile.animation.positionCounter = 0
     }
   }
 
@@ -110,7 +110,7 @@ export abstract class Movement {
   protected end(): void {
     this.currentPath = null
     this.asset.moving = false
-    this.asset.spriteTile.animation.changeEveryNthFrame = 16
+    this.asset.assetTile.animation.changeEveryNthFrame = 16
     this.movementSubscription.unsubscribe()
   } 
 

@@ -33,7 +33,7 @@ export class AssetController {
   private animateAsset(frame: number): void {
     GSM.GameData.assets.forEach((asset: Asset) => {
       if (asset.animating) {
-        if (frame % asset.spriteTile.animation.changeEveryNthFrame === 0) {
+        if (frame % asset.assetTile.animation.changeEveryNthFrame === 0) {
           asset.movement.updateAnimation();
         }
       }

@@ -1,4 +1,4 @@
-import { Cell, RenderingLayers, SpriteTile } from "src/app/game/models/map"
+import { Cell, RenderingLayers, AssetTile, TerrainTile } from "src/app/game/models/map"
 import { backgroundSprites } from "../../../../db/background.db"
 import { GSM } from "../../../../game-state-manager.service"
 import { TextureSprite } from "../../../../models/sprites"
@@ -45,11 +45,11 @@ export class BaseTextureExtension extends CanvasLayerExtension {
 
   private setBackgroundImages(): void {
     GSM.GridController.iterateCells(0, (cell: Cell) => {
-      const spriteTile = new SpriteTile()
-      spriteTile.imageUrl = this.baseTexture?.imageUrl || ""
-      BaseTextureRandomGenerator.autoFillBackgroundTerrain(spriteTile, this.baseTexture)
+      const terrainTile = new TerrainTile()
+      terrainTile.imageUrl = this.baseTexture?.imageUrl || ""
+      BaseTextureRandomGenerator.autoFillBackgroundTerrain(terrainTile, this.baseTexture)
 
-      cell.spriteTiles[RenderingLayers.BaseLayer] = spriteTile
+      cell.terrainTiles[RenderingLayers.BaseLayer] = terrainTile
     })
   }
 }

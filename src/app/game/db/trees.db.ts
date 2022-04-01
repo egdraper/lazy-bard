@@ -1,6 +1,6 @@
-import { SpriteTile } from "../models/map";
+import { TerrainTile } from "../models/map";
 
-export const trees: SpriteTile[] = [
+export const trees: TerrainTile[] = [
   {
     id: "treeClumpTopLeft",
     spritePosX: 0,

@@ -1,5 +1,5 @@
 import { Asset, SpriteAnimation } from 'src/app/game/models/asset.model';
-import { SpriteTile } from 'src/app/game/models/map';
+import { AssetTile } from 'src/app/game/models/map';
 import { GSM } from '../../../../game-state-manager.service';
 import { Jump } from './movement.ts/jump.movement';
 import { Running } from './movement.ts/run.movement';
@@ -46,15 +46,15 @@ export class PlayableAssetEventHandler {
     
     // setup asset
     const playerAsset = new Asset();
-    playerAsset.spriteTile = new SpriteTile()
-    playerAsset.spriteTile.animation = new SpriteAnimation()
+    playerAsset.assetTile = new AssetTile()
+    playerAsset.assetTile.animation = new SpriteAnimation()
     playerAsset.movement = new Skip(playerAsset)
     playerAsset.cell = cell
     playerAsset.posX = cell.posX;
     playerAsset.posY = cell.posY;
-    playerAsset.spriteTile.imageUrl = 'assets/images/character_001.png';
+    playerAsset.assetTile.imageUrl = 'assets/images/character_001.png';
     
     GSM.GameData.assets.push(playerAsset);
-    GSM.ImageController.addImageBySrcUrl(playerAsset.spriteTile.imageUrl)
+    GSM.ImageController.addImageBySrcUrl(playerAsset.assetTile.imageUrl)
   }
 }

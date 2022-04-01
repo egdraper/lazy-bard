@@ -1,21 +1,21 @@
 import { GSM } from "../../game-state-manager.service"
 import { RenderingLayers, Cell } from "../../models/map"
 
-export function getClickedOnSpriteTile(clickPosX: number, clickPosY: number): { layer: RenderingLayers, cell: Cell} {
-  let selectedSpriteTile
+export function getClickedOnTerrainTile(clickPosX: number, clickPosY: number): { layer: RenderingLayers, cell: Cell} {
+  let selectedTerrainTile
   GSM.GridController.iterateCells(GSM.GameData.map.currentElevationLayerIndex, cell => {
-    if(Object.keys(cell.spriteTiles).length === 0) { return }
+    if(Object.keys(cell.terrainTiles).length === 0) { return }
       
     GSM.GridController.layerIterator.forEach(layer => {
-      if(!cell.spriteTiles[layer]) { return }
+      if(!cell.terrainTiles[layer]) { return }
         
-      const spriteTile = cell.spriteTiles[layer]
-      if((clickPosX > cell.posX && clickPosX < cell.posX + spriteTile.spriteSize.x * GSM.Settings.blockSize)
-        && (clickPosY > (cell.posY + spriteTile.offsetY) && clickPosY < cell.posY + GSM.Settings.blockSize)) 
+      const terrainTile = cell.terrainTiles[layer]
+      if((clickPosX > cell.posX && clickPosX < cell.posX + terrainTile.spriteSize.x * GSM.Settings.blockSize)
+        && (clickPosY > (cell.posY + terrainTile.offsetY) && clickPosY < cell.posY + GSM.Settings.blockSize)) 
       {
-        selectedSpriteTile = {layer, cell}
+        selectedTerrainTile = {layer, cell}
       }
     })
   })
-  return selectedSpriteTile
+  return selectedTerrainTile
 }

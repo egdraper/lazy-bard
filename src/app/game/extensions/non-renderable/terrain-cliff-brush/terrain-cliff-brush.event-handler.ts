@@ -1,6 +1,6 @@
 import { Sprite } from 'src/app/game/models/sprites';
 import { GSM } from '../../../game-state-manager.service';
-import { SpriteTile, NeighborLocation, RenderingLayers } from '../../../models/map';
+import { AssetTile, NeighborLocation, RenderingLayers, TerrainTile } from '../../../models/map';
 
 export class TerrainCliffBrushEventHandler {
   constructor() {
@@ -18,19 +18,19 @@ export class TerrainCliffBrushEventHandler {
       const topRightCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.TopRight, elevation)
       const rightCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.Right, elevation)
       
-      const drawCell = cell.spriteTiles[RenderingLayers.TerrainLayer] = new SpriteTile()
+      const drawCell = cell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
       drawCell.drawableTileId = drawableTile.id
       cell.obstacle = true
 
-      const drawTopCell = topCell.spriteTiles[RenderingLayers.TerrainLayer] = new SpriteTile()
+      const drawTopCell = topCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
       drawTopCell.drawableTileId = drawableTile.id
       topCell.obstacle = true
 
-      const drawRightCell = rightCell.spriteTiles[RenderingLayers.TerrainLayer] = new SpriteTile()
+      const drawRightCell = rightCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
       drawRightCell.drawableTileId = drawableTile.id
       rightCell.obstacle = true
     
-      const drawTopRightCell = topRightCell.spriteTiles[RenderingLayers.TerrainLayer] = new SpriteTile()
+      const drawTopRightCell = topRightCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
       drawTopRightCell.drawableTileId = drawableTile.id
       topRightCell.obstacle = true
     }  

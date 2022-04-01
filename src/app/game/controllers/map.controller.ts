@@ -71,14 +71,14 @@ export class MapController {
         }
 
         // creates cell
-        const cell = {
+        const cell: Cell = {
           x: l,
           y: i,
           posX: l * GSM.Settings.blockSize,
           posY: i * GSM.Settings.blockSize,
           id: `x${l}:y${i}`,
           renderers: [],
-          spriteTiles: {}
+          terrainTiles: {}
         }
 
         // adds cell to grid at layer

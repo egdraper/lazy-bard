@@ -12,9 +12,9 @@ export class Running extends Movement {
   
   public move(event: {assetPosX: number, assetPosY: number, assetPosZ: number, pathTrackPosX: number, pathTrackPosY: number, speed: number, distanceToNextCell: number, distanceToFinalCell: number}): {newPosX: number, newPosY: number, newPosZ:number} {
     if(event.distanceToFinalCell === 0) {
-      this.asset.spriteTile.animation.changeEveryNthFrame = 16
+      this.asset.assetTile.animation.changeEveryNthFrame = 16
     } else {
-      this.asset.spriteTile.animation.changeEveryNthFrame = 4
+      this.asset.assetTile.animation.changeEveryNthFrame = 4
     }
     return {newPosX: event.pathTrackPosX, newPosY: event.pathTrackPosY, newPosZ: event.assetPosZ}
   } 

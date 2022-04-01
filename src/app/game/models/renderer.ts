@@ -1,6 +1,6 @@
 import { GSM } from "../game-state-manager.service"
 import { Extension } from "./extension.model"
-import { Cell, RenderingLayers, SpriteTile } from "./map"
+import { Cell, RenderingLayers, AssetTile, TerrainTile } from "./map"
 
 export abstract class RendererBase {
   public ctx: CanvasRenderingContext2D
@@ -8,7 +8,7 @@ export abstract class RendererBase {
 
 export class RenderOptionsEvent {
   cell?: Cell
-  spriteTile?: SpriteTile
+  terrainTile?: TerrainTile
   elevationIndex?: number
   frame?: number
 }
@@ -21,7 +21,7 @@ export abstract class Renderer extends RendererBase {
   public drawOnFrameOnly = false
   
   public draw(renderOption: RenderOptionsEvent): void {
-    renderOption.spriteTile = renderOption.cell.spriteTiles[this.renderingLayer]
+    renderOption.terrainTile = renderOption.cell.terrainTiles[this.renderingLayer]
     this.onDraw(renderOption)
   }
 }

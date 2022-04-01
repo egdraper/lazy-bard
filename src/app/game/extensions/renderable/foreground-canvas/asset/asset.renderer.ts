@@ -13,9 +13,9 @@ export class PlayableAssetRenderer extends Renderer {
     if (!playableAsset) { return; }
 
     this.ctx.drawImage(
-      GSM.ImageController.getImage(playableAsset.spriteTile.imageUrl),
-      playableAsset.spriteTile.animation.spriteXPosition[playableAsset.spriteTile.animation.positionCounter],
-      playableAsset.spriteTile.animation.spriteYPosition,
+      GSM.ImageController.getImage(playableAsset.assetTile.imageUrl),
+      playableAsset.assetTile.animation.spriteXPosition[playableAsset.assetTile.animation.positionCounter],
+      playableAsset.assetTile.animation.spriteYPosition,
       25,
       36,
       playableAsset.posX - 8,

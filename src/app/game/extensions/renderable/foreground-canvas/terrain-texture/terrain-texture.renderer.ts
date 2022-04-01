@@ -8,28 +8,28 @@ export class TerrainPaintBrushRenderer extends Renderer {
   public renderingLayer: RenderingLayers = RenderingLayers.TerrainLayer
 
   public onDraw(event: RenderOptionsEvent): void {
-    if(!event.spriteTile) { return }
+    if(!event.terrainTile) { return }
 
     if(GSM.EventController.generalActionFire.value.name.includes("Terrain")) {
-      event.spriteTile = TerrainEdgeCalculator.calculateTerrainEdges(
+      event.terrainTile = TerrainEdgeCalculator.calculateTerrainEdges(
         event.cell,
-        event.spriteTile,
-        drawableItems.find(item => item.id === event.spriteTile.drawableTileId),
+        event.terrainTile,
+        drawableItems.find(item => item.id === event.terrainTile.drawableTileId),
         event.elevationIndex
       )
     }
 
     this.ctx.imageSmoothingEnabled = false
     this.ctx.drawImage(
-      GSM.ImageController.getImage(event.spriteTile.imageUrl),
-      event.spriteTile.spritePosX * GSM.Settings.blockSize,
-      event.spriteTile.spritePosY * GSM.Settings.blockSize,
-      event.spriteTile.spriteSize.x * GSM.Settings.blockSize,
-      event.spriteTile.spriteSize.y * GSM.Settings.blockSize,
-      event.cell.posX + event.spriteTile.offsetX,
-      event.cell.posY + event.spriteTile.offsetY,
-      event.spriteTile.spriteSize.x * GSM.Settings.blockSize,
-      event.spriteTile.spriteSize.y * GSM.Settings.blockSize
+      GSM.ImageController.getImage(event.terrainTile.imageUrl),
+      event.terrainTile.spritePosX * GSM.Settings.blockSize,
+      event.terrainTile.spritePosY * GSM.Settings.blockSize,
+      event.terrainTile.spriteSize.x * GSM.Settings.blockSize,
+      event.terrainTile.spriteSize.y * GSM.Settings.blockSize,
+      event.cell.posX + event.terrainTile.offsetX,
+      event.cell.posY + event.terrainTile.offsetY,
+      event.terrainTile.spriteSize.x * GSM.Settings.blockSize,
+      event.terrainTile.spriteSize.y * GSM.Settings.blockSize
     )
   }
 }

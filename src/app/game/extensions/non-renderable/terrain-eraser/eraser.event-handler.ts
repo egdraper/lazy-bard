@@ -1,4 +1,4 @@
-import { getClickedOnSpriteTile } from "src/app/game/controllers/utils/selected-sprite-tile"
+import { getClickedOnTerrainTile } from "src/app/game/controllers/utils/selected-sprite-tile"
 import { terrainCleanup } from "src/app/game/controllers/utils/terrain-cleanup"
 import { GSM } from "src/app/game/game-state-manager.service"
 import { RenderingLayers } from "src/app/game/models/map"
@@ -6,17 +6,17 @@ import { RenderingLayers } from "src/app/game/models/map"
 
 export class EraserEventHandler {
   constructor() {
-    GSM.EventController.mouseDown.subscribe(this.selectSpriteTile.bind(this))
+    GSM.EventController.mouseDown.subscribe(this.selectTerrainTile.bind(this))
   }
 
-  private selectSpriteTile(event: MouseEvent) {
+  private selectTerrainTile(event: MouseEvent) {
     if(GSM.EventController.generalActionFire.value.name === "deleteTerrain") {
 
-    const selectedSpriteTile = getClickedOnSpriteTile(event.offsetX, event.offsetY)
+    const selectedTerrainTile = getClickedOnTerrainTile(event.offsetX, event.offsetY)
     
-    if(selectedSpriteTile) {
-      delete selectedSpriteTile.cell.spriteTiles[RenderingLayers.TerrainLayer]
-      terrainCleanup(selectedSpriteTile.layer)     
+    if(selectedTerrainTile) {
+      delete selectedTerrainTile.cell.terrainTiles[RenderingLayers.TerrainLayer]
+      terrainCleanup(selectedTerrainTile.layer)     
     }
     }
   }

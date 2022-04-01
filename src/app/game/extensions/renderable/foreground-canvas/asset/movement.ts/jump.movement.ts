@@ -12,8 +12,8 @@ export class Jump extends Movement {
 
   
   public move(event: {assetPosX: number, assetPosY: number, assetPosZ: number, pathTrackPosX: number, pathTrackPosY: number, speed: number, distanceToNextCell: number, distanceToFinalCell: number}): {newPosX: number, newPosY: number, newPosZ:number} {
-    this.asset.spriteTile.animation.changeEveryNthFrame = 8
-    this.asset.spriteTile.animation.spriteXPosition = [26, 26, 26, 26]
+    this.asset.assetTile.animation.changeEveryNthFrame = 8
+    this.asset.assetTile.animation.spriteXPosition = [26, 26, 26, 26]
     this.speed = 2
     console.log(event.distanceToFinalCell+1)
     if(event.distanceToFinalCell+1 > 2) {
@@ -24,8 +24,8 @@ export class Jump extends Movement {
     }
 
     if(event.distanceToFinalCell === 0) {
-      this.asset.spriteTile.animation.changeEveryNthFrame = 16
-      this.asset.spriteTile.animation.spriteXPosition = [0, 26, 52, 26]
+      this.asset.assetTile.animation.changeEveryNthFrame = 16
+      this.asset.assetTile.animation.spriteXPosition = [0, 26, 52, 26]
       this.speed = 2
     }
 

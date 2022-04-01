@@ -1,7 +1,7 @@
-import { SpriteTile } from "../models/map";
+import { TerrainTile } from "../models/map";
 
 
-export const RockWall: SpriteTile[] = [
+export const RockWall: TerrainTile[] = [
     {
       id: 'FrontCenter',
       spritePosX: 1,
