@@ -1,4 +1,6 @@
 <div class="game" *ngIf="gameStateManager.loadingFinished">
+  <h6 style="color:white; position: absolute; top: 100px"> X {{ settings?.mouseHoverX }}</h6>
+  <h6 style="color:white; position: absolute; top: 115px"> Y {{ settings?.mouseHoverY }}</h6>
   <h1 style="color:white; position: absolute; top: 300px">{{selected}}</h1>
   <div>
     <gm-editor-side-nav></gm-editor-side-nav>

@@ -1,5 +1,6 @@
 import { GSM } from "../../game-state-manager.service"
-import { NeighborLocation, RenderingLayers, AssetTile } from "../../models/map"
+import { RenderingLayers, NeighborLocation } from "../../models/map"
+import { TerrainTile } from "../../models/sprite-tile.model"
 
 export function terrainCleanup(layer: RenderingLayers) {
   for(let a = 0; a < 2; a++) {
@@ -26,14 +27,14 @@ export function terrainCleanup(layer: RenderingLayers) {
         delete cell.terrainTiles[RenderingLayers.TerrainLayer]
       }
       if(bottomLeftTileId === cellTileId && !leftTileId && bottomTileId !== cellTileId) {
-        neighbors[NeighborLocation.Left].terrainTiles[layer] = new AssetTile()
+        neighbors[NeighborLocation.Left].terrainTiles[layer] = new TerrainTile()
         neighbors[NeighborLocation.Left].terrainTiles[layer].drawableTileId = cell.terrainTiles[layer].drawableTileId
-        neighbors[NeighborLocation.Bottom].terrainTiles[layer] = new AssetTile()
+        neighbors[NeighborLocation.Bottom].terrainTiles[layer] = new TerrainTile()
         neighbors[NeighborLocation.Bottom].terrainTiles[layer].drawableTileId = cell.terrainTiles[layer].drawableTileId
-        neighbors[NeighborLocation.BottomRight].terrainTiles[layer] = new AssetTile()
+        neighbors[NeighborLocation.BottomRight].terrainTiles[layer] = new TerrainTile()
         neighbors[NeighborLocation.BottomRight].terrainTiles[layer].drawableTileId = cell.terrainTiles[layer].drawableTileId
         const leftLeftCell = GSM.GridController.getCell(neighbors[NeighborLocation.Left].x - 1, neighbors[NeighborLocation.Left].y, GSM.GameData.map.currentElevationLayerIndex)
-        leftLeftCell.terrainTiles[layer] = new AssetTile()
+        leftLeftCell.terrainTiles[layer] = new TerrainTile()
         leftLeftCell.terrainTiles[layer].drawableTileId = cell.terrainTiles[layer].drawableTileId
       }
     })    

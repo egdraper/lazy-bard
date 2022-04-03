@@ -1,5 +1,6 @@
 import { Movement } from "../extensions/renderable/foreground-canvas/asset/movement.ts/base.movement"
-import { Cell, AssetTile } from "./map"
+import { Cell, Size } from "./map"
+import { AssetTile } from "./sprite-tile.model"
 
 export type Speed = 1 | 2 | 4 | 8 | 16 | 32 | 64
 
@@ -9,7 +10,7 @@ export class Asset {
   public assetTile: AssetTile
   public movement: Movement
   public moving = false
-  public animating = true
+  public animating = false
   
   // location
   public cell: Cell
@@ -20,9 +21,25 @@ export class Asset {
   public posZ = 0  
 }
 
-export class SpriteAnimation {
-  public changeEveryNthFrame: Speed = 16
-  public spriteXPosition = [0, 26, 52, 26]
-  public spriteYPosition = 0
-  public positionCounter = 0
+export class WalkStepSpritePos {
+  rightFootForward: number
+  neutral: number
+  leftFootForward: number  
+}
+
+export class WalkStepSpriteDirection {
+  down: number
+  left: number
+  right: number  
+  up: number
+}
+
+export class AssetItemsViewModel {
+  id: string
+  size: Size
+  drawSize: Size
+  xWalkPos: number[]
+  yWalkPos: WalkStepSpriteDirection
+  xPosOffset: number
+  yPosOffset: number
 }

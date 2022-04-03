@@ -8,12 +8,14 @@ import { GSM } from './game-state-manager.service';
 })
 export class GameComponent implements AfterViewInit{
   public selected = "nothing"
+  public settings
   constructor(public gameStateManager: GSM) {
+    this.settings = GSM.Settings
 }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame("firstGame", 10, 10, "forest")
+      this.gameStateManager.newGame("firstGame", 20, 20, "forest")
       GSM.EventController.generalActionFire.subscribe(action => {
         this.selected = action.name 
       })
@@ -64,7 +66,7 @@ export class GameComponent implements AfterViewInit{
     }
     if(event.code === "KeyE") {
       GSM.EventController.generalActionFire.next({
-        name: "paintingTreeTerrain",
+        name: "paintingTerrain",
         data: {
           id: "Trees-GrassBase",
         }
@@ -90,7 +92,7 @@ export class GameComponent implements AfterViewInit{
     }
     if(event.code === "KeyR") {
       GSM.EventController.generalActionFire.next({
-        name: "paintingCliffTerrain",
+        name: "paintingTerrain",
         data: {
           id: "StoneCliff-StoneBase",
         }

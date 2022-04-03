@@ -14,14 +14,14 @@ export class PlayableAssetRenderer extends Renderer {
 
     this.ctx.drawImage(
       GSM.ImageController.getImage(playableAsset.assetTile.imageUrl),
-      playableAsset.assetTile.animation.spriteXPosition[playableAsset.assetTile.animation.positionCounter],
-      playableAsset.assetTile.animation.spriteYPosition,
-      25,
-      36,
-      playableAsset.posX - 8,
-      playableAsset.posY - 56 + playableAsset.posZ,
-      50,
-      80
+      playableAsset.assetTile.assetDrawRules.xWalkPos[playableAsset.assetTile.animation.positionCounter],
+      playableAsset.assetTile.assetDrawRules.yWalkPos[playableAsset.assetTile.animation.spriteYPosition],
+      playableAsset.assetTile.assetDrawRules.size.x,
+      playableAsset.assetTile.assetDrawRules.size.y,
+      playableAsset.posX + playableAsset.assetTile.assetDrawRules.xPosOffset,
+      playableAsset.posY + playableAsset.assetTile.assetDrawRules.yPosOffset + playableAsset.posZ,
+      playableAsset.assetTile.assetDrawRules.drawSize.x,
+      playableAsset.assetTile.assetDrawRules.drawSize.y
     );
   }
 }

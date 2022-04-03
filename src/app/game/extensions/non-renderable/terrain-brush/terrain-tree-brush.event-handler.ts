@@ -1,20 +1,20 @@
-import { Sprite } from 'src/app/game/models/sprites';
+import { terrainCleanup } from 'src/app/game/controllers/utils/terrain-cleanup';
+import { NeighborLocation, RenderingLayers } from 'src/app/game/models/map';
+import { TerrainTile } from 'src/app/game/models/sprite-tile.model';
 import { GSM } from '../../../game-state-manager.service';
-import { AssetTile, NeighborLocation, RenderingLayers, TerrainTile } from '../../../models/map';
 
-export class TerrainCliffBrushEventHandler {
+export class TerrainTreeBrushEventHandler {
   constructor() {
     GSM.EventController.emptyCellClicked.subscribe(this.onEmptyCellClicked.bind(this));
     GSM.EventController.cellMouseEntered.subscribe(this.onMouseEnteredCell.bind(this));
   }
 
-  // adds the paintable terrain id to the cell clicked
+  // adds the drawable terrain id to the cell clicked
   private onEmptyCellClicked(cellId: string, elevation: number = GSM.GameData.map.currentElevationLayerIndex): void {
     const cell = GSM.GameData.map.elevations[elevation].cells[cellId]
-    
-    if(GSM.EventController.generalActionFire.value.name === "paintingCliffTerrain") {
-      const topCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.Top, elevation)
+    if(GSM.EventController.generalActionFire.value.name === "paintingTerrain") {
       const drawableTile = GSM.EventController.generalActionFire.value.data as {id: string}
+      const topCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.Top, elevation)
       const topRightCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.TopRight, elevation)
       const rightCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.Right, elevation)
       
@@ -34,11 +34,13 @@ export class TerrainCliffBrushEventHandler {
       drawTopRightCell.drawableTileId = drawableTile.id
       topRightCell.obstacle = true
     }  
+
+    terrainCleanup(RenderingLayers.TerrainLayer)
   }
 
   private onMouseEnteredCell(cellId: string): void {
     const actionName = GSM.EventController.generalActionFire.value.name    
-    if(actionName !== "paintingCliffTerrain" && actionName !== "deleteTerrain") { return }
+    if(actionName !== "paintingTerrain" && actionName !== "deleteTerrain") { return }
     if(!GSM.EventController.keysPressed.has("mouseDown")) { return }
 
     this.onEmptyCellClicked(cellId)

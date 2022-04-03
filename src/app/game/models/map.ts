@@ -1,6 +1,5 @@
-import { SpriteAnimation } from "./asset.model"
 import { Renderer } from "./renderer"
-
+import { TerrainTile } from "./sprite-tile.model"
 
 export class GameMap {
   public id: string
@@ -64,45 +63,7 @@ export class Size {
   z?: number
 }
 
-export class DrawWhen {
-  topNeighbor: boolean
-  topRightNeighbor: boolean
-  rightNeighbor: boolean
-  bottomRightNeighbor: boolean
-  bottomNeighbor:boolean
-  bottomLeftNeighbor: boolean
-  leftNeighbor: boolean
-  topLeftNeighbor: boolean
-}
-
-export class Tile {
-  id: string
-  imageUrl?: string
-  spritePosX: number
-  spritePosY: number
-  spriteSize: Size
-  offsetX?: number
-  offsetY?: number
-  selectableArea: Size
-  obstacleObstructionX?: number
-  obstacleObstructionY?: number
-  default?: boolean
-  selected?: boolean
-}
-
-export class TerrainTile extends Tile {
-  drawableTileId?: string
-  drawWhen?: DrawWhen 
-}
-
-export class AssetTile extends Tile {
-  animation?: SpriteAnimation
-}
-
-export interface DrawableItem {
-  id: string
-  name: string
-  imageUrl: string
-  spriteType: string
-  drawingRules: TerrainTile[]
+export class MousePosition {
+  posX: number
+  posY: number
 }

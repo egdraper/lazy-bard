@@ -104,10 +104,10 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   public onCellClick(event: MouseEvent): void {
-    const mousePosX = event.offsetX
-    const mousePosY = event.offsetY
+    const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale)
+    const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale)
     
-    const cell = GSM.GridController.getGridCellByCoordinate(event.offsetX, event.offsetY, GSM.GameData.map.currentElevationLayerIndex)
+    const cell = GSM.GridController.getGridCellByCoordinate(mousePosX, mousePosY, GSM.GameData.map.currentElevationLayerIndex)
     
     GSM.EventController.cellClick.next(cell.id)
     GSM.EventController.mouseClick.next({x: mousePosX, y: mousePosY})
@@ -116,16 +116,20 @@ export class CanvasComponent implements AfterViewInit {
     if(!occupiedCell) {
       GSM.EventController.emptyCellClicked.next(cell.id)
     }
-
   }
 
   public onMouseDown(event: MouseEvent): void {
-    GSM.EventController.mouseDown.next(event)
+    const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale)
+    const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale)
+
+    GSM.EventController.mouseDown.next({posX: mousePosX, posY: mousePosY})
     GSM.EventController.keysPressed.add("mouseDown")
     // GSM.GameEvent.update()
   }
   
   public onMouseUp(event: MouseEvent): void {
+    const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale)
+    const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale)
     GSM.EventController.keysPressed.delete("mouseDown")
     // GSM.GameEvent.keyPressDetails.mouseDown = false
     // GSM.GameEvent.update()
@@ -134,8 +138,10 @@ export class CanvasComponent implements AfterViewInit {
   public onMouseMove(event: MouseEvent): void {
     // if (!GSM.Map.activeMap) { return }
 
-    const mousePosX = event.offsetX // + (-1 * GSM.Canvas.canvasViewPortOffsetX * GameSettings.scale)
-    const mousePosY = event.offsetY // + (-1 * GSM.Canvas.canvasViewPortOffsetY * GameSettings.scale)
+    const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale) // + (-1 * GSM.Canvas.canvasViewPortOffsetX * GameSettings.scale)
+    const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale) // + (-1 * GSM.Canvas.canvasViewPortOffsetY * GameSettings.scale)
+    GSM.Settings.mouseHoverX = mousePosX
+    GSM.Settings.mouseHoverY = mousePosY
     
     const hoveringCell = GSM.GridController.getGridCellByCoordinate(mousePosX, mousePosY, GSM.GameData.map.currentElevationLayerIndex)
     if(this.hoveringCellId !== hoveringCell.id) {
@@ -171,24 +177,28 @@ export class CanvasComponent implements AfterViewInit {
     GSM.CanvasController.backgroundCTX = this.backgroundCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
     GSM.CanvasController.backgroundCTX.canvas.height = specs.height
     GSM.CanvasController.backgroundCTX.canvas.width = specs.width
+    GSM.CanvasController.backgroundCTX.scale(GSM.Settings.scale,GSM.Settings.scale)
     
     // Foreground
     GSM.CanvasController.foregroundCanvas = this.foregroundCanvas
     GSM.CanvasController.foregroundCTX = this.foregroundCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
     GSM.CanvasController.foregroundCTX.canvas.height = specs.height
     GSM.CanvasController.foregroundCTX.canvas.width = specs.width
+    GSM.CanvasController.foregroundCTX.scale(GSM.Settings.scale,GSM.Settings.scale)
  
     // Fog
     GSM.CanvasController.fogCanvas = this.fogCanvas
     GSM.CanvasController.fogCTX = this.fogCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
     GSM.CanvasController.fogCTX.canvas.height = specs.height
     GSM.CanvasController.fogCTX.canvas.width = specs.width
+    GSM.CanvasController.fogCTX.scale(GSM.Settings.scale,GSM.Settings.scale)
  
     // Fog Blackout
     GSM.CanvasController.blackoutCanvas = this.blackoutCanvas
     GSM.CanvasController.blackoutCTX = this.blackoutCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
     GSM.CanvasController.blackoutCTX.canvas.height = specs.height
     GSM.CanvasController.blackoutCTX.canvas.width = specs.width
+    GSM.CanvasController.blackoutCTX.scale(GSM.Settings.scale,GSM.Settings.scale)
 
     // Large Image Canvas
     GSM.CanvasController.fullImageCanvas = this.fullImageCanvas
@@ -228,7 +238,7 @@ export class CanvasComponent implements AfterViewInit {
       perfectWidth--
     }
 
-    return { width: perfectWidth, height: perfectHeight }
+    return { width: perfectWidth * GSM.Settings.scale, height: perfectHeight * GSM.Settings.scale }
   }
   
 }

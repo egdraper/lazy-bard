@@ -10,7 +10,7 @@ export function getClickedOnTerrainTile(clickPosX: number, clickPosY: number): {
       if(!cell.terrainTiles[layer]) { return }
         
       const terrainTile = cell.terrainTiles[layer]
-      if((clickPosX > cell.posX && clickPosX < cell.posX + terrainTile.spriteSize.x * GSM.Settings.blockSize)
+      if((clickPosX > cell.posX && clickPosX < cell.posX + terrainTile.spriteSize.x)
         && (clickPosY > (cell.posY + terrainTile.offsetY) && clickPosY < cell.posY + GSM.Settings.blockSize)) 
       {
         selectedTerrainTile = {layer, cell}

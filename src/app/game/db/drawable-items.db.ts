@@ -1,8 +1,8 @@
-import { DrawableItem } from "../models/map";
+import { DrawableItemViewModel } from "../models/sprite-tile.model";
 import { RockWall } from "./rock-wall-terrain.db";
 import { trees } from "./trees.db";
 
-export const drawableItems: DrawableItem[] = [
+export const drawableItems: DrawableItemViewModel[] = [
   {
     id: "Trees-GrassBase",
     name: "Green Trees with Grass Base",

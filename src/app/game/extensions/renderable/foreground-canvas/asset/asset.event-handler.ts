@@ -1,8 +1,8 @@
-import { Asset, SpriteAnimation } from 'src/app/game/models/asset.model';
-import { AssetTile } from 'src/app/game/models/map';
+
+import { assetItems } from 'src/app/game/db/asset-items';
+import { Asset } from 'src/app/game/models/asset.model';
+import { AssetTile, SpriteAnimation } from 'src/app/game/models/sprite-tile.model';
 import { GSM } from '../../../../game-state-manager.service';
-import { Jump } from './movement.ts/jump.movement';
-import { Running } from './movement.ts/run.movement';
 import { Skip } from './movement.ts/skip.movement';
 import { Walking } from './movement.ts/walking.movement';
 
@@ -47,12 +47,14 @@ export class PlayableAssetEventHandler {
     // setup asset
     const playerAsset = new Asset();
     playerAsset.assetTile = new AssetTile()
+    playerAsset.assetTile.assetDrawRules = assetItems.find(item => item.id === "standardSmallItem")
     playerAsset.assetTile.animation = new SpriteAnimation()
     playerAsset.movement = new Skip(playerAsset)
     playerAsset.cell = cell
     playerAsset.posX = cell.posX;
     playerAsset.posY = cell.posY;
-    playerAsset.assetTile.imageUrl = 'assets/images/character_001.png';
+    playerAsset.assetTile.imageUrl = 'assets/images/item_002.png';
+    playerAsset.animating = true
     
     GSM.GameData.assets.push(playerAsset);
     GSM.ImageController.addImageBySrcUrl(playerAsset.assetTile.imageUrl)

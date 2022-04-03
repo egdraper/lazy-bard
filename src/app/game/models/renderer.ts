@@ -1,6 +1,7 @@
 import { GSM } from "../game-state-manager.service"
 import { Extension } from "./extension.model"
-import { Cell, RenderingLayers, AssetTile, TerrainTile } from "./map"
+import { Cell, RenderingLayers } from "./map"
+import { TerrainTile } from "./sprite-tile.model"
 
 export abstract class RendererBase {
   public ctx: CanvasRenderingContext2D

@@ -1,10 +1,11 @@
-import { Cell, RenderingLayers, AssetTile, TerrainTile } from "src/app/game/models/map"
 import { backgroundSprites } from "../../../../db/background.db"
 import { GSM } from "../../../../game-state-manager.service"
 import { TextureSprite } from "../../../../models/sprites"
 import { BaseTextureRenderer } from "./base-texture.renderer"
 import { BaseTextureRandomGenerator } from "./base-texture.generator"
 import { CanvasLayerExtension } from "../../../../models/renderer"
+import { Cell, RenderingLayers } from "src/app/game/models/map"
+import { TerrainTile } from "src/app/game/models/sprite-tile.model"
 
 export class BaseTextureExtension extends CanvasLayerExtension {
   public override excludeFromIndividualCellPainting = true

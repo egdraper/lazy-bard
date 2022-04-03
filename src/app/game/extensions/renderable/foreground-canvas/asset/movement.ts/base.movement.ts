@@ -18,14 +18,13 @@ export abstract class Movement {
   public cellTrackPosX = 0
   public cellTrackPosY = 0
   
-  protected onFinished: () => void
-  
+  protected onFinished: () => void  
     
   public set spriteDirection(value: string) {
-    if (value === "down") { this.asset.assetTile.animation.spriteYPosition = 0 }
-    if (value === "up") { this.asset.assetTile.animation.spriteYPosition = 108 }
-    if (value === "left") { this.asset.assetTile.animation.spriteYPosition = 36 }
-    if (value === "right") { this.asset.assetTile.animation.spriteYPosition = 72 }
+    if (value === "down") { this.asset.assetTile.animation.spriteYPosition = "down" }
+    if (value === "left") { this.asset.assetTile.animation.spriteYPosition = "left" }
+    if (value === "right") { this.asset.assetTile.animation.spriteYPosition = "right" }
+    if (value === "up") { this.asset.assetTile.animation.spriteYPosition = "up" }
   }
 
   constructor() {
@@ -123,7 +122,7 @@ export abstract class Movement {
   }
 
   protected checkForFinishLocation(): void {    
-    if (this.cellTrackPosX % (32) === 0 && this.cellTrackPosY % (32) === 0) {
+    if (this.cellTrackPosX % (GSM.Settings.blockSize) === 0 && this.cellTrackPosY % (GSM.Settings.blockSize) === 0) {
       this.asset.cell = GSM.GridController.getGridCellByCoordinate(this.cellTrackPosX, this.cellTrackPosY, GSM.GameData.map.currentElevationLayerIndex)
       this.asset.posX = this.cellTrackPosX
       this.asset.posY = this.cellTrackPosY

@@ -1,5 +1,5 @@
+import { RenderingLayers } from "src/app/game/models/map"
 import { GSM } from "../../../../game-state-manager.service"
-import { Cell, RenderingLayers, AssetTile } from "../../../../models/map"
 import { Renderer, RenderOptionsEvent } from "../../../../models/renderer"
 
 export class BaseTextureRenderer extends Renderer {

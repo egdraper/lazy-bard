@@ -24,12 +24,12 @@ export class TerrainPaintBrushRenderer extends Renderer {
       GSM.ImageController.getImage(event.terrainTile.imageUrl),
       event.terrainTile.spritePosX * GSM.Settings.blockSize,
       event.terrainTile.spritePosY * GSM.Settings.blockSize,
-      event.terrainTile.spriteSize.x * GSM.Settings.blockSize,
-      event.terrainTile.spriteSize.y * GSM.Settings.blockSize,
+      event.terrainTile.spriteSize.x,
+      event.terrainTile.spriteSize.y,
       event.cell.posX + event.terrainTile.offsetX,
       event.cell.posY + event.terrainTile.offsetY,
-      event.terrainTile.spriteSize.x * GSM.Settings.blockSize,
-      event.terrainTile.spriteSize.y * GSM.Settings.blockSize
+      event.terrainTile.spriteSize.x,
+      event.terrainTile.spriteSize.y,
     )
   }
 }
