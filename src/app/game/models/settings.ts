@@ -4,8 +4,9 @@ export class Settings {
   public blockSize = 16
   public commonTextureWidth = 3
   public commonTextureOdds = 250
-  public speed: Speed = 1
+  public speed: number = 4
   public scale: number = 2
+  public blockToFeet = 5;
 
   public mouseHoverX: number = 0
   public mouseHoverY: number = 0

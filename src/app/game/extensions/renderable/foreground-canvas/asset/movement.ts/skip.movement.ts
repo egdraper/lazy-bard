@@ -14,7 +14,6 @@ export class Skip extends Movement {
   public move(event: {assetPosX: number, assetPosY: number, assetPosZ: number, pathTrackPosX: number, pathTrackPosY: number, speed: number, distanceToNextCell: number, distanceToFinalCell: number}): {newPosX: number, newPosY: number, newPosZ:number} {
     this.asset.assetTile.animation.changeEveryNthFrame = 8
     // this.asset.frameXPosition = [0, 52, 0, 26]
-    this.speed = 1
     console.log(this.asset.cell.y)
     if(event.distanceToNextCell > (GSM.Settings.blockSize / 2)) {
       event.assetPosZ -= 1
@@ -26,7 +25,6 @@ export class Skip extends Movement {
     if(event.distanceToFinalCell === 0) {
       this.asset.assetTile.animation.changeEveryNthFrame = 16
       // this.asset.frameXPosition = [0, 26, 52, 26]
-      this.speed = 1
     }
 
     

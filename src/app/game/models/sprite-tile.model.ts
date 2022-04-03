@@ -35,7 +35,7 @@ export interface DrawableItemViewModel {
 }
 
 export class SpriteAnimation {
-  public changeEveryNthFrame: Speed = 16;
+  public changeEveryNthFrame: number = 16;
   public spriteXPosition = ["rightFootForward", "neutral", "leftFootForward", "neutral"];
   public spriteYPosition: string = "down";
   public positionCounter = 0;

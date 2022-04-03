@@ -4,21 +4,19 @@ import { Asset, Speed } from "../../../../../models/asset.model"
 import { Cell } from "../../../../../models/map"
 import { TravelPath } from "../shortest-path"
 
-export abstract class Movement {
+export abstract class Movement {  
   protected abstract asset: Asset  
   protected abstract travelPath: TravelPath
-
   protected currentPath: Cell[] = []
   protected redirection: { start: Cell, end: Cell, charactersOnGrid: Asset[] }
   protected nextCell: Cell
   protected movementSubscription: Subscription
-  protected speed: Speed = GSM.Settings.speed
   protected distanceToNextCell = 0
-
-  public cellTrackPosX = 0
-  public cellTrackPosY = 0
-  
   protected onFinished: () => void  
+
+  private speed: number = 1
+  private cellTrackPosX = 0
+  private cellTrackPosY = 0
     
   public set spriteDirection(value: string) {
     if (value === "down") { this.asset.assetTile.animation.spriteYPosition = "down" }
@@ -56,8 +54,20 @@ export abstract class Movement {
     this.cellTrackPosX = this.asset.posX
     this.cellTrackPosY = this.asset.posY
 
-    this.movementSubscription = GSM.FrameController.frameFire.subscribe(frame => {
-      if(this.asset.moving) {
+    const a = Math.round((GSM.Settings.blockToFeet * GSM.Settings.speed) / 3) // 10 feet per second
+    const e = a / GSM.Settings.blockToFeet // 2 squares per second
+    const b = GSM.Settings.blockSize * e // 32 px per second
+    const c = Math.ceil(64 / b) // every 2 frames
+
+    if(c === 1) {
+      this.speed = Math.ceil(b / 64)
+    } else if (c > 1) {
+      this.speed = 1
+    }
+    
+    this.movementSubscription = GSM.FrameController.frameFire.subscribe(frame => { 
+
+      if(this.asset.moving && frame % c === 0) {
         this.trackCell()
         const newPos = this.move({assetPosX: this.asset.posX, assetPosY: this.asset.posY, assetPosZ: this.asset.posZ, pathTrackPosX: this.cellTrackPosX, pathTrackPosY: this.cellTrackPosY, speed: this.speed, distanceToNextCell: this.distanceToNextCell, distanceToFinalCell: this.currentPath.length})
         this.asset.posX = newPos.newPosX
