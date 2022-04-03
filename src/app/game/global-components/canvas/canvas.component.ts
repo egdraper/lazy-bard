@@ -147,6 +147,7 @@ export class CanvasComponent implements AfterViewInit {
     if(this.hoveringCellId !== hoveringCell.id) {
       GSM.EventController.cellMouseEntered.next(hoveringCell.id)
       this.hoveringCellId = hoveringCell.id
+      GSM.Settings.cellId = this.hoveringCellId
     }
     // // Game Marker (required here because mouseDetails depends on this check being called beforehand)
     // GSM.GameMarker.checkForHover()

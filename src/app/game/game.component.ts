@@ -9,8 +9,12 @@ import { GSM } from './game-state-manager.service';
 export class GameComponent implements AfterViewInit{
   public selected = "nothing"
   public settings
+
   constructor(public gameStateManager: GSM) {
-    this.settings = GSM.Settings
+    setTimeout(() => {
+      this.settings = GSM.Settings
+      
+    },150);
 }
 
   ngAfterViewInit(): void {

@@ -49,13 +49,16 @@ export class PlayableAssetEventHandler {
     // setup asset
     const playerAsset = new Asset();
     playerAsset.assetTile = new AssetTile()
-    playerAsset.assetTile.assetDrawRules = assetItems.find(item => item.id === "standardSmallItem")
+    // playerAsset.assetTile.assetDrawRules = assetItems.find(item => item.id === "standardSmallItem")
+    playerAsset.assetTile.assetDrawRules = assetItems.find(item => item.id === "standardCreature")
     playerAsset.assetTile.animation = new SpriteAnimation()
-    playerAsset.movement = new Skip(playerAsset)
+    // playerAsset.movement = new Skip(playerAsset)
+    playerAsset.movement = new Walking(playerAsset)
     playerAsset.cell = cell
     playerAsset.posX = cell.posX;
     playerAsset.posY = cell.posY;
-    playerAsset.assetTile.imageUrl = 'assets/images/item_002.png';
+    // playerAsset.assetTile.imageUrl = 'assets/images/item_002.png';
+    playerAsset.assetTile.imageUrl = 'assets/images/character_003.png';
     playerAsset.animating = true
     
     GSM.GameData.assets.push(playerAsset);
