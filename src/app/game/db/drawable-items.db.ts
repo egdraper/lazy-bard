@@ -10,7 +10,8 @@ export const drawableItems: DrawableItemViewModel[] = [
     imageUrl: "assets/images/tree-transparent-base.png",
     drawingRules: trees
   }, {
-    id: "StoneCliff-StoneBase",
+    id: "StoneCliff-StoneBase2",
+    expandable: true,
     name: "Stone Cliff with Stone Base",
     spriteType: "DrawableNaturalWall",
     imageUrl: "assets/images/RockWallGrassBase.png",

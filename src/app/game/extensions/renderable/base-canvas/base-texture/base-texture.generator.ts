@@ -15,8 +15,8 @@ export class BaseTextureRandomGenerator {
       tileX = Math.floor(Math.random() * commonTextureWidth)
     }
 
-    tile.spritePosX = tileX * GSM.Settings.blockSize
-    tile.spritePosY = 0    
+    tile.spriteX = tileX * GSM.Settings.blockSize
+    tile.spriteY = 0    
   }    
 }
 

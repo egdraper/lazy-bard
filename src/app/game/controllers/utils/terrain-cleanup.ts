@@ -33,7 +33,7 @@ export function terrainCleanup(layer: RenderingLayers) {
         neighbors[NeighborLocation.Bottom].terrainTiles[layer].drawableTileId = cell.terrainTiles[layer].drawableTileId
         neighbors[NeighborLocation.BottomRight].terrainTiles[layer] = new TerrainTile()
         neighbors[NeighborLocation.BottomRight].terrainTiles[layer].drawableTileId = cell.terrainTiles[layer].drawableTileId
-        const leftLeftCell = GSM.GridController.getCell(neighbors[NeighborLocation.Left].x - 1, neighbors[NeighborLocation.Left].y, GSM.GameData.map.currentElevationLayerIndex)
+        const leftLeftCell = GSM.GridController.getCell(neighbors[NeighborLocation.Left].location.x - 1, neighbors[NeighborLocation.Left].location.y, GSM.GameData.map.currentElevationLayerIndex)
         leftLeftCell.terrainTiles[layer] = new TerrainTile()
         leftLeftCell.terrainTiles[layer].drawableTileId = cell.terrainTiles[layer].drawableTileId
       }

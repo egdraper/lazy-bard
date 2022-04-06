@@ -9,21 +9,21 @@ export class CellNeighborsController {
   ): Cell {
     switch (neighborLocation) {
       case NeighborLocation.Top:
-        return GSM.GameData.map.elevations[layer].cells[`x${cell.x}:y${cell.y - 1}`]
+        return GSM.GameData.map.elevations[layer].cells[`x${cell.location.x}:y${cell.location.y - 1}`]
       case NeighborLocation.Right:
-        return GSM.GameData.map.elevations[layer].cells[`x${cell.x + 1}:y${cell.y}`]
+        return GSM.GameData.map.elevations[layer].cells[`x${cell.location.x + 1}:y${cell.location.y}`]
       case NeighborLocation.Bottom:
-        return GSM.GameData.map.elevations[layer].cells[`x${cell.x}:y${cell.y + 1}`]
+        return GSM.GameData.map.elevations[layer].cells[`x${cell.location.x}:y${cell.location.y + 1}`]
       case NeighborLocation.Left:
-        return GSM.GameData.map.elevations[layer].cells[`x${cell.x - 1}:y${cell.y}`]
+        return GSM.GameData.map.elevations[layer].cells[`x${cell.location.x - 1}:y${cell.location.y}`]
       case NeighborLocation.TopRight:
-        return GSM.GameData.map.elevations[layer].cells[`x${cell.x + 1}:y${cell.y - 1}`]
+        return GSM.GameData.map.elevations[layer].cells[`x${cell.location.x + 1}:y${cell.location.y - 1}`]
       case NeighborLocation.BottomRight:
-        return GSM.GameData.map.elevations[layer].cells[`x${cell.x + 1}:y${cell.y + 1}`]
+        return GSM.GameData.map.elevations[layer].cells[`x${cell.location.x + 1}:y${cell.location.y + 1}`]
       case NeighborLocation.BottomLeft:
-        return GSM.GameData.map.elevations[layer].cells[`x${cell.x - 1}:y${cell.y + 1}`]
+        return GSM.GameData.map.elevations[layer].cells[`x${cell.location.x - 1}:y${cell.location.y + 1}`]
       case NeighborLocation.TopLeft:
-        return GSM.GameData.map.elevations[layer].cells[`x${cell.x - 1}:y${cell.y - 1}`]
+        return GSM.GameData.map.elevations[layer].cells[`x${cell.location.x - 1}:y${cell.location.y - 1}`]
     }
   }
 

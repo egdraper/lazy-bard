@@ -8,11 +8,11 @@ import { GSM } from './game-state-manager.service';
 })
 export class GameComponent implements AfterViewInit{
   public selected = "nothing"
-  public settings
+  public mouseController
 
   constructor(public gameStateManager: GSM) {
     setTimeout(() => {
-      this.settings = GSM.Settings
+      this.mouseController = GSM.MouseController
       
     },150);
 }
@@ -98,7 +98,7 @@ export class GameComponent implements AfterViewInit{
       GSM.EventController.generalActionFire.next({
         name: "paintingTerrain",
         data: {
-          id: "StoneCliff-StoneBase",
+          id: "StoneCliff-StoneBase2",
         }
       })
     }
@@ -117,6 +117,14 @@ export class GameComponent implements AfterViewInit{
 
       GSM.RendererController.start()
       GSM.FrameController.start()  
+    }
+    if(event.code === "KeyY") {
+     const asset =  GSM.AssetController.getSelectedAssets()[0]
+     asset.position.z++
+    }
+    if(event.code === "KeyH") {
+     const asset =  GSM.AssetController.getSelectedAssets()[0]
+     asset.position.z--
     }
   }
 }

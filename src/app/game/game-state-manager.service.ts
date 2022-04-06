@@ -13,6 +13,7 @@ import { ImagesController } from './controllers/images.controller';
 import { ElevationController } from './controllers/elevation.controller';
 import { CellNeighborsController } from './controllers/cell-neighbors.controller';
 import { GameData } from './game-data';
+import { MouseController } from './controllers/mouse.controller';
 @Injectable({
   providedIn: 'root'
 })
@@ -33,6 +34,7 @@ export class GSM {
   public static GridController: MapController
   public static ImageController: ImagesController
   public static RendererController: RendererController
+  public static MouseController: MouseController
   public static Settings: Settings
   public loadingFinished = false
   
@@ -45,6 +47,7 @@ export class GSM {
     // Order Matters
     GSM.GameData = new GameData()
     GSM.Settings = new Settings()
+    GSM.MouseController = new MouseController()
     GSM.CanvasController = new CanvasController()
     GSM.FrameController = new FrameController()
     GSM.EventController = new EventController()

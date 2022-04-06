@@ -11,17 +11,30 @@ export class PlayableAssetRenderer extends Renderer {
     const playableAsset = GSM.AssetController.getAssetByCellId(event.cell.id)
     
     if (!playableAsset) { return; }
-
+    this.ctx.fillStyle = '#424247';
+    this.ctx.beginPath();
+    this.ctx.ellipse(
+      playableAsset.position.x + GSM.Settings.blockSize / 2,
+      playableAsset.position.y + GSM.Settings.blockSize / 2,
+       8, 
+       4, 
+       0, 
+       0, 
+       Math.PI * 2
+       );   
+    this.ctx.fill();
+    
     this.ctx.drawImage(
       GSM.ImageController.getImage(playableAsset.assetTile.imageUrl),
       playableAsset.assetTile.assetDrawRules.xWalkPos[playableAsset.assetTile.animation.positionCounter],
       playableAsset.assetTile.assetDrawRules.yWalkPos[playableAsset.assetTile.animation.spriteYPosition],
       playableAsset.assetTile.assetDrawRules.size.x,
       playableAsset.assetTile.assetDrawRules.size.y,
-      playableAsset.posX + playableAsset.assetTile.assetDrawRules.xPosOffset,
-      playableAsset.posY + playableAsset.assetTile.assetDrawRules.yPosOffset + playableAsset.posZ,
+      playableAsset.position.x + playableAsset.assetTile.assetDrawRules.xPosOffset,
+      playableAsset.position.y + playableAsset.assetTile.assetDrawRules.yPosOffset + playableAsset.position.z,
       playableAsset.assetTile.assetDrawRules.drawSize.x,
       playableAsset.assetTile.assetDrawRules.drawSize.y
     );
+
   }
 }

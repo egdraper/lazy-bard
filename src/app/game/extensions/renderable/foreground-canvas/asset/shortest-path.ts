@@ -21,8 +21,8 @@ export class ShortestPath extends TravelPath {
   private maxSearches = 2000000
   private searchIndex = 0
 
-  public find(start: Cell, end: Cell, creaturesOnGrid: Array<Asset> ): Cell[] {
-    this.creaturesOnGrid = creaturesOnGrid
+  public find(start: Cell, end: Cell, assetsOnGrid: Array<Asset> ): Cell[] {
+    this.creaturesOnGrid = assetsOnGrid
     end = this.verifyClosetLocation(start, end)
     return this.start(start, end)
   }
@@ -31,12 +31,12 @@ export class ShortestPath extends TravelPath {
     if(!end) { return [] }
     this.searchIndex = 0
     const visited: any = { };
-    visited[`x${start.x}:y${start.y}`] = { cell: start, steps: { moves: 0, distance: 0, odd: true } };
+    visited[`x${start.location.x}:y${start.location.y}`] = { cell: start, steps: { moves: 0, distance: 0, odd: true } };
 
     this.visitedNow(end, visited);
     const shortestPath = [];
     shortestPath.push(end);
-    return this.getShortestPath(visited[`x${end.x}:y${end.y}`], shortestPath);
+    return this.getShortestPath(visited[`x${end.location.x}:y${end.location.y}`], shortestPath);
   }
 
   private getShortestPath(cell: any, shortest: Cell[]) {
@@ -53,7 +53,7 @@ export class ShortestPath extends TravelPath {
     if(!endingPoint) { return }
     if(this.maxSearches < this.searchIndex) { return }
     
-    if ((visited[`x${endingPoint.x}:y${endingPoint.y}`] && visited[`x${endingPoint.x}:y${endingPoint.y}`].cell === endingPoint)) {
+    if ((visited[`x${endingPoint.location.x}:y${endingPoint.location.y}`] && visited[`x${endingPoint.location.x}:y${endingPoint.location.y}`].cell === endingPoint)) {
       return;
     }
         
@@ -69,15 +69,15 @@ export class ShortestPath extends TravelPath {
             const creatureOnSquare = this.creaturesOnGrid.find(a => a.cell.id === cell.id)
 
             if ((!cell.obstacle && !creatureOnSquare) && !store.some(i => index === i)) {
-              if (!visited[`x${cell.x}:y${cell.y}`]) {
-                visited[`x${cell.x}:y${cell.y}`] = {
+              if (!visited[`x${cell.location.x}:y${cell.location.y}`]) {
+                visited[`x${cell.location.x}:y${cell.location.y}`] = {
                   cell,
                   steps: this.alternateDiagonal(visited[visitedCell], index),
                   prevCel: visited[visitedCell],
                 };
               } else {
-                if (visited[`x${cell.x}:y${cell.y}`].steps.moves > visited[visitedCell] + 1) {
-                   visited[`x${cell.x}:y${cell.y}`].steps.moves = visited[visitedCell] + 1;
+                if (visited[`x${cell.location.x}:y${cell.location.y}`].steps.moves > visited[visitedCell] + 1) {
+                   visited[`x${cell.location.x}:y${cell.location.y}`].steps.moves = visited[visitedCell] + 1;
                 }
               }
             }

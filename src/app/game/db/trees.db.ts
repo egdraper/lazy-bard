@@ -3,9 +3,9 @@ import { TerrainTile } from "../models/sprite-tile.model";
 export const trees: TerrainTile[] = [
   {
     id: "treeClumpTopLeft",
-    spritePosX: 0,
-    spritePosY: 0,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 0,
+    spriteY: 0,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -21,9 +21,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpTopCenter",
-    spritePosX: 1,
-    spritePosY: 0,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 1,
+    spriteY: 0,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -38,9 +38,9 @@ export const trees: TerrainTile[] = [
     }
   }, {
     id: "treeClumpTopRight",
-    spritePosX: 2,
-    spritePosY: 0,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 2,
+    spriteY: 0,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -56,9 +56,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpGrowableLeft",
-    spritePosX: 0,
-    spritePosY: 1,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 0,
+    spriteY: 1,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -73,9 +73,9 @@ export const trees: TerrainTile[] = [
     }
   }, {
     id: "treeClumpGrowableCenter",
-    spritePosX: 1,
-    spritePosY: 1,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 1,
+    spriteY: 1,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -91,9 +91,9 @@ export const trees: TerrainTile[] = [
 
   }, {
     id: "treeClumpGrowableRight",
-    spritePosX: 2,
-    spritePosY: 1,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 2,
+    spriteY: 1,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -108,9 +108,9 @@ export const trees: TerrainTile[] = [
     }
   }, {
     id: "treeClumpTrunkLeft",
-    spritePosX: 2,
-    spritePosY: 3,
-    spriteSize: {x: 16, y: 48},
+    spriteX: 2,
+    spriteY: 3,
+    // spriteSize: {x: 1, y: 3},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -127,9 +127,9 @@ export const trees: TerrainTile[] = [
   {
     id: "treeClumpTrunkCenter",
     default: true,
-    spritePosX: 3,
-    spritePosY: 3,
-    spriteSize: {x: 16, y: 48},
+    spriteX: 3,
+    spriteY: 3,
+    // spriteSize: {x: 1, y: 3},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -145,9 +145,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpTrunkRight",
-    spritePosX: 4,
-    spritePosY: 3,
-    spriteSize: {x: 16, y: 48},
+    spriteX: 4,
+    spriteY: 3,
+    // spriteSize: {x: 1, y: 3},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -163,9 +163,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpTrunkLeftAngle",
-    spritePosX: 1,
-    spritePosY: 3,
-    spriteSize: {x: 16, y: 48},
+    spriteX: 1,
+    spriteY: 3,
+    // spriteSize: {x: 1, y: 3},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -181,9 +181,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpTrunkRightAngle",
-    spritePosX: 5,
-    spritePosY: 3,
-    spriteSize: {x: 16, y: 48},
+    spriteX: 5,
+    spriteY: 3,
+    // spriteSize: {x: 1, y: 3},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -199,9 +199,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpLeftFillerAngle",
-    spritePosX: 6,
-    spritePosY: 0,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 6,
+    spriteY: 0,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -218,9 +218,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpRightFillerAngle",
-    spritePosX: 7,
-    spritePosY: 0,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 7,
+    spriteY: 0,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -236,9 +236,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpLeftFillerAngleUP",
-    spritePosX: 6,
-    spritePosY: 1,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 6,
+    spriteY: 1,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -255,9 +255,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpRightFillerAngleUp",
-    spritePosX: 7,
-    spritePosY: 1,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 7,
+    spriteY: 1,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -273,9 +273,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpRightAngleGapFiller",
-    spritePosX: 6,
-    spritePosY: 4,
-    spriteSize: {x: 16, y: 32},
+    spriteX: 6,
+    spriteY: 4,
+    // spriteSize: {x: 1, y: 2},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -291,9 +291,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpLeftAngleGapFiller",
-    spritePosX: 7,
-    spritePosY: 4,
-    spriteSize: {x: 16, y: 32},
+    spriteX: 7,
+    spriteY: 4,
+    // spriteSize: {x: 1, y: 2},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -309,9 +309,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpLeftFillerAngleSingle",
-    spritePosX: 7,
-    spritePosY: 4,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 7,
+    spriteY: 4,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {
@@ -327,9 +327,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpRightFillerAngleSingle",
-    spritePosX: 6,
-    spritePosY: 4,
-    spriteSize: {x: 16, y: 16},
+    spriteX: 6,
+    spriteY: 4,
+    // spriteSize: {x: 1, y: 1},
     offsetX: 0,
     offsetY: -32,
     drawWhen: {

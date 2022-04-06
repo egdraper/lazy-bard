@@ -19,18 +19,22 @@ export class TerrainTreeBrushEventHandler {
       const rightCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.Right, elevation)
       
       const drawCell = cell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
+      drawCell.height = 5
       drawCell.drawableTileId = drawableTile.id
       cell.obstacle = true
 
       const drawTopCell = topCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
+      drawTopCell.height = 5
       drawTopCell.drawableTileId = drawableTile.id
       topCell.obstacle = true
 
       const drawRightCell = rightCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
+      drawRightCell.height = 5
       drawRightCell.drawableTileId = drawableTile.id
       rightCell.obstacle = true
     
       const drawTopRightCell = topRightCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
+      drawTopRightCell.height = 5
       drawTopRightCell.drawableTileId = drawableTile.id
       topRightCell.obstacle = true
     }  

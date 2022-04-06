@@ -1,6 +1,7 @@
 
 import { assetItems } from 'src/app/game/db/asset-items';
 import { Asset } from 'src/app/game/models/asset.model';
+import { Position } from 'src/app/game/models/map';
 import { AssetTile, SpriteAnimation } from 'src/app/game/models/sprite-tile.model';
 import { GSM } from '../../../../game-state-manager.service';
 import { Running } from './movement.ts/run.movement';
@@ -53,12 +54,11 @@ export class PlayableAssetEventHandler {
     playerAsset.assetTile.assetDrawRules = assetItems.find(item => item.id === "standardCreature")
     playerAsset.assetTile.animation = new SpriteAnimation()
     // playerAsset.movement = new Skip(playerAsset)
-    playerAsset.movement = new Walking(playerAsset)
+    playerAsset.movement = new Running(playerAsset)
     playerAsset.cell = cell
-    playerAsset.posX = cell.posX;
-    playerAsset.posY = cell.posY;
+    playerAsset.position = new Position(cell.position.x, cell.position.y, 0)
     // playerAsset.assetTile.imageUrl = 'assets/images/item_002.png';
-    playerAsset.assetTile.imageUrl = 'assets/images/character_003.png';
+    playerAsset.assetTile.imageUrl = 'assets/images/character_012.png';
     playerAsset.animating = true
     
     GSM.GameData.assets.push(playerAsset);

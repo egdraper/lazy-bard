@@ -51,8 +51,8 @@ export abstract class Movement {
     this.setSpriteDirection()
     this.asset.assetTile.animation.changeEveryNthFrame = 16
     this.distanceToNextCell = GSM.Settings.blockSize
-    this.cellTrackPosX = this.asset.posX
-    this.cellTrackPosY = this.asset.posY
+    this.cellTrackPosX = this.asset.position.x
+    this.cellTrackPosY = this.asset.position.y
 
     const a = Math.round((GSM.Settings.blockToFeet * GSM.Settings.speed) / 3) // 10 feet per second
     const e = a / GSM.Settings.blockToFeet // 2 squares per second
@@ -69,10 +69,10 @@ export abstract class Movement {
 
       if(this.asset.moving && frame % c === 0) {
         this.trackCell()
-        const newPos = this.move({assetPosX: this.asset.posX, assetPosY: this.asset.posY, assetPosZ: this.asset.posZ, pathTrackPosX: this.cellTrackPosX, pathTrackPosY: this.cellTrackPosY, speed: this.speed, distanceToNextCell: this.distanceToNextCell, distanceToFinalCell: this.currentPath.length})
-        this.asset.posX = newPos.newPosX
-        this.asset.posY = newPos.newPosY
-        this.asset.posZ = newPos.newPosZ
+        const newPos = this.move({assetPosX: this.asset.position.x, assetPosY: this.asset.position.y, assetPosZ: this.asset.position.z, pathTrackPosX: this.cellTrackPosX, pathTrackPosY: this.cellTrackPosY, speed: this.speed, distanceToNextCell: this.distanceToNextCell, distanceToFinalCell: this.currentPath.length})
+        this.asset.position.x = newPos.newPosX
+        this.asset.position.y = newPos.newPosY
+        this.asset.position.z = newPos.newPosZ
         this.distanceToNextCell = this.distanceToNextCell - this.speed
         this.checkForFinishLocation()
       }
@@ -91,8 +91,8 @@ export abstract class Movement {
       let nextXMove = 0
       let nextYMove = 0
   
-      if (this.nextCell.x !== this.asset.cell.x) { nextXMove = this.nextCell.x > this.asset.cell.x ? this.speed : this.speed * -1 }
-      if (this.nextCell.y !== this.asset.cell.y) { nextYMove = this.nextCell.y > this.asset.cell.y ? this.speed : this.speed * -1 }
+      if (this.nextCell.location.x !== this.asset.cell.location.x) { nextXMove = this.nextCell.location.x > this.asset.cell.location.x ? this.speed : this.speed * -1 }
+      if (this.nextCell.location.y !== this.asset.cell.location.y) { nextYMove = this.nextCell.location.y > this.asset.cell.location.y ? this.speed : this.speed * -1 }
   
       this.cellTrackPosX += nextXMove
       this.cellTrackPosY += nextYMove    
@@ -124,18 +124,18 @@ export abstract class Movement {
   } 
 
   protected setSpriteDirection(): void {
-    if (this.nextCell.x !== this.asset.cell.x) {
-      this.spriteDirection = this.nextCell.x > this.asset.cell.x ? "right" : "left"
-    } else if (this.nextCell.y !== this.asset.cell.y) {
-      this.spriteDirection = this.nextCell.y > this.asset.cell.y ? "down" : "up"
+    if (this.nextCell.location.x !== this.asset.cell.location.x) {
+      this.spriteDirection = this.nextCell.location.x > this.asset.cell.location.x ? "right" : "left"
+    } else if (this.nextCell.location.y !== this.asset.cell.location.y) {
+      this.spriteDirection = this.nextCell.location.y > this.asset.cell.location.y ? "down" : "up"
     }
   }
 
   protected checkForFinishLocation(): void {    
     if (this.cellTrackPosX % (GSM.Settings.blockSize) === 0 && this.cellTrackPosY % (GSM.Settings.blockSize) === 0) {
       this.asset.cell = GSM.GridController.getGridCellByCoordinate(this.cellTrackPosX, this.cellTrackPosY, GSM.GameData.map.currentElevationLayerIndex)
-      this.asset.posX = this.cellTrackPosX
-      this.asset.posY = this.cellTrackPosY
+      this.asset.position.x = this.cellTrackPosX
+      this.asset.position.y = this.cellTrackPosY
       this.nextCell = this.currentPath.length > 0
         ? this.currentPath.pop()
         : null

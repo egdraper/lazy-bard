@@ -51,6 +51,7 @@ export class TerrainEdgeCalculator {
     }
     tile.imageUrl = drawableItem.imageUrl
     tile.drawableTileId = terrainTile.drawableTileId
+    tile.height = terrainTile.height
     cell.terrainTiles[RenderingLayers.TerrainLayer] = tile
     return tile
   }

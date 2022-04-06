@@ -1,25 +1,28 @@
 import { AssetItemsViewModel, Speed } from './asset.model';
-import { Size } from './map';
+import { Size, Location, SpriteLocation } from './map';
 
 export abstract class Tile {
   id: string;
   imageUrl?: string;
   offsetX?: number;
   offsetY?: number;
-  spriteSize: Size;
   default?: boolean;
   selected?: boolean;
 }
 
 export class TerrainTile extends Tile {
-  spritePosX: number;
-  spritePosY: number;
   drawableTileId?: string;
+  height?: number;
+  spriteX?: number;
+  spriteY?: number;
   drawWhen?: DrawWhen;
+  topWith?: SpriteLocation;
+  expandWith?: SpriteLocation
+  baseWith?: SpriteLocation
 }
 
 export class AssetTile extends Tile {
-  assetDrawRules: AssetItemsViewModel
+  assetDrawRules: AssetItemsViewModel;
   selectableArea: Size;
   animation?: SpriteAnimation;
   obstacleObstructionX?: number;
@@ -32,12 +35,18 @@ export interface DrawableItemViewModel {
   imageUrl: string;
   spriteType: string;
   drawingRules: TerrainTile[];
+  expandable?: boolean;
 }
 
 export class SpriteAnimation {
   public changeEveryNthFrame: number = 16;
-  public spriteXPosition = ["rightFootForward", "neutral", "leftFootForward", "neutral"];
-  public spriteYPosition: string = "down";
+  public spriteXPosition = [
+    'rightFootForward',
+    'neutral',
+    'leftFootForward',
+    'neutral',
+  ];
+  public spriteYPosition: string = 'down';
   public positionCounter = 0;
 }
 

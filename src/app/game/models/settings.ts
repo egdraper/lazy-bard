@@ -7,11 +7,6 @@ export class Settings {
   public speed: number = 6
   public scale: number = 2
   public blockToFeet = 5;
-
-  // visuals
-  public mouseHoverX: number = 0
-  public mouseHoverY: number = 0
-  public cellId: string = ""
 }
 
 export class CanvasSpecs {

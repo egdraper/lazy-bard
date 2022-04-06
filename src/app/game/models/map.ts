@@ -17,10 +17,8 @@ export class GameMap {
 
 export class Cell {
   id: string
-  x: number // X Grid Coordinates
-  y: number // Y Grid Coordinates
-  posX: number // X Pixel Coordinates // not saved
-  posY: number // Y Pixel Coordinates // not saved
+  location: Location
+  position: Position // not saved
   obstacle?: boolean 
   terrainTiles?: {[layer: string ]: TerrainTile} = {}
   renderers?: Renderer[]  // not saved
@@ -61,6 +59,23 @@ export class Size {
   x: number
   y: number
   z?: number
+}
+
+
+export abstract class BaseLocation {
+  constructor(
+    public x: number,
+    public y: number,
+    public z: number
+  ) {}
+}
+
+export class Location extends BaseLocation {}
+export class Position extends BaseLocation {}
+
+export class SpriteLocation {
+  public x: number
+  public y: number
 }
 
 export class MousePosition {

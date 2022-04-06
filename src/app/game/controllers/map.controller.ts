@@ -72,10 +72,8 @@ export class MapController {
 
         // creates cell
         const cell: Cell = {
-          x: l,
-          y: i,
-          posX: l * GSM.Settings.blockSize,
-          posY: i * GSM.Settings.blockSize,
+          location: { x: l, y: i, z: 0},
+          position: { x: l * GSM.Settings.blockSize, y: i * GSM.Settings.blockSize, z: 0 },
           id: `x${l}:y${i}`,
           renderers: [],
           terrainTiles: {}
