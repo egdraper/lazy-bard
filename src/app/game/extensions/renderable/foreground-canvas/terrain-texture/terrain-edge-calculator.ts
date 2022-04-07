@@ -1,6 +1,8 @@
+import { backgroundSprites } from "src/app/game/db/background.db"
 import { GSM } from "../../../../game-state-manager.service"
 import { Cell, RenderingLayers, NeighborLocation} from "../../../../models/map"
 import { DrawableItemViewModel, AssetTile, TerrainTile } from "../../../../models/sprite-tile.model"
+import { BaseTextureRandomGenerator } from "../../base-canvas/base-texture/base-texture.generator"
 
 export class TerrainEdgeCalculator {
   public static calculateTerrainEdges(cell: Cell, terrainTile: TerrainTile, drawableItem: DrawableItemViewModel, elevationIndex: number ): TerrainTile {
@@ -46,12 +48,28 @@ export class TerrainEdgeCalculator {
         topLeftNeighborMatch
     })
         
+    //little confusing
     if (!tile) {
       tile = drawableItem.drawingRules.find((tile: TerrainTile) => tile.default)
     }
+
+    // // //little confusing
+    // if(tile.hasTerrainOnTop ) {
+    //   if(!cell.terrainTiles[RenderingLayers.TerrainLayer].topWith) {
+    //     const baseTexture = backgroundSprites.find(sprite => sprite.id === drawableItem.defaultTopBackground)
+    //     BaseTextureRandomGenerator.autoFillBackgroundTerrain(terrainTile, baseTexture)
+ 
+    //     tile.topWith = terrainTile.baseWith
+    //     tile.imageUrl = baseTexture.imageUrl
+    //     tile.drawableTileId = terrainTile.drawableTileId   
+    //     cell.terrainTiles[RenderingLayers.TerrainLayer] = tile
+    //   }
+    //   return tile
+    // }
+    
     tile.imageUrl = drawableItem.imageUrl
-    tile.drawableTileId = terrainTile.drawableTileId
-    tile.height = terrainTile.height
+    tile.drawableTileId = terrainTile.drawableTileId   
+
     cell.terrainTiles[RenderingLayers.TerrainLayer] = tile
     return tile
   }

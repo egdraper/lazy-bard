@@ -9,8 +9,8 @@ export class BaseTextureRenderer extends Renderer {
   public onDraw(event: RenderOptionsEvent): void {
     this.ctx.drawImage(
       GSM.ImageController.getImage(event.terrainTile.imageUrl),
-      event.terrainTile.spriteX,
-      event.terrainTile.spriteY,
+      event.terrainTile.baseWith.x,
+      event.terrainTile.baseWith.y,
       GSM.Settings.blockSize,
       GSM.Settings.blockSize,
       event.cell.position.x,

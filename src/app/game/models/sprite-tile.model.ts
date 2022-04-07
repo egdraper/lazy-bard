@@ -4,21 +4,18 @@ import { Size, Location, SpriteLocation } from './map';
 export abstract class Tile {
   id: string;
   imageUrl?: string;
-  offsetX?: number;
-  offsetY?: number;
   default?: boolean;
   selected?: boolean;
 }
 
 export class TerrainTile extends Tile {
   drawableTileId?: string;
-  height?: number;
-  spriteX?: number;
-  spriteY?: number;
   drawWhen?: DrawWhen;
   topWith?: SpriteLocation;
   expandWith?: SpriteLocation
   baseWith?: SpriteLocation
+  platformWith?: SpriteLocation
+  hasTerrainOnTop?: boolean
 }
 
 export class AssetTile extends Tile {
@@ -30,11 +27,16 @@ export class AssetTile extends Tile {
 }
 
 export interface DrawableItemViewModel {
-  id: string;
-  name: string;
-  imageUrl: string;
-  spriteType: string;
   drawingRules: TerrainTile[];
+  id: string;
+  imageUrl: string;
+  name: string;
+  offsetX: number;
+  offsetY: number;
+  spriteType: string;
+  variableHeight: number;
+  staticHeight?: number;
+  defaultTopBackground?: string;
   expandable?: boolean;
 }
 

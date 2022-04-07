@@ -1,6 +1,7 @@
+import { SpriteLocation } from "src/app/game/models/map"
 import { GSM } from "../../../../game-state-manager.service"
 import { TerrainTile } from "../../../../models/sprite-tile.model"
-import { TextureSprite } from "../../../../models/sprites"
+import { Sprite, TextureSprite } from "../../../../models/sprites"
 
 export class BaseTextureRandomGenerator {
   public static autoFillBackgroundTerrain(tile: TerrainTile, baseTexture: TextureSprite) {
@@ -15,8 +16,12 @@ export class BaseTextureRandomGenerator {
       tileX = Math.floor(Math.random() * commonTextureWidth)
     }
 
-    tile.spriteX = tileX * GSM.Settings.blockSize
-    tile.spriteY = 0    
+    if(!tile.baseWith) {
+      tile.baseWith = new SpriteLocation()
+    }
+
+    tile.baseWith.x = tileX * GSM.Settings.blockSize
+    tile.baseWith.y = 0    
   }    
 }
 

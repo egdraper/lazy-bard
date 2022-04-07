@@ -3,8 +3,6 @@ import { TerrainTile } from "../models/sprite-tile.model";
 export const RockWall: TerrainTile[] = [
     {
       id: 'FrontCenter',
-      offsetX: -8,
-      offsetY: 0,
       topWith: {x: 1, y: 3},
       expandWith: {x: 1, y: 4},
       baseWith: {x: 1, y: 5},
@@ -21,8 +19,6 @@ export const RockWall: TerrainTile[] = [
     },
     {
       id: 'FrontLeft',
-      offsetX: -8,
-      offsetY: 0,
       topWith: {x: 0, y: 3},
       expandWith: {x: 0, y: 4},
       baseWith: {x: 0, y: 5},
@@ -39,8 +35,6 @@ export const RockWall: TerrainTile[] = [
     },
     {
       id: 'FrontRight',
-      offsetX: -8,
-      offsetY: 0,
       topWith: {x: 2, y: 3},
       expandWith: {x: 2, y: 4},
       baseWith: {x: 2, y: 5},
@@ -57,8 +51,6 @@ export const RockWall: TerrainTile[] = [
     },
     {
       id: 'MidLeft',
-      offsetX: -8,
-      offsetY: 0,
       topWith: {x: 0, y: 2},
       drawWhen: {
         topNeighbor: true,
@@ -73,9 +65,8 @@ export const RockWall: TerrainTile[] = [
     },
       {
         id: 'MidCenter',
-        offsetX: -8,
-        offsetY: 0,
         default: true,
+        hasTerrainOnTop: true,
         topWith: {x: 3, y: 12 },
         drawWhen: {
           topNeighbor: true,
@@ -90,8 +81,6 @@ export const RockWall: TerrainTile[] = [
       },
       {
         id: 'MidRight',
-        offsetX: -8,
-        offsetY: 0,
         topWith: {x: 0, y: 1 },
         drawWhen: {
           topNeighbor: true,
@@ -106,8 +95,6 @@ export const RockWall: TerrainTile[] = [
       },
       {
         id: 'TopLeft',
-        offsetX: -8,
-        offsetY: 0,
         topWith: {x: 0, y: 0},
         drawWhen: {
           topNeighbor: false,
@@ -122,8 +109,6 @@ export const RockWall: TerrainTile[] = [
       },
       {
         id: 'TopCenter',
-        offsetX: -8,
-        offsetY: 0,
         topWith: {x: 1, y: 0 },
         drawWhen: {
           topNeighbor: false,
@@ -138,8 +123,6 @@ export const RockWall: TerrainTile[] = [
       },
       {
         id: 'TopRight',
-        offsetX: -8,
-        offsetY: 0,
         topWith: {x: 2, y: 0 },
         drawWhen: {
           topNeighbor: false,
@@ -154,8 +137,6 @@ export const RockWall: TerrainTile[] = [
       },
       {
         id: 'FontLeftAttach',
-        offsetX: -8,
-        offsetY: 0,
         topWith: {x: 3, y: 0},
         expandWith: {x: 3, y: 1},
         baseWith: {x: 3, y: 2 },
@@ -172,8 +153,6 @@ export const RockWall: TerrainTile[] = [
       },
       {
         id: 'FontRightAttach',
-        offsetX: -8,
-        offsetY: 0,
         topWith: {x: 4, y: 0},
         expandWith: {x: 4, y: 1},
         baseWith: {x: 4, y: 2 },
@@ -190,8 +169,6 @@ export const RockWall: TerrainTile[] = [
       },
       {
         id: 'FontRightAdjacentAttach',
-        offsetX: -8,
-        offsetY: 0,
         topWith: {x: 4, y: 3},
         expandWith: {x: 4, y: 4},
         baseWith: {x: 4, y: 5 },
@@ -208,8 +185,6 @@ export const RockWall: TerrainTile[] = [
       },
       {
         id: 'bottomLeftFillerSquare',
-        offsetX: -8,
-        offsetY: 0,
         topWith: {x: 1, y: 2 },
         drawWhen: {
           topNeighbor: true,
@@ -224,8 +199,6 @@ export const RockWall: TerrainTile[] = [
       },
       {
         id: 'bottomRightFillerSquare',
-        offsetX: -8,
-        offsetY: 0,
         topWith: {x: 2, y: 2 },
         drawWhen: {
           topNeighbor: true,
@@ -240,8 +213,6 @@ export const RockWall: TerrainTile[] = [
       },
       {
         id: 'TopLeftFillerSquare',
-        offsetX: -8,
-        offsetY: 0,
         topWith: {x: 1, y: 1},
         drawWhen: {
           topNeighbor: true,
@@ -256,8 +227,6 @@ export const RockWall: TerrainTile[] = [
       },
       {
         id: 'TopRightFillerSquare',
-        offsetX: -8,
-        offsetY: 0,
         topWith: {x: 2, y: 1 },
         drawWhen: {
           topNeighbor: true,

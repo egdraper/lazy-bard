@@ -3,11 +3,7 @@ import { TerrainTile } from "../models/sprite-tile.model";
 export const trees: TerrainTile[] = [
   {
     id: "treeClumpTopLeft",
-    spriteX: 0,
-    spriteY: 0,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 0, y: 0},
     drawWhen: {
       topNeighbor: false,
       topRightNeighbor: null,
@@ -21,11 +17,7 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpTopCenter",
-    spriteX: 1,
-    spriteY: 0,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 1, y: 0},
     drawWhen: {
       topNeighbor: false,
       topRightNeighbor: null,
@@ -38,11 +30,7 @@ export const trees: TerrainTile[] = [
     }
   }, {
     id: "treeClumpTopRight",
-    spriteX: 2,
-    spriteY: 0,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 2, y: 0},
     drawWhen: {
       topNeighbor: false,
       topRightNeighbor: false,
@@ -56,11 +44,7 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpGrowableLeft",
-    spriteX: 0,
-    spriteY: 1,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 0, y: 1},
     drawWhen: {
       topNeighbor: true,
       topRightNeighbor: null,
@@ -73,11 +57,7 @@ export const trees: TerrainTile[] = [
     }
   }, {
     id: "treeClumpGrowableCenter",
-    spriteX: 1,
-    spriteY: 1,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 1, y: 1},
     drawWhen: {
       topNeighbor: true,
       topRightNeighbor: true,
@@ -91,11 +71,7 @@ export const trees: TerrainTile[] = [
 
   }, {
     id: "treeClumpGrowableRight",
-    spriteX: 2,
-    spriteY: 1,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 2, y: 1},
     drawWhen: {
       topNeighbor: true,
       topRightNeighbor: false,
@@ -108,11 +84,9 @@ export const trees: TerrainTile[] = [
     }
   }, {
     id: "treeClumpTrunkLeft",
-    spriteX: 2,
-    spriteY: 3,
-    // spriteSize: {x: 1, y: 3},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 2, y: 3},
+    expandWith: {x: 2, y: 4},
+    baseWith: { x: 2, y: 5},
     drawWhen: {
       topNeighbor: null,
       topRightNeighbor: null,
@@ -127,11 +101,9 @@ export const trees: TerrainTile[] = [
   {
     id: "treeClumpTrunkCenter",
     default: true,
-    spriteX: 3,
-    spriteY: 3,
-    // spriteSize: {x: 1, y: 3},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 3, y: 3},
+    expandWith: {x: 3, y: 4},
+    baseWith: { x: 3, y: 5},
     drawWhen: {
       topNeighbor: null,
       topRightNeighbor: null,
@@ -145,11 +117,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpTrunkRight",
-    spriteX: 4,
-    spriteY: 3,
-    // spriteSize: {x: 1, y: 3},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 4, y: 3},
+    expandWith: {x: 4, y: 4},
+    baseWith: { x: 4, y: 5},
     drawWhen: {
       topNeighbor: null,
       topRightNeighbor: false,
@@ -163,11 +133,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpTrunkLeftAngle",
-    spriteX: 1,
-    spriteY: 3,
-    // spriteSize: {x: 1, y: 3},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 1, y: 3},
+    expandWith: {x: 1, y: 4},
+    baseWith: { x: 1, y: 5},
     drawWhen: {
       topNeighbor: null,
       topRightNeighbor: null,
@@ -181,11 +149,9 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpTrunkRightAngle",
-    spriteX: 5,
-    spriteY: 3,
-    // spriteSize: {x: 1, y: 3},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 5, y: 3},
+    expandWith: {x: 5, y: 4},
+    baseWith: { x: 5, y: 5},
     drawWhen: {
       topNeighbor: null,
       topRightNeighbor: true,
@@ -199,11 +165,7 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpLeftFillerAngle",
-    spriteX: 6,
-    spriteY: 0,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 6, y: 0},
     drawWhen: {
       topNeighbor: true,
       topRightNeighbor: true,
@@ -218,11 +180,7 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpRightFillerAngle",
-    spriteX: 7,
-    spriteY: 0,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 7, y: 0},
     drawWhen: {
       topNeighbor: true,
       topRightNeighbor: true,
@@ -236,11 +194,7 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpLeftFillerAngleUP",
-    spriteX: 6,
-    spriteY: 1,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 6, y: 1},
     drawWhen: {
       topNeighbor: true,
       topRightNeighbor: false,
@@ -255,11 +209,7 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpRightFillerAngleUp",
-    spriteX: 7,
-    spriteY: 1,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 7, y: 1},
     drawWhen: {
       topNeighbor: true,
       topRightNeighbor: true,
@@ -273,11 +223,8 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpRightAngleGapFiller",
-    spriteX: 6,
-    spriteY: 4,
-    // spriteSize: {x: 1, y: 2},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 6, y: 4},
+    expandWith: {x: 6, y: 5},
     drawWhen: {
       topNeighbor: true,
       topRightNeighbor: true,
@@ -291,11 +238,8 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpLeftAngleGapFiller",
-    spriteX: 7,
-    spriteY: 4,
-    // spriteSize: {x: 1, y: 2},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 7, y: 4},
+    expandWith: {x: 7, y: 5},
     drawWhen: {
       topNeighbor: true,
       topRightNeighbor: true,
@@ -309,11 +253,7 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpLeftFillerAngleSingle",
-    spriteX: 7,
-    spriteY: 4,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 7, y: 4},
     drawWhen: {
       topNeighbor: true,
       topRightNeighbor: true,
@@ -327,11 +267,7 @@ export const trees: TerrainTile[] = [
   },
   {
     id: "treeClumpRightFillerAngleSingle",
-    spriteX: 6,
-    spriteY: 4,
-    // spriteSize: {x: 1, y: 1},
-    offsetX: 0,
-    offsetY: -32,
+    topWith: {x: 6, y: 4},
     drawWhen: {
       topNeighbor: true,
       topRightNeighbor: true,
