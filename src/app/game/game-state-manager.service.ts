@@ -47,7 +47,7 @@ export class GSM {
     // Order Matters
     GSM.GameData = new GameData()
     GSM.Settings = new Settings()
-    GSM.MouseController = new MouseController()
+
     GSM.CanvasController = new CanvasController()
     GSM.FrameController = new FrameController()
     GSM.EventController = new EventController()
@@ -61,6 +61,7 @@ export class GSM {
     GSM.GameData.map.baseTexture = baseTexture
     
     //Order Doesn't Matter
+    GSM.MouseController = new MouseController()
     GSM.AssetController = new AssetController()
     GSM.CellNeighborsController = new CellNeighborsController()
     

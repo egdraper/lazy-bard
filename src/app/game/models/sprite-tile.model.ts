@@ -14,13 +14,11 @@ export class TerrainTile extends Tile {
   topWith?: SpriteLocation;
   expandWith?: SpriteLocation
   baseWith?: SpriteLocation
-  platformWith?: SpriteLocation
   hasTerrainOnTop?: boolean
 }
 
 export class AssetTile extends Tile {
   assetDrawRules: AssetItemsViewModel;
-  selectableArea: Size;
   animation?: SpriteAnimation;
   obstacleObstructionX?: number;
   obstacleObstructionY?: number;

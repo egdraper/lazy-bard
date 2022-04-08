@@ -142,6 +142,8 @@ export class CanvasComponent implements AfterViewInit {
     const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale) // + (-1 * GSM.Canvas.canvasViewPortOffsetY * GameSettings.scale)
     GSM.MouseController.hoveringPosX = mousePosX
     GSM.MouseController.hoveringPosY = mousePosY
+    GSM.EventController.mouseHover.next({posX: mousePosX, posY: mousePosY})
+    
     
     const hoveringCell = GSM.GridController.getGridCellByCoordinate(mousePosX, mousePosY, GSM.GameData.map.currentElevationLayerIndex)
     if(this.hoveringCellId !== hoveringCell.id) {

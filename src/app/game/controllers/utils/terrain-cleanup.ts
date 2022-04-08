@@ -22,9 +22,11 @@ export function terrainCleanup(layer: RenderingLayers) {
             
       if (leftTileId !== cellTileId && rightTileId !== cellTileId) {
         delete cell.terrainTiles[RenderingLayers.TerrainLayer]
+        cell.obstacle = false
       }
       if (topTileId !== cellTileId &&  bottomTileId !== cellTileId) {
         delete cell.terrainTiles[RenderingLayers.TerrainLayer]
+        cell.obstacle = false
       }
       if(bottomLeftTileId === cellTileId && !leftTileId && bottomTileId !== cellTileId) {
         neighbors[NeighborLocation.Left].terrainTiles[layer] = new TerrainTile()

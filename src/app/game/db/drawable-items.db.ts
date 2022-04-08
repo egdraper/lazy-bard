@@ -8,8 +8,8 @@ export const drawableItems: DrawableItemViewModel[] = [
     name: "Green Trees with Grass Base",
     spriteType: "DrawableNaturalWall",
     imageUrl: "assets/images/tree-transparent-base.png",
-    offsetX: 0,
-    offsetY: 0,
+    offsetX: -8,
+    offsetY: -8,
     variableHeight: 2,
     staticHeight: 2,
     drawingRules: trees
@@ -22,7 +22,7 @@ export const drawableItems: DrawableItemViewModel[] = [
     imageUrl: "assets/images/RockWallGrassBase.png",
     offsetX: 0,
     offsetY: 0,
-    variableHeight: 3,
+    variableHeight: 5,
     drawingRules: RockWall
   },
 ]

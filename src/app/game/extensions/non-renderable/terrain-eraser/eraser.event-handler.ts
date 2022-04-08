@@ -10,14 +10,14 @@ export class EraserEventHandler {
   }
 
   private selectTerrainTile(event: MousePosition) {
-    if(GSM.EventController.generalActionFire.value.name === "deleteTerrain") {
+    if(GSM.EventController.generalActionFire.value.name !== "deleteTerrain") { return }
 
     const selectedTerrainTile = getClickedOnTerrainTile(event.posX, event.posY)
     
     if(selectedTerrainTile) {
       delete selectedTerrainTile.cell.terrainTiles[RenderingLayers.TerrainLayer]
+      selectedTerrainTile.cell.obstacle = false
       terrainCleanup(selectedTerrainTile.layer)     
-    }
     }
   }
 }

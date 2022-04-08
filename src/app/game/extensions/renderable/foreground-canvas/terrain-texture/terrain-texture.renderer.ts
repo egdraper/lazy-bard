@@ -8,7 +8,7 @@ export class TerrainPaintBrushRenderer extends Renderer {
   public renderingLayer: RenderingLayers = RenderingLayers.TerrainLayer
 
   public onDraw(event: RenderOptionsEvent): void {
-    if(!event.terrainTile) { return }
+    if(!event.terrainTile || !event.terrainTile.drawableTileId) { return }
     
     const itemDetails = drawableItems.find(item => item.id === event.terrainTile.drawableTileId)
     
@@ -53,6 +53,7 @@ export class TerrainPaintBrushRenderer extends Renderer {
 
     if(event.terrainTile.expandWith) {
       const height = itemDetails.staticHeight | itemDetails.variableHeight
+
       if(height > 1) {
         for(let i = 1; i < height; i++) {
           this.ctx.drawImage(

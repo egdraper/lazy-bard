@@ -18,9 +18,10 @@ export class GameMap {
 export class Cell {
   id: string
   location: Location
-  position: Position // not saved
-  obstacle?: boolean 
+  obstacle?: boolean
+  zAxis?: {z: number, zPos: number, obstacle: boolean, terrainTiles?: {[layer: string]: TerrainTile}}[]
   terrainTiles?: {[layer: string ]: TerrainTile} = {}
+  position: Position // not saved
   renderers?: Renderer[]  // not saved
   elevationIndex?: number // not saved
 }
@@ -66,7 +67,7 @@ export abstract class BaseLocation {
   constructor(
     public x: number,
     public y: number,
-    public z: number
+    public z?: number
   ) {}
 }
 
