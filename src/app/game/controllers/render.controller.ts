@@ -34,18 +34,16 @@ export class RendererController {
   }
 
   private renderBaseCanvasImages() {
-    this.baseCanvasRenderer.draw(GSM.ImageController.baseLayerImage, 1)
+    this.baseCanvasRenderer.draw(GSM.ImageController.baseLayerImage, 0)
   }
 
   private renderForegroundCanvasImages(frame: number): void {
     GSM.GridController.iterateElevations(elevation => {
-      if(elevation.elevationIndex === 0) { return }
-
-      if(elevation.elevationIndex === GSM.GameData.map.currentElevationLayerIndex) {
+      // if(elevation.elevationIndex === GSM.GameData.map.currentElevationLayerIndex) {
         this.runRendererForExcludedAddons(elevation.elevationIndex, frame)
-      } else {
-        this.foregroundCanvasRenderer.draw(GSM.ImageController.elevationLayersImages[elevation.elevationIndex], elevation.elevationIndex)
-      }
+      // } else {
+      //   this.foregroundCanvasRenderer.draw(GSM.ImageController.elevationLayersImages[elevation.elevationIndex], elevation.elevationIndex)
+      // }
     })
   }
 

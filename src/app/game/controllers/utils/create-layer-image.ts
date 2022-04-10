@@ -9,7 +9,7 @@ export function generateElevationImage(renderers: Renderer[], elevationIndex: nu
        
     let tempCTX 
     renderers.forEach((renderer)=> {
-      if(renderer.excludeFromIndividualCellPainting) { return }
+      if(renderer.excludeFromSingleImagePainting) { return }
      
       tempCTX = renderer.ctx
       renderer.ctx = GSM.CanvasController.fullImageCTX

@@ -19,7 +19,6 @@ export class Cell {
   id: string
   location: Location
   obstacle?: boolean
-  zAxis?: {z: number, zPos: number, obstacle: boolean, terrainTiles?: {[layer: string]: TerrainTile}}[]
   terrainTiles?: {[layer: string ]: TerrainTile} = {}
   position: Position // not saved
   renderers?: Renderer[]  // not saved
@@ -27,14 +26,32 @@ export class Cell {
 }
 
 export enum NeighborLocation {
-  Top,
-  Right,
-  Bottom,
-  Left,
-  TopRight,
-  BottomRight,
-  BottomLeft,
-  TopLeft
+  North,
+  East,
+  South,
+  West,
+  NorthEast,
+  SouthEast,
+  SouthWest,
+  NorthWest,
+  Up,
+  UpNorth,
+  UpEast,
+  UpSouth,
+  UpWest,
+  UpNorthEast,
+  UpSouthEast,
+  UpSouthWest,
+  UpNorthWest,
+  Down,
+  DownNorth,
+  DownEast,
+  DownSouth,
+  DownWest,
+  DownNorthEast,
+  DownSouthEast,
+  DownSouthWest,
+  DownNorthWest,
 }
 
 export enum RenderingLayers {

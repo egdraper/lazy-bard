@@ -6,7 +6,6 @@ export class ImagesController {
   public elevationLayersImages: {[elevation: number]: HTMLImageElement } = {} 
 
   constructor() {
-    GSM.EventController.generalActionFire.subscribe(this.refreshAllImages.bind(this))
     GSM.GridController.newGridCreated.subscribe(this.refreshAllImages.bind(this))
   }
 

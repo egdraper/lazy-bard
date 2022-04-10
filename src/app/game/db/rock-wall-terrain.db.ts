@@ -66,7 +66,6 @@ export const RockWall: TerrainTile[] = [
       {
         id: 'MidCenter',
         default: true,
-        hasTerrainOnTop: true,
         topWith: {x: 3, y: 12 },
         drawWhen: {
           topNeighbor: true,

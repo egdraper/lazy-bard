@@ -22,7 +22,7 @@ export const drawableItems: DrawableItemViewModel[] = [
     imageUrl: "assets/images/RockWallGrassBase.png",
     offsetX: 0,
     offsetY: 0,
-    variableHeight: 5,
+    variableHeight: 1,
     drawingRules: RockWall
   },
 ]

@@ -1,4 +1,5 @@
 import { BehaviorSubject, Subject } from "rxjs";
+import { Cell } from "../models/map";
 import { GeneralAction } from "../models/settings";
 
 export class EventController {
@@ -12,7 +13,7 @@ export class EventController {
     
     public mouseClick = new Subject<{x: number, y: number}>()
     public cellClick = new Subject<string>()
-    public emptyCellClicked = new Subject<string>()
-    public cellMouseEntered = new Subject<string>()
+    public emptyCellClicked = new Subject<Cell>()
+    public cellMouseEntered = new Subject<Cell>()
     public generalActionFire: BehaviorSubject<GeneralAction> = new BehaviorSubject({name: "", data: null})
 }

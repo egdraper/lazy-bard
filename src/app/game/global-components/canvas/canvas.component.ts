@@ -114,7 +114,7 @@ export class CanvasComponent implements AfterViewInit {
     
     const occupiedCell = GSM.AssetController.getAssetByCellId(cell.id)
     if(!occupiedCell) {
-      GSM.EventController.emptyCellClicked.next(cell.id)
+      GSM.EventController.emptyCellClicked.next(cell)
     }
   }
 
@@ -140,18 +140,8 @@ export class CanvasComponent implements AfterViewInit {
 
     const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale) // + (-1 * GSM.Canvas.canvasViewPortOffsetX * GameSettings.scale)
     const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale) // + (-1 * GSM.Canvas.canvasViewPortOffsetY * GameSettings.scale)
-    GSM.MouseController.hoveringPosX = mousePosX
-    GSM.MouseController.hoveringPosY = mousePosY
     GSM.EventController.mouseHover.next({posX: mousePosX, posY: mousePosY})
-    
-    
-    const hoveringCell = GSM.GridController.getGridCellByCoordinate(mousePosX, mousePosY, GSM.GameData.map.currentElevationLayerIndex)
-    if(this.hoveringCellId !== hoveringCell.id) {
-      this.hoveringCellId = hoveringCell.id
-      GSM.EventController.cellMouseEntered.next(this.hoveringCellId)
-      GSM.MouseController.hoveringCell = hoveringCell
-      GSM.MouseController.hoveringCellId = this.hoveringCellId
-    }
+
     // // Game Marker (required here because mouseDetails depends on this check being called beforehand)
     // GSM.GameMarker.checkForHover()
     // GSM.GameMarker.mouseX = mousePosX

@@ -1,7 +1,7 @@
 
 import { assetItems } from 'src/app/game/db/asset-items';
 import { Asset } from 'src/app/game/models/asset.model';
-import { Position } from 'src/app/game/models/map';
+import { Cell, Position } from 'src/app/game/models/map';
 import { AssetTile, SpriteAnimation } from 'src/app/game/models/sprite-tile.model';
 import { GSM } from '../../../../game-state-manager.service';
 import { Running } from './movement.ts/run.movement';
@@ -29,14 +29,13 @@ export class PlayableAssetEventHandler {
     })
   }
 
-  public onEmptyCellClicked(cellId: string): void {
+  public onEmptyCellClicked(cell: Cell): void {
     if(GSM.EventController.generalActionFire.value.name === "addCharacter") {
-      this.addPlayableCharacter(cellId)
+      this.addPlayableCharacter(cell.id)
     }
 
     if(GSM.EventController.generalActionFire.value.name === "characterSelected") {
       const selectedAssets = GSM.AssetController.getSelectedAssets()
-      const cell = GSM.GridController.getCellAtLayer(cellId, GSM.GameData.map.currentElevationLayerIndex)
       selectedAssets.forEach((asset: Asset) => {
         asset.movement.start(asset.cell, cell, GSM.GameData.assets as Asset[]  )
       })

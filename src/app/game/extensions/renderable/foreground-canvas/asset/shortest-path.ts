@@ -61,7 +61,7 @@ export class ShortestPath extends TravelPath {
         if (!visited[visitedCell].checked) {
           const store: number[] = [ ];
 
-          GSM.CellNeighborsController.getAllImmediateNeighbors(visited[visitedCell].cell, GSM.GameData.map.currentElevationLayerIndex).forEach((cell: Cell, index: number) => {
+          GSM.CellNeighborsController.getHorizontalNeighbors(visited[visitedCell].cell, GSM.GameData.map.currentElevationLayerIndex).forEach((cell: Cell, index: number) => {
             if (!cell) {
               return;
             }
@@ -115,7 +115,7 @@ export class ShortestPath extends TravelPath {
 
   public verifyClosetLocation(start: Cell, end: Cell): Cell {
     if(this.isBadLocation(end)) { 
-      const possibleAlternatives = GSM.CellNeighborsController.getAllImmediateNeighbors(end, GSM.GameData.map.currentElevationLayerIndex).filter(a => !this.isBadLocation(a))
+      const possibleAlternatives = GSM.CellNeighborsController.getHorizontalNeighbors(end, GSM.GameData.map.currentElevationLayerIndex).filter(a => !this.isBadLocation(a))
       if(possibleAlternatives) {
         let newEndCell
         let shortest = 1000000

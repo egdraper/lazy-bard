@@ -13,18 +13,16 @@ export class GameComponent implements AfterViewInit{
   constructor(public gameStateManager: GSM) {
     setTimeout(() => {
       this.mouseController = GSM.MouseController
-      
     },150);
-}
+  }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     setTimeout(() => {
       this.gameStateManager.newGame("firstGame", 20, 20, "forest")
       GSM.EventController.generalActionFire.subscribe(action => {
         this.selected = action.name 
       })
     })
-
   }
 
   @HostListener("document:keyup", ["$event"])

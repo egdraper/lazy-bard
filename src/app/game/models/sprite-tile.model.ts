@@ -14,7 +14,8 @@ export class TerrainTile extends Tile {
   topWith?: SpriteLocation;
   expandWith?: SpriteLocation
   baseWith?: SpriteLocation
-  hasTerrainOnTop?: boolean
+  drawsWith?: SpriteLocation
+  drawsWith1?: SpriteLocation
 }
 
 export class AssetTile extends Tile {

@@ -48,10 +48,12 @@ export class MapController {
   public createGameMap(size: Size): void {
     GSM.GameData.map = new GameMap(size)
     GSM.GameData.map.id = Math.random().toString()
+    this.setupMap(-1)
     this.setupMap(0)
     this.setupMap(1)
-    GSM.GameData.map.topMostElevationLayerIndex = 1
-    GSM.GameData.map.currentElevationLayerIndex = 1
+    this.setupMap(2)
+    GSM.GameData.map.topMostElevationLayerIndex = 2
+    GSM.GameData.map.currentElevationLayerIndex = 0
 
     Object.keys(RenderingLayers).forEach(key => {
       GSM.GridController.layerIterator.push(RenderingLayers[key])
@@ -70,17 +72,18 @@ export class MapController {
           this.gridIterator[elevation] = []
         }
 
-        // creates cell
+           // creates cell
         const cell: Cell = {
-          location: { x: l, y: i, z: 0},
-          position: { x: l * GSM.Settings.blockSize, y: i * GSM.Settings.blockSize, z: 0 },
-          id: `x${l}:y${i}`,
+          elevationIndex: elevation,
+          location: { x: l, y: i - elevation, z: elevation},
+          position: { x: l * GSM.Settings.blockSize, y: (i - elevation) * GSM.Settings.blockSize, z: elevation * GSM.Settings.blockSize},
+          id: `x${l}:y${i - elevation}`,
           renderers: [],
           terrainTiles: {}
         }
 
         // adds cell to grid at layer
-        GSM.GameData.map.elevations[elevation].cells[`x${l}:y${i}`] = cell
+        GSM.GameData.map.elevations[elevation].cells[`x${l}:y${i - elevation}`] = cell
         this.gridIterator[elevation].push(cell)
       }
     }
