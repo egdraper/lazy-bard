@@ -39,11 +39,11 @@ export class RendererController {
 
   private renderForegroundCanvasImages(frame: number): void {
     GSM.GridController.iterateElevations(elevation => {
-      // if(elevation.elevationIndex === GSM.GameData.map.currentElevationLayerIndex) {
+      if(elevation.elevationIndex === GSM.GameData.map.currentElevationLayerIndex) {
         this.runRendererForExcludedAddons(elevation.elevationIndex, frame)
-      // } else {
-      //   this.foregroundCanvasRenderer.draw(GSM.ImageController.elevationLayersImages[elevation.elevationIndex], elevation.elevationIndex)
-      // }
+      } else {
+        this.foregroundCanvasRenderer.draw(GSM.ImageController.elevationLayersImages[elevation.elevationIndex], elevation.elevationIndex)
+      }
     })
   }
 

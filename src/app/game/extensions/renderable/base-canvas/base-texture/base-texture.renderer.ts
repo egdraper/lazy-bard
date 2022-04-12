@@ -7,6 +7,8 @@ export class BaseTextureRenderer extends Renderer {
   public override excludeFromIndividualCellPainting: boolean = true
 
   public onDraw(event: RenderOptionsEvent): void {
+    if(!event.terrainTile || !event.terrainTile.imageUrl) { return }
+
     this.ctx.drawImage(
       GSM.ImageController.getImage(event.terrainTile.imageUrl),
       event.terrainTile.baseWith.x,

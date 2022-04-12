@@ -8,7 +8,7 @@ export class AddonRenderer {
     
     this.ctx.imageSmoothingEnabled = false
     // this.ctx.globalAlpha = 1 - (Math.abs(GSM.GridController.currentElevationLayerIndex - elevation) * .3)
-    this.ctx.globalAlpha = GSM.GameData.map.currentElevationLayerIndex < elevation ? .5 : 1
+    // this.ctx.globalAlpha = GSM.GameData.map.currentElevationLayerIndex < elevation ? .5 : 1
     this.ctx.filter = GSM.GameData.map.currentElevationLayerIndex > elevation ? 'grayscale(.6)' : "";
     this.ctx.filter = GSM.GameData.map.currentElevationLayerIndex < elevation ? 'grayscale(.6)' : "";
 

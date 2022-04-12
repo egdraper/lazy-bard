@@ -52,19 +52,19 @@ export class TerrainEdgeCalculator {
     const downId = neighboringCells[NeighborLocation.Down]?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId
     const downSouthId = neighboringCells[NeighborLocation.DownSouth]?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId
     const upSouthId = neighboringCells[NeighborLocation.UpSouth]?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId
-    const southId = southNeighbor.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId
+    const southId = southNeighbor?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId
 
     if (upId === terrainTile.drawableTileId && downId === terrainTile.drawableTileId) {
       tile.drawsWith = tile.expandWith
     }
 
     if (upId !== terrainTile.drawableTileId && downId === terrainTile.drawableTileId) {
-      tile.drawsWith1 = tile.topWith
+      tile.drawsWithTop = tile.topWith
       tile.drawsWith = tile.expandWith
     }
     
     if (downId === terrainTile.drawableTileId && downSouthId === terrainTile.drawableTileId) {
-      tile.drawsWith1 = tile.topWith
+      tile.drawsWithTop = tile.topWith
       tile.drawsWith = tile.baseWith
     }
 
@@ -73,7 +73,7 @@ export class TerrainEdgeCalculator {
     }
     
     if (upId !== terrainTile.drawableTileId && downId === terrainTile.drawableTileId && downSouthId === terrainTile.drawableTileId) {
-      tile.drawsWith1 = tile.topWith
+      tile.drawsWithTop = tile.topWith
       tile.drawsWith = tile.baseWith
     }
     
@@ -83,7 +83,7 @@ export class TerrainEdgeCalculator {
     }
     
     if (upId !== terrainTile.drawableTileId && downId !== terrainTile.drawableTileId) {
-      tile.drawsWith1 = tile.topWith
+      tile.drawsWithTop = tile.topWith
       tile.drawsWith = tile.baseWith
     }
 

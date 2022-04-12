@@ -52,7 +52,11 @@ export class MapController {
     this.setupMap(0)
     this.setupMap(1)
     this.setupMap(2)
-    GSM.GameData.map.topMostElevationLayerIndex = 2
+    this.setupMap(3)
+    this.setupMap(4)
+    this.setupMap(5)
+    this.setupMap(6)
+    GSM.GameData.map.topMostElevationLayerIndex = 6
     GSM.GameData.map.currentElevationLayerIndex = 0
 
     Object.keys(RenderingLayers).forEach(key => {

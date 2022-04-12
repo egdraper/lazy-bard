@@ -14,9 +14,9 @@ export class TerrainTreeBrushEventHandler {
   private onEmptyCellClicked(cell: Cell, elevation: number = GSM.GameData.map.currentElevationLayerIndex): void {
     if(GSM.EventController.generalActionFire.value.name === "paintingTerrain") {
       const drawableTile = GSM.EventController.generalActionFire.value.data as {id: string}
-      const northCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.North, elevation)
-      const northEastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.NorthEast, elevation)
-      const eastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.East, elevation)
+      // const northCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.North, elevation)
+      // const northEastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.NorthEast, elevation)
+      // const eastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.East, elevation)
       const downCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.Down, elevation)
       const downEastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.DownEast, elevation)
       const downNorthCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.DownNorth, elevation)
@@ -31,21 +31,33 @@ export class TerrainTreeBrushEventHandler {
         return
       }
 
-      const drawTile = cell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
-      drawTile.drawableTileId = drawableTile.id
-      cell.obstacle = true 
+      const itemDetails = drawableItems.find(item => item.id === drawableTile.id)
 
-      const drawTopTile = northCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
-      drawTopTile.drawableTileId = drawableTile.id
-      northCell.obstacle = true
-
-      const drawRightTile = eastCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
-      drawRightTile.drawableTileId = drawableTile.id
-      eastCell.obstacle = true
-    
-      const drawTopRightTile = northEastCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
-      drawTopRightTile.drawableTileId = drawableTile.id
-      northEastCell.obstacle = true
+      const maps = GSM.GameData.map
+            
+      for(let i = 0; i < itemDetails.variableHeight; i++) {
+        const newCell = GSM.GridController.getCell(cell.location.x, cell.location.y, elevation + i)
+        const northCell = GSM.CellNeighborsController.getImmediateNeighbor(newCell, NeighborLocation.North, elevation + i)
+        const northEastCell = GSM.CellNeighborsController.getImmediateNeighbor(newCell, NeighborLocation.NorthEast, elevation + i)
+        const eastCell = GSM.CellNeighborsController.getImmediateNeighbor(newCell, NeighborLocation.East, elevation + i)
+        
+        const drawTile = newCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
+        drawTile.drawableTileId = drawableTile.id
+        cell.obstacle = true
+  
+        const drawTopTile = northCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
+        drawTopTile.drawableTileId = drawableTile.id
+        northCell.obstacle = true
+  
+        const drawRightTile = eastCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
+        drawRightTile.drawableTileId = drawableTile.id
+        eastCell.obstacle = true
+      
+        const drawTopRightTile = northEastCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
+        drawTopRightTile.drawableTileId = drawableTile.id
+        northEastCell.obstacle = true
+      }
+      console.log("hey")
     }  
 
     terrainCleanup(RenderingLayers.TerrainLayer)

@@ -82,6 +82,7 @@ export class GameComponent implements AfterViewInit{
           newLayer: GSM.GameData.map.currentElevationLayerIndex + 1
         }
       })
+      GSM.ImageController.refreshAllImages()
     }
     if(event.code === "Digit1") {
       GSM.EventController.generalActionFire.next({
@@ -91,6 +92,7 @@ export class GameComponent implements AfterViewInit{
           newLayer: GSM.GameData.map.currentElevationLayerIndex - 1
         }
       })
+      GSM.ImageController.refreshAllImages()
     }
     if(event.code === "KeyR") {
       GSM.EventController.generalActionFire.next({

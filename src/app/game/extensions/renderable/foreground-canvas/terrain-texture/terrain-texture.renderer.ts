@@ -26,11 +26,11 @@ export class TerrainPaintBrushRenderer extends Renderer {
         GSM.Settings.blockSize,
       )
      }
-    if(event.terrainTile.drawsWith1) {      
+    if(event.terrainTile.drawsWithTop) {      
       this.ctx.drawImage(
         GSM.ImageController.getImage(event.terrainTile.imageUrl),
-        event.terrainTile.drawsWith1.x * GSM.Settings.blockSize,
-        event.terrainTile.drawsWith1.y * GSM.Settings.blockSize,
+        event.terrainTile.drawsWithTop.x * GSM.Settings.blockSize,
+        event.terrainTile.drawsWithTop.y * GSM.Settings.blockSize,
         GSM.Settings.blockSize,
         GSM.Settings.blockSize,
         event.cell.position.x + itemDetails.offsetX,
