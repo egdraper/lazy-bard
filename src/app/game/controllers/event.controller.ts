@@ -12,7 +12,7 @@ export class EventController {
     public mouseHover = new Subject()
     
     public mouseClick = new Subject<{x: number, y: number}>()
-    public cellClick = new Subject<string>()
+    public cellClick = new Subject<Cell>()
     public emptyCellClicked = new Subject<Cell>()
     public cellMouseEntered = new Subject<Cell>()
     public generalActionFire: BehaviorSubject<GeneralAction> = new BehaviorSubject({name: "", data: null})

@@ -1,21 +1,19 @@
-import { Renderer, RenderOptionsEvent } from '../../../../models/renderer';
+import { Asset } from 'src/app/game/models/sprite-tile.model';
 import { GSM } from '../../../../game-state-manager.service';
 import { RenderingLayers } from '../../../../models/map';
+import { Renderer } from '../../../../models/renderer';
 
 
-export class PlayableAssetRenderer extends Renderer {
+export class PlayableAssetRenderer implements Renderer {
+  public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.CharacterLayer
-  public override excludeFromSingleImagePainting: boolean = true
 
-  public onDraw(event: RenderOptionsEvent): void {
-    const playableAsset = GSM.AssetController.getAssetByCellId(event.cell.id)
-    
-    if (!playableAsset) { return; }
+  public onDraw(asset: Asset): void {
     this.ctx.fillStyle = '#424247';
     this.ctx.beginPath();
     this.ctx.ellipse(
-      playableAsset.position.x + GSM.Settings.blockSize / 2,
-      playableAsset.position.y + GSM.Settings.blockSize / 2,
+      asset.position.x + GSM.Settings.blockSize / 2,
+      asset.position.y + GSM.Settings.blockSize / 2,
        8, 
        4, 
        0, 
@@ -25,15 +23,15 @@ export class PlayableAssetRenderer extends Renderer {
     this.ctx.fill();
     
     this.ctx.drawImage(
-      GSM.ImageController.getImage(playableAsset.assetTile.imageUrl),
-      playableAsset.assetTile.assetDrawRules.xWalkPos[playableAsset.assetTile.animation.positionCounter],
-      playableAsset.assetTile.assetDrawRules.yWalkPos[playableAsset.assetTile.animation.spriteYPosition],
-      playableAsset.assetTile.assetDrawRules.size.x,
-      playableAsset.assetTile.assetDrawRules.size.y,
-      playableAsset.position.x + playableAsset.assetTile.assetDrawRules.xPosOffset,
-      playableAsset.position.y + playableAsset.assetTile.assetDrawRules.yPosOffset + playableAsset.position.z,
-      playableAsset.assetTile.assetDrawRules.drawSize.x,
-      playableAsset.assetTile.assetDrawRules.drawSize.y
+      GSM.ImageController.getImage(asset.tile.imageUrl),
+      asset.tile.assetDrawRules.xWalkPos[asset.tile.animation.positionCounter],
+      asset.tile.assetDrawRules.yWalkPos[asset.tile.animation.spriteYPosition],
+      asset.tile.assetDrawRules.size.x,
+      asset.tile.assetDrawRules.size.y,
+      asset.position.x + asset.tile.assetDrawRules.xPosOffset,
+      asset.position.y + asset.tile.assetDrawRules.yPosOffset + asset.position.z,
+      asset.tile.assetDrawRules.drawSize.x,
+      asset.tile.assetDrawRules.drawSize.y
     );
 
   }

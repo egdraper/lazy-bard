@@ -1,27 +1,31 @@
 import { drawableItems } from "../../db/drawable-items.db"
 import { GSM } from "../../game-state-manager.service"
-import { RenderingLayers, Cell } from "../../models/map"
+import { GridAsset } from "../../models/sprite-tile.model"
 
-export function getHoveredOverTerrainTile(mousePosX: number, mousePosY: number): { layer: RenderingLayers, cell: Cell} {
-  let selectedTerrainTile
-  GSM.GridController.iterateCells(GSM.GameData.map.currentElevationLayerIndex, cell => {
-    if(Object.keys(cell.terrainTiles).length === 0) { return }
-      
-    GSM.GridController.layerIterator.forEach(layer => {
-      if(!cell.terrainTiles[layer]) { return }
-        
-      const terrainTile = cell.terrainTiles[layer]
-      const itemDetails = drawableItems.find(item => item.id === terrainTile.drawableTileId)
+export function getHoveredOverGridAsset(mousePosX: number, mousePosY: number): GridAsset {
+  let selectedAsset: GridAsset
 
-      if(itemDetails) {
-        const withinX = mousePosX > cell.position.x && mousePosX < cell.position.x + (GSM.Settings.blockSize)
-        const withinY = mousePosY > (cell.position.y - (itemDetails.variableHeight * GSM.Settings.blockSize)) && mousePosY < cell.position.y + GSM.Settings.blockSize
+  const cell = GSM.GridController.getCellByPosition(mousePosX, mousePosY)
   
-        if(withinX && withinY) {
-          selectedTerrainTile = {layer, cell}
+  GSM.GridController.iterateYCells(cell.location.x, cell => {
+    const assets = GSM.GridAssetController.getAssetsByCell(cell)
+    assets.forEach((asset) => {
+      GSM.GridController.layerIterator.forEach(layer => {
+        if(!asset.tile[layer]) { return }
+          
+        const terrainTile = asset.tile[layer]
+        const itemDetails = drawableItems.find(item => item.id === terrainTile.drawableTileId)
+    
+        if(itemDetails) {
+          const withinX = mousePosX > cell.position.x && mousePosX < cell.position.x + (GSM.Settings.blockSize)
+          const withinY = mousePosY > (cell.position.y - (itemDetails.variableHeight * GSM.Settings.blockSize)) && mousePosY < cell.position.y + GSM.Settings.blockSize
+    
+          if(withinX && withinY) {
+            selectedAsset = asset
+          }
         }
-      }
+      })
     })
   })
-  return selectedTerrainTile
+  return selectedAsset
 }

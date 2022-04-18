@@ -1,30 +1,28 @@
 import { Subject } from 'rxjs'
 import { GSM } from '../game-state-manager.service'
-import {Cell, RenderingLayers, GameMap, Grid, Size } from '../models/map'
+import { Cell, RenderingLayers, GameMap, Grid, Size } from '../models/map'
+import { TerrainTile } from '../models/sprite-tile.model'
 
 export class MapController {
   public newGridCreated: Subject<Grid> = new Subject<Grid>()  
   public layerIterator: RenderingLayers[] = []
-  private gridIterator: {[elevationIndex: number]: Cell[] } = []
+  private gridIterator:  Cell[] = []
 
-  public iterateCells(elevationIndex: number, callBack: (cell: Cell) => void): void {
-    this.gridIterator[elevationIndex].forEach((cell) => {
+  public iterateCells(callBack: (cell: Cell) => void): void {
+    this.gridIterator.forEach((cell) => {
       callBack(cell)
     })
   }
 
-  public iterateElevations(callBack: (elevation: Grid) => void): void {
-    const elevations = Object.keys(GSM.GameData.map.elevations).map(key => GSM.GameData.map.elevations[key])
-    elevations.sort((a, b) => a.elevationIndex - b.elevationIndex)
-    elevations.forEach(elevation => {
-      callBack(elevation)
-    })
+  public iterateYCells(x: number, callBack: (cell: Cell) => void): void {
+    for(let y = 0; y < GSM.GameData.map.size.y; y++) {
+      callBack(this.getCellByLocation(x, y))
+    }
   }
 
-  public getGridCellByCoordinate(
+  public getCellByPosition(
     x: number,
-    y: number,
-    elevation: number
+    y: number
   ): Cell {
     while (x % GSM.Settings.blockSize !== 0) {
       x--
@@ -32,67 +30,46 @@ export class MapController {
     while (y % GSM.Settings.blockSize !== 0) {
       y--
     }
-    return GSM.GameData.map.elevations[elevation].cells[
-      `x${x / GSM.Settings.blockSize}:y${y / GSM.Settings.blockSize}`
-    ]
+    return GSM.GameData.map.grid[`x${x / GSM.Settings.blockSize}:y${y / GSM.Settings.blockSize}`]
   }
 
-  public getCell(x: number, y: number, elevationLayer: number): Cell {
-    return GSM.GameData.map.elevations[elevationLayer].cells[`x${x}:y${y}`]
+  public getCellByLocation(x: number, y: number): Cell {
+    return GSM.GameData.map.grid[`x${x}:y${y}`]
   }
 
-  public getCellAtLayer(cellId: string, layer: number): Cell {
-    return GSM.GameData.map.elevations[layer].cells[cellId]
+  public getCellById(cellId: string): Cell {
+    return GSM.GameData.map.grid[cellId]
   }
  
   public createGameMap(size: Size): void {
     GSM.GameData.map = new GameMap(size)
     GSM.GameData.map.id = Math.random().toString()
-    this.setupMap(-1)
-    this.setupMap(0)
-    this.setupMap(1)
-    this.setupMap(2)
-    this.setupMap(3)
-    this.setupMap(4)
-    this.setupMap(5)
-    this.setupMap(6)
-    GSM.GameData.map.topMostElevationLayerIndex = 6
-    GSM.GameData.map.currentElevationLayerIndex = 0
+    this.setupMap()
 
     Object.keys(RenderingLayers).forEach(key => {
       GSM.GridController.layerIterator.push(RenderingLayers[key])
     })
   }
 
-  public setupMap(elevation: number): void {   
+  public setupMap(): void {   
+    this.gridIterator = []
     for (let i = 0; i < GSM.GameData.map.size.y; i++) {
       for (let l = 0; l < GSM.GameData.map.size.x; l++) {
-        if(!GSM.GameData.map.elevations[elevation]) {
-          GSM.GameData.map.elevations[elevation] = new Grid()
-          GSM.GameData.map.elevations[elevation].elevationIndex = elevation
-        }
-
-        if(!this.gridIterator[elevation]) {
-          this.gridIterator[elevation] = []
-        }
-
-           // creates cell
+        // creates cell
         const cell: Cell = {
-          elevationIndex: elevation,
-          location: { x: l, y: i - elevation, z: elevation},
-          position: { x: l * GSM.Settings.blockSize, y: (i - elevation) * GSM.Settings.blockSize, z: elevation * GSM.Settings.blockSize},
-          id: `x${l}:y${i - elevation}`,
-          renderers: [],
-          terrainTiles: {}
+          id: `x${l}:y${i}`,
+          location: { x: l, y: i},
+          obstructions: {},
+          position: { x: l * GSM.Settings.blockSize, y: (i) * GSM.Settings.blockSize},
         }
 
         // adds cell to grid at layer
-        GSM.GameData.map.elevations[elevation].cells[`x${l}:y${i - elevation}`] = cell
-        this.gridIterator[elevation].push(cell)
+        GSM.GameData.map.grid[`x${l}:y${i}`] = cell
+        this.gridIterator.push(cell)
       }
     }
 
-    this.newGridCreated.next(GSM.GameData.map.elevations[elevation])
+    this.newGridCreated.next(GSM.GameData.map)
   }
 }
 

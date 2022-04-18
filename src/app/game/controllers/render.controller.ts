@@ -2,6 +2,7 @@ import { Subscription } from "rxjs"
 import { CanvasModule } from "../extensions/addon-base"
 import { GSM } from "../game-state-manager.service"
 import { CanvasCTX } from "../models/extension.model"
+import { RenderingLayers } from "../models/map"
 import { Renderer } from "../models/renderer"
 import { AddonRenderer } from "./utils/addon-renderer.util"
 
@@ -20,6 +21,10 @@ export class RendererController {
     this.subscriptions.forEach(subscription => subscription.unsubscribe())
   }
 
+  public iterateRenderingLayers(callBack: (layer: RenderingLayers) => void) {
+    Object.values(RenderingLayers).forEach(layer => callBack(layer))
+  }
+
   public iterateRenderers(callback: (renderer: Renderer) => void): void {
     GSM.CanvasModuleController.canvasModules.forEach(module => {
       module.renderers.forEach(renderer => callback(renderer))
@@ -29,37 +34,55 @@ export class RendererController {
   private onFrameFire(frame: number): void {
     if(!(GSM.CanvasModuleController.canvasModules && GSM.CanvasModuleController.canvasModules.length !== 0)) { return }
     this.clearCanvases()    
-    this.renderBaseCanvasImages()
-    this.renderForegroundCanvasImages(frame)
+    this.renderBackground()
+    this.renderAssets(frame)
   }
 
-  private renderBaseCanvasImages() {
+  private renderBackground() {
     this.baseCanvasRenderer.draw(GSM.ImageController.baseLayerImage, 0)
   }
 
-  private renderForegroundCanvasImages(frame: number): void {
-    GSM.GridController.iterateElevations(elevation => {
-      if(elevation.elevationIndex === GSM.GameData.map.currentElevationLayerIndex) {
-        this.runRendererForExcludedAddons(elevation.elevationIndex, frame)
-      } else {
-        this.foregroundCanvasRenderer.draw(GSM.ImageController.elevationLayersImages[elevation.elevationIndex], elevation.elevationIndex)
-      }
-    })
-  }
-
-  private runRendererForExcludedAddons(elevationIndex: number, frame: number): void {
+  private renderAssets(frame: number) {
     this.iterateRenderers(renderer => {
-      if(renderer.excludeFromIndividualCellPainting) { return }
-
-      if(renderer.drawOnFrameOnly) {
-        renderer.draw({frame})
+      // if(renderer.renderingLayer === RenderingLayers.TerrainLayer) {
+        // render terrain as image when not editing
+        // return
+      // }
+      if(renderer.renderingLayer === RenderingLayers.BaseLayer) {
         return
       }
 
-      GSM.GridController.iterateCells(elevationIndex, (cell) => {
-        renderer.draw({cell, elevationIndex, frame})
+      GSM.GridAssetController.iterateAsset(asset => {
+        if(asset.tile.layer !== renderer.renderingLayer) { return }
+        if(renderer.beforeDraw) {
+          renderer.beforeDraw(asset, frame)
+        } 
+
+        if(renderer.onDraw) {
+          renderer.onDraw(asset, frame)
+        }
+
+        if(renderer.afterDraw) {
+          renderer.afterDraw(asset, frame)
+        }
       })
     })
+  }
+
+
+  private runRendererForExcludedAddons(frame: number): void {
+    // this.iterateRenderers(renderer => {
+    //   if(renderer.excludeFromIndividualCellPainting) { return }
+
+    //   if(renderer.drawOnFrameOnly) {
+    //     renderer.draw({frame})
+    //     return
+    //   }
+
+      // GSM.GridController.((cell) => {
+      //   renderer.draw({cell, frame})
+      // })
+    // })
   }
     
   private clearCanvases(): void {

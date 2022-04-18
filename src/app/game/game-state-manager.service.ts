@@ -3,7 +3,6 @@ import { CanvasController } from './controllers/canvas.controller';
 import { MapController } from './controllers/map.controller';
 import { EventController } from './controllers/event.controller';
 import { RendererController } from './controllers/render.controller';
-import { AssetController } from './controllers/asset.controller';
 import { FrameController } from './controllers/timing.controller';
 
 import { Settings } from './models/settings';
@@ -14,6 +13,7 @@ import { ElevationController } from './controllers/elevation.controller';
 import { CellNeighborsController } from './controllers/cell-neighbors.controller';
 import { GameData } from './game-data';
 import { MouseController } from './controllers/mouse.controller';
+import { GridAssetController } from './controllers/grid-asset.controller';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,7 +23,6 @@ export class GSM {
   public static GameData: GameData
 
   // App Function Controllers
-  public static AssetController: AssetController
   public static CanvasController: CanvasController
   public static CanvasModuleController: CanvasModuleController
   public static CellNeighborsController: CellNeighborsController
@@ -35,6 +34,7 @@ export class GSM {
   public static ImageController: ImagesController
   public static RendererController: RendererController
   public static MouseController: MouseController
+  public static GridAssetController: GridAssetController
   public static Settings: Settings
   public loadingFinished = false
   
@@ -58,11 +58,11 @@ export class GSM {
     GSM.ElevationController = new ElevationController()
     GSM.GridController.createGameMap({x: width, y: height})
     GSM.ImageController = new ImagesController()   
+    GSM.GridAssetController = new GridAssetController()
     GSM.GameData.map.baseTexture = baseTexture
     
     //Order Doesn't Matter
     GSM.MouseController = new MouseController()
-    GSM.AssetController = new AssetController()
     GSM.CellNeighborsController = new CellNeighborsController()
     
     this.loadingFinished = true

@@ -1,31 +1,36 @@
 import { GSM } from "../game-state-manager.service"
 import { Extension } from "./extension.model"
-import { Cell, RenderingLayers } from "./map"
-import { TerrainTile } from "./sprite-tile.model"
+import { Cell, Grid, RenderingLayers } from "./map"
+import { BackgroundTile, GridAsset, TerrainTile } from "./sprite-tile.model"
 
-export abstract class RendererBase {
-  public ctx: CanvasRenderingContext2D
+export interface Renderer {
+  ctx: CanvasRenderingContext2D
+  renderingLayer: RenderingLayers
+  beforeDraw?: (asset: GridAsset, frame?: number) => void
+  onDraw?: (any: GridAsset, frame?: number) => void
+  afterDraw?: (any: GridAsset, frame?: number) => void
+}
+
+export interface BackgroundRenderer extends Renderer {
+  beforeDraw?: (asset: BackgroundTile, frame?: number) => void
+  onDraw?: (tile: BackgroundTile, frame?: number ) => void 
+  afterDraw?: (any: BackgroundTile, frame?: number) => void
 }
 
 export class RenderOptionsEvent {
-  cell?: Cell
   terrainTile?: TerrainTile
-  elevationIndex?: number
   frame?: number
 }
 
-export abstract class Renderer extends RendererBase {
-  public abstract onDraw(renderOptions: RenderOptionsEvent)
-  public abstract renderingLayer: RenderingLayers
-  public excludeFromSingleImagePainting: boolean = false // excludes this extension from background being rendered as part of a single image 
-  public excludeFromIndividualCellPainting: boolean = false // excludes this extension from background being rendered as part of a single image 
-  public drawOnFrameOnly = false
-  
-  public draw(renderOption: RenderOptionsEvent): void {
-    renderOption.terrainTile = renderOption.cell.terrainTiles[this.renderingLayer]
-    this.onDraw(renderOption)
-  }
-}
+
+
+// export interface FrameRenderer extends Renderer {
+//   onDraw: (frame: Number ) => void
+// }
+
+// export interface CellRenderer extends Renderer {
+//   onDraw: (cell: Cell, frame?: number) => void
+// }
 
 export abstract class CanvasLayerExtension extends Extension {
   public abstract renderer: Renderer

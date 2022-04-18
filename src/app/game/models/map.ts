@@ -1,28 +1,26 @@
-import { Renderer } from "./renderer"
-import { TerrainTile } from "./sprite-tile.model"
+import { BackgroundAsset, GridAsset } from "./sprite-tile.model"
 
 export class GameMap {
   public id: string
   public name: string
-  public elevations: {[elevationIndx: number]: Grid} = {}
   public baseTexture: string
+  public grid: {[cellId: string]: Cell } = {}
+  // public assets?: {[cellId: string]: {[zIndex:number]: {[layer: string ]: GridAsset}}} = {}  
+  // public backgroundTiles?: {[cellId: string]:  BackgroundTile} = {}  
 
-  public currentElevationLayerIndex: number = 0
-  public baseElevationLayerIndex: number = 0
-  public topMostElevationLayerIndex: number = 0
-  public bottomMostElevationLayerIndex: number = 0
-  
   constructor(public size: Size) { }
 }
 
+
+
 export class Cell {
-  id: string
-  location: Location
-  obstacle?: boolean
-  terrainTiles?: {[layer: string ]: TerrainTile} = {}
-  position: Position // not saved
-  renderers?: Renderer[]  // not saved
-  elevationIndex?: number // not saved
+  public id: string // x0:y0
+  public obstructions: {[z: string]: boolean} // id format "x0:y0:z0"
+  public location: Location // {x: 0, y: 0}
+  public position: Position // not saved
+
+  public assets?: {[zIndex:number]: {[layer: string ]: GridAsset}}  
+  public backgroundAsset?: BackgroundAsset  
 }
 
 export enum NeighborLocation {
@@ -69,8 +67,7 @@ export enum RenderingLayers {
 
 export class Grid {
   public id: string
-  public elevationIndex: number
-  public cells: { [cell: string]: Cell } = {}
+
 }
 
 export class Size {
@@ -78,7 +75,6 @@ export class Size {
   y: number
   z?: number
 }
-
 
 export abstract class BaseLocation {
   constructor(

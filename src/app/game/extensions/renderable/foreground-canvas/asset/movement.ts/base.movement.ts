@@ -1,6 +1,6 @@
 import { Subscription } from "rxjs"
+import { Asset } from "src/app/game/models/sprite-tile.model"
 import { GSM } from "../../../../../game-state-manager.service"
-import { Asset, Speed } from "../../../../../models/asset.model"
 import { Cell } from "../../../../../models/map"
 import { TravelPath } from "../shortest-path"
 
@@ -19,10 +19,10 @@ export abstract class Movement {
   private cellTrackPosY = 0
     
   public set spriteDirection(value: string) {
-    if (value === "down") { this.asset.assetTile.animation.spriteYPosition = "down" }
-    if (value === "left") { this.asset.assetTile.animation.spriteYPosition = "left" }
-    if (value === "right") { this.asset.assetTile.animation.spriteYPosition = "right" }
-    if (value === "up") { this.asset.assetTile.animation.spriteYPosition = "up" }
+    if (value === "down") { this.asset.tile.animation.spriteYPosition = "down" }
+    if (value === "left") { this.asset.tile.animation.spriteYPosition = "left" }
+    if (value === "right") { this.asset.tile.animation.spriteYPosition = "right" }
+    if (value === "up") { this.asset.tile.animation.spriteYPosition = "up" }
   }
 
   constructor() {
@@ -41,7 +41,7 @@ export abstract class Movement {
       this.redirection = undefined
     }
 
-    this.currentPath = this.travelPath.find(startCell, endCell, charactersOnGrid)
+    this.currentPath = this.travelPath.find(startCell, endCell)
     if(this.currentPath.length === 0) { return }
     
     this.asset.moving = true
@@ -49,7 +49,7 @@ export abstract class Movement {
     this.nextCell = this.currentPath.pop()
 
     this.setSpriteDirection()
-    this.asset.assetTile.animation.changeEveryNthFrame = 16
+    this.asset.tile.animation.changeEveryNthFrame = 16
     this.distanceToNextCell = GSM.Settings.blockSize
     this.cellTrackPosX = this.asset.position.x
     this.cellTrackPosY = this.asset.position.y
@@ -80,10 +80,10 @@ export abstract class Movement {
   }
 
   public updateAnimation() {
-    if (this.asset.assetTile.animation.positionCounter < 3) {
-      this.asset.assetTile.animation.positionCounter++
+    if (this.asset.tile.animation.positionCounter < 3) {
+      this.asset.tile.animation.positionCounter++
     } else {
-      this.asset.assetTile.animation.positionCounter = 0
+      this.asset.tile.animation.positionCounter = 0
     }
   }
 
@@ -119,7 +119,7 @@ export abstract class Movement {
   protected end(): void {
     this.currentPath = null
     this.asset.moving = false
-    this.asset.assetTile.animation.changeEveryNthFrame = 16
+    this.asset.tile.animation.changeEveryNthFrame = 16
     this.movementSubscription.unsubscribe()
   } 
 
@@ -133,7 +133,7 @@ export abstract class Movement {
 
   protected checkForFinishLocation(): void {    
     if (this.cellTrackPosX % (GSM.Settings.blockSize) === 0 && this.cellTrackPosY % (GSM.Settings.blockSize) === 0) {
-      this.asset.cell = GSM.GridController.getGridCellByCoordinate(this.cellTrackPosX, this.cellTrackPosY, GSM.GameData.map.currentElevationLayerIndex)
+      this.asset.cell = GSM.GridController.getCellByPosition(this.cellTrackPosX, this.cellTrackPosY)
       this.asset.position.x = this.cellTrackPosX
       this.asset.position.y = this.cellTrackPosY
       this.nextCell = this.currentPath.length > 0

@@ -1,5 +1,4 @@
 import { GSM } from "../game-state-manager.service";
-import { generateElevationImage } from "./utils/create-layer-image";
 
 export class ImagesController {
   public baseLayerImage: HTMLImageElement
@@ -30,11 +29,11 @@ export class ImagesController {
   public refreshAllImages() {
     if(!GSM?.GameData?.map) { return }
 
-    GSM.GridController.iterateElevations(elevation => {
-      GSM.CanvasModuleController.canvasModules.forEach(module => {
-        const image = generateElevationImage(module.renderers, elevation.elevationIndex)
-        this.elevationLayersImages[elevation.elevationIndex] = image
-      })
-    })
+    // GSM.GridController.iterateElevations(elevation => {
+    //   GSM.CanvasModuleController.canvasModules.forEach(module => {
+    //     const image = generateElevationImage(module.renderers, elevation.elevationIndex)
+    //     this.elevationLayersImages[elevation.elevationIndex] = image
+    //   })
+    // })
   }
 }

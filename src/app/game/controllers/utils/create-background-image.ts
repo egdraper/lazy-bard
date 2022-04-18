@@ -1,7 +1,8 @@
 import { GSM } from "../../game-state-manager.service"
 import { Renderer } from "../../models/renderer"
+import { BackgroundAsset } from "../../models/sprite-tile.model"
 
-export function generateElevationImage(renderers: Renderer[], elevationIndex: number): HTMLImageElement {
+export function generateBackgroundImage(renderers: Renderer[]): HTMLImageElement {
     if(!GSM.CanvasController.fullImageCTX) { return null }
 
     GSM.CanvasController.fullImageCTX.canvas.width = GSM.GameData.map.size.x * GSM.Settings.blockSize
@@ -9,13 +10,19 @@ export function generateElevationImage(renderers: Renderer[], elevationIndex: nu
        
     let tempCTX 
     renderers.forEach((renderer)=> {
-      if(renderer.excludeFromSingleImagePainting) { return }
-     
       tempCTX = renderer.ctx
       renderer.ctx = GSM.CanvasController.fullImageCTX
 
-      GSM.GridController.iterateCells(elevationIndex, (cell) => {
-        renderer.draw({cell, elevationIndex})
+      GSM.GridController.iterateCells((cell) => {
+        if(renderer.beforeDraw) {
+          renderer.beforeDraw(cell.backgroundAsset)
+        }
+        if(renderer.onDraw) {
+          renderer.onDraw(cell.backgroundAsset)
+        }
+        if(renderer.afterDraw) {
+          renderer.afterDraw(cell.backgroundAsset)
+        }
       })
       renderer.ctx = tempCTX
     })

@@ -4,24 +4,7 @@ import { AssetTile } from "./sprite-tile.model"
 
 export type Speed = 1 | 2 | 4 | 8 | 16 | 32 | 64
 
-export class Asset {
-  public id: string
-  public selected: boolean
-  public assetTile: AssetTile
-  public movement: Movement
-  public moving = false
-  public animating = false
-  
-  // location
-  public cell: Cell
-  public gridId: string
-  public elevationIndex: number
-  public position: Position  
 
-  // path obstruction
-  public topOfObstacle: 1
-  public bottomOfObstacle: 0
-}
 
 export class WalkStepSpritePos {
   rightFootForward: number

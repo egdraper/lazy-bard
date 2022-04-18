@@ -1,7 +1,7 @@
+import { generateBackgroundImage } from "src/app/game/controllers/utils/create-background-image";
 import { GSM } from "src/app/game/game-state-manager.service";
 import { CanvasLayerExtension } from "src/app/game/models/renderer";
 import { GeneralAction } from "src/app/game/models/settings";
-import { generateElevationImage } from "src/app/game/controllers/utils/create-layer-image";
 import { CanvasCTX } from "../../../models/extension.model";
 import { CanvasModule } from "../../addon-base";
 import { BaseTextureExtension } from "./base-texture/base-texture.extension";
@@ -25,9 +25,6 @@ export class BaseCanvasModule extends CanvasModule {
   private onGenerateBackground(event: GeneralAction): void {
     if (event.name !== "startGame") { return }
     const renderers = this.extensions.map(extension => extension.renderer)
-    renderers.forEach(renderer => renderer.excludeFromIndividualCellPainting = false)
-    
-    GSM.ImageController.baseLayerImage = generateElevationImage(renderers, GSM.GameData.map.baseElevationLayerIndex)
-    renderers.forEach(renderer => renderer.excludeFromIndividualCellPainting = true)
+    GSM.ImageController.baseLayerImage = generateBackgroundImage(renderers)
   }
 }

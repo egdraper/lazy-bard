@@ -1,6 +1,6 @@
+import { Asset } from "src/app/game/models/sprite-tile.model";
 import { GSM } from "../../../../game-state-manager.service";
-import { Asset } from "../../../../models/asset.model";
-import { Cell } from "../../../../models/map";
+import { Cell, RenderingLayers } from "../../../../models/map";
 
 export interface Visited {
   cell?: Cell
@@ -13,16 +13,16 @@ export interface Visited {
 }
 
 export abstract class TravelPath {
-  public abstract find(start: Cell, end: Cell, AssetObstacles: Array<Asset> ): Cell[] 
+  public abstract find(start: Cell, end: Cell, asset?: Asset ): Cell[] 
 } 
 
 export class ShortestPath extends TravelPath {
-  public creaturesOnGrid: any[] = []
   private maxSearches = 2000000
   private searchIndex = 0
+  private asset: Asset
 
-  public find(start: Cell, end: Cell, assetsOnGrid: Array<Asset> ): Cell[] {
-    this.creaturesOnGrid = assetsOnGrid
+  public find(start: Cell, end: Cell, asset: Asset): Cell[] {
+    this.asset = asset
     end = this.verifyClosetLocation(start, end)
     return this.start(start, end)
   }
@@ -61,14 +61,14 @@ export class ShortestPath extends TravelPath {
         if (!visited[visitedCell].checked) {
           const store: number[] = [ ];
 
-          GSM.CellNeighborsController.getHorizontalNeighbors(visited[visitedCell].cell, GSM.GameData.map.currentElevationLayerIndex).forEach((cell: Cell, index: number) => {
+          GSM.CellNeighborsController.getHorizontalNeighborsCell(visited[visitedCell].cell).forEach((cell: Cell, index: number) => {
             if (!cell) {
               return;
             }
 
-            const creatureOnSquare = this.creaturesOnGrid.find(a => a.cell.id === cell.id)
+            const creatureOnSquare = cell.assets[index][RenderingLayers.CharacterLayer].zIndex === this.asset.zIndex
 
-            if ((!cell.obstacle && !creatureOnSquare) && !store.some(i => index === i)) {
+            if ((!cell.obstructions[this.asset.zIndex] && !creatureOnSquare) && !store.some(i => index === i)) {
               if (!visited[`x${cell.location.x}:y${cell.location.y}`]) {
                 visited[`x${cell.location.x}:y${cell.location.y}`] = {
                   cell,
@@ -82,25 +82,25 @@ export class ShortestPath extends TravelPath {
               }
             }
 
-            if (index === 0 && cell.obstacle) {
+            if (index === 0 && cell.obstructions[this.asset.zIndex]) {
               // skip 7 4
               store.push(7);
               store.push(4);
             }
   
-            if (index === 1 && cell.obstacle) {
+            if (index === 1 && cell.obstructions[this.asset.zIndex]) {
               // skip 4 5
               store.push(4);
               store.push(5);
             }
   
-            if (index === 2 && cell.obstacle) {
+            if (index === 2 && cell.obstructions[this.asset.zIndex]) {
               // skip 5 6
               store.push(5);
               store.push(6);
             }
   
-            if (index === 3 && cell.obstacle) {
+            if (index === 3 && cell.obstructions[this.asset.zIndex]) {
               // skip 6 7
               store.push(6);
               store.push(7);
@@ -115,7 +115,7 @@ export class ShortestPath extends TravelPath {
 
   public verifyClosetLocation(start: Cell, end: Cell): Cell {
     if(this.isBadLocation(end)) { 
-      const possibleAlternatives = GSM.CellNeighborsController.getHorizontalNeighbors(end, GSM.GameData.map.currentElevationLayerIndex).filter(a => !this.isBadLocation(a))
+      const possibleAlternatives = GSM.CellNeighborsController.getHorizontalNeighborsCell(end).filter(a => !this.isBadLocation(a))
       if(possibleAlternatives) {
         let newEndCell
         let shortest = 1000000
@@ -135,7 +135,7 @@ export class ShortestPath extends TravelPath {
   }
 
   public isBadLocation(end: Cell): boolean {
-    return end.obstacle || this.creaturesOnGrid.find(a => a.cell.id === end.id) 
+    return end.obstructions[this.asset.zIndex] || !GSM.GridAssetController.getAssetByCellAtZ(end, this.asset.zIndex)
   }
 
   private alternateDiagonal(visited: Visited, index: number): any {

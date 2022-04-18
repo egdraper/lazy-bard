@@ -1,12 +1,10 @@
-import { backgroundSprites } from "src/app/game/db/background.db"
 import { GSM } from "../../game-state-manager.service"
-import { Cell, RenderingLayers, NeighborLocation} from "../../models/map"
-import { DrawableItemViewModel, AssetTile, TerrainTile } from "../../models/sprite-tile.model"
-import { BaseTextureRandomGenerator } from "../../extensions/renderable/base-canvas/base-texture/base-texture.generator"
+import { NeighborLocation, RenderingLayers } from "../../models/map"
+import { DrawableItemViewModel, GridAsset, TerrainTile } from "../../models/sprite-tile.model"
 
 export class TerrainEdgeCalculator {
-  public static calculateTerrainEdges(cell: Cell, terrainTile: TerrainTile, drawableItem: DrawableItemViewModel, elevationIndex: number ): TerrainTile {
-    const neighboringCells = GSM.CellNeighborsController.getAllImmediateNeighbors(cell, elevationIndex)
+  public static calculateTerrainEdges(gridAsset: GridAsset, terrainTile: TerrainTile, drawableItem: DrawableItemViewModel): TerrainTile {
+    const neighboringCells = GSM.CellNeighborsController.getAllImmediateNeighbors(gridAsset)
     const northNeighbor = neighboringCells[NeighborLocation.North]
     const northEastNeighbor = neighboringCells[NeighborLocation.NorthEast]
     const eastNeighbor = neighboringCells[NeighborLocation.East]
@@ -17,14 +15,14 @@ export class TerrainEdgeCalculator {
     const northWestNeighbor = neighboringCells[NeighborLocation.NorthWest]
         
     const neighborsTerrain = {
-      northWestMatch: northWestNeighbor?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId === terrainTile.drawableTileId,
-      northMatch: northNeighbor?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId === terrainTile.drawableTileId,
-      northEastMatch: northEastNeighbor?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId === terrainTile.drawableTileId,
-      westMatch: westNeighbor?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId === terrainTile.drawableTileId,
-      eastMatch: eastNeighbor?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId === terrainTile.drawableTileId,
-      southWestMatch: southWestNeighbor?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId === terrainTile.drawableTileId,
-      southMatch: southNeighbor?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId === terrainTile.drawableTileId,
-      southEastMatch: southEastNeighbor?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId === terrainTile.drawableTileId
+      northWestMatch: (northWestNeighbor[RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId === terrainTile.drawableTileId,
+      northMatch: (northNeighbor[RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId === terrainTile.drawableTileId,
+      northEastMatch: (northEastNeighbor[RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId === terrainTile.drawableTileId,
+      westMatch: (westNeighbor[RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId === terrainTile.drawableTileId,
+      eastMatch: (eastNeighbor[RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId === terrainTile.drawableTileId,
+      southWestMatch: (southWestNeighbor[RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId === terrainTile.drawableTileId,
+      southMatch: (southNeighbor[RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId === terrainTile.drawableTileId,
+      southEastMatch: (southEastNeighbor[RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId === terrainTile.drawableTileId
     }
         
     let tile = {...drawableItem.drawingRules.find((terrainTile: TerrainTile) => {
@@ -48,11 +46,11 @@ export class TerrainEdgeCalculator {
         northWestMatch
     })}
 
-    const upId = neighboringCells[NeighborLocation.Up]?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId
-    const downId = neighboringCells[NeighborLocation.Down]?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId
-    const downSouthId = neighboringCells[NeighborLocation.DownSouth]?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId
-    const upSouthId = neighboringCells[NeighborLocation.UpSouth]?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId
-    const southId = southNeighbor?.terrainTiles[RenderingLayers.TerrainLayer]?.drawableTileId
+    const upId = (neighboringCells[NeighborLocation.Up][RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId
+    const downId = (neighboringCells[NeighborLocation.Down][RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId
+    const downSouthId = (neighboringCells[NeighborLocation.DownSouth][RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId
+    const upSouthId = (neighboringCells[NeighborLocation.UpSouth][RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId
+    const southId = (southNeighbor[RenderingLayers.TerrainLayer]?.tile as TerrainTile).drawableTileId
 
     if (upId === terrainTile.drawableTileId && downId === terrainTile.drawableTileId) {
       tile.drawsWith = tile.expandWith
@@ -95,7 +93,7 @@ export class TerrainEdgeCalculator {
     tile.imageUrl = drawableItem.imageUrl
     tile.drawableTileId = terrainTile.drawableTileId   
 
-    cell.terrainTiles[RenderingLayers.TerrainLayer] = tile
+    gridAsset.tile[RenderingLayers.TerrainLayer] = tile
     return tile
   }
 }

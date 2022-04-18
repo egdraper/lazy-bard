@@ -1,22 +1,23 @@
 import { RenderingLayers } from "src/app/game/models/map"
+import { BackgroundAsset } from "src/app/game/models/sprite-tile.model"
 import { GSM } from "../../../../game-state-manager.service"
-import { Renderer, RenderOptionsEvent } from "../../../../models/renderer"
+import { BackgroundRenderer, Renderer } from "../../../../models/renderer"
 
-export class BaseTextureRenderer extends Renderer {
+export class BaseTextureRenderer implements BackgroundRenderer {
+  public ctx: CanvasRenderingContext2D = GSM.CanvasController.backgroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.BaseLayer
-  public override excludeFromIndividualCellPainting: boolean = true
 
-  public onDraw(event: RenderOptionsEvent): void {
-    if(!event.terrainTile || !event.terrainTile.imageUrl) { return }
+  public onDraw(asset: BackgroundAsset): void {
+    if(!asset.tile || !asset.tile.imageUrl) { return }
 
     this.ctx.drawImage(
-      GSM.ImageController.getImage(event.terrainTile.imageUrl),
-      event.terrainTile.baseWith.x,
-      event.terrainTile.baseWith.y,
+      GSM.ImageController.getImage(asset.tile.imageUrl),
+      asset.tile.drawsWith.x,
+      asset.tile.drawsWith.y,
       GSM.Settings.blockSize,
       GSM.Settings.blockSize,
-      event.cell.position.x,
-      event.cell.position.y,
+      asset.cell.position.x,
+      asset.cell.position.y,
       GSM.Settings.blockSize,
       GSM.Settings.blockSize
     )

@@ -17,11 +17,11 @@ export class BaseTextureRandomGenerator {
     }
 
     if(!tile.baseWith) {
-      tile.baseWith = new SpriteLocation()
+      tile.drawsWith = new SpriteLocation()
     }
 
-    tile.baseWith.x = tileX * GSM.Settings.blockSize
-    tile.baseWith.y = 0    
+    tile.drawsWith.x = tileX * GSM.Settings.blockSize
+    tile.drawsWith.y = 0    
   }    
 }
 
