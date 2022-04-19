@@ -74,9 +74,9 @@ export class GridAssetController {
     zIndex: number,
     layer: RenderingLayers
   ): void {
-    const copiedTerrainTile = { ...gridAsset };
-    copiedTerrainTile.cell = cell;
-    copiedTerrainTile.zIndex = zIndex;
+    const copiedGridAsset = gridAsset;
+    copiedGridAsset.cell = cell;
+    copiedGridAsset.zIndex = zIndex;
 
     if (!cell.assets) {
       cell.assets = {};
@@ -86,7 +86,7 @@ export class GridAssetController {
       cell.assets[zIndex] = {};
     }
 
-    cell.assets[zIndex][layer] = copiedTerrainTile;
+    cell.assets[zIndex][layer] = copiedGridAsset;
 
     this.refreshTerrainIterator();
   }

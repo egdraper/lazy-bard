@@ -41,7 +41,7 @@ export abstract class Movement {
       this.redirection = undefined
     }
 
-    this.currentPath = this.travelPath.find(startCell, endCell)
+    this.currentPath = this.travelPath.find(startCell, endCell, this.asset)
     if(this.currentPath.length === 0) { return }
     
     this.asset.moving = true
