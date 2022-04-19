@@ -50,6 +50,12 @@ export class GridAssetController {
     return this.getAssetsByCell(cell).find((asset) => asset.zIndex === zIndex);
   }
 
+  public switchAssetToNewCell(asset: GridAsset, currentCell: Cell, newCell: Cell, currentZIndex: number, newZIndex: number, currentLayer: RenderingLayers, newLayer: RenderingLayers) {
+    asset.cell = newCell
+    GSM.GridAssetController.addAsset(asset, newCell, newZIndex, newLayer)
+    GSM.GridAssetController.removeAsset(currentCell, currentZIndex, currentLayer)
+  }
+
   public getSelectedAssets(): Asset[] {
     const assets = [];
     GSM.GridAssetController.iterateAsset((asset) => {

@@ -1,7 +1,7 @@
 import { Subscription } from "rxjs"
 import { Asset } from "src/app/game/models/sprite-tile.model"
 import { GSM } from "../../../../../game-state-manager.service"
-import { Cell } from "../../../../../models/map"
+import { Cell, RenderingLayers } from "../../../../../models/map"
 import { TravelPath } from "../shortest-path"
 
 export abstract class Movement {  
@@ -10,6 +10,7 @@ export abstract class Movement {
   protected currentPath: Cell[] = []
   protected redirection: { start: Cell, end: Cell, charactersOnGrid: Asset[] }
   protected nextCell: Cell
+  protected previousCell: Cell
   protected movementSubscription: Subscription
   protected distanceToNextCell = 0
   protected onFinished: () => void  
@@ -42,10 +43,11 @@ export abstract class Movement {
     }
 
     this.currentPath = this.travelPath.find(startCell, endCell, this.asset)
+    const grid = GSM.GameData.map.grid
     if(this.currentPath.length === 0) { return }
     
     this.asset.moving = true
-    this.currentPath.pop() // removes cell the character is standing on
+    this.previousCell = this.currentPath.pop() // removes cell the character is standing on
     this.nextCell = this.currentPath.pop()
 
     this.setSpriteDirection()
@@ -133,20 +135,34 @@ export abstract class Movement {
 
   protected checkForFinishLocation(): void {    
     if (this.cellTrackPosX % (GSM.Settings.blockSize) === 0 && this.cellTrackPosY % (GSM.Settings.blockSize) === 0) {
-      this.asset.cell = GSM.GridController.getCellByPosition(this.cellTrackPosX, this.cellTrackPosY)
+      const newCell = GSM.GridController.getCellByPosition(this.cellTrackPosX, this.cellTrackPosY)
+      
+      GSM.GridAssetController.switchAssetToNewCell(
+        this.asset,
+        this.previousCell,
+        newCell,
+        this.asset.zIndex,
+        this.asset.zIndex,
+        RenderingLayers.CharacterLayer,
+        RenderingLayers.CharacterLayer
+      )
+      
       this.asset.position.x = this.cellTrackPosX
       this.asset.position.y = this.cellTrackPosY
+      this.previousCell = newCell
+      
       this.nextCell = this.currentPath.length > 0
         ? this.currentPath.pop()
         : null
 
-        if (this.redirection) {
+      if (this.redirection) {
         this.end()
         this.start(this.asset.cell, this.redirection.end, this.redirection.charactersOnGrid)
       }
 
       if (!this.nextCell) {
         this.end()
+        
         if(this.onFinished) { 
           const onFinished = this.onFinished
           this.onFinished = undefined
