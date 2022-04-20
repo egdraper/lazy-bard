@@ -60,6 +60,7 @@ export class MapController {
           id: `x${l}:y${i}`,
           location: { x: l, y: i},
           obstructions: {},
+          assets: {},
           position: { x: l * GSM.Settings.blockSize, y: (i) * GSM.Settings.blockSize},
         }
 

@@ -1,6 +1,6 @@
 
 import { GSM } from "../game-state-manager.service"
-import { Cell, MousePosition } from "../models/map"
+import { Cell, Grid, MousePosition } from "../models/map"
 import { GridAsset, Tile } from "../models/sprite-tile.model"
 import { getHoveredOverGridAsset } from "./utils/selected-sprite-tile"
 
@@ -9,59 +9,64 @@ export class MouseController {
   public hoveringPosY: number = 0
   public hoveringCellId: string = ""
   public hoveringCell: Cell = null
-  public hoveringSpriteTileCell: GridAsset
+  public hoveringGridAsset: GridAsset
   public hoveringCellAtZAxisIterator: Cell[] = []
   public hoveringCellAtZAxis: {[elevation: number ]: Cell} = {}
+  public hoveringZAxis: number = 0
+  public hoveringZAxisAtMouseDown: number = 0
+  public hoveringCellZAxisAtMouseDown: GridAsset
 
   constructor() {
     GSM.EventController.mouseHover.subscribe(this.onMouseHover.bind(this))
     GSM.EventController.cellMouseEntered.subscribe(this.onMouseCellEnter.bind(this))
+    GSM.EventController.mouseDown.subscribe(this.onMouseDown.bind(this))
+    GSM.EventController.mouseUp.subscribe(this.onMouseUp.bind(this))
+  }
+
+  private onMouseDown(event: MousePosition): void {
+    const gridAsset = this.selectTerrainTile(this.hoveringCell)
+    this.hoveringZAxisAtMouseDown = gridAsset?.zIndex || 0
+    this.hoveringCellZAxisAtMouseDown = gridAsset
+  }
+
+  private onMouseUp(): void {
+    this.hoveringZAxisAtMouseDown = 0
   }
 
   private onMouseHover(event: MousePosition): void {
     this.setMouseDetails(event)
-    this.selectTerrainTile(event)
   }
-
-  private onMouseCellEnter(): void {
-    // this.hoveringCellAtZAxisIterator = []
-    // GSM.GridController.iterateElevations((grid) => {
-    //   const cell =  GSM.GridController.getGridCellByCoordinate(
-    //     this.hoveringPosX, 
-    //     this.hoveringPosY + grid.elevationIndex * GSM.Settings.blockSize
-    //   )
-    //   this.hoveringCellAtZAxis[grid.elevationIndex] = cell 
-    //   this.hoveringCellAtZAxisIterator.push(cell)           
-    // })
+  
+  private onMouseCellEnter(cell: Cell): void {
+    this.selectTerrainTile(cell)
+    // console.log(this.hoveringZAxisAtMouseDown)
   } 
 
   private setMouseDetails(event: MousePosition): void {
     this.hoveringPosX = event.posX
     this.hoveringPosY = event.posY
     
-    // if(GSM.GameData.map.currentElevationLayerIndex > 1 || GSM.GameData.map.currentElevationLayerIndex < 0) { 
-    //   elevation = GSM.GameData.map.currentElevationLayerIndex
-    // }
-
-    // const hoveringCell = GSM.GridController.getGridCellByCoordinate(
-    //   this.hoveringPosX,
-    //   this.hoveringPosY + elevation * GSM.Settings.blockSize,
-    //   elevation
-    // )
+    const hoveringCell = GSM.GridController.getCellByPosition(
+      this.hoveringPosX,
+      this.hoveringPosY,
+    )
     
-    // if(hoveringCell && this.hoveringCellId !== hoveringCell.id) {
-    //   this.hoveringCellId = hoveringCell.id
-    //   this.hoveringCell = hoveringCell
-    //   GSM.EventController.cellMouseEntered.next(this.hoveringCell)
-    // }
+    if(hoveringCell && this.hoveringCellId !== hoveringCell.id) {
+      this.hoveringCellId = hoveringCell.id
+      this.hoveringCell = hoveringCell
+      GSM.EventController.cellMouseEntered.next(this.hoveringCell)
+    }
   }
 
-  private selectTerrainTile(event: MousePosition) {
-    const tile = getHoveredOverGridAsset(event.posX, event.posY)
-    if(tile) {
-      this.hoveringSpriteTileCell = tile
+  private selectTerrainTile(cell: Cell): GridAsset {
+    const gridAsset = getHoveredOverGridAsset(cell)
+    if(gridAsset) {
+      this.hoveringZAxis = gridAsset.zIndex
+      this.hoveringGridAsset = gridAsset
+      return gridAsset
     } else {
-      this.hoveringSpriteTileCell = null
+      this.hoveringGridAsset = null
+      return null
     }
   }
 }

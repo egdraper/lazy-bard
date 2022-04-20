@@ -19,6 +19,8 @@ export class PlayableAssetEventHandler {
   public onAssetClicked(asset: GridAsset[]) {
     const character = asset.find(asset => asset.tile.layer === RenderingLayers.CharacterLayer)
 
+    if(!character) { return }
+
     if(!GSM.EventController.keysPressed.has("MetaLeft")) {
       GSM.GridAssetController.deselectAllAssets()
     }
@@ -46,7 +48,6 @@ export class PlayableAssetEventHandler {
 
   // MOCK This will be a database thing
   private addPlayableCharacter(cell: Cell): void {
-    
     // setup asset
     const playerAsset = new Asset();
     playerAsset.tile = new AssetTile(RenderingLayers.CharacterLayer)

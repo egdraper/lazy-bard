@@ -27,6 +27,10 @@ export class GridAssetController {
     this.assetIterator.forEach((asset) => (asset.selected = false));
   }
 
+  public getTopAssetPerCell(cell: Cell) {
+    return this.getAssetsByCell(cell).pop()
+  }
+
   public getAssetsByCell(cell: Cell): GridAsset[] {
     if (!cell.assets) {
       return [];
@@ -70,8 +74,16 @@ export class GridAssetController {
     cell: Cell,
     zIndex: number,
     layer: RenderingLayers
-  ): TerrainTile {
-    return cell[zIndex][layer];
+  ): GridAsset {
+    if(!cell.assets[zIndex]) {
+      return null
+    }
+
+    if(!cell.assets[zIndex][layer]) {
+      return null
+    }
+
+    return cell.assets[zIndex][layer];
   }
 
   public addAsset(
@@ -80,9 +92,8 @@ export class GridAssetController {
     zIndex: number,
     layer: RenderingLayers
   ): void {
-    const copiedGridAsset = gridAsset;
-    copiedGridAsset.cell = cell;
-    copiedGridAsset.zIndex = zIndex;
+    gridAsset.cell = cell;
+    gridAsset.zIndex = zIndex;
 
     if (!cell.assets) {
       cell.assets = {};
@@ -92,8 +103,8 @@ export class GridAssetController {
       cell.assets[zIndex] = {};
     }
 
-    cell.assets[zIndex][layer] = copiedGridAsset;
-
+    cell.assets[zIndex][layer] = gridAsset;
+    
     this.refreshTerrainIterator();
   }
 

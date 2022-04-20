@@ -1,7 +1,7 @@
 import { terrainCleanup } from 'src/app/game/controllers/utils/terrain-cleanup';
 import { drawableItems } from 'src/app/game/db/drawable-items.db';
-import { Cell, NeighborLocation, RenderingLayers } from 'src/app/game/models/map';
-import { TerrainTile } from 'src/app/game/models/sprite-tile.model';
+import { Cell, Grid, NeighborLocation, RenderingLayers } from 'src/app/game/models/map';
+import { GridAsset, TerrainTile } from 'src/app/game/models/sprite-tile.model';
 import { GSM } from '../../../game-state-manager.service';
 
 export class TerrainTreeBrushEventHandler {
@@ -12,56 +12,103 @@ export class TerrainTreeBrushEventHandler {
 
   // adds the drawable terrain id to the cell clicked
   private onEmptyCellClicked(cell: Cell): void {
-    // if(GSM.EventController.generalActionFire.value.name === "paintingTerrain") {
-    //   const drawableTile = GSM.EventController.generalActionFire.value.data as {id: string}
-    //   // const northCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.North, elevation)
-    //   // const northEastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.NorthEast, elevation)
-    //   // const eastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.East, elevation)
-    //   const downCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.Down)
-    //   const downEastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.DownEast)
-    //   const downNorthCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.DownNorth)
-    //   const downNorthEastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.DownNorthEast)
+    if(GSM.EventController.generalActionFire.value.name === "paintingTerrain") {
+      const drawableTile = GSM.EventController.generalActionFire.value.data as {id: string}
+      // const northCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.North, elevation)
+      // const northEastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.NorthEast, elevation)
+      // const eastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.East, elevation)
+      // const downCell = GSM.CellNeighborsController.getImmediateNeighborCell(cell, NeighborLocation.Down)
+      // const downEastCell = GSM.CellNeighborsController.getImmediateNeighborCell(cell, NeighborLocation.DownEast)
+      // const downNorthCell = GSM.CellNeighborsController.getImmediateNeighborCell(cell, NeighborLocation.DownNorth)
+      // const downNorthEastCell = GSM.CellNeighborsController.getImmediateNeighborCell(cell, NeighborLocation.DownNorthEast)
       
-    //   //prevents you from drawing b
-    //   // if(GSM.GameData.map.currentElevationLayerIndex !== 0 
-    //   //   && (!downCell.terrainTiles[RenderingLayers.TerrainLayer] 
-    //   //   || !downEastCell.terrainTiles[RenderingLayers.TerrainLayer]
-    //   //   || !downNorthCell.terrainTiles[RenderingLayers.TerrainLayer]
-    //   //   || !downNorthEastCell.terrainTiles[RenderingLayers.TerrainLayer]      
-    //   // )) {
-    //   //   return
-    //   // }
+      // prevents you from drawing b
+      const mouseHoveringZ = GSM.MouseController.hoveringZAxisAtMouseDown
+      const itemDetails = drawableItems.find(item => item.id === drawableTile.id)
+      // console.log(mouseHoveringZ)
+      const newCell = GSM.GridController.getCellByLocation(cell.location.x, cell.location.y)
+      const northCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.North)
+      const northEastCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.NorthEast)
+      const eastCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.East)       
+      // console.log(GSM.GridAssetController.getAsset(newCell, mouseHoveringZ-1, RenderingLayers.TerrainLayer))
+      const newId = GSM.GridAssetController.getAsset(newCell, mouseHoveringZ-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
+      const northId = GSM.GridAssetController.getAsset(northCell, mouseHoveringZ-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
+      const northEastId = GSM.GridAssetController.getAsset(northEastCell, mouseHoveringZ-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
+      const eastId = GSM.GridAssetController.getAsset(eastCell, mouseHoveringZ-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
+     
+      // console.log((newId && northId && northEastId && eastId))
 
-    //   const itemDetails = drawableItems.find(item => item.id === drawableTile.id)
+      if(mouseHoveringZ !== 0 && !(newId && northId && northEastId && eastId)) {
+        return
+      }
 
-    //   const maps = GSM.GameData.map
+
+      const maps = GSM.GameData.map
             
-    //   for(let i = 0; i < itemDetails.variableHeight; i++) {
-    //     const newCell = GSM.GridController.getCellByLocation(cell.location.x, cell.location.y)
-    //     const northCell = GSM.CellNeighborsController.getImmediateNeighbor(newCell, NeighborLocation.North)
-    //     const northEastCell = GSM.CellNeighborsController.getImmediateNeighbor(newCell, NeighborLocation.NorthEast)
-    //     const eastCell = GSM.CellNeighborsController.getImmediateNeighbor(newCell, NeighborLocation.East)
-        
-    //     const drawTile = newCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
-    //     drawTile.drawableTileId = drawableTile.id
-    //     cell.obstacle = true
-  
-    //     const drawTopTile = northCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
-    //     drawTopTile.drawableTileId = drawableTile.id
-    //     northCell.obstacle = true
-  
-    //     const drawRightTile = eastCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
-    //     drawRightTile.drawableTileId = drawableTile.id
-    //     eastCell.obstacle = true
-      
-    //     const drawTopRightTile = northEastCell.terrainTiles[RenderingLayers.TerrainLayer] = new TerrainTile()
-    //     drawTopRightTile.drawableTileId = drawableTile.id
-    //     northEastCell.obstacle = true
-    //   }
-    //   console.log("hey")
-    // }  
+      for(let i = 0; i < itemDetails.variableHeight; i++) {
+       
+        const newGridAsset = new GridAsset<TerrainTile>()
+        newGridAsset.zIndex = mouseHoveringZ + i
+        newGridAsset.tile = new TerrainTile()
+        newGridAsset.tile.drawableTileId = drawableTile.id
+        GSM.GridAssetController.addAsset(newGridAsset, newCell, mouseHoveringZ + i, RenderingLayers.TerrainLayer)
+        newCell.obstructions[mouseHoveringZ + i] = true
 
-    // terrainCleanup(RenderingLayers.TerrainLayer)
+        const northGridAsset = new GridAsset<TerrainTile>()
+        northGridAsset.zIndex = mouseHoveringZ + i
+        northGridAsset.tile = new TerrainTile()
+        northGridAsset.tile.drawableTileId = drawableTile.id
+        GSM.GridAssetController.addAsset(northGridAsset, northCell, mouseHoveringZ + i, RenderingLayers.TerrainLayer)
+        northCell.obstructions[mouseHoveringZ + i] = true
+
+        const northEastGridAsset = new GridAsset<TerrainTile>()
+        northEastGridAsset.zIndex = mouseHoveringZ + i
+        northEastGridAsset.tile = new TerrainTile()
+        northEastGridAsset.tile.drawableTileId = drawableTile.id
+        GSM.GridAssetController.addAsset(northEastGridAsset, northEastCell, mouseHoveringZ + i, RenderingLayers.TerrainLayer)
+        northEastCell.obstructions[mouseHoveringZ + i] = true
+
+        const eastGridAsset = new GridAsset<TerrainTile>()
+        eastGridAsset.zIndex = mouseHoveringZ + i
+        eastGridAsset.tile = new TerrainTile()
+        eastGridAsset.tile.drawableTileId = drawableTile.id
+        GSM.GridAssetController.addAsset(eastGridAsset, eastCell, mouseHoveringZ + i, RenderingLayers.TerrainLayer)
+        eastCell.obstructions[mouseHoveringZ + i] = true
+
+        if(!newCell.assets[mouseHoveringZ + i + 1]) {
+          const newGridAsset1 = new GridAsset<TerrainTile>()
+          newGridAsset1.zIndex = mouseHoveringZ + i + 1
+          newGridAsset1.tile = new TerrainTile()
+          GSM.GridAssetController.addAsset(newGridAsset1, newCell, newGridAsset1.zIndex, RenderingLayers.TerrainLayer)
+        }
+         
+
+        if(!northCell.assets[mouseHoveringZ + i + 1]) {
+          const northGridAsset1 = new GridAsset<TerrainTile>()
+          northGridAsset1.zIndex = mouseHoveringZ + i + 1
+          northGridAsset1.tile = new TerrainTile()
+          GSM.GridAssetController.addAsset(northGridAsset1, northCell, northGridAsset1.zIndex, RenderingLayers.TerrainLayer)
+        }
+         
+
+        if(!northEastCell.assets[mouseHoveringZ + i + 1]) {
+          const northEastGridAsset1 = new GridAsset<TerrainTile>()
+          northEastGridAsset1.zIndex = mouseHoveringZ + i + 1
+          northEastGridAsset1.tile = new TerrainTile()
+          GSM.GridAssetController.addAsset(northEastGridAsset1, northEastCell, northEastGridAsset1.zIndex, RenderingLayers.TerrainLayer)
+        }
+         
+
+        if(!eastCell.assets[mouseHoveringZ + i + 1]) {
+          const eastGridAsset1 = new GridAsset<TerrainTile>()
+          eastGridAsset1.zIndex = mouseHoveringZ + i + 1
+          eastGridAsset1.tile = new TerrainTile()
+          GSM.GridAssetController.addAsset(eastGridAsset1, eastCell, eastGridAsset1.zIndex, RenderingLayers.TerrainLayer)
+        }
+      }
+    }  
+
+    terrainCleanup()
   }
 
   private onMouseEnteredCell(cell: Cell): void {

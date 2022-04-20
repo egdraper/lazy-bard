@@ -47,7 +47,7 @@ export class BaseTextureExtension extends CanvasLayerExtension {
   private setBackgroundImages(): void {
     GSM.GridController.iterateCells((cell: Cell) => {
       cell.backgroundAsset = new BackgroundAsset()
-      cell.backgroundAsset.tile = new BackgroundTile(RenderingLayers.BaseLayer)
+      cell.backgroundAsset.tile = new BackgroundTile()
       cell.backgroundAsset.tile.imageUrl = this.baseTexture?.imageUrl || ""
       cell.backgroundAsset.cell = cell
       

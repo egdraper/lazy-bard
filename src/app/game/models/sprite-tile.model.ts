@@ -2,10 +2,10 @@ import { Movement } from '../extensions/renderable/foreground-canvas/asset/movem
 import { AssetItemsViewModel, Speed } from './asset.model';
 import { Size, Location, SpriteLocation, Cell, Position, Grid, RenderingLayers } from './map';
 
-export class GridAsset {
+export class GridAsset<T = any> {
   id: string; // x:0;y:0;z:0;layer:character
   cell: Cell; // not saved
-  tile: Tile;
+  tile: T;
   zIndex: number;
   selected: boolean;
 }
@@ -44,8 +44,8 @@ export abstract class Tile {
 
 export class BackgroundTile extends Tile {
   drawsWith?: SpriteLocation;
-  constructor(layer: RenderingLayers) {
-    super(layer)
+  constructor() {
+    super(RenderingLayers.BaseLayer)
   }
 }
 
@@ -58,8 +58,8 @@ export class TerrainTile extends Tile {
   drawsWith?: SpriteLocation;
   drawsWithTop?: SpriteLocation;
 
-  constructor(layer: RenderingLayers) {
-    super(layer)
+  constructor() {
+    super(RenderingLayers.TerrainLayer)
   }
 }
 
@@ -74,7 +74,7 @@ export class AssetTile extends Tile {
   }
 }
 
-export interface DrawableItemViewModel {
+export class DrawableItemViewModel {
   drawingRules: TerrainTile[];
   id: string;
   imageUrl: string;

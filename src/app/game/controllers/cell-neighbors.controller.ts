@@ -34,57 +34,57 @@ export class CellNeighborsController {
     ): { [layer: string]: GridAsset; } {
     switch (neighborLocation) {
       case NeighborLocation.North:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y - 1}`].assets[gridAsset.zIndex]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y - 1}`]?.assets[gridAsset.zIndex]
       case NeighborLocation.East:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y}`].assets[gridAsset.zIndex]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y}`]?.assets[gridAsset.zIndex]
       case NeighborLocation.South:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y + 1}`].assets[gridAsset.zIndex]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y + 1}`]?.assets[gridAsset.zIndex]
       case NeighborLocation.West:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y}`].assets[gridAsset.zIndex]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y}`]?.assets[gridAsset.zIndex]
       case NeighborLocation.NorthEast:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y - 1}`].assets[gridAsset.zIndex]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y - 1}`]?.assets[gridAsset.zIndex]
       case NeighborLocation.SouthEast:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y + 1}`].assets[gridAsset.zIndex]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y + 1}`]?.assets[gridAsset.zIndex]
       case NeighborLocation.SouthWest:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y + 1}`].assets[gridAsset.zIndex]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y + 1}`]?.assets[gridAsset.zIndex]
       case NeighborLocation.NorthWest:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y - 1}`].assets[gridAsset.zIndex]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y - 1}`]?.assets[gridAsset.zIndex]
       case NeighborLocation.Up:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y}`].assets[gridAsset.zIndex + 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y}`]?.assets[gridAsset.zIndex + 1]
       case NeighborLocation.UpNorth:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y - 1}`].assets[gridAsset.zIndex + 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y - 1}`]?.assets[gridAsset.zIndex + 1]
       case NeighborLocation.UpEast:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y}`].assets[gridAsset.zIndex + 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y}`]?.assets[gridAsset.zIndex + 1]
       case NeighborLocation.UpSouth:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y + 1}`].assets[gridAsset.zIndex + 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y + 1}`]?.assets[gridAsset.zIndex + 1]
       case NeighborLocation.UpWest:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y}`].assets[gridAsset.zIndex + 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y}`]?.assets[gridAsset.zIndex + 1]
       case NeighborLocation.UpNorthEast:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y - 1}`].assets[gridAsset.zIndex + 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y - 1}`]?.assets[gridAsset.zIndex + 1]
       case NeighborLocation.UpSouthEast:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y + 1}`].assets[gridAsset.zIndex + 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y + 1}`]?.assets[gridAsset.zIndex + 1]
       case NeighborLocation.UpSouthWest:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y + 1}`].assets[gridAsset.zIndex + 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y + 1}`]?.assets[gridAsset.zIndex + 1]
       case NeighborLocation.UpNorthWest:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y - 1}`].assets[gridAsset.zIndex + 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y - 1}`]?.assets[gridAsset.zIndex + 1]
       case NeighborLocation.Down:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y}`].assets[gridAsset.zIndex - 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y}`]?.assets[gridAsset.zIndex - 1]
       case NeighborLocation.DownNorth:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y - 1}`].assets[gridAsset.zIndex - 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y - 1}`]?.assets[gridAsset.zIndex - 1]
       case NeighborLocation.DownEast:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y}`].assets[gridAsset.zIndex - 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y}`]?.assets[gridAsset.zIndex - 1]
       case NeighborLocation.DownSouth:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y + 1}`].assets[gridAsset.zIndex - 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x}:y${gridAsset.cell.location.y + 1}`]?.assets[gridAsset.zIndex - 1]
       case NeighborLocation.DownWest:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y}`].assets[gridAsset.zIndex - 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y}`]?.assets[gridAsset.zIndex - 1]
       case NeighborLocation.DownNorthEast:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y - 1}`].assets[gridAsset.zIndex - 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y - 1}`]?.assets[gridAsset.zIndex - 1]
       case NeighborLocation.DownSouthEast:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y + 1}`].assets[gridAsset.zIndex - 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x + 1}:y${gridAsset.cell.location.y + 1}`]?.assets[gridAsset.zIndex - 1]
       case NeighborLocation.DownSouthWest:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y + 1}`].assets[gridAsset.zIndex - 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y + 1}`]?.assets[gridAsset.zIndex - 1]
       case NeighborLocation.DownNorthWest:
-        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y - 1}`].assets[gridAsset.zIndex - 1]
+        return GSM.GameData.map.grid[`x${gridAsset.cell.location.x - 1}:y${gridAsset.cell.location.y - 1}`]?.assets[gridAsset.zIndex - 1]
     }
     return null
   }

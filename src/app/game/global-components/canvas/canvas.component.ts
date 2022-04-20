@@ -130,6 +130,8 @@ export class CanvasComponent implements AfterViewInit {
   public onMouseUp(event: MouseEvent): void {
     const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale)
     const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale)
+
+    GSM.EventController.mouseUp.next({posX: mousePosX, posY: mousePosY})
     GSM.EventController.keysPressed.delete("mouseDown")
     // GSM.GameEvent.keyPressDetails.mouseDown = false
     // GSM.GameEvent.update()

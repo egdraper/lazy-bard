@@ -1,31 +1,28 @@
 import { drawableItems } from "../../db/drawable-items.db"
 import { GSM } from "../../game-state-manager.service"
-import { GridAsset } from "../../models/sprite-tile.model"
+import { Cell } from "../../models/map"
+import { DrawableItemViewModel, GridAsset } from "../../models/sprite-tile.model"
 
-export function getHoveredOverGridAsset(mousePosX: number, mousePosY: number): GridAsset {
+export function getHoveredOverGridAsset(hoveringCell: Cell): GridAsset {
   let selectedAsset: GridAsset
-
-  const cell = GSM.GridController.getCellByPosition(mousePosX, mousePosY)
   
-  GSM.GridController.iterateYCells(cell.location.x, cell => {
+  GSM.GridController.iterateYCells(hoveringCell.location.x, cell => {
     const assets = GSM.GridAssetController.getAssetsByCell(cell)
     assets.forEach((asset) => {
       GSM.GridController.layerIterator.forEach(layer => {
-        if(!asset.tile[layer]) { return }
-          
-        const terrainTile = asset.tile[layer]
-        const itemDetails = drawableItems.find(item => item.id === terrainTile.drawableTileId)
-    
-        if(itemDetails) {
-          const withinX = mousePosX > cell.position.x && mousePosX < cell.position.x + (GSM.Settings.blockSize)
-          const withinY = mousePosY > (cell.position.y - (itemDetails.variableHeight * GSM.Settings.blockSize)) && mousePosY < cell.position.y + GSM.Settings.blockSize
+        if(asset.tile?.layer !== layer ) { return }
+          const withinX = hoveringCell.position.x === asset.cell.position.x
+          const withinY = hoveringCell.position.y >= (asset.cell.position.y - (GSM.GridAssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y <= asset.cell.position.y + GSM.Settings.blockSize
     
           if(withinX && withinY) {
-            selectedAsset = asset
+
+          if(asset.zIndex === Math.abs(hoveringCell.location.y - asset.cell.location.y)) {
+            selectedAsset = asset            
           }
         }
       })
     })
   })
+  console.log(selectedAsset)
   return selectedAsset
 }
