@@ -23,22 +23,26 @@ export class TerrainTreeBrushEventHandler {
       // const downNorthEastCell = GSM.CellNeighborsController.getImmediateNeighborCell(cell, NeighborLocation.DownNorthEast)
       
       // prevents you from drawing b
-      const mouseHoveringZ = GSM.MouseController.hoveringZAxisAtMouseDown
+      let mouseHoveringZAsset = GSM.MouseController.hoveringGridAsset
+      let hoveringZAxis = GSM.MouseController.hoveringZAxisAtMouseDown
+      if(!mouseHoveringZAsset) { 
+        mouseHoveringZAsset = {zIndex: 0, cell: cell} as any
+      }
       const itemDetails = drawableItems.find(item => item.id === drawableTile.id)
       // console.log(mouseHoveringZ)
-      const newCell = GSM.GridController.getCellByLocation(cell.location.x, cell.location.y)
+      const newCell = GSM.GridController.getCellByLocation(mouseHoveringZAsset.cell.location.x, mouseHoveringZAsset.cell.location.y)
       const northCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.North)
       const northEastCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.NorthEast)
       const eastCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.East)       
       // console.log(GSM.GridAssetController.getAsset(newCell, mouseHoveringZ-1, RenderingLayers.TerrainLayer))
-      const newId = GSM.GridAssetController.getAsset(newCell, mouseHoveringZ-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
-      const northId = GSM.GridAssetController.getAsset(northCell, mouseHoveringZ-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
-      const northEastId = GSM.GridAssetController.getAsset(northEastCell, mouseHoveringZ-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
-      const eastId = GSM.GridAssetController.getAsset(eastCell, mouseHoveringZ-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
+      const newId = GSM.GridAssetController.getAsset(newCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
+      const northId = GSM.GridAssetController.getAsset(northCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
+      const northEastId = GSM.GridAssetController.getAsset(northEastCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
+      const eastId = GSM.GridAssetController.getAsset(eastCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
      
       // console.log((newId && northId && northEastId && eastId))
 
-      if(mouseHoveringZ !== 0 && !(newId && northId && northEastId && eastId)) {
+      if(hoveringZAxis !== 0 && !(newId && northId && northEastId && eastId)) {
         return
       }
 
@@ -48,60 +52,60 @@ export class TerrainTreeBrushEventHandler {
       for(let i = 0; i < itemDetails.variableHeight; i++) {
        
         const newGridAsset = new GridAsset<TerrainTile>()
-        newGridAsset.zIndex = mouseHoveringZ + i
+        newGridAsset.zIndex = hoveringZAxis + i
         newGridAsset.tile = new TerrainTile()
         newGridAsset.tile.drawableTileId = drawableTile.id
-        GSM.GridAssetController.addAsset(newGridAsset, newCell, mouseHoveringZ + i, RenderingLayers.TerrainLayer)
-        newCell.obstructions[mouseHoveringZ + i] = true
+        GSM.GridAssetController.addAsset(newGridAsset, newCell, hoveringZAxis + i, RenderingLayers.TerrainLayer)
+        newCell.obstructions[hoveringZAxis + i] = true
 
         const northGridAsset = new GridAsset<TerrainTile>()
-        northGridAsset.zIndex = mouseHoveringZ + i
+        northGridAsset.zIndex = hoveringZAxis + i
         northGridAsset.tile = new TerrainTile()
         northGridAsset.tile.drawableTileId = drawableTile.id
-        GSM.GridAssetController.addAsset(northGridAsset, northCell, mouseHoveringZ + i, RenderingLayers.TerrainLayer)
-        northCell.obstructions[mouseHoveringZ + i] = true
+        GSM.GridAssetController.addAsset(northGridAsset, northCell, hoveringZAxis + i, RenderingLayers.TerrainLayer)
+        northCell.obstructions[hoveringZAxis + i] = true
 
         const northEastGridAsset = new GridAsset<TerrainTile>()
-        northEastGridAsset.zIndex = mouseHoveringZ + i
+        northEastGridAsset.zIndex = hoveringZAxis + i
         northEastGridAsset.tile = new TerrainTile()
         northEastGridAsset.tile.drawableTileId = drawableTile.id
-        GSM.GridAssetController.addAsset(northEastGridAsset, northEastCell, mouseHoveringZ + i, RenderingLayers.TerrainLayer)
-        northEastCell.obstructions[mouseHoveringZ + i] = true
+        GSM.GridAssetController.addAsset(northEastGridAsset, northEastCell, hoveringZAxis + i, RenderingLayers.TerrainLayer)
+        northEastCell.obstructions[hoveringZAxis + i] = true
 
         const eastGridAsset = new GridAsset<TerrainTile>()
-        eastGridAsset.zIndex = mouseHoveringZ + i
+        eastGridAsset.zIndex = hoveringZAxis + i
         eastGridAsset.tile = new TerrainTile()
         eastGridAsset.tile.drawableTileId = drawableTile.id
-        GSM.GridAssetController.addAsset(eastGridAsset, eastCell, mouseHoveringZ + i, RenderingLayers.TerrainLayer)
-        eastCell.obstructions[mouseHoveringZ + i] = true
+        GSM.GridAssetController.addAsset(eastGridAsset, eastCell, hoveringZAxis + i, RenderingLayers.TerrainLayer)
+        eastCell.obstructions[hoveringZAxis + i] = true
 
-        if(!newCell.assets[mouseHoveringZ + i + 1]) {
+        if(!newCell.assets[hoveringZAxis + i + 1]) {
           const newGridAsset1 = new GridAsset<TerrainTile>()
-          newGridAsset1.zIndex = mouseHoveringZ + i + 1
+          newGridAsset1.zIndex = hoveringZAxis + i + 1
           newGridAsset1.tile = new TerrainTile()
           GSM.GridAssetController.addAsset(newGridAsset1, newCell, newGridAsset1.zIndex, RenderingLayers.TerrainLayer)
         }
          
 
-        if(!northCell.assets[mouseHoveringZ + i + 1]) {
+        if(!northCell.assets[hoveringZAxis + i + 1]) {
           const northGridAsset1 = new GridAsset<TerrainTile>()
-          northGridAsset1.zIndex = mouseHoveringZ + i + 1
+          northGridAsset1.zIndex = hoveringZAxis + i + 1
           northGridAsset1.tile = new TerrainTile()
           GSM.GridAssetController.addAsset(northGridAsset1, northCell, northGridAsset1.zIndex, RenderingLayers.TerrainLayer)
         }
          
 
-        if(!northEastCell.assets[mouseHoveringZ + i + 1]) {
+        if(!northEastCell.assets[hoveringZAxis + i + 1]) {
           const northEastGridAsset1 = new GridAsset<TerrainTile>()
-          northEastGridAsset1.zIndex = mouseHoveringZ + i + 1
+          northEastGridAsset1.zIndex = hoveringZAxis + i + 1
           northEastGridAsset1.tile = new TerrainTile()
           GSM.GridAssetController.addAsset(northEastGridAsset1, northEastCell, northEastGridAsset1.zIndex, RenderingLayers.TerrainLayer)
         }
          
 
-        if(!eastCell.assets[mouseHoveringZ + i + 1]) {
+        if(!eastCell.assets[hoveringZAxis + i + 1]) {
           const eastGridAsset1 = new GridAsset<TerrainTile>()
-          eastGridAsset1.zIndex = mouseHoveringZ + i + 1
+          eastGridAsset1.zIndex = hoveringZAxis + i + 1
           eastGridAsset1.tile = new TerrainTile()
           GSM.GridAssetController.addAsset(eastGridAsset1, eastCell, eastGridAsset1.zIndex, RenderingLayers.TerrainLayer)
         }
@@ -113,7 +117,7 @@ export class TerrainTreeBrushEventHandler {
 
   private onMouseEnteredCell(cell: Cell): void {
     const actionName = GSM.EventController.generalActionFire.value.name    
-    if(actionName !== "paintingTerrain" && actionName !== "deleteTerrain") { return }
+    if(actionName !== "paintingTerrain" && actionName !== "deleteTerrain") { return }    
     if(!GSM.EventController.keysPressed.has("mouseDown")) { return }
 
     this.onEmptyCellClicked(cell)

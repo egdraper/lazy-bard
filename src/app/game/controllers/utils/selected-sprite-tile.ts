@@ -11,8 +11,9 @@ export function getHoveredOverGridAsset(hoveringCell: Cell): GridAsset {
     assets.forEach((asset) => {
       GSM.GridController.layerIterator.forEach(layer => {
         if(asset.tile?.layer !== layer ) { return }
+        const asset2 = assets
           const withinX = hoveringCell.position.x === asset.cell.position.x
-          const withinY = hoveringCell.position.y >= (asset.cell.position.y - (GSM.GridAssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y <= asset.cell.position.y + GSM.Settings.blockSize
+          const withinY = hoveringCell.position.y >= (asset.cell.position.y - (GSM.GridAssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y < asset.cell.position.y + GSM.Settings.blockSize
     
           if(withinX && withinY) {
 

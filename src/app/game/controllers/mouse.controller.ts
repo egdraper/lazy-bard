@@ -27,6 +27,7 @@ export class MouseController {
     const gridAsset = this.selectTerrainTile(this.hoveringCell)
     this.hoveringZAxisAtMouseDown = gridAsset?.zIndex || 0
     this.hoveringCellZAxisAtMouseDown = gridAsset
+    GSM.EventController.cellMouseEntered.next(this.hoveringCell)
   }
 
   private onMouseUp(): void {
