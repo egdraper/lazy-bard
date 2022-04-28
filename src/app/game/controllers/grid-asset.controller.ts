@@ -105,7 +105,7 @@ export class GridAssetController {
 
     cell.assets[zIndex][layer] = gridAsset;
     
-    this.refreshTerrainIterator();
+    this.refreshAssetIterator();
   }
 
   public removeAsset(cell: Cell, zIndex: number, layer: RenderingLayers): void {
@@ -117,7 +117,17 @@ export class GridAssetController {
       delete cell.assets[zIndex];
     }
 
-    this.refreshTerrainIterator();
+    this.refreshAssetIterator();
+  }
+
+
+  public refreshAssetIterator(): void {
+    this.assetIterator = [];
+
+    GSM.GridController.iterateCells((cell) => {
+      const gridAssets = this.getAssetsByCell(cell);
+      gridAssets.forEach((gridAsset) => this.assetIterator.push(gridAsset));
+    });
   }
 
   private onCellClicked(cell: Cell): void {
@@ -135,15 +145,6 @@ export class GridAssetController {
           asset.movement.updateAnimation();
         }
       }
-    });
-  }
-
-  private refreshTerrainIterator(): void {
-    this.assetIterator = [];
-
-    GSM.GridController.iterateCells((cell) => {
-      const gridAssets = this.getAssetsByCell(cell);
-      gridAssets.forEach((gridAsset) => this.assetIterator.push(gridAsset));
     });
   }
 }

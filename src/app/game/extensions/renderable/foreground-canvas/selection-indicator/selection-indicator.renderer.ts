@@ -27,14 +27,14 @@ export class SelectionIndicatorRenderer implements Renderer {
 
   private animateMarker(asset: Asset, frame: number): void {
     if (frame <= 32) {
-      this.posX = asset.position.x - Math.floor(frame / 6);
-      this.posY = asset.position.y - Math.floor(frame / 6);
+      this.posX = asset.movementOffset.x - Math.floor(frame / 6);
+      this.posY = asset.movementOffset.y - Math.floor(frame / 6);
       this.width = GSM.Settings.blockSize + Math.floor(frame / 3);
       this.height = GSM.Settings.blockSize + Math.floor(frame / 3);
     }
     if (frame > 32) {
-      this.posX = asset.position.x - Math.abs(Math.floor(frame / 6) - 12);
-      this.posY = asset.position.y - Math.abs(Math.floor(frame / 6) - 12);
+      this.posX = asset.movementOffset.x - Math.abs(Math.floor(frame / 6) - 12);
+      this.posY = asset.movementOffset.y - Math.abs(Math.floor(frame / 6) - 12);
       this.width =
         GSM.Settings.blockSize + Math.abs(Math.floor(frame / 3) - 24);
       this.height =

@@ -6,10 +6,10 @@ import { TerrainTile } from '../models/sprite-tile.model'
 export class MapController {
   public newGridCreated: Subject<Grid> = new Subject<Grid>()  
   public layerIterator: RenderingLayers[] = []
-  private gridIterator:  Cell[] = []
+  public gridIterator: {[rotation: number]: Cell[]} = {}
 
   public iterateCells(callBack: (cell: Cell) => void): void {
-    this.gridIterator.forEach((cell) => {
+    this.gridIterator[GSM.RotationController.currentRotation].forEach((cell) => {
       callBack(cell)
     })
   }
@@ -30,11 +30,12 @@ export class MapController {
     while (y % GSM.Settings.blockSize !== 0) {
       y--
     }
-    return GSM.GameData.map.grid[`x${x / GSM.Settings.blockSize}:y${y / GSM.Settings.blockSize}`]
+    return GSM.GridController.gridIterator[GSM.RotationController.currentRotation].find(a => a.position.x === x && a.position.y === y)
+    // return GSM.GameData.map.grid[`x${x / GSM.Settings.blockSize}:y${y / GSM.Settings.blockSize}`]
   }
 
   public getCellByLocation(x: number, y: number): Cell {
-    return GSM.GameData.map.grid[`x${x}:y${y}`]
+    return GSM.GridController.gridIterator[GSM.RotationController.currentRotation].find(a => a.location.x === x && a.location.y === y)
   }
 
   public getCellById(cellId: string): Cell {
@@ -52,26 +53,65 @@ export class MapController {
   }
 
   public setupMap(): void {   
-    this.gridIterator = []
-    for (let i = 0; i < GSM.GameData.map.size.y; i++) {
-      for (let l = 0; l < GSM.GameData.map.size.x; l++) {
+    this.gridIterator[0] = []
+    this.gridIterator[1] = []
+    this.gridIterator[2] = []
+    this.gridIterator[3] = []
+    for (let y = 0; y < GSM.GameData.map.size.y; y++) {
+      for (let x = 0; x < GSM.GameData.map.size.x; x++) {
         // creates cell
         const cell: Cell = {
-          id: `x${l}:y${i}`,
-          location: { x: l, y: i},
+          id: `x${x}:y${y}`,
+          location: { x, y},
           obstructions: {},
           assets: {},
-          position: { x: l * GSM.Settings.blockSize, y: (i) * GSM.Settings.blockSize},
+          position: { x: x * GSM.Settings.blockSize, y: y * GSM.Settings.blockSize},
         }
 
         // adds cell to grid at layer
-        GSM.GameData.map.grid[`x${l}:y${i}`] = cell
-        this.gridIterator.push(cell)
+        GSM.GameData.map.grid[`x${x}:y${y}`] = cell
+        this.gridIterator[0].push(cell)
       }
     }
 
     this.newGridCreated.next(GSM.GameData.map)
+  
+    for (let x = 0; x < GSM.GameData.map.size.x; x++) {
+      for (let y = GSM.GameData.map.size.y - 1; y >= 0;  y--) {
+        this.gridIterator[1].push(this.getCellById(`x${x}:y${y}`))
+      }
+    }
+
+    for (let y = GSM.GameData.map.size.y - 1; y >= 0;  y--) {
+      for (let x = GSM.GameData.map.size.x - 1; x >= 0; x--) {
+        this.gridIterator[2].push(this.getCellById(`x${x}:y${y}`))
+      }
+    }
+
+    for (let x = GSM.GameData.map.size.x - 1; x >= 0; x--) {
+      for (let y = 0; y < GSM.GameData.map.size.y; y++) {
+        this.gridIterator[3].push(this.getCellById(`x${x}:y${y}`))
+      }
+    }
+    // for (let x = GSM.GameData.map.size.x - 1; x >= 0; x--) {
+    //   for (let y = 0; y < GSM.GameData.map.size.y; y++) {
+    //     this.gridIterator[2].push(this.getCellById(`x${x}:y${y}`))r
+    //   }
+    // }
+
+    // for (let y = GSM.GameData.map.size.y - 1; y >= 0;  y--) {
+    //   for (let x = GSM.GameData.map.size.x - 1; x >= 0; x--) {
+    //     this.gridIterator[1].push(this.getCellById(`x${x}:y${y}`))
+    //   }
+    // }
+
+    // for (let x = 0; x < GSM.GameData.map.size.x; x++) {
+    //   for (let y = GSM.GameData.map.size.y - 1; y >= 0;  y--) {
+    //     this.gridIterator[3].push(this.getCellById(`x${x}:y${y}`))
+    //   }
+    // }
   }
+
 }
 
 // public maps: {[gridId: string]: GameMap} = {}

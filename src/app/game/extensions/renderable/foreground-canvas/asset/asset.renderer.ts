@@ -12,8 +12,8 @@ export class PlayableAssetRenderer implements Renderer {
     this.ctx.fillStyle = '#424247';
     this.ctx.beginPath();
     this.ctx.ellipse(
-      asset.position.x + GSM.Settings.blockSize / 2,
-      asset.position.y + GSM.Settings.blockSize / 2,
+      asset.movementOffset.x + GSM.Settings.blockSize / 2,
+      asset.movementOffset.y + GSM.Settings.blockSize / 2,
        8, 
        4, 
        0, 
@@ -28,8 +28,8 @@ export class PlayableAssetRenderer implements Renderer {
       asset.tile.assetDrawRules.yWalkPos[asset.tile.animation.spriteYPosition],
       asset.tile.assetDrawRules.size.x,
       asset.tile.assetDrawRules.size.y,
-      asset.position.x + asset.tile.assetDrawRules.xPosOffset,
-      asset.position.y + asset.tile.assetDrawRules.yPosOffset + asset.position.z,
+      asset.movementOffset.x + asset.tile.assetDrawRules.xPosOffset,
+      asset.movementOffset.y + asset.tile.assetDrawRules.yPosOffset + asset.movementOffset.z,
       asset.tile.assetDrawRules.drawSize.x,
       asset.tile.assetDrawRules.drawSize.y
     );

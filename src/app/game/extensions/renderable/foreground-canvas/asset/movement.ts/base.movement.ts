@@ -32,6 +32,30 @@ export abstract class Movement {
 
   public abstract move(event: {assetPosX: number, assetPosY: number, assetPosZ: number, pathTrackPosX: number, pathTrackPosY: number, speed: number, distanceToNextCell: number, distanceToFinalCell: number}): {newPosX: number, newPosY: number, newPosZ: number} 
 
+  public resetTrackingToCell(cell: Cell, rotationDirection: number = 0) {
+    this.cellTrackPosX = cell.position.x
+    this.cellTrackPosY = cell.position.y
+
+    if(this.asset.tile.animation.spriteYPosition === "down") { 
+      this.spriteDirection = "left"; 
+      return
+    }
+
+    if(this.asset.tile.animation.spriteYPosition === "left") { 
+      this.spriteDirection = "up"
+      return
+    }
+   
+    if(this.asset.tile.animation.spriteYPosition === "up") {
+      this.spriteDirection = "right"
+      return
+    }
+    if(this.asset.tile.animation.spriteYPosition === "right") {
+      this.spriteDirection = "down"
+      return
+    }
+  }
+
   public start(startCell: Cell, endCell: Cell, charactersOnGrid: Asset[], onFinished?: ()=> void): void {
     if (onFinished) { this.onFinished = onFinished }
 
@@ -53,8 +77,8 @@ export abstract class Movement {
     this.setSpriteDirection()
     this.asset.tile.animation.changeEveryNthFrame = 16
     this.distanceToNextCell = GSM.Settings.blockSize
-    this.cellTrackPosX = this.asset.position.x
-    this.cellTrackPosY = this.asset.position.y
+    this.cellTrackPosX = this.asset.movementOffset.x
+    this.cellTrackPosY = this.asset.movementOffset.y
 
     const a = Math.round((GSM.Settings.blockToFeet * GSM.Settings.speed) / 3) // 10 feet per second
     const e = a / GSM.Settings.blockToFeet // 2 squares per second
@@ -71,10 +95,10 @@ export abstract class Movement {
 
       if(this.asset.moving && frame % c === 0) {
         this.trackCell()
-        const newPos = this.move({assetPosX: this.asset.position.x, assetPosY: this.asset.position.y, assetPosZ: this.asset.position.z, pathTrackPosX: this.cellTrackPosX, pathTrackPosY: this.cellTrackPosY, speed: this.speed, distanceToNextCell: this.distanceToNextCell, distanceToFinalCell: this.currentPath.length})
-        this.asset.position.x = newPos.newPosX
-        this.asset.position.y = newPos.newPosY
-        this.asset.position.z = newPos.newPosZ
+        const newPos = this.move({assetPosX: this.asset.movementOffset.x, assetPosY: this.asset.movementOffset.y, assetPosZ: this.asset.movementOffset.z, pathTrackPosX: this.cellTrackPosX, pathTrackPosY: this.cellTrackPosY, speed: this.speed, distanceToNextCell: this.distanceToNextCell, distanceToFinalCell: this.currentPath.length})
+        this.asset.movementOffset.x = newPos.newPosX
+        this.asset.movementOffset.y = newPos.newPosY
+        this.asset.movementOffset.z = newPos.newPosZ
         this.distanceToNextCell = this.distanceToNextCell - this.speed
         this.checkForFinishLocation()
       }
@@ -147,8 +171,8 @@ export abstract class Movement {
         RenderingLayers.CharacterLayer
       )
       
-      this.asset.position.x = this.cellTrackPosX
-      this.asset.position.y = this.cellTrackPosY
+      this.asset.movementOffset.x = this.cellTrackPosX
+      this.asset.movementOffset.y = this.cellTrackPosY
       this.previousCell = newCell
       
       this.nextCell = this.currentPath.length > 0

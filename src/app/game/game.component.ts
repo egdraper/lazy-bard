@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, HostListener } from '@angular/core';
+import { terrainCleanup } from './controllers/utils/terrain-cleanup';
 import { GSM } from './game-state-manager.service';
 
 @Component({
@@ -18,7 +19,7 @@ export class GameComponent implements AfterViewInit{
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame("firstGame", 22, 44, "forest")
+      this.gameStateManager.newGame("firstGame", 15, 15, "forest")
       GSM.EventController.generalActionFire.subscribe(action => {
         this.selected = action.name 
       })
@@ -108,6 +109,10 @@ export class GameComponent implements AfterViewInit{
         data: null
       })
     }
+    if(event.code === "KeyP") {
+      GSM.RotationController.rotateClockwise()
+      terrainCleanup()
+    }
     if(event.code === "KeyG") {
       this.selected = "starting Game"
       GSM.EventController.generalActionFire.next({
@@ -120,11 +125,11 @@ export class GameComponent implements AfterViewInit{
     }
     if(event.code === "KeyY") {
      const asset =  GSM.GridAssetController.getSelectedAssets()[0]
-     asset.position.z++
+     asset.movementOffset.z++
     }
     if(event.code === "KeyH") {
      const asset =  GSM.GridAssetController.getSelectedAssets()[0]
-     asset.position.z--
+     asset.movementOffset.z--
     }
   }
 }

@@ -18,7 +18,7 @@ export class Asset extends GridAsset {
   // location
   public cellId?: string;
   public gridId: string;
-  public position: Position; // do getter to automatically set zIndex
+  public movementOffset: Position; 
 }
 
 export class TerrainAsset extends GridAsset{
@@ -101,12 +101,12 @@ export class SpriteAnimation {
 }
 
 export class DrawWhen {
-  topNeighbor: boolean;
-  topRightNeighbor: boolean;
-  rightNeighbor: boolean;
-  bottomRightNeighbor: boolean;
-  bottomNeighbor: boolean;
-  bottomLeftNeighbor: boolean;
-  leftNeighbor: boolean;
-  topLeftNeighbor: boolean;
+  northNeighbor: boolean;
+  northEastNeighbor: boolean;
+  eastNeighbor: boolean;
+  southEastNeighbor: boolean;
+  southNeighbor: boolean;
+  southWestNeighbor: boolean;
+  westNeighbor: boolean;
+  northWestNeighbor: boolean;
 }

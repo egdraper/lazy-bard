@@ -57,7 +57,7 @@ export class PlayableAssetEventHandler {
     // playerAsset.movement = new Skip(playerAsset)
     playerAsset.movement = new Running(playerAsset)
     playerAsset.cell = cell
-    playerAsset.position = new Position(cell.position.x, cell.position.y, 0)
+    playerAsset.movementOffset = new Position(cell.position.x, cell.position.y, 0)
     // playerAsset.assetTile.imageUrl = 'assets/images/item_002.png';
     playerAsset.tile.imageUrl = 'assets/images/character_012.png';
     playerAsset.animating = true

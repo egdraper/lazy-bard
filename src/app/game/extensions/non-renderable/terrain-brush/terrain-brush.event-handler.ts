@@ -86,7 +86,6 @@ export class TerrainTreeBrushEventHandler {
           GSM.GridAssetController.addAsset(newGridAsset1, newCell, newGridAsset1.zIndex, RenderingLayers.TerrainLayer)
         }
          
-
         if(!northCell.assets[hoveringZAxis + i + 1]) {
           const northGridAsset1 = new GridAsset<TerrainTile>()
           northGridAsset1.zIndex = hoveringZAxis + i + 1
