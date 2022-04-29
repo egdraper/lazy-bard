@@ -88,19 +88,6 @@ export class TerrainEdgeCalculator {
         westMatch = neighborsTerrain.northMatch === terrainTile.drawWhen.westNeighbor || terrainTile.drawWhen.westNeighbor === null
         northWestMatch = neighborsTerrain.northEastMatch === terrainTile.drawWhen.northWestNeighbor || terrainTile.drawWhen.northWestNeighbor === null
       }
-      const a = northMatch &&
-      northEastMatch &&
-      eastMatch &&
-      southEastMatch &&
-      southMatch &&
-      southWestMatch &&
-      westMatch &&
-      northWestMatch &&
-      northWestMatch
-
-      if (a) {
-        console.log(terrainTile.id)
-      }
             
       return northMatch &&
       northEastMatch &&
