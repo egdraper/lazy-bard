@@ -1,8 +1,17 @@
-<div class="game">
-    <div class="left-toolbar-view">
-
-    </div>
-    <div class="game-view">
-      <gm-canvas *ngIf="gameStateManager.loadingFinished"></gm-canvas>
-    </div>
+<div class="game" *ngIf="gameStateManager.loadingFinished">
+  <div style="color:white; position: absolute; top: 115px">
+    <h6> X: {{ mouseController?.hoveringPosX }}</h6>
+    <h6> Y: {{ mouseController?.hoveringPosY }}</h6>
+    <h6> Cell: {{ mouseController?.hoveringCellId }}</h6>
+    <h6> Cell: {{ mouseController?.hoveringSpriteTileCell?.id }}</h6>
+    <h6 *ngFor="let cell of mouseController?.hoveringCellAtZAxisIterator"> Z: {{cell?.elevationIndex}}: {{ cell?.id }}</h6>
+     
+    <h1 style="color:white">{{selected}}</h1>
   </div>
+  <div>
+    <gm-editor-side-nav></gm-editor-side-nav>
+  </div>
+  <div class="game-view">
+    <gm-canvas></gm-canvas>
+  </div>
+</div>

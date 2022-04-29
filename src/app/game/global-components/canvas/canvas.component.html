@@ -1,0 +1,18 @@
+<canvas #fullImageCanvas style="visibility: hidden" id="fullImageCanvas"></canvas>
+
+<div id="game-canvas">
+  <div id="canvas-container">
+    <canvas #backgroundCanvas id="backgroundCanvas"></canvas>
+    <canvas #foregroundCanvas id="foregroundCanvas"></canvas>
+    <canvas #fogCanvas id="fogCanvas"></canvas>
+    <canvas 
+      #blackoutCanvas
+      id="blackoutCanvas"
+      (mousemove)="onMouseMove($event)"
+      (mouseup)="onMouseUp($event)"
+      (mousedown)="onMouseDown($event)"
+      (click)="onCellClick($event)"
+    >
+    </canvas>
+  </div>
+</div>

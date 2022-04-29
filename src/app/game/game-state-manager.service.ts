@@ -1,58 +1,75 @@
 import { Injectable } from '@angular/core';
 import { CanvasController } from './controllers/canvas.controller';
-import { GridController } from './controllers/grid.controller';
-import { PaintController } from './controllers/paint.controller';
+import { MapController } from './controllers/map.controller';
+import { EventController } from './controllers/event.controller';
+import { RendererController } from './controllers/render.controller';
 import { FrameController } from './controllers/timing.controller';
-import { Extensions } from './extensions/extensions';
-import { Grid } from './models/map';
-import { Settings } from './models/settings';
 
+import { Settings } from './models/settings';
+import { CanvasModuleController } from './controllers/canvas-module.controller';
+import { Extensions } from './extensions.register';
+import { ImagesController } from './controllers/images.controller';
+import { CellNeighborsController } from './controllers/cell-neighbors.controller';
+import { GameData } from './game-data';
+import { MouseController } from './controllers/mouse.controller';
+import { AssetController } from './controllers/asset.controller';
+import { RotationController } from './controllers/rotation.controller';
 @Injectable({
   providedIn: 'root'
 })
 // Game State Manager
 export class GSM {
+  // Persisting Core Data
+  public static GameData: GameData
+
+  // App Function Controllers
   public static CanvasController: CanvasController
-  public static Settings: Settings
-  public static FrameController: FrameController
+  public static CanvasModuleController: CanvasModuleController
+  public static CellNeighborsController: CellNeighborsController
+  public static EventController: EventController
   public static Extensions: Extensions
-  public static GridController: GridController
-  public static PaintController: PaintController
-
+  public static FrameController: FrameController
+  public static GridController: MapController
+  public static ImageController: ImagesController
+  public static RendererController: RendererController
+  public static MouseController: MouseController
+  public static GridAssetController: AssetController
+  public static RotationController: RotationController
+  public static Settings: Settings
   public loadingFinished = false
-
-  constructor() {
-  }
   
   public newGame(
     name: string,
     width: number,
     height: number,
     baseTexture: string = "forest",
-    autoGenerateTerrain: boolean = false
   ): void {
+    // Order Matters
+    GSM.GameData = new GameData()
     GSM.Settings = new Settings()
     GSM.CanvasController = new CanvasController()
-    
-    GSM.GridController = new GridController()
-    GSM.GridController.setupGrid({width, height})
-    GSM.GridController.grid.baseTexture = baseTexture
-    GSM.GridController.autoGenerateTerrain = autoGenerateTerrain
-
     GSM.FrameController = new FrameController()
-    GSM.FrameController.start()   
-
-    GSM.PaintController = new PaintController() 
-    GSM.PaintController.startPainter()
+    GSM.EventController = new EventController()
+    GSM.CanvasModuleController = new CanvasModuleController()
+    GSM.RendererController = new RendererController() 
+    GSM.Extensions = new Extensions() 
+    GSM.GridController = new MapController()
+    GSM.RotationController = new RotationController()
+    GSM.GridController.createGameMap({x: width, y: height})
+    GSM.ImageController = new ImagesController()   
+    GSM.GridAssetController = new AssetController()
+    GSM.GameData.map.baseTexture = baseTexture
+    
+    //Order Doesn't Matter
+    GSM.MouseController = new MouseController()
+    GSM.CellNeighborsController = new CellNeighborsController()
     
     this.loadingFinished = true
     
-    setTimeout(() => {
-      GSM.Extensions = new Extensions()
-    }, 1000);
-  }
-
-  public loadGame(name: string): void {
-    //TODO
+    GSM.CanvasController.setupComplete.subscribe(() => {            
+      setTimeout(async ()=> {        
+        await GSM.Extensions.init()
+      })
+    })
   }
 }
