@@ -22,6 +22,5 @@ export function getHoveredOverGridAsset(hoveringCell: Cell): GridAsset {
       })
     })
   })
-  console.log(selectedAsset)
   return selectedAsset
 }
