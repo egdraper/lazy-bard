@@ -1,5 +1,5 @@
 import { GSM } from "../../game-state-manager.service"
-import { NeighborLocation, RenderingLayers } from "../../models/map"
+import { MapRotationIndex, NeighborLocation, RenderingLayers } from "../../models/map"
 import { DrawableItemViewModel, GridAsset, TerrainTile } from "../../models/sprite-tile.model"
 
 export class TerrainEdgeCalculator {
@@ -45,7 +45,7 @@ export class TerrainEdgeCalculator {
       let westMatch = false
       let northWestMatch = false
 
-      if(GSM.RotationController.currentRotation === 0) {
+      if(GSM.RotationController.currentRotation === MapRotationIndex.northUp) {
         northMatch = neighborsTerrain.northMatch === terrainTile.drawWhen.northNeighbor || terrainTile.drawWhen.northNeighbor === null
         northEastMatch = neighborsTerrain.northEastMatch === terrainTile.drawWhen.northEastNeighbor || terrainTile.drawWhen.northEastNeighbor === null
         eastMatch = neighborsTerrain.eastMatch === terrainTile.drawWhen.eastNeighbor || terrainTile.drawWhen.eastNeighbor === null
@@ -54,10 +54,9 @@ export class TerrainEdgeCalculator {
         southWestMatch = neighborsTerrain.southWestMatch === terrainTile.drawWhen.southWestNeighbor || terrainTile.drawWhen.southWestNeighbor === null
         westMatch = neighborsTerrain.westMatch === terrainTile.drawWhen.westNeighbor || terrainTile.drawWhen.westNeighbor === null
         northWestMatch = neighborsTerrain.northWestMatch === terrainTile.drawWhen.northWestNeighbor || terrainTile.drawWhen.northWestNeighbor === null
-
       }
 
-      if(GSM.RotationController.currentRotation === 1) {
+      if(GSM.RotationController.currentRotation === MapRotationIndex.westUp) {
         northMatch = neighborsTerrain.westMatch === terrainTile.drawWhen.northNeighbor || terrainTile.drawWhen.northNeighbor === null
         northEastMatch = neighborsTerrain.northWestMatch === terrainTile.drawWhen.northEastNeighbor || terrainTile.drawWhen.northEastNeighbor === null
         eastMatch = neighborsTerrain.northMatch === terrainTile.drawWhen.eastNeighbor || terrainTile.drawWhen.eastNeighbor === null
@@ -68,7 +67,7 @@ export class TerrainEdgeCalculator {
         northWestMatch = neighborsTerrain.southWestMatch === terrainTile.drawWhen.northWestNeighbor || terrainTile.drawWhen.northWestNeighbor === null
       }
 
-      if(GSM.RotationController.currentRotation === 2) {
+      if(GSM.RotationController.currentRotation === MapRotationIndex.southUp) {
         northMatch = neighborsTerrain.southMatch === terrainTile.drawWhen.northNeighbor || terrainTile.drawWhen.northNeighbor === null
         northEastMatch = neighborsTerrain.southWestMatch === terrainTile.drawWhen.northEastNeighbor || terrainTile.drawWhen.northEastNeighbor === null
         eastMatch = neighborsTerrain.westMatch === terrainTile.drawWhen.eastNeighbor || terrainTile.drawWhen.eastNeighbor === null
@@ -79,7 +78,7 @@ export class TerrainEdgeCalculator {
         northWestMatch = neighborsTerrain.southEastMatch === terrainTile.drawWhen.northWestNeighbor || terrainTile.drawWhen.northWestNeighbor === null
       }
 
-      if(GSM.RotationController.currentRotation === 3) {
+      if(GSM.RotationController.currentRotation === MapRotationIndex.eastUp) {
         northMatch = neighborsTerrain.eastMatch === terrainTile.drawWhen.northNeighbor || terrainTile.drawWhen.northNeighbor === null
         northEastMatch = neighborsTerrain.southEastMatch === terrainTile.drawWhen.northEastNeighbor || terrainTile.drawWhen.northEastNeighbor === null
         eastMatch = neighborsTerrain.southMatch === terrainTile.drawWhen.eastNeighbor || terrainTile.drawWhen.eastNeighbor === null
@@ -144,109 +143,24 @@ export class TerrainEdgeCalculator {
     const downNorthMatch = downNorthId && downNorthId === terrainTile.drawableTileId
     const upNorthMatch = upNorthId && upNorthId === terrainTile.drawableTileId
     
-
-    if(GSM.RotationController.currentRotation === 0) {
-      if (upMatch && upSouthMatch) {
-        tile.drawsWith = undefined
-      } else if (upMatch && !upSouthMatch && southMatch) {
-        tile.drawsWithTop = tile.topWith
-      } else if (upMatch && downMatch && !southMatch && !downSouthMatch) {
-        tile.drawsWith = tile.expandWith
-      } else if (downMatch && !upMatch && !southMatch && !downSouthMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.expandWith
-      } else if (downMatch && downSouthMatch && !upMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.baseWith
-      } else if (upMatch && !downMatch && !southMatch) {
-        tile.drawsWith = tile.baseWith
-      } else if (upMatch && downMatch && !southMatch && downSouthMatch) {
-        tile.drawsWith = tile.baseWith
-      } else if (!upMatch && !downMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.baseWith
-      } else {
-        tile.drawsWith = undefined
-      }
-    }
-
-    if(GSM.RotationController.currentRotation === 1) {
-      if (upMatch && upEastMatch) {
-        tile.drawsWith = undefined
-      } else if (upMatch && !upEastMatch && eastMatch) {
-        tile.drawsWithTop = tile.topWith
-      } else if (upMatch && downMatch && !eastMatch && !downEastMatch) {
-        tile.drawsWith = tile.expandWith
-      } else if (downMatch && !upMatch && !eastMatch && !downEastMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.expandWith
-      } else if (downMatch && downEastMatch && !upMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.baseWith
-      } else if (upMatch && !downMatch && !eastMatch) {
-        tile.drawsWith = tile.baseWith
-      } else if (upMatch && downMatch && !eastMatch && downEastMatch) {
-        tile.drawsWith = tile.baseWith
-      } else if (!upMatch && !downMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.baseWith
-      } else {
-        tile.drawsWith = undefined
-      }
-    }
-
-    if(GSM.RotationController.currentRotation === 2) {
-      if (upMatch && upNorthMatch) {
-        tile.drawsWith = undefined
-      } else if (upMatch && !upNorthMatch && northMatch) {
-        tile.drawsWithTop = tile.topWith
-      } else if (upMatch && downMatch && !northMatch && !downNorthMatch) {
-        tile.drawsWith = tile.expandWith
-      } else if (downMatch && !upMatch && !northMatch && !downNorthMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.expandWith
-      } else if (downMatch && downNorthMatch && !upMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.baseWith
-      } else if (upMatch && !downMatch && !northMatch) {
-        tile.drawsWith = tile.baseWith
-      } else if (upMatch && downMatch && !northMatch && downNorthMatch) {
-        tile.drawsWith = tile.baseWith
-      } else if (!upMatch && !downMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.baseWith
-      } else {
-        tile.drawsWith = undefined
-      }
-    }
-
-    if(GSM.RotationController.currentRotation === 3) {
-      if (upMatch && upWestMatch) {
-        tile.drawsWith = undefined
-      } else if (upMatch && !upWestMatch && westMatch) {
-        tile.drawsWithTop = tile.topWith
-      } else if (upMatch && downMatch && !westMatch && !downWestMatch) {
-        tile.drawsWith = tile.expandWith
-      } else if (downMatch && !upMatch && !westMatch && !downWestMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.expandWith
-      } else if (downMatch && downWestMatch && !upMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.baseWith
-      } else if (upMatch && !downMatch && !westMatch) {
-        tile.drawsWith = tile.baseWith
-      } else if (upMatch && downMatch && !westMatch && downWestMatch) {
-        tile.drawsWith = tile.baseWith
-      } else if (!upMatch && !downMatch) {
-        tile.drawsWithTop = tile.topWith
-        tile.drawsWith = tile.baseWith
-      } else {
-        tile.drawsWith = undefined
-      }
-    }
-       
     if (!tile) {
       tile = {...drawableItem.drawingRules.find((tile: TerrainTile) => tile.default)}
+    }
+
+    if(GSM.RotationController.currentRotation === MapRotationIndex.northUp) {
+      this.setTilesForVerticalRendering(tile, upMatch, downMatch, upSouthMatch, southMatch, downSouthMatch)
+    }
+
+    if(GSM.RotationController.currentRotation === MapRotationIndex.westUp) {
+      this.setTilesForVerticalRendering(tile, upMatch, downMatch, upEastMatch, eastMatch, downEastMatch)
+    }
+
+    if(GSM.RotationController.currentRotation === MapRotationIndex.southUp) {
+      this.setTilesForVerticalRendering(tile, upMatch, downMatch, upNorthMatch, northMatch, downNorthMatch)
+    }
+
+    if(GSM.RotationController.currentRotation === MapRotationIndex.eastUp) {
+      this.setTilesForVerticalRendering(tile, upMatch, downMatch, upWestMatch, westMatch, downWestMatch)
     }
 
     tile.imageUrl = drawableItem.imageUrl
@@ -255,5 +169,30 @@ export class TerrainEdgeCalculator {
 
     gridAsset.tile = tile
     return tile
+  }
+
+  private static setTilesForVerticalRendering(tile: TerrainTile, upMatch: boolean, downMatch: boolean, upForwardMatch: boolean, forwardMatch: boolean, downForwardMatch: boolean ): void {
+    if (upMatch && upForwardMatch) {
+      tile.drawsWith = undefined
+    } else if (upMatch && !upForwardMatch && forwardMatch) {
+      tile.drawsWithTop = tile.topWith
+    } else if (upMatch && downMatch && !forwardMatch && !downForwardMatch) {
+      tile.drawsWith = tile.expandWith
+    } else if (downMatch && !upMatch && !forwardMatch && !downForwardMatch) {
+      tile.drawsWithTop = tile.topWith
+      tile.drawsWith = tile.expandWith
+    } else if (downMatch && downForwardMatch && !upMatch) {
+      tile.drawsWithTop = tile.topWith
+      tile.drawsWith = tile.baseWith
+    } else if (upMatch && !downMatch && !forwardMatch) {
+      tile.drawsWith = tile.baseWith
+    } else if (upMatch && downMatch && !forwardMatch && downForwardMatch) {
+      tile.drawsWith = tile.baseWith
+    } else if (!upMatch && !downMatch) {
+      tile.drawsWithTop = tile.topWith
+      tile.drawsWith = tile.baseWith
+    } else {
+      tile.drawsWith = undefined
+    }
   }
 }

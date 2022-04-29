@@ -1,4 +1,4 @@
-import { TerrainTile } from "../models/sprite-tile.model";
+import { TerrainTile } from "../models/sprite-tile.model"
 
 export const RockWall: TerrainTile[] = [
     {
@@ -238,4 +238,4 @@ export const RockWall: TerrainTile[] = [
           northWestNeighbor: true,
         },
       },
-    ];
+    ]

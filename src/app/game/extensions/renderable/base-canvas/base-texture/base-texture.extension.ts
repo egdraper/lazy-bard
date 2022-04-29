@@ -1,4 +1,4 @@
-import { Cell, RenderingLayers } from "src/app/game/models/map"
+import { Cell, MapRotationIndex, RenderingLayers } from "src/app/game/models/map"
 import { BackgroundAsset, BackgroundTile } from "src/app/game/models/sprite-tile.model"
 import { backgroundSprites } from "../../../../db/background.db"
 import { GSM } from "../../../../game-state-manager.service"
@@ -45,7 +45,7 @@ export class BaseTextureExtension extends CanvasLayerExtension {
   }
 
   private setBackgroundImages(): void {
-    GSM.GridController.iterateCells((cell: Cell) => {
+    GSM.GridController.iterateCells(MapRotationIndex.northUp,(cell: Cell) => {
       cell.backgroundAsset = new BackgroundAsset()
       cell.backgroundAsset.tile = new BackgroundTile()
       cell.backgroundAsset.tile.imageUrl = this.baseTexture?.imageUrl || ""

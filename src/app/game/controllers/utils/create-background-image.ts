@@ -1,6 +1,6 @@
 import { GSM } from "../../game-state-manager.service"
+import { MapRotationIndex } from "../../models/map"
 import { Renderer } from "../../models/renderer"
-import { BackgroundAsset } from "../../models/sprite-tile.model"
 
 export function generateBackgroundImage(renderers: Renderer[]): HTMLImageElement {
     if(!GSM.CanvasController.fullImageCTX) { return null }
@@ -13,7 +13,7 @@ export function generateBackgroundImage(renderers: Renderer[]): HTMLImageElement
       tempCTX = renderer.ctx
       renderer.ctx = GSM.CanvasController.fullImageCTX
 
-      GSM.GridController.iterateCells((cell) => {
+      GSM.GridController.iterateCells(MapRotationIndex.northUp, (cell) => {
         if(renderer.beforeDraw) {
           renderer.beforeDraw(cell.backgroundAsset)
         }

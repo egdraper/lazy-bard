@@ -3,8 +3,6 @@ import { ForegroundCanvasModule } from './extensions/renderable/foreground-canva
 import { TerrainEraserExtension } from './extensions/non-renderable/terrain-eraser/eraser.event.extension';
 import { TerrainTreeBrushExtension } from './extensions/non-renderable/terrain-brush/terrain-brush.extension';
 
-
-
 export class Extensions {
     public addon = [
       new BaseCanvasModule(),

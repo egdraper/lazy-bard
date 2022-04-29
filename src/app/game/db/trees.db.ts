@@ -53,7 +53,7 @@ export const trees: TerrainTile[] = [
       southNeighbor: true,
       southWestNeighbor: null,
       westNeighbor: false,
-      northWestNeighbor: false, // this one
+      northWestNeighbor: false,
     }
   }, {
     id: "treeClumpGrowableCenter",

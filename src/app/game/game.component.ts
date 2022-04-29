@@ -75,26 +75,6 @@ export class GameComponent implements AfterViewInit{
         }
       })
     }
-    if(event.code === "Digit2") {
-      // GSM.EventController.generalActionFire.next({
-      //   name: "addElevationUp",
-      //   data: {
-      //     leavingLayer: GSM.GameData.map.currentElevationLayerIndex,
-      //     newLayer: GSM.GameData.map.currentElevationLayerIndex + 1
-      //   }
-      // })
-      // GSM.ImageController.refreshAllImages()
-    }
-    if(event.code === "Digit1") {
-      // GSM.EventController.generalActionFire.next({
-      //   name: "addElevationDown",
-      //   data: {
-      //     leavingLayer: GSM.GameData.map.currentElevationLayerIndex,
-      //     newLayer: GSM.GameData.map.currentElevationLayerIndex - 1
-      //   }
-      // })
-      // GSM.ImageController.refreshAllImages()
-    }
     if(event.code === "KeyR") {
       GSM.EventController.generalActionFire.next({
         name: "paintingTerrain",

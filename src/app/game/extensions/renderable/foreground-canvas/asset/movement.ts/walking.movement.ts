@@ -19,16 +19,3 @@ export class Walking extends Movement {
     return {newPosX: event.pathTrackPosX, newPosY: event.pathTrackPosY, newPosZ: event.assetPosZ}
   } 
 }
-
-///// Every asset can
-// Move (x/y/z plane) ======= Working on
-// Climb
-// Be climbed
-// Lift/carry
-// Be lifted/carried
-// Attack
-// Be assigned as players
-// Go invisible
-// selected
-
-

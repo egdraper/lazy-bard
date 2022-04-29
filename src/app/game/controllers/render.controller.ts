@@ -44,10 +44,6 @@ export class RendererController {
 
   private renderAssets(frame: number) {
     this.iterateRenderers(renderer => {
-      // if(renderer.renderingLayer === RenderingLayers.TerrainLayer) {
-        // render terrain as image when not editing
-        // return
-      // }
       if(renderer.renderingLayer === RenderingLayers.BaseLayer) {
         return
       }
@@ -68,23 +64,7 @@ export class RendererController {
       })
     })
   }
-
-
-  private runRendererForExcludedAddons(frame: number): void {
-    // this.iterateRenderers(renderer => {
-    //   if(renderer.excludeFromIndividualCellPainting) { return }
-
-    //   if(renderer.drawOnFrameOnly) {
-    //     renderer.draw({frame})
-    //     return
-    //   }
-
-      // GSM.GridController.((cell) => {
-      //   renderer.draw({cell, frame})
-      // })
-    // })
-  }
-    
+   
   private clearCanvases(): void {
     const canvas = GSM.CanvasController
     canvas.backgroundCTX.clearRect(0,0, GSM.GameData.map.size.x * GSM.Settings.blockSize, GSM.GameData.map.size.y * GSM.Settings.blockSize)

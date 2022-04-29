@@ -1,6 +1,6 @@
 import { terrainCleanup } from 'src/app/game/controllers/utils/terrain-cleanup';
 import { drawableItems } from 'src/app/game/db/drawable-items.db';
-import { Cell, Grid, NeighborLocation, RenderingLayers } from 'src/app/game/models/map';
+import { Cell, NeighborLocation, RenderingLayers } from 'src/app/game/models/map';
 import { GridAsset, TerrainTile } from 'src/app/game/models/sprite-tile.model';
 import { GSM } from '../../../game-state-manager.service';
 
@@ -10,47 +10,30 @@ export class TerrainTreeBrushEventHandler {
     GSM.EventController.cellMouseEntered.subscribe(this.onMouseEnteredCell.bind(this));
   }
 
-  // adds the drawable terrain id to the cell clicked
   private onEmptyCellClicked(cell: Cell): void {
     if(GSM.EventController.generalActionFire.value.name === "paintingTerrain") {
       const drawableTile = GSM.EventController.generalActionFire.value.data as {id: string}
-      // const northCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.North, elevation)
-      // const northEastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.NorthEast, elevation)
-      // const eastCell = GSM.CellNeighborsController.getImmediateNeighbor(cell, NeighborLocation.East, elevation)
-      // const downCell = GSM.CellNeighborsController.getImmediateNeighborCell(cell, NeighborLocation.Down)
-      // const downEastCell = GSM.CellNeighborsController.getImmediateNeighborCell(cell, NeighborLocation.DownEast)
-      // const downNorthCell = GSM.CellNeighborsController.getImmediateNeighborCell(cell, NeighborLocation.DownNorth)
-      // const downNorthEastCell = GSM.CellNeighborsController.getImmediateNeighborCell(cell, NeighborLocation.DownNorthEast)
-      
-      // prevents you from drawing b
+
       let mouseHoveringZAsset = GSM.MouseController.hoveringGridAsset
       let hoveringZAxis = GSM.MouseController.hoveringZAxisAtMouseDown
       if(!mouseHoveringZAsset) { 
         mouseHoveringZAsset = {zIndex: 0, cell: cell} as any
       }
       const itemDetails = drawableItems.find(item => item.id === drawableTile.id)
-      // console.log(mouseHoveringZ)
-      const newCell = GSM.GridController.getCellByLocation(mouseHoveringZAsset.cell.location.x, mouseHoveringZAsset.cell.location.y)
+      const newCell = GSM.GridController.getCellByLocation(mouseHoveringZAsset.cell.location.x, mouseHoveringZAsset.cell.location.y, GSM.RotationController.currentRotation)
       const northCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.North)
       const northEastCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.NorthEast)
       const eastCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.East)       
-      // console.log(GSM.GridAssetController.getAsset(newCell, mouseHoveringZ-1, RenderingLayers.TerrainLayer))
       const newId = GSM.GridAssetController.getAsset(newCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
       const northId = GSM.GridAssetController.getAsset(northCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
       const northEastId = GSM.GridAssetController.getAsset(northEastCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
       const eastId = GSM.GridAssetController.getAsset(eastCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId === itemDetails.id
-     
-      // console.log((newId && northId && northEastId && eastId))
 
       if(hoveringZAxis !== 0 && !(newId && northId && northEastId && eastId)) {
         return
       }
-
-
-      const maps = GSM.GameData.map
-            
-      for(let i = 0; i < itemDetails.variableHeight; i++) {
-       
+          
+      for(let i = 0; i < itemDetails.variableHeight; i++) {       
         const newGridAsset = new GridAsset<TerrainTile>()
         newGridAsset.zIndex = hoveringZAxis + i
         newGridAsset.tile = new TerrainTile()
@@ -93,7 +76,6 @@ export class TerrainTreeBrushEventHandler {
           GSM.GridAssetController.addAsset(northGridAsset1, northCell, northGridAsset1.zIndex, RenderingLayers.TerrainLayer)
         }
          
-
         if(!northEastCell.assets[hoveringZAxis + i + 1]) {
           const northEastGridAsset1 = new GridAsset<TerrainTile>()
           northEastGridAsset1.zIndex = hoveringZAxis + i + 1
@@ -101,7 +83,6 @@ export class TerrainTreeBrushEventHandler {
           GSM.GridAssetController.addAsset(northEastGridAsset1, northEastCell, northEastGridAsset1.zIndex, RenderingLayers.TerrainLayer)
         }
          
-
         if(!eastCell.assets[hoveringZAxis + i + 1]) {
           const eastGridAsset1 = new GridAsset<TerrainTile>()
           eastGridAsset1.zIndex = hoveringZAxis + i + 1

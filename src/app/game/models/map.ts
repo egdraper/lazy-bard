@@ -96,3 +96,10 @@ export class MousePosition {
   posX: number
   posY: number
 }
+
+export enum MapRotationIndex {
+  northUp = 0,
+  westUp = 1,
+  southUp = 2,
+  eastUp = 3
+}

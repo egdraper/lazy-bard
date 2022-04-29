@@ -1,6 +1,6 @@
-import { DrawableItemViewModel } from "../models/sprite-tile.model";
-import { RockWall } from "./rock-wall-terrain.db";
-import { trees } from "./trees.db";
+import { DrawableItemViewModel } from "../models/sprite-tile.model"
+import { RockWall } from "./rock-wall-terrain.db"
+import { trees } from "./trees.db"
 
 export const drawableItems: DrawableItemViewModel[] = [
   {

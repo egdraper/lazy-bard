@@ -9,11 +9,10 @@ import { Settings } from './models/settings';
 import { CanvasModuleController } from './controllers/canvas-module.controller';
 import { Extensions } from './extensions.register';
 import { ImagesController } from './controllers/images.controller';
-import { ElevationController } from './controllers/elevation.controller';
 import { CellNeighborsController } from './controllers/cell-neighbors.controller';
 import { GameData } from './game-data';
 import { MouseController } from './controllers/mouse.controller';
-import { GridAssetController } from './controllers/grid-asset.controller';
+import { AssetController } from './controllers/asset.controller';
 import { RotationController } from './controllers/rotation.controller';
 @Injectable({
   providedIn: 'root'
@@ -27,7 +26,6 @@ export class GSM {
   public static CanvasController: CanvasController
   public static CanvasModuleController: CanvasModuleController
   public static CellNeighborsController: CellNeighborsController
-  public static ElevationController: ElevationController
   public static EventController: EventController
   public static Extensions: Extensions
   public static FrameController: FrameController
@@ -35,7 +33,7 @@ export class GSM {
   public static ImageController: ImagesController
   public static RendererController: RendererController
   public static MouseController: MouseController
-  public static GridAssetController: GridAssetController
+  public static GridAssetController: AssetController
   public static RotationController: RotationController
   public static Settings: Settings
   public loadingFinished = false
@@ -49,7 +47,6 @@ export class GSM {
     // Order Matters
     GSM.GameData = new GameData()
     GSM.Settings = new Settings()
-
     GSM.CanvasController = new CanvasController()
     GSM.FrameController = new FrameController()
     GSM.EventController = new EventController()
@@ -57,11 +54,10 @@ export class GSM {
     GSM.RendererController = new RendererController() 
     GSM.Extensions = new Extensions() 
     GSM.GridController = new MapController()
-    GSM.ElevationController = new ElevationController()
+    GSM.RotationController = new RotationController()
     GSM.GridController.createGameMap({x: width, y: height})
     GSM.ImageController = new ImagesController()   
-    GSM.GridAssetController = new GridAssetController()
-    GSM.RotationController = new RotationController()
+    GSM.GridAssetController = new AssetController()
     GSM.GameData.map.baseTexture = baseTexture
     
     //Order Doesn't Matter

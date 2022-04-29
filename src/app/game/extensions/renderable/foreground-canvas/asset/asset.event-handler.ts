@@ -51,14 +51,14 @@ export class PlayableAssetEventHandler {
     // setup asset
     const playerAsset = new Asset();
     playerAsset.tile = new AssetTile(RenderingLayers.CharacterLayer)
-    // playerAsset.assetTile.assetDrawRules = assetItems.find(item => item.id === "standardSmallItem")
+    // playerAsset.tile.assetDrawRules = assetItems.find(item => item.id === "standardSmallItem")
     playerAsset.tile.assetDrawRules = assetItems.find(item => item.id === "standardCreature")
     playerAsset.tile.animation = new SpriteAnimation()
     // playerAsset.movement = new Skip(playerAsset)
     playerAsset.movement = new Running(playerAsset)
     playerAsset.cell = cell
     playerAsset.movementOffset = new Position(cell.position.x, cell.position.y, 0)
-    // playerAsset.assetTile.imageUrl = 'assets/images/item_002.png';
+    // playerAsset.tile.imageUrl = 'assets/images/item_002.png';
     playerAsset.tile.imageUrl = 'assets/images/character_012.png';
     playerAsset.animating = true
     

@@ -1,7 +1,7 @@
 
 import { GSM } from "../game-state-manager.service"
-import { Cell, Grid, MousePosition } from "../models/map"
-import { GridAsset, Tile } from "../models/sprite-tile.model"
+import { Cell, MousePosition } from "../models/map"
+import { GridAsset } from "../models/sprite-tile.model"
 import { getHoveredOverGridAsset } from "./utils/selected-sprite-tile"
 
 export class MouseController {
@@ -40,7 +40,6 @@ export class MouseController {
   
   private onMouseCellEnter(cell: Cell): void {
     this.selectTerrainTile(cell)
-    // console.log(this.hoveringZAxisAtMouseDown)
   } 
 
   private setMouseDetails(event: MousePosition): void {
@@ -50,6 +49,7 @@ export class MouseController {
     const hoveringCell = GSM.GridController.getCellByPosition(
       this.hoveringPosX,
       this.hoveringPosY,
+      GSM.RotationController.currentRotation
     )
     
     if(hoveringCell && this.hoveringCellId !== hoveringCell.id) {

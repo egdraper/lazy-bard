@@ -1,7 +1,7 @@
-import { Asset } from 'src/app/game/models/sprite-tile.model';
-import { GSM } from '../../../../game-state-manager.service';
-import { RenderingLayers } from '../../../../models/map';
-import { Renderer } from '../../../../models/renderer';
+import { Asset } from 'src/app/game/models/sprite-tile.model'
+import { GSM } from '../../../../game-state-manager.service'
+import { RenderingLayers } from '../../../../models/map'
+import { Renderer } from '../../../../models/renderer'
 
 
 export class PlayableAssetRenderer implements Renderer {
@@ -9,8 +9,8 @@ export class PlayableAssetRenderer implements Renderer {
   public renderingLayer: RenderingLayers = RenderingLayers.CharacterLayer
 
   public onDraw(asset: Asset): void {
-    this.ctx.fillStyle = '#424247';
-    this.ctx.beginPath();
+    this.ctx.fillStyle = '#424247'
+    this.ctx.beginPath()
     this.ctx.ellipse(
       asset.movementOffset.x + GSM.Settings.blockSize / 2,
       asset.movementOffset.y + GSM.Settings.blockSize / 2,
@@ -19,8 +19,8 @@ export class PlayableAssetRenderer implements Renderer {
        0, 
        0, 
        Math.PI * 2
-       );   
-    this.ctx.fill();
+       )   
+    this.ctx.fill()
     
     this.ctx.drawImage(
       GSM.ImageController.getImage(asset.tile.imageUrl),
@@ -32,7 +32,7 @@ export class PlayableAssetRenderer implements Renderer {
       asset.movementOffset.y + asset.tile.assetDrawRules.yPosOffset + asset.movementOffset.z,
       asset.tile.assetDrawRules.drawSize.x,
       asset.tile.assetDrawRules.drawSize.y
-    );
+    )
 
   }
 }

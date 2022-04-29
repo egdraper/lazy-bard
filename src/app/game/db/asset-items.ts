@@ -1,5 +1,4 @@
 import { AssetItemsViewModel } from "../models/asset.model";
-import { Size } from "../models/map"
 
 export const assetItems: AssetItemsViewModel[]  = [
   {

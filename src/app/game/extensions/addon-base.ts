@@ -1,11 +1,9 @@
-import { GSM } from "../game-state-manager.service";
-import { CanvasCTX, Extension } from "../models/extension.model";
-
-import { RenderingLayers } from "../models/map";
-import { CanvasLayerExtension, Renderer } from "../models/renderer";
+import { GSM } from "../game-state-manager.service"
+import { CanvasCTX, Extension } from "../models/extension.model"
+import { CanvasLayerExtension, Renderer } from "../models/renderer"
 
 export abstract class CanvasModule {
-    public abstract extensions: Extension[];
+    public abstract extensions: Extension[]
     public abstract ctx: CanvasCTX    
     
     private _renderers: Renderer[] = []
@@ -23,7 +21,7 @@ export abstract class CanvasModule {
           await extension.init()
         }
       }
-      this._renderers = this.extensions.map((extension: CanvasLayerExtension) => extension.renderer).filter(renderer => renderer);
+      this._renderers = this.extensions.map((extension: CanvasLayerExtension) => extension.renderer).filter(renderer => renderer)
     }
   }
   

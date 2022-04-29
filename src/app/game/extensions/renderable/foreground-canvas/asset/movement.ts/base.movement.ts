@@ -1,4 +1,5 @@
 import { Subscription } from "rxjs"
+import { RotationController } from "src/app/game/controllers/rotation.controller"
 import { Asset } from "src/app/game/models/sprite-tile.model"
 import { GSM } from "../../../../../game-state-manager.service"
 import { Cell, RenderingLayers } from "../../../../../models/map"
@@ -159,7 +160,7 @@ export abstract class Movement {
 
   protected checkForFinishLocation(): void {    
     if (this.cellTrackPosX % (GSM.Settings.blockSize) === 0 && this.cellTrackPosY % (GSM.Settings.blockSize) === 0) {
-      const newCell = GSM.GridController.getCellByPosition(this.cellTrackPosX, this.cellTrackPosY)
+      const newCell = GSM.GridController.getCellByPosition(this.cellTrackPosX, this.cellTrackPosY, GSM.RotationController.currentRotation)
       
       GSM.GridAssetController.switchAssetToNewCell(
         this.asset,
