@@ -1,30 +1,29 @@
 import { Subject } from 'rxjs'
 import { GSM } from '../game-state-manager.service'
-import { Cell, RenderingLayers, GameMap, Grid, Size } from '../models/map'
+import { Cell, RenderingLayers, GameMap, Grid, Size, MapRotationIndex } from '../models/map'
 
-const DEFAULT_ITERATOR = 0
+const DEFAULT_ITERATOR = MapRotationIndex.northUp
 
 export class MapController {
   public newGridCreated: Subject<Grid> = new Subject<Grid>()  
   public layerIterator: RenderingLayers[] = []
   public gridIterator: {[rotation: number]: Cell[]} = {}
 
-  public iterateCells(iteratorId: number, callBack: (cell: Cell) => void): void {
-    this.gridIterator[iteratorId].forEach((cell) => {
+  public iterateCells(callBack: (cell: Cell) => void): void {
+    this.gridIterator[GSM.RotationController.currentRotation].forEach((cell) => {
       callBack(cell)
     })
   }
 
-  public iterateYCells(x: number, iteratorId: number, callBack: (cell: Cell) => void): void {
+  public iterateYCells(x: number, callBack: (cell: Cell) => void): void {
     for(let y = 0; y < GSM.GameData.map.size.y; y++) {
-      callBack(this.getCellByLocation(x, y, iteratorId))
+      callBack(this.getCellByLocation(x, y))
     }
   }
 
   public getCellByPosition(
     x: number,
     y: number,
-    iteratorId: number
   ): Cell {
     while (x % GSM.Settings.blockSize !== 0) {
       x--
@@ -33,11 +32,11 @@ export class MapController {
       y--
     }
 
-    return GSM.GridController.gridIterator[iteratorId].find(a => a.position.x === x && a.position.y === y)
+    return GSM.GridController.gridIterator[GSM.RotationController.currentRotation].find(a => a.position.x === x && a.position.y === y)
   }
 
-  public getCellByLocation(x: number, y: number, iteratorId: number): Cell {
-    return GSM.GridController.gridIterator[iteratorId].find(a => a.location.x === x && a.location.y === y)
+  public getCellByLocation(x: number, y: number): Cell {
+    return GSM.GridController.gridIterator[GSM.RotationController.currentRotation].find(a => a.location.x === x && a.location.y === y)
   }
 
   public getCellById(cellId: string): Cell {

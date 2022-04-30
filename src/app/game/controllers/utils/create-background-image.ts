@@ -13,7 +13,7 @@ export function generateBackgroundImage(renderers: Renderer[]): HTMLImageElement
       tempCTX = renderer.ctx
       renderer.ctx = GSM.CanvasController.fullImageCTX
 
-      GSM.GridController.iterateCells(MapRotationIndex.northUp, (cell) => {
+      GSM.GridController.iterateCells((cell) => {
         if(renderer.beforeDraw) {
           renderer.beforeDraw(cell.backgroundAsset)
         }

@@ -1,9 +1,9 @@
-import { GSM } from '../game-state-manager.service';
-import { MapRotationIndex } from '../models/map';
-import { Asset } from '../models/sprite-tile.model';
+import { GSM } from '../game-state-manager.service'
+import { MapRotationIndex } from '../models/map'
+import { Asset } from '../models/sprite-tile.model'
 
 export class RotationController {
-  public currentRotation: MapRotationIndex = MapRotationIndex.northUp;
+  public currentRotation: MapRotationIndex = MapRotationIndex.northUp
 
   constructor() {
     GSM.GridController.newGridCreated.subscribe(this.addRotatedGridIterators.bind(this))
@@ -34,20 +34,20 @@ export class RotationController {
   } 
 
   public rotateClockwise(): void {
-    const map = GSM.GameData.map;
+    const map = GSM.GameData.map
 
     if (this.currentRotation === MapRotationIndex.northUp) {
-      let newX = map.size.x - 1;
-      let newY = 0;
+      let newX = map.size.x - 1
+      let newY = 0
 
       for (let y = 0; y < map.size.y; y++) {
         newY = 0;
         for (let x = 0; x < map.size.x; x++) {
-          const cell = GSM.GridController.getCellById(`x${x}:y${y}`);          
-            cell.location.x = newX;
-            cell.location.y = newY;
-            cell.position.x = newX * GSM.Settings.blockSize;
-            cell.position.y = newY * GSM.Settings.blockSize;
+          const cell = GSM.GridController.getCellById(`x${x}:y${y}`)       
+            cell.location.x = newX
+            cell.location.y = newY
+            cell.position.x = newX * GSM.Settings.blockSize
+            cell.position.y = newY * GSM.Settings.blockSize
 
             const assets = GSM.GridAssetController.getAssetsByCell(cell)
             assets.forEach((asset: Asset) => {
@@ -57,27 +57,27 @@ export class RotationController {
                 asset.movement.resetTrackingToCell(cell)
               }
             })
-          newY++;
+          newY++
         }
-        newX--;
+        newX--
       }
     }
 
 
     if (this.currentRotation === MapRotationIndex.westUp) {
-      let newX = map.size.x - 1;
-      let newY = map.size.y - 1;
+      let newX = map.size.x - 1
+      let newY = map.size.y - 1
 
       for (let y = 0; y < map.size.y; y++) {
         newY = map.size.y - 1;
         for (let x = 0; x < map.size.x; x++) {
 
-          const cell = GSM.GridController.getCellById(`x${x}:y${y}`);
+          const cell = GSM.GridController.getCellById(`x${x}:y${y}`)
 
-          cell.location.x = newY;
-          cell.location.y = newX;
-          cell.position.x = newY * GSM.Settings.blockSize;
-          cell.position.y = newX * GSM.Settings.blockSize;
+          cell.location.x = newY
+          cell.location.y = newX
+          cell.position.x = newY * GSM.Settings.blockSize
+          cell.position.y = newX * GSM.Settings.blockSize
          
           const assets = GSM.GridAssetController.getAssetsByCell(cell)
           assets.forEach((asset: Asset) => {
@@ -88,26 +88,26 @@ export class RotationController {
             }
           })
 
-          newY--;
+          newY--
         }
-        newX--;
+        newX--
       }
     }
 
     if (this.currentRotation === MapRotationIndex.southUp) {
-      let newX = 0;
-      let newY = map.size.y - 1;
+      let newX = 0
+      let newY = map.size.y - 1
 
       for (let y = 0; y < map.size.y; y++) {
         newY = map.size.y - 1;
         for (let x = 0; x < map.size.x; x++) {
 
-          const cell = GSM.GridController.getCellById(`x${x}:y${y}`);
+          const cell = GSM.GridController.getCellById(`x${x}:y${y}`)
 
-          cell.location.x = newX;
-          cell.location.y = newY;
-          cell.position.x = newX * GSM.Settings.blockSize;
-          cell.position.y = newY * GSM.Settings.blockSize;
+          cell.location.x = newX
+          cell.location.y = newY
+          cell.position.x = newX * GSM.Settings.blockSize
+          cell.position.y = newY * GSM.Settings.blockSize
 
           const assets = GSM.GridAssetController.getAssetsByCell(cell)
           assets.forEach((asset: Asset) => {
@@ -117,25 +117,25 @@ export class RotationController {
               asset.movement.resetTrackingToCell(cell)
             }
           })
-          newY--;
+          newY--
         }
-        newX++;
+        newX++
       }
     }
 
     if (this.currentRotation === MapRotationIndex.eastUp) {
-      let newX = 0;
-      let newY = 0;
+      let newX = 0
+      let newY = 0
 
       for (let y = 0; y < map.size.y; y++) {
         newY = 0
         for (let x = 0; x < map.size.x; x++) {
-          const cell = GSM.GridController.getCellById(`x${x}:y${y}`);
+          const cell = GSM.GridController.getCellById(`x${x}:y${y}`)
 
-          cell.location.x = newY;
-          cell.location.y = newX;
-          cell.position.x = newY * GSM.Settings.blockSize;
-          cell.position.y = newX * GSM.Settings.blockSize;
+          cell.location.x = newY
+          cell.location.y = newX
+          cell.position.x = newY * GSM.Settings.blockSize
+          cell.position.y = newX * GSM.Settings.blockSize
 
           const assets = GSM.GridAssetController.getAssetsByCell(cell)
           assets.forEach((asset: Asset) => {
@@ -146,16 +146,16 @@ export class RotationController {
             }
           })
 
-          newY++;
+          newY++
         }
-        newX++;
+        newX++
       }
     }
 
     if (this.currentRotation === 3) {
-      this.currentRotation = 0;
+      this.currentRotation = 0
     } else {
-      this.currentRotation++;
+      this.currentRotation++
     }
 
     GSM.GridAssetController.refreshAssetIterator()

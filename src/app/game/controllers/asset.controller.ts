@@ -106,7 +106,7 @@ export class AssetController {
   public refreshAssetIterator(): void {
     this.assetIterator = []
 
-    GSM.GridController.iterateCells(GSM.RotationController.currentRotation, (cell) => {
+    GSM.GridController.iterateCells((cell) => {
       const gridAssets = this.getAssetsByCell(cell)
       gridAssets.forEach((gridAsset) => this.assetIterator.push(gridAsset))
     })

@@ -38,7 +38,7 @@ export class CanvasComponent implements AfterViewInit {
     const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale)
     const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale)
     
-    const cell = GSM.GridController.getCellByPosition(mousePosX, mousePosY, GSM.RotationController.currentRotation)
+    const cell = GSM.GridController.getCellByPosition(mousePosX, mousePosY)
     
     GSM.EventController.cellClick.next(cell)
     GSM.EventController.mouseClick.next({x: mousePosX, y: mousePosY})

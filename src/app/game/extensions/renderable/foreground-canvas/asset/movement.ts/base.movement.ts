@@ -160,7 +160,7 @@ export abstract class Movement {
 
   protected checkForFinishLocation(): void {    
     if (this.cellTrackPosX % (GSM.Settings.blockSize) === 0 && this.cellTrackPosY % (GSM.Settings.blockSize) === 0) {
-      const newCell = GSM.GridController.getCellByPosition(this.cellTrackPosX, this.cellTrackPosY, GSM.RotationController.currentRotation)
+      const newCell = GSM.GridController.getCellByPosition(this.cellTrackPosX, this.cellTrackPosY)
       
       GSM.GridAssetController.switchAssetToNewCell(
         this.asset,

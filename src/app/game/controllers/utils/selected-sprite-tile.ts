@@ -5,7 +5,7 @@ import { GridAsset } from "../../models/sprite-tile.model"
 export function getHoveredOverGridAsset(hoveringCell: Cell): GridAsset {
   let selectedAsset: GridAsset
   
-  GSM.GridController.iterateYCells(hoveringCell.location.x, GSM.RotationController.currentRotation, cell => {
+  GSM.GridController.iterateYCells(hoveringCell.location.x, cell => {
     const assets = GSM.GridAssetController.getAssetsByCell(cell)
     assets.forEach((asset) => {
       GSM.GridController.layerIterator.forEach(layer => {

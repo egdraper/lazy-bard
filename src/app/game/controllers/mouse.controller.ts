@@ -48,8 +48,7 @@ export class MouseController {
     
     const hoveringCell = GSM.GridController.getCellByPosition(
       this.hoveringPosX,
-      this.hoveringPosY,
-      GSM.RotationController.currentRotation
+      this.hoveringPosY
     )
     
     if(hoveringCell && this.hoveringCellId !== hoveringCell.id) {
