@@ -1,9 +1,9 @@
 import { Cell, MapRotationIndex, RenderingLayers } from "src/app/game/models/map"
 import { BackgroundAsset, BackgroundTile } from "src/app/game/models/sprite-tile.model"
-import { backgroundSprites } from "../../../../db/background.db"
-import { GSM } from "../../../../game-state-manager.service"
-import { CanvasLayerExtension } from "../../../../models/renderer"
-import { TextureSprite } from "../../../../models/sprites"
+import { backgroundSprites } from "../../db/background.db"
+import { GSM } from "../../game-state-manager.service"
+import { CanvasLayerExtension } from "../../models/renderer"
+import { TextureSprite } from "../../models/sprites"
 import { BaseTextureRandomGenerator } from "./base-texture.generator"
 import { BaseTextureRenderer } from "./base-texture.renderer"
 

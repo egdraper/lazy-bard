@@ -1,7 +1,7 @@
 import { SpriteLocation } from "src/app/game/models/map"
-import { GSM } from "../../../../game-state-manager.service"
-import { TerrainTile } from "../../../../models/sprite-tile.model"
-import { Sprite, TextureSprite } from "../../../../models/sprites"
+import { GSM } from "../../game-state-manager.service"
+import { TerrainTile } from "../../models/sprite-tile.model"
+import { Sprite, TextureSprite } from "../../models/sprites"
 
 export class BaseTextureRandomGenerator {
   public static autoFillBackgroundTerrain(tile: TerrainTile, baseTexture: TextureSprite) {

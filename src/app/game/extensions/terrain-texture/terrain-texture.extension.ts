@@ -1,5 +1,5 @@
-import { GSM } from '../../../../game-state-manager.service'
-import { drawableItems } from '../../../../db/drawable-items.db'
+import { GSM } from '../../game-state-manager.service'
+import { drawableItems } from '../../db/drawable-items.db'
 import { TerrainPaintBrushRenderer } from './terrain-texture.renderer'
 import { CanvasLayerExtension } from 'src/app/game/models/renderer'
 import { DrawableItemViewModel } from 'src/app/game/models/sprite-tile.model'

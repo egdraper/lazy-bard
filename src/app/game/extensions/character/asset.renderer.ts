@@ -1,7 +1,7 @@
 import { Asset } from 'src/app/game/models/sprite-tile.model'
-import { GSM } from '../../../../game-state-manager.service'
-import { RenderingLayers } from '../../../../models/map'
-import { Renderer } from '../../../../models/renderer'
+import { GSM } from '../../game-state-manager.service'
+import { RenderingLayers } from '../../models/map'
+import { Renderer } from '../../models/renderer'
 
 
 export class PlayableAssetRenderer implements Renderer {

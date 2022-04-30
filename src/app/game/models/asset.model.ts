@@ -1,4 +1,4 @@
-import { Movement } from "../extensions/renderable/foreground-canvas/asset/movement.ts/base.movement"
+import { Movement } from "../extensions/character/movement.ts/base.movement"
 import { Cell, Position, Size } from "./map"
 import { AssetTile } from "./sprite-tile.model"
 

@@ -1,8 +1,8 @@
 import { Subscription } from "rxjs"
 import { RotationController } from "src/app/game/controllers/rotation.controller"
 import { Asset } from "src/app/game/models/sprite-tile.model"
-import { GSM } from "../../../../../game-state-manager.service"
-import { Cell, RenderingLayers } from "../../../../../models/map"
+import { GSM } from "../../../game-state-manager.service"
+import { Cell, RenderingLayers } from "../../../models/map"
 import { TravelPath } from "../shortest-path"
 
 export abstract class Movement {  

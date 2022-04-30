@@ -10,7 +10,6 @@ export class Skip extends Movement {
     super()
   }
 
-  
   public move(event: {assetPosX: number, assetPosY: number, assetPosZ: number, pathTrackPosX: number, pathTrackPosY: number, speed: number, distanceToNextCell: number, distanceToFinalCell: number}): {newPosX: number, newPosY: number, newPosZ:number} {
     this.asset.tile.animation.changeEveryNthFrame = 8
     if(event.distanceToNextCell > (GSM.Settings.blockSize / 2)) {

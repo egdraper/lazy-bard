@@ -1,6 +1,6 @@
 import { Asset } from "src/app/game/models/sprite-tile.model"
-import { GSM } from "../../../../game-state-manager.service"
-import { Cell, RenderingLayers } from "../../../../models/map"
+import { GSM } from "../../game-state-manager.service"
+import { Cell, RenderingLayers } from "../../models/map"
 
 export interface Visited {
   cell?: Cell

@@ -2,10 +2,10 @@ import { generateBackgroundImage } from "src/app/game/controllers/utils/create-b
 import { GSM } from "src/app/game/game-state-manager.service";
 import { CanvasLayerExtension } from "src/app/game/models/renderer";
 import { GeneralAction } from "src/app/game/models/settings";
-import { CanvasCTX } from "../../../models/extension.model";
-import { CanvasModule } from "../../addon-base";
-import { BaseTextureExtension } from "./base-texture/base-texture.extension";
-import { GridLineExtension } from "./grid-lines/grid-lines.extension";
+import { CanvasCTX } from "../models/extension.model";
+import { CanvasModule } from "../extensions/addon-base";
+import { BaseTextureExtension } from "../extensions/base-texture/base-texture.extension";
+import { GridLineExtension } from "../extensions/grid-lines/grid-lines.extension";
 
 export class BaseCanvasModule extends CanvasModule {
   public ctx = CanvasCTX.Background

@@ -2,11 +2,8 @@
 import { assetItems } from 'src/app/game/db/asset-items';
 import { Cell, Position, RenderingLayers } from 'src/app/game/models/map';
 import { Asset, AssetTile, GridAsset, SpriteAnimation } from 'src/app/game/models/sprite-tile.model';
-import { GSM } from '../../../../game-state-manager.service';
+import { GSM } from '../../game-state-manager.service';
 import { Running } from './movement.ts/run.movement';
-import { Skip } from './movement.ts/skip.movement';
-import { Sneaking } from './movement.ts/sneak.movement';
-import { Walking } from './movement.ts/walking.movement';
 
 export class PlayableAssetEventHandler {
   public selectedPlayableAssets: Asset[] = []

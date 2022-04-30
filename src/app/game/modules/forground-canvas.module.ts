@@ -1,11 +1,11 @@
 
 import { CanvasCTX } from "src/app/game/models/extension.model"
 import { CanvasLayerExtension } from "src/app/game/models/renderer"
-import { CanvasModule } from "../../addon-base"
+import { CanvasModule } from "../extensions/addon-base"
 
-import { PlayableAssetExtension } from "./asset/asset.extension"
-import { SelectionIndicatorExtension } from "./selection-indicator/selection-indicator.extension"
-import { TerrainTextureExtension } from "./terrain-texture/terrain-texture.extension"
+import { PlayableAssetExtension } from "../extensions/character/asset.extension"
+import { SelectionIndicatorExtension } from "../extensions/selection-indicator/selection-indicator.extension"
+import { TerrainTextureExtension } from "../extensions/terrain-texture/terrain-texture.extension"
 
 export class ForegroundCanvasModule extends CanvasModule {
   public ctx = CanvasCTX.Foreground

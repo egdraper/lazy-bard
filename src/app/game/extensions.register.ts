@@ -1,7 +1,7 @@
-import { BaseCanvasModule } from './extensions/renderable/base-canvas/base-canvas-layer.module';
-import { ForegroundCanvasModule } from './extensions/renderable/foreground-canvas/forground-canvas-layer.module';
-import { TerrainEraserExtension } from './extensions/non-renderable/terrain-eraser/eraser.event.extension';
-import { TerrainTreeBrushExtension } from './extensions/non-renderable/terrain-brush/terrain-brush.extension';
+import { BaseCanvasModule } from './modules/base-canvas.module';
+import { ForegroundCanvasModule } from './modules/forground-canvas.module';
+import { TerrainEraserExtension } from './extensions/terrain-eraser/eraser.event.extension';
+import { TerrainTreeBrushExtension } from './extensions/terrain-brush/terrain-brush.extension';
 
 export class Extensions {
     public addon = [

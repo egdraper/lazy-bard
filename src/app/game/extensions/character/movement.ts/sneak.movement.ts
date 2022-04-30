@@ -1,8 +1,7 @@
-import { Speed } from "src/app/game/models/asset.model"
-import { Movement } from "./base.movement"
-import { ShortestPath, TravelPath } from "../shortest-path"
 import { GSM } from "src/app/game/game-state-manager.service"
 import { Asset } from "src/app/game/models/sprite-tile.model"
+import { ShortestPath, TravelPath } from "../shortest-path"
+import { Movement } from "./base.movement"
 
 export class Sneaking extends Movement {   
   public travelPath: TravelPath = new ShortestPath()

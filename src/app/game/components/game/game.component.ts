@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, HostListener } from '@angular/core';
-import { terrainCleanup } from './controllers/utils/terrain-cleanup';
-import { GSM } from './game-state-manager.service';
+import { terrainCleanup } from '../../controllers/utils/terrain-cleanup';
+import { GSM } from '../../game-state-manager.service';
+
 
 @Component({
   selector: 'gm-game',

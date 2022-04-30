@@ -2,7 +2,7 @@ import { terrainCleanup } from 'src/app/game/controllers/utils/terrain-cleanup';
 import { drawableItems } from 'src/app/game/db/drawable-items.db';
 import { Cell, NeighborLocation, RenderingLayers } from 'src/app/game/models/map';
 import { GridAsset, TerrainTile } from 'src/app/game/models/sprite-tile.model';
-import { GSM } from '../../../game-state-manager.service';
+import { GSM } from '../../game-state-manager.service';
 
 export class TerrainTreeBrushEventHandler {
   constructor() {

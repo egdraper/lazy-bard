@@ -1,8 +1,8 @@
 import { Renderer } from "src/app/game/models/renderer"
 import { TerrainAsset } from "src/app/game/models/sprite-tile.model"
-import { drawableItems } from "../../../../db/drawable-items.db"
-import { GSM } from "../../../../game-state-manager.service"
-import { RenderingLayers } from "../../../../models/map"
+import { drawableItems } from "../../db/drawable-items.db"
+import { GSM } from "../../game-state-manager.service"
+import { RenderingLayers } from "../../models/map"
 
 export class TerrainPaintBrushRenderer implements Renderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX

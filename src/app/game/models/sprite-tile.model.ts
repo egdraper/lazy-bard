@@ -1,4 +1,4 @@
-import { Movement } from '../extensions/renderable/foreground-canvas/asset/movement.ts/base.movement';
+import { Movement } from '../extensions/character/movement.ts/base.movement';
 import { AssetItemsViewModel, Speed } from './asset.model';
 import { Size, Location, SpriteLocation, Cell, Position, Grid, RenderingLayers } from './map';
 
