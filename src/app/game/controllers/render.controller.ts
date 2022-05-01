@@ -48,7 +48,7 @@ export class RendererController {
         return
       }
 
-      GSM.GridAssetController.iterateAsset(asset => {
+      GSM.AssetController.iterateAsset(asset => {
         if(asset.tile.layer !== renderer.renderingLayer) { return }
         if(renderer.beforeDraw) {
           renderer.beforeDraw(asset, frame)

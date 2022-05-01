@@ -138,7 +138,7 @@ export class ShortestPath extends TravelPath {
   }
 
   public isBadLocation(end: Cell): boolean {
-    return end.obstructions[this.asset.zIndex] || !!GSM.GridAssetController.getAssetByCellAtZ(end, this.asset.zIndex)
+    return end.obstructions[this.asset.zIndex] || !!GSM.AssetController.getAssetByCellAtZ(end, this.asset.zIndex)
   }
 
   private alternateDiagonal(visited: Visited, index: number): any {

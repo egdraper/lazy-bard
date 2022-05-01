@@ -28,7 +28,7 @@ export abstract class Movement {
   }
 
   constructor() {
-    GSM.EventController.keyDown.subscribe(this.setDirection.bind(this))
+    GSM.KeyController.keyDown.subscribe(this.setDirection.bind(this))
   }
 
   public abstract move(event: {assetPosX: number, assetPosY: number, assetPosZ: number, pathTrackPosX: number, pathTrackPosY: number, speed: number, distanceToNextCell: number, distanceToFinalCell: number}): {newPosX: number, newPosY: number, newPosZ: number} 
@@ -162,7 +162,7 @@ export abstract class Movement {
     if (this.cellTrackPosX % (GSM.Settings.blockSize) === 0 && this.cellTrackPosY % (GSM.Settings.blockSize) === 0) {
       const newCell = GSM.GridController.getCellByPosition(this.cellTrackPosX, this.cellTrackPosY)
       
-      GSM.GridAssetController.switchAssetToNewCell(
+      GSM.AssetController.switchAssetToNewCell(
         this.asset,
         this.previousCell,
         newCell,

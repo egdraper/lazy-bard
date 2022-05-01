@@ -24,14 +24,14 @@ export class CanvasComponent implements AfterViewInit {
 
   @HostListener("document:keydown", ["$event"])
   public onKeyDown(event: KeyboardEvent): void {
-    GSM.EventController.keyDown.next(event)
-    GSM.EventController.keysPressed.add(event.code)
+    GSM.KeyController.keyDown.next(event)
+    GSM.KeyController.keysPressed.add(event.code)
   }
 
   @HostListener("document:keyup", ["$event"])
   public onKeyUp(event: KeyboardEvent): void {
-    GSM.EventController.keyUp.next(event)
-    GSM.EventController.keysPressed.delete(event.code)
+    GSM.KeyController.keyUp.next(event)
+    GSM.KeyController.keysPressed.delete(event.code)
   }
 
   public onCellClick(event: MouseEvent): void {
@@ -40,12 +40,12 @@ export class CanvasComponent implements AfterViewInit {
     
     const cell = GSM.GridController.getCellByPosition(mousePosX, mousePosY)
     
-    GSM.EventController.cellClick.next(cell)
-    GSM.EventController.mouseClick.next({x: mousePosX, y: mousePosY})
+    GSM.MouseController.cellClick.next(cell)
+    GSM.MouseController.mouseClick.next({x: mousePosX, y: mousePosY})
     
-    const occupiedCell = GSM.GridAssetController.getAssetsByCell(cell)
+    const occupiedCell = GSM.AssetController.getAssetsByCell(cell)
     if(occupiedCell.length === 0) {
-      GSM.EventController.emptyCellClicked.next(cell)
+      GSM.MouseController.emptyCellClicked.next(cell)
     }
   }
 
@@ -53,22 +53,22 @@ export class CanvasComponent implements AfterViewInit {
     const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale)
     const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale)
 
-    GSM.EventController.keysPressed.add("mouseDown")
-    GSM.EventController.mouseDown.next({posX: mousePosX, posY: mousePosY})
+    GSM.KeyController.keysPressed.add("mouseDown")
+    GSM.MouseController.mouseDown.next({posX: mousePosX, posY: mousePosY})
   }
   
   public onMouseUp(event: MouseEvent): void {
     const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale)
     const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale)
 
-    GSM.EventController.mouseUp.next({posX: mousePosX, posY: mousePosY})
-    GSM.EventController.keysPressed.delete("mouseDown")
+    GSM.MouseController.mouseUp.next({posX: mousePosX, posY: mousePosY})
+    GSM.KeyController.keysPressed.delete("mouseDown")
   }
 
   public onMouseMove(event: MouseEvent): void {
     const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale)
     const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale)
-    GSM.EventController.mouseHover.next({posX: mousePosX, posY: mousePosY})
+    GSM.MouseController.mouseHover.next({posX: mousePosX, posY: mousePosY})
   }
 
   private setupCanvas(): void {

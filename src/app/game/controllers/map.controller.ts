@@ -10,7 +10,7 @@ export class MapController {
   public gridIterator: {[rotation: number]: Cell[]} = {}
 
   public iterateCells(callBack: (cell: Cell) => void): void {
-    this.gridIterator[GSM.RotationController.currentRotation].forEach((cell) => {
+    this.gridIterator[GSM.RotationController.currentRotationIndex].forEach((cell) => {
       callBack(cell)
     })
   }
@@ -32,11 +32,11 @@ export class MapController {
       y--
     }
 
-    return GSM.GridController.gridIterator[GSM.RotationController.currentRotation].find(a => a.position.x === x && a.position.y === y)
+    return GSM.GridController.gridIterator[GSM.RotationController.currentRotationIndex].find(a => a.position.x === x && a.position.y === y)
   }
 
   public getCellByLocation(x: number, y: number): Cell {
-    return GSM.GridController.gridIterator[GSM.RotationController.currentRotation].find(a => a.location.x === x && a.location.y === y)
+    return GSM.GridController.gridIterator[GSM.RotationController.currentRotationIndex].find(a => a.location.x === x && a.location.y === y)
   }
 
   public getCellById(cellId: string): Cell {

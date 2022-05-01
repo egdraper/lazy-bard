@@ -3,7 +3,7 @@ import { CanvasCTX } from "src/app/game/models/extension.model"
 import { CanvasLayerExtension } from "src/app/game/models/renderer"
 import { CanvasModule } from "../extensions/addon-base"
 
-import { PlayableAssetExtension } from "../extensions/character/asset.extension"
+import { PlayableAssetExtension } from "../extensions/character/character.extension"
 import { SelectionIndicatorExtension } from "../extensions/selection-indicator/selection-indicator.extension"
 import { TerrainTextureExtension } from "../extensions/terrain-texture/terrain-texture.extension"
 

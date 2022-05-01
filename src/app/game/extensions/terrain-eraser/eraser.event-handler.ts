@@ -2,11 +2,11 @@ import { GSM } from "src/app/game/game-state-manager.service"
 
 export class EraserEventHandler {
   constructor() {
-    GSM.EventController.mouseDown.subscribe(this.selectTerrainTile.bind(this))
+    GSM.MouseController.mouseDown.subscribe(this.selectTerrainTile.bind(this))
   }
 
   private selectTerrainTile() {
-    if(GSM.EventController.generalActionFire.value.name !== "deleteTerrain") { return }
+    if(GSM.ActionController.generalActionFire.value.name !== "deleteTerrain") { return }
     const selectedTerrain = GSM.MouseController.hoveringGridAsset
     
     if(selectedTerrain) {

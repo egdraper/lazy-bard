@@ -12,7 +12,7 @@ export function generateTerrainImage(renderers: Renderer[]): HTMLImageElement {
       tempCTX = renderer.ctx
       renderer.ctx = GSM.CanvasController.fullImageCTX
 
-      GSM.GridAssetController.iterateAsset((asset) => {
+      GSM.AssetController.iterateAsset((asset) => {
         if(renderer.beforeDraw) {
           renderer.beforeDraw(asset)
         }

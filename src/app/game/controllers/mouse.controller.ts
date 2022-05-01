@@ -1,10 +1,22 @@
 
+import { Subject } from "rxjs"
 import { GSM } from "../game-state-manager.service"
 import { Cell, MousePosition } from "../models/map"
 import { GridAsset } from "../models/sprite-tile.model"
 import { getHoveredOverGridAsset } from "./utils/selected-sprite-tile"
 
 export class MouseController {
+  // Events
+  public cellClick = new Subject<Cell>()
+  public emptyCellClicked = new Subject<Cell>()
+  public cellMouseEntered = new Subject<Cell>()
+ 
+  public mouseDown = new Subject()
+  public mouseUp = new Subject()
+  public mouseHover = new Subject()
+  public mouseClick = new Subject<{x: number, y: number}>()
+
+  // Hover state
   public hoveringPosX: number = 0
   public hoveringPosY: number = 0
   public hoveringCellId: string = ""
@@ -17,17 +29,17 @@ export class MouseController {
   public hoveringCellZAxisAtMouseDown: GridAsset
 
   constructor() {
-    GSM.EventController.mouseHover.subscribe(this.onMouseHover.bind(this))
-    GSM.EventController.cellMouseEntered.subscribe(this.onMouseCellEnter.bind(this))
-    GSM.EventController.mouseDown.subscribe(this.onMouseDown.bind(this))
-    GSM.EventController.mouseUp.subscribe(this.onMouseUp.bind(this))
+    this.mouseHover.subscribe(this.onMouseHover.bind(this))
+    this.cellMouseEntered.subscribe(this.onMouseCellEnter.bind(this))
+    this.mouseDown.subscribe(this.onMouseDown.bind(this))
+    this.mouseUp.subscribe(this.onMouseUp.bind(this))
   }
 
   private onMouseDown(event: MousePosition): void {
     const gridAsset = this.selectTerrainTile(this.hoveringCell)
     this.hoveringZAxisAtMouseDown = gridAsset?.zIndex || 0
     this.hoveringCellZAxisAtMouseDown = gridAsset
-    GSM.EventController.cellMouseEntered.next(this.hoveringCell)
+    this.cellMouseEntered.next(this.hoveringCell)
   }
 
   private onMouseUp(): void {
@@ -54,7 +66,7 @@ export class MouseController {
     if(hoveringCell && this.hoveringCellId !== hoveringCell.id) {
       this.hoveringCellId = hoveringCell.id
       this.hoveringCell = hoveringCell
-      GSM.EventController.cellMouseEntered.next(this.hoveringCell)
+      this.cellMouseEntered.next(this.hoveringCell)
     }
   }
 

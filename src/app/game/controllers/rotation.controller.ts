@@ -3,7 +3,7 @@ import { MapRotationIndex } from '../models/map'
 import { Asset } from '../models/sprite-tile.model'
 
 export class RotationController {
-  public currentRotation: MapRotationIndex = MapRotationIndex.northUp
+  public currentRotationIndex: MapRotationIndex = MapRotationIndex.northUp
 
   constructor() {
     GSM.GridController.newGridCreated.subscribe(this.addRotatedGridIterators.bind(this))
@@ -36,7 +36,7 @@ export class RotationController {
   public rotateClockwise(): void {
     const map = GSM.GameData.map
 
-    if (this.currentRotation === MapRotationIndex.northUp) {
+    if (this.currentRotationIndex === MapRotationIndex.northUp) {
       let newX = map.size.x - 1
       let newY = 0
 
@@ -49,7 +49,7 @@ export class RotationController {
             cell.position.x = newX * GSM.Settings.blockSize
             cell.position.y = newY * GSM.Settings.blockSize
 
-            const assets = GSM.GridAssetController.getAssetsByCell(cell)
+            const assets = GSM.AssetController.getAssetsByCell(cell)
             assets.forEach((asset: Asset) => {
               if(asset.movementOffset) {
                 asset.movementOffset.x = cell.position.x
@@ -64,7 +64,7 @@ export class RotationController {
     }
 
 
-    if (this.currentRotation === MapRotationIndex.westUp) {
+    if (this.currentRotationIndex === MapRotationIndex.westUp) {
       let newX = map.size.x - 1
       let newY = map.size.y - 1
 
@@ -79,7 +79,7 @@ export class RotationController {
           cell.position.x = newY * GSM.Settings.blockSize
           cell.position.y = newX * GSM.Settings.blockSize
          
-          const assets = GSM.GridAssetController.getAssetsByCell(cell)
+          const assets = GSM.AssetController.getAssetsByCell(cell)
           assets.forEach((asset: Asset) => {
             if(asset.movementOffset) {
               asset.movementOffset.x = cell.position.x
@@ -94,7 +94,7 @@ export class RotationController {
       }
     }
 
-    if (this.currentRotation === MapRotationIndex.southUp) {
+    if (this.currentRotationIndex === MapRotationIndex.southUp) {
       let newX = 0
       let newY = map.size.y - 1
 
@@ -109,7 +109,7 @@ export class RotationController {
           cell.position.x = newX * GSM.Settings.blockSize
           cell.position.y = newY * GSM.Settings.blockSize
 
-          const assets = GSM.GridAssetController.getAssetsByCell(cell)
+          const assets = GSM.AssetController.getAssetsByCell(cell)
           assets.forEach((asset: Asset) => {
             if(asset.movementOffset) {
               asset.movementOffset.x = cell.position.x
@@ -123,7 +123,7 @@ export class RotationController {
       }
     }
 
-    if (this.currentRotation === MapRotationIndex.eastUp) {
+    if (this.currentRotationIndex === MapRotationIndex.eastUp) {
       let newX = 0
       let newY = 0
 
@@ -137,7 +137,7 @@ export class RotationController {
           cell.position.x = newY * GSM.Settings.blockSize
           cell.position.y = newX * GSM.Settings.blockSize
 
-          const assets = GSM.GridAssetController.getAssetsByCell(cell)
+          const assets = GSM.AssetController.getAssetsByCell(cell)
           assets.forEach((asset: Asset) => {
             if(asset.movementOffset) {
               asset.movementOffset.x = cell.position.x
@@ -152,13 +152,13 @@ export class RotationController {
       }
     }
 
-    if (this.currentRotation === 3) {
-      this.currentRotation = 0
+    if (this.currentRotationIndex === 3) {
+      this.currentRotationIndex = 0
     } else {
-      this.currentRotation++
+      this.currentRotationIndex++
     }
 
-    GSM.GridAssetController.refreshAssetIterator()
+    GSM.AssetController.refreshAssetIterator()
   }
 
   public rotateCounterClockwise(): void {}

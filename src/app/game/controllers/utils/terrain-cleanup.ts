@@ -5,7 +5,7 @@ import { RenderingLayers, NeighborLocation } from "../../models/map"
 import { TerrainAsset } from "../../models/sprite-tile.model"
 
 export function terrainCleanup() {
-  GSM.GridAssetController.iterateAsset((asset: TerrainAsset) => {
+  GSM.AssetController.iterateAsset((asset: TerrainAsset) => {
     if(asset.tile.layer !== RenderingLayers.TerrainLayer) { return }
     const layer = RenderingLayers.TerrainLayer
     const neighbors = GSM.CellNeighborsController.getHorizontalNeighborsAsset(asset)

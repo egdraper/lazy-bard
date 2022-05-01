@@ -8,7 +8,7 @@ export class AssetController {
   private assetIterator: GridAsset[] = []
 
   constructor() {
-    GSM.EventController.cellClick.subscribe(this.onCellClicked.bind(this))
+    GSM.MouseController.cellClick.subscribe(this.onCellClicked.bind(this))
     GSM.FrameController.frameFire.subscribe(this.animateAsset.bind(this))
   }
 
@@ -48,13 +48,13 @@ export class AssetController {
 
   public switchAssetToNewCell(asset: GridAsset, currentCell: Cell, newCell: Cell, currentZIndex: number, newZIndex: number, currentLayer: RenderingLayers, newLayer: RenderingLayers) {
     asset.cell = newCell
-    GSM.GridAssetController.addAsset(asset, newCell, newZIndex, newLayer)
-    GSM.GridAssetController.removeAsset(currentCell, currentZIndex, currentLayer)
+    GSM.AssetController.addAsset(asset, newCell, newZIndex, newLayer)
+    GSM.AssetController.removeAsset(currentCell, currentZIndex, currentLayer)
   }
 
   public getSelectedAssets(): Asset[] {
     const assets = []
-    GSM.GridAssetController.iterateAsset((asset) => {
+    GSM.AssetController.iterateAsset((asset) => {
       if (asset.selected) {
         assets.push(asset)
       }
@@ -122,7 +122,7 @@ export class AssetController {
   }
 
   private animateAsset(frame: number): void {
-    GSM.GridAssetController.iterateAsset((asset: Asset) => {
+    GSM.AssetController.iterateAsset((asset: Asset) => {
       if (asset.animating) {
         if (frame % asset.tile.animation.changeEveryNthFrame === 0) {
           asset.movement.updateAnimation()

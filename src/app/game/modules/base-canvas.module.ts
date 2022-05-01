@@ -19,7 +19,7 @@ export class BaseCanvasModule extends CanvasModule {
 
   constructor() {
     super()
-    GSM.EventController.generalActionFire.subscribe(this.onGenerateBackground.bind(this))
+    GSM.ActionController.generalActionFire.subscribe(this.onGenerateBackground.bind(this))
   }
 
   private onGenerateBackground(event: GeneralAction): void {

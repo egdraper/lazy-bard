@@ -45,7 +45,7 @@ export class TerrainEdgeCalculator {
       let westMatch = false
       let northWestMatch = false
 
-      if(GSM.RotationController.currentRotation === MapRotationIndex.northUp) {
+      if(GSM.RotationController.currentRotationIndex === MapRotationIndex.northUp) {
         northMatch = neighborsTerrain.northMatch === terrainTile.drawWhen.northNeighbor || terrainTile.drawWhen.northNeighbor === null
         northEastMatch = neighborsTerrain.northEastMatch === terrainTile.drawWhen.northEastNeighbor || terrainTile.drawWhen.northEastNeighbor === null
         eastMatch = neighborsTerrain.eastMatch === terrainTile.drawWhen.eastNeighbor || terrainTile.drawWhen.eastNeighbor === null
@@ -56,7 +56,7 @@ export class TerrainEdgeCalculator {
         northWestMatch = neighborsTerrain.northWestMatch === terrainTile.drawWhen.northWestNeighbor || terrainTile.drawWhen.northWestNeighbor === null
       }
 
-      if(GSM.RotationController.currentRotation === MapRotationIndex.westUp) {
+      if(GSM.RotationController.currentRotationIndex === MapRotationIndex.westUp) {
         northMatch = neighborsTerrain.westMatch === terrainTile.drawWhen.northNeighbor || terrainTile.drawWhen.northNeighbor === null
         northEastMatch = neighborsTerrain.northWestMatch === terrainTile.drawWhen.northEastNeighbor || terrainTile.drawWhen.northEastNeighbor === null
         eastMatch = neighborsTerrain.northMatch === terrainTile.drawWhen.eastNeighbor || terrainTile.drawWhen.eastNeighbor === null
@@ -67,7 +67,7 @@ export class TerrainEdgeCalculator {
         northWestMatch = neighborsTerrain.southWestMatch === terrainTile.drawWhen.northWestNeighbor || terrainTile.drawWhen.northWestNeighbor === null
       }
 
-      if(GSM.RotationController.currentRotation === MapRotationIndex.southUp) {
+      if(GSM.RotationController.currentRotationIndex === MapRotationIndex.southUp) {
         northMatch = neighborsTerrain.southMatch === terrainTile.drawWhen.northNeighbor || terrainTile.drawWhen.northNeighbor === null
         northEastMatch = neighborsTerrain.southWestMatch === terrainTile.drawWhen.northEastNeighbor || terrainTile.drawWhen.northEastNeighbor === null
         eastMatch = neighborsTerrain.westMatch === terrainTile.drawWhen.eastNeighbor || terrainTile.drawWhen.eastNeighbor === null
@@ -78,7 +78,7 @@ export class TerrainEdgeCalculator {
         northWestMatch = neighborsTerrain.southEastMatch === terrainTile.drawWhen.northWestNeighbor || terrainTile.drawWhen.northWestNeighbor === null
       }
 
-      if(GSM.RotationController.currentRotation === MapRotationIndex.eastUp) {
+      if(GSM.RotationController.currentRotationIndex === MapRotationIndex.eastUp) {
         northMatch = neighborsTerrain.eastMatch === terrainTile.drawWhen.northNeighbor || terrainTile.drawWhen.northNeighbor === null
         northEastMatch = neighborsTerrain.southEastMatch === terrainTile.drawWhen.northEastNeighbor || terrainTile.drawWhen.northEastNeighbor === null
         eastMatch = neighborsTerrain.southMatch === terrainTile.drawWhen.eastNeighbor || terrainTile.drawWhen.eastNeighbor === null
@@ -134,19 +134,19 @@ export class TerrainEdgeCalculator {
       tile = {...drawableItem.drawingRules.find((tile: TerrainTile) => tile.default)}
     }
 
-    if(GSM.RotationController.currentRotation === MapRotationIndex.northUp) {
+    if(GSM.RotationController.currentRotationIndex === MapRotationIndex.northUp) {
       this.setTilesForVerticalRendering(tile, upMatch, downMatch, upSouthMatch, southMatch, downSouthMatch)
     }
 
-    if(GSM.RotationController.currentRotation === MapRotationIndex.westUp) {
+    if(GSM.RotationController.currentRotationIndex === MapRotationIndex.westUp) {
       this.setTilesForVerticalRendering(tile, upMatch, downMatch, upEastMatch, eastMatch, downEastMatch)
     }
 
-    if(GSM.RotationController.currentRotation === MapRotationIndex.southUp) {
+    if(GSM.RotationController.currentRotationIndex === MapRotationIndex.southUp) {
       this.setTilesForVerticalRendering(tile, upMatch, downMatch, upNorthMatch, northMatch, downNorthMatch)
     }
 
-    if(GSM.RotationController.currentRotation === MapRotationIndex.eastUp) {
+    if(GSM.RotationController.currentRotationIndex === MapRotationIndex.eastUp) {
       this.setTilesForVerticalRendering(tile, upMatch, downMatch, upWestMatch, westMatch, downWestMatch)
     }
 

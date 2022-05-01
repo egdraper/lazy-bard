@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanvasController } from './controllers/canvas.controller';
 import { MapController } from './controllers/map.controller';
-import { EventController } from './controllers/event.controller';
+import { ActionController } from './controllers/event.controller';
 import { RendererController } from './controllers/render.controller';
 import { FrameController } from './controllers/timing.controller';
 
@@ -14,6 +14,7 @@ import { GameData } from './game-data';
 import { MouseController } from './controllers/mouse.controller';
 import { AssetController } from './controllers/asset.controller';
 import { RotationController } from './controllers/rotation.controller';
+import { KeyController } from './controllers/key.controller';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,14 +27,15 @@ export class GSM {
   public static CanvasController: CanvasController
   public static CanvasModuleController: CanvasModuleController
   public static CellNeighborsController: CellNeighborsController
-  public static EventController: EventController
+  public static ActionController: ActionController
   public static Extensions: Extensions
   public static FrameController: FrameController
   public static GridController: MapController
   public static ImageController: ImagesController
   public static RendererController: RendererController
   public static MouseController: MouseController
-  public static GridAssetController: AssetController
+  public static KeyController: KeyController
+  public static AssetController: AssetController
   public static RotationController: RotationController
   public static Settings: Settings
   public loadingFinished = false
@@ -49,7 +51,7 @@ export class GSM {
     GSM.Settings = new Settings()
     GSM.CanvasController = new CanvasController()
     GSM.FrameController = new FrameController()
-    GSM.EventController = new EventController()
+    GSM.ActionController = new ActionController()
     GSM.CanvasModuleController = new CanvasModuleController()
     GSM.RendererController = new RendererController() 
     GSM.Extensions = new Extensions() 
@@ -57,12 +59,13 @@ export class GSM {
     GSM.RotationController = new RotationController()
     GSM.GridController.createGameMap({x: width, y: height})
     GSM.ImageController = new ImagesController()   
-    GSM.GridAssetController = new AssetController()
+    GSM.AssetController = new AssetController()
     GSM.GameData.map.baseTexture = baseTexture
     
     //Order Doesn't Matter
     GSM.MouseController = new MouseController()
     GSM.CellNeighborsController = new CellNeighborsController()
+    GSM.KeyController = new KeyController()
     
     this.loadingFinished = true
     
