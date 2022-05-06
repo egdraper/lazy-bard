@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, HostListener } from '@angular/core';
 import { terrainCleanup } from '../../controllers/utils/terrain-cleanup';
 import { GSM } from '../../game-state-manager.service';
+import { RenderingLayers } from '../../models/map';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class GameComponent implements AfterViewInit{
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame("firstGame", 15, 15, "forest")
+      this.gameStateManager.newGame("firstGame", 35, 35, "forest")
       GSM.ActionController.generalActionFire.subscribe(action => {
         this.selected = action.name 
       })
@@ -104,13 +105,24 @@ export class GameComponent implements AfterViewInit{
       GSM.RendererController.start()
       GSM.FrameController.start()  
     }
-    if(event.code === "KeyY") {
-     const asset =  GSM.AssetController.getSelectedAssets()[0]
-     asset.movementOffset.z++
-    }
     if(event.code === "KeyH") {
-     const asset =  GSM.AssetController.getSelectedAssets()[0]
-     asset.movementOffset.z--
+      const asset = GSM.AssetController.getSelectedAssets()[0]
+      asset.hovering = true
+      GSM.AssetController.changeZAxis("up", asset, RenderingLayers.CharacterLayer)
+    }
+    if(event.code === "KeyN") {
+     const asset = GSM.AssetController.getSelectedAssets()[0]
+     const topAsset = GSM.AssetController.getTopAssetPerCell(asset.cell, RenderingLayers.TerrainLayer)
+    
+     if((!topAsset && (asset.zIndex !== 0)) || (topAsset && topAsset.zIndex < asset.zIndex)) {
+       GSM.AssetController.changeZAxis("down", asset, RenderingLayers.CharacterLayer)
+     } else {
+       asset.hovering = false
+     }
+    }
+    if(event.code === "KeyY") {
+     const asset = GSM.AssetController.getSelectedAssets()[0]
+     GSM.AssetController.changeZAxis("down", asset, RenderingLayers.CharacterLayer)
     }
   }
 }

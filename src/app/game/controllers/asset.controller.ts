@@ -1,10 +1,13 @@
+import { ThisReceiver } from '@angular/compiler'
 import { Subject } from 'rxjs'
 import { GSM } from '../game-state-manager.service'
-import { Cell, RenderingLayers } from '../models/map'
+import { Cell, Grid, NeighborLocation, RenderingLayers } from '../models/map'
 import { Asset, GridAsset } from '../models/sprite-tile.model'
+import { getHoveredOverGridAsset } from './utils/selected-sprite-tile'
 
 export class AssetController {
-  public assetClicked = new Subject<GridAsset[]>()
+  public assetClicked = new Subject<GridAsset>()
+  public assetClickedAtZIndex = new Subject<GridAsset>()
   private assetIterator: GridAsset[] = []
 
   constructor() {
@@ -20,7 +23,44 @@ export class AssetController {
     this.assetIterator.forEach((asset) => (asset.selected = false))
   }
 
-  public getTopAssetPerCell(cell: Cell) {
+  public changeZAxis(direction: "up" | "down", asset: GridAsset, layer: RenderingLayers): void {
+    const upAsset = GSM.CellNeighborsController.getImmediateNeighboringAsset(asset, NeighborLocation.Up)
+    const downAsset = GSM.CellNeighborsController.getImmediateNeighboringAsset(asset, NeighborLocation.Down)
+    
+    if (direction === "up") {
+      if(upAsset && upAsset[layer] && upAsset[layer].tile?.layer === asset.tile.layer ) { return }
+      this.removeAsset(asset.cell, asset.zIndex, layer)
+      this.addAsset(asset, asset.cell, asset.zIndex+1, layer)
+      return
+    }
+    if (direction === "down") {
+      if(downAsset && downAsset[layer] && downAsset[layer].tile?.layer === asset.tile.layer ) { return }
+      this.removeAsset(asset.cell, asset.zIndex, layer)
+      this.addAsset(asset, asset.cell, asset.zIndex-1, layer)
+      return
+    }
+  }
+
+  public getTopAssetPerCell(cell: Cell, layer?: RenderingLayers): GridAsset {
+    const gridAsset: GridAsset[] = []
+    if(layer) {
+      const zAxisList = Object.keys(cell.assets)
+      const sortedZAxisList = zAxisList.sort((a, b) => Number(a) - Number(b))
+      
+      sortedZAxisList.forEach((zAxis) => {
+          if (cell.assets[zAxis][layer]) {
+            gridAsset.push(cell.assets[zAxis][layer])
+          }
+      })
+      
+      if (gridAsset.length > 0) {
+        return gridAsset.pop()
+      } else {
+        return null
+      }
+  
+    }
+    
     return this.getAssetsByCell(cell).pop()
   }
 
@@ -113,9 +153,9 @@ export class AssetController {
   }
 
   private onCellClicked(cell: Cell): void {
-    const asset = this.getAssetsByCell(cell)
+    const asset = getHoveredOverGridAsset(cell);
     
-    if (asset.length > 0) {
+    if (asset) {
       this.assetClicked.next(asset)
       return
     }

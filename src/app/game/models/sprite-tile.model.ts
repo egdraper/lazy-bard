@@ -14,6 +14,7 @@ export class Asset extends GridAsset {
   public movement: Movement;
   public moving = false;
   public animating = false;
+  public hovering = true;
 
   // location
   public cellId?: string;

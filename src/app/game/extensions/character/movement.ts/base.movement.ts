@@ -1,5 +1,4 @@
 import { Subscription } from "rxjs"
-import { RotationController } from "src/app/game/controllers/rotation.controller"
 import { Asset } from "src/app/game/models/sprite-tile.model"
 import { GSM } from "../../../game-state-manager.service"
 import { Cell, RenderingLayers } from "../../../models/map"
@@ -68,7 +67,7 @@ export abstract class Movement {
     }
 
     this.currentPath = this.travelPath.find(startCell, endCell, this.asset)
-    const grid = GSM.GameData.map.grid
+
     if(this.currentPath.length === 0) { return }
     
     this.asset.moving = true
@@ -81,20 +80,21 @@ export abstract class Movement {
     this.cellTrackPosX = this.asset.movementOffset.x
     this.cellTrackPosY = this.asset.movementOffset.y
 
-    const a = Math.round((GSM.Settings.blockToFeet * GSM.Settings.speed) / 3) // 10 feet per second
-    const e = a / GSM.Settings.blockToFeet // 2 squares per second
-    const b = GSM.Settings.blockSize * e // 32 px per second
-    const c = Math.ceil(64 / b) // every 2 frames
+    /// ADAPTIVE SPEED Adjustment
+    // const a = Math.round((GSM.Settings.blockToFeet * GSM.Settings.speed) / 3) // 10 feet per second
+    // const e = a / GSM.Settings.blockToFeet // 2 squares per second
+    // const b = GSM.Settings.blockSize * e // 32 px per second
+    // const c = Math.ceil(64 / b) // every 2 frames
 
-    if(c === 1) {
-      this.speed = Math.ceil(b / 64)
-    } else if (c > 1) {
-      this.speed = 1
-    }
+    // if(c === 1) {
+    //   this.speed = Math.ceil(b / 64)
+    // } else if (c > 1) {
+    //   this.speed = 1
+    // }
     
     this.movementSubscription = GSM.FrameController.frameFire.subscribe(frame => { 
 
-      if(this.asset.moving && frame % c === 0) {
+      if(this.asset.moving && frame) { // % c === 0) {
         this.trackCell()
         const newPos = this.move({assetPosX: this.asset.movementOffset.x, assetPosY: this.asset.movementOffset.y, assetPosZ: this.asset.movementOffset.z, pathTrackPosX: this.cellTrackPosX, pathTrackPosY: this.cellTrackPosY, speed: this.speed, distanceToNextCell: this.distanceToNextCell, distanceToFinalCell: this.currentPath.length})
         this.asset.movementOffset.x = newPos.newPosX

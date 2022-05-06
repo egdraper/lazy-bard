@@ -15,6 +15,7 @@ import { MouseController } from './controllers/mouse.controller';
 import { AssetController } from './controllers/asset.controller';
 import { RotationController } from './controllers/rotation.controller';
 import { KeyController } from './controllers/key.controller';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -59,13 +60,13 @@ export class GSM {
     GSM.RotationController = new RotationController()
     GSM.GridController.createGameMap({x: width, y: height})
     GSM.ImageController = new ImagesController()   
+    GSM.KeyController = new KeyController()
+    GSM.MouseController = new MouseController()
     GSM.AssetController = new AssetController()
     GSM.GameData.map.baseTexture = baseTexture
     
     //Order Doesn't Matter
-    GSM.MouseController = new MouseController()
     GSM.CellNeighborsController = new CellNeighborsController()
-    GSM.KeyController = new KeyController()
     
     this.loadingFinished = true
     

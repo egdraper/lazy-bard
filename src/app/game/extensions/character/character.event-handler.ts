@@ -10,13 +10,13 @@ export class PlayableAssetEventHandler {
 
   constructor() {
     GSM.AssetController.assetClicked.subscribe(this.onAssetClicked.bind(this))
-    GSM.MouseController.emptyCellClicked.subscribe(this.onEmptyCellClicked.bind(this))
+    GSM.MouseController.cellAtZIndexClicked.subscribe(this.onCellClicked.bind(this))
   }
 
-  public onAssetClicked(asset: GridAsset[]) {
-    const character = asset.find(asset => asset.tile.layer === RenderingLayers.CharacterLayer)
+  public onAssetClicked(asset: GridAsset) {
+    const character = asset
 
-    if(!character) { return }
+    if(character.tile.layer !== RenderingLayers.CharacterLayer ) { return }
 
     if(!GSM.KeyController.keysPressed.has("MetaLeft")) {
       GSM.AssetController.deselectAllAssets()
@@ -29,22 +29,22 @@ export class PlayableAssetEventHandler {
     })
   }
 
-  public onEmptyCellClicked(cell: Cell): void {
+  public onCellClicked(event: {cell: Cell, zIndex: number}): void {
     if(GSM.ActionController.generalActionFire.value.name === "addCharacter") {
-      this.addPlayableCharacter(cell)
+      this.addPlayableCharacter(event.cell, event.zIndex)
       return
     }
 
     if(GSM.ActionController.generalActionFire.value.name === "characterSelected") {
       const selectedCharacter = GSM.AssetController.getSelectedAssets()
       selectedCharacter.forEach((asset: Asset) => {
-        asset.movement.start(asset.cell, cell, [])
+        asset.movement.start(asset.cell, event.cell, [])
       })
     }      
   }
 
   // MOCK This will be a database thing
-  private addPlayableCharacter(cell: Cell): void {
+  private addPlayableCharacter(cell: Cell, zIndex: number): void {
     // setup asset
     const playerAsset = new Asset();
     playerAsset.tile = new AssetTile(RenderingLayers.CharacterLayer)
@@ -59,7 +59,7 @@ export class PlayableAssetEventHandler {
     playerAsset.tile.imageUrl = 'assets/images/character_012.png';
     playerAsset.animating = true
     
-    GSM.AssetController.addAsset(playerAsset, cell, 0, RenderingLayers.CharacterLayer)
+    GSM.AssetController.addAsset(playerAsset, cell, zIndex, RenderingLayers.CharacterLayer)
     GSM.ImageController.addImageBySrcUrl(playerAsset.tile.imageUrl)
   }
 }

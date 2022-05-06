@@ -1,4 +1,5 @@
 import { Asset } from 'src/app/game/models/sprite-tile.model'
+import { getHoveredOverGridAsset } from '../../controllers/utils/selected-sprite-tile'
 import { GSM } from '../../game-state-manager.service'
 import { RenderingLayers } from '../../models/map'
 import { Renderer } from '../../models/renderer'
@@ -17,11 +18,22 @@ export class SelectionIndicatorRenderer implements Renderer {
       return
     }
 
+    // const walkOverAsset = getHoveredOverGridAsset(asset.cell)
+    // let shadowZ = asset.zIndex
+    // if(walkOverAsset && walkOverAsset.zIndex <= shadowZ ) {
+    //    shadowZ = walkOverAsset ? walkOverAsset.zIndex * GSM.Settings.blockSize : 0
+    // } 
+
+    let color = 'rgba(255, 0 , 0, .5)'
+    if (asset.hovering) {
+      color = 'rgba(50, 50 , 255, .5)'
+    }
+
     this.animateMarker(asset, frame)
     this.ctx.beginPath()
-    this.ctx.rect(this.posX, this.posY, this.width, this.height)
+    this.ctx.rect(this.posX, this.posY - (asset.zIndex * GSM.Settings.blockSize) , this.width, this.height)
     this.ctx.lineWidth = 2
-    this.ctx.strokeStyle = 'rgba(255, 0 , 0, .5)'
+    this.ctx.strokeStyle = color
     this.ctx.stroke()
   }
 
