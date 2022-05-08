@@ -23,12 +23,18 @@ export class ShortestPath extends TravelPath {
 
   public find(start: Cell, end: Cell, asset: Asset): Cell[] {
     this.asset = asset
-    end = this.verifyClosetLocation(start, end)
+    const zAsset = GSM.AssetController.getAssetByCellAtZ(end, asset.zIndex)
+    if(zAsset && !zAsset.cell.obstructions[zAsset.zIndex]) {
+  
+    } else {
+      end = this.verifyClosetLocation(start, end)
+    } 
     return this.start(start, end)
   }
 
   private start(start: Cell, end: Cell): Cell[] {
     if(!end) { return [] }
+   
     this.searchIndex = 0
     const visited: any = { }
     visited[`x${start.location.x}:y${start.location.y}`] = { cell: start, steps: { moves: 0, distance: 0, odd: true } }

@@ -84,7 +84,7 @@ export class RotationController {
             if(asset.movementOffset) {
               asset.movementOffset.x = cell.position.x
               asset.movementOffset.y = cell.position.y
-              asset.movement.resetTrackingToCell(cell, 0)
+              asset.movement.resetTrackingToCell(cell)
             }
           })
 

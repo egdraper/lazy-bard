@@ -31,6 +31,7 @@ export class PlayableAssetEventHandler {
 
   public onCellClicked(event: {cell: Cell, zIndex: number}): void {
     if(GSM.ActionController.generalActionFire.value.name === "addCharacter") {
+      GSM.AssetController.deselectAllAssets()
       this.addPlayableCharacter(event.cell, event.zIndex)
       return
     }

@@ -7,14 +7,15 @@ import { TravelPath } from "../shortest-path"
 export abstract class Movement {  
   protected abstract asset: Asset  
   protected abstract travelPath: TravelPath
+  
   protected currentPath: Cell[] = []
   protected redirection: { start: Cell, end: Cell, charactersOnGrid: Asset[] }
   protected nextCell: Cell
   protected previousCell: Cell
   protected movementSubscription: Subscription
   protected distanceToNextCell = 0
-  protected onFinished: () => void  
-
+  
+  private onFinished: () => void    
   private speed: number = 1
   private cellTrackPosX = 0
   private cellTrackPosY = 0
@@ -32,7 +33,7 @@ export abstract class Movement {
 
   public abstract move(event: {assetPosX: number, assetPosY: number, assetPosZ: number, pathTrackPosX: number, pathTrackPosY: number, speed: number, distanceToNextCell: number, distanceToFinalCell: number}): {newPosX: number, newPosY: number, newPosZ: number} 
 
-  public resetTrackingToCell(cell: Cell, rotationDirection: number = 0) {
+  public resetTrackingToCell(cell: Cell) {
     this.cellTrackPosX = cell.position.x
     this.cellTrackPosY = cell.position.y
 
@@ -67,19 +68,18 @@ export abstract class Movement {
     }
 
     this.currentPath = this.travelPath.find(startCell, endCell, this.asset)
-
-    if(this.currentPath.length === 0) { return }
+    if(this.currentPath.length < 2) { return }
     
     this.asset.moving = true
     this.previousCell = this.currentPath.pop() // removes cell the character is standing on
     this.nextCell = this.currentPath.pop()
-
+    
     this.setSpriteDirection()
     this.asset.tile.animation.changeEveryNthFrame = 16
     this.distanceToNextCell = GSM.Settings.blockSize
     this.cellTrackPosX = this.asset.movementOffset.x
     this.cellTrackPosY = this.asset.movementOffset.y
-
+    
     /// ADAPTIVE SPEED Adjustment
     // const a = Math.round((GSM.Settings.blockToFeet * GSM.Settings.speed) / 3) // 10 feet per second
     // const e = a / GSM.Settings.blockToFeet // 2 squares per second
@@ -104,6 +104,7 @@ export abstract class Movement {
         this.checkForFinishLocation()
       }
     })
+    if(!this.isNextCellPassable()) { this.endMovement() }
   }
 
   public updateAnimation() {
@@ -143,13 +144,6 @@ export abstract class Movement {
     }
   }
 
-  protected end(): void {
-    this.currentPath = null
-    this.asset.moving = false
-    this.asset.tile.animation.changeEveryNthFrame = 16
-    this.movementSubscription.unsubscribe()
-  } 
-
   protected setSpriteDirection(): void {
     if (this.nextCell.location.x !== this.asset.cell.location.x) {
       this.spriteDirection = this.nextCell.location.x > this.asset.cell.location.x ? "right" : "left"
@@ -181,24 +175,48 @@ export abstract class Movement {
         : null
 
       if (this.redirection) {
-        this.end()
+        this.endMovement()
         this.start(this.asset.cell, this.redirection.end, this.redirection.charactersOnGrid)
       }
 
-      if (!this.nextCell) {
-        this.end()
-        
-        if(this.onFinished) { 
-          const onFinished = this.onFinished
-          this.onFinished = undefined
-          onFinished()
-        }
-      } else {
-        this.distanceToNextCell = GSM.Settings.blockSize
-        this.setSpriteDirection()
+      if (!this.nextCell || !this.isNextCellPassable()) {
+        this.endMovement()
+       } else {
+        this.prepareNextMovement()
       }
     }
   }  
+  
+  protected prepareNextMovement(): void {
+    this.distanceToNextCell = GSM.Settings.blockSize
+    this.setSpriteDirection()
+  }
+
+  protected endMovement(): void {
+    this.currentPath = null
+    this.asset.moving = false
+    this.asset.tile.animation.changeEveryNthFrame = 16
+    this.movementSubscription.unsubscribe()
+           
+    if(this.onFinished) { 
+      const onFinished = this.onFinished
+      this.onFinished = undefined
+      onFinished()
+    }
+  } 
+
+  private isNextCellPassable(): boolean {
+    let nextTerrainAsset
+    let previousTerrainAsset
+    if(this.nextCell) {
+      nextTerrainAsset = GSM.AssetController.getAsset(this.nextCell, this.asset.zIndex - 1, RenderingLayers.TerrainLayer)
+      previousTerrainAsset = GSM.AssetController.getAsset(this.previousCell, this.asset.zIndex - 1, RenderingLayers.TerrainLayer)
+    } else {
+      return false
+    }
+
+    return this.asset.hovering || nextTerrainAsset?.tile?.drawableTileId === previousTerrainAsset?.tile?.drawableTileId
+  }
 }
 
 
