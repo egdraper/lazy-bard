@@ -1,6 +1,6 @@
 import { GSM } from "../game-state-manager.service"
 import { Cell, NeighborLocation } from "../models/map"
-import { GridAsset } from "../models/sprite-tile.model"
+import { GridAsset } from "../models/asset.model"
 
 export class CellNeighborsController {
   public getImmediateNeighborCell(

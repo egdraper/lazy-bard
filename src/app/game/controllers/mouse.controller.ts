@@ -1,8 +1,8 @@
 import { Subject } from 'rxjs';
 import { GSM } from '../game-state-manager.service';
 import { Cell, MousePosition } from '../models/map';
-import { GridAsset } from '../models/sprite-tile.model';
-import { getHoveredOverGridAsset } from './utils/selected-sprite-tile';
+import { GridAsset } from '../models/asset.model';
+import { getTopAssetBlockingCell } from './utils/selected-sprite-tile';
 
 export class MouseController {
   // Events
@@ -73,7 +73,8 @@ export class MouseController {
   }
 
   private selectTerrainTile(cell: Cell): GridAsset {
-    const gridAsset = getHoveredOverGridAsset(cell);
+    const gridAsset = getTopAssetBlockingCell(cell);
+
     if (gridAsset) {
       this.hoveringZAxis = gridAsset.zIndex;
       this.hoveringGridAsset = gridAsset;

@@ -1,7 +1,7 @@
-import { GSM } from "../game-state-manager.service"
+import { GridAsset } from "./asset.model"
 import { Extension } from "./extension.model"
-import { Cell, Grid, RenderingLayers } from "./map"
-import { BackgroundTile, GridAsset, TerrainTile } from "./sprite-tile.model"
+import { RenderingLayers } from "./map"
+import { BackgroundTile, TerrainTile } from "./sprite-tile.model"
 
 export interface Renderer {
   ctx: CanvasRenderingContext2D

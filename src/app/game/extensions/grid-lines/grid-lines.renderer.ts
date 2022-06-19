@@ -1,6 +1,6 @@
 
 import { GSM } from "src/app/game/game-state-manager.service";
-import { BackgroundAsset } from "src/app/game/models/sprite-tile.model";
+import { BackgroundAsset } from "../../models/asset.model";
 import { RenderingLayers } from "../../models/map";
 import { BackgroundRenderer } from "../../models/renderer";
 

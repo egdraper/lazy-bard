@@ -1,4 +1,4 @@
-import { BackgroundAsset, GridAsset } from "./sprite-tile.model"
+import { BackgroundAsset, GridAsset } from "./asset.model"
 
 export class GameMap {
   public id: string

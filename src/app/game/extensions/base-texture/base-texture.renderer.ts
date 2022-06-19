@@ -1,5 +1,5 @@
 import { RenderingLayers } from "src/app/game/models/map"
-import { BackgroundAsset } from "src/app/game/models/sprite-tile.model"
+import { BackgroundAsset } from "../../models/asset.model"
 import { GSM } from "../../game-state-manager.service"
 import { BackgroundRenderer, Renderer } from "../../models/renderer"
 

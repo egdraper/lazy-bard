@@ -1,5 +1,4 @@
-import { Asset } from 'src/app/game/models/sprite-tile.model'
-import { getHoveredOverGridAsset } from '../../controllers/utils/selected-sprite-tile'
+import { Asset } from '../../models/asset.model'
 import { GSM } from '../../game-state-manager.service'
 import { RenderingLayers } from '../../models/map'
 import { Renderer } from '../../models/renderer'
@@ -39,14 +38,14 @@ export class SelectionIndicatorRenderer implements Renderer {
 
   private animateMarker(asset: Asset, frame: number): void {
     if (frame <= 32) {
-      this.posX = asset.movementOffset.x - Math.floor(frame / 6)
-      this.posY = asset.movementOffset.y - Math.floor(frame / 6)
+      this.posX = asset.movement.movementOffset.x - Math.floor(frame / 6)
+      this.posY = asset.movement.movementOffset.y - Math.floor(frame / 6)
       this.width = GSM.Settings.blockSize + Math.floor(frame / 3)
       this.height = GSM.Settings.blockSize + Math.floor(frame / 3)
     }
     if (frame > 32) {
-      this.posX = asset.movementOffset.x - Math.abs(Math.floor(frame / 6) - 12)
-      this.posY = asset.movementOffset.y - Math.abs(Math.floor(frame / 6) - 12)
+      this.posX = asset.movement.movementOffset.x - Math.abs(Math.floor(frame / 6) - 12)
+      this.posY = asset.movement.movementOffset.y - Math.abs(Math.floor(frame / 6) - 12)
       this.width =
         GSM.Settings.blockSize + Math.abs(Math.floor(frame / 3) - 24)
       this.height =

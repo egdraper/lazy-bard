@@ -1,5 +1,5 @@
-import { Renderer } from "src/app/game/models/renderer"
-import { TerrainAsset } from "src/app/game/models/sprite-tile.model"
+import { Renderer } from "../../models/renderer"
+import { TerrainAsset } from "../../models/asset.model"
 import { drawableItems } from "../../db/drawable-items.db"
 import { GSM } from "../../game-state-manager.service"
 import { RenderingLayers } from "../../models/map"

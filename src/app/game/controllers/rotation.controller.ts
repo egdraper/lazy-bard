@@ -1,6 +1,6 @@
 import { GSM } from '../game-state-manager.service'
 import { MapRotationIndex } from '../models/map'
-import { Asset } from '../models/sprite-tile.model'
+import { Asset } from '../models/asset.model'
 
 export class RotationController {
   public currentRotationIndex: MapRotationIndex = MapRotationIndex.northUp
@@ -51,9 +51,9 @@ export class RotationController {
 
             const assets = GSM.AssetController.getAssetsByCell(cell)
             assets.forEach((asset: Asset) => {
-              if(asset.movementOffset) {
-                asset.movementOffset.x = cell.position.x
-                asset.movementOffset.y = cell.position.y
+              if(asset.movement && asset.movement.movementOffset) {
+                asset.movement.movementOffset.x = cell.position.x
+                asset.movement.movementOffset.y = cell.position.y
                 asset.movement.resetTrackingToCell(cell)
               }
             })
@@ -81,9 +81,9 @@ export class RotationController {
          
           const assets = GSM.AssetController.getAssetsByCell(cell)
           assets.forEach((asset: Asset) => {
-            if(asset.movementOffset) {
-              asset.movementOffset.x = cell.position.x
-              asset.movementOffset.y = cell.position.y
+            if(asset.movement && asset.movement.movementOffset) {
+              asset.movement.movementOffset.x = cell.position.x
+              asset.movement.movementOffset.y = cell.position.y
               asset.movement.resetTrackingToCell(cell)
             }
           })
@@ -111,9 +111,9 @@ export class RotationController {
 
           const assets = GSM.AssetController.getAssetsByCell(cell)
           assets.forEach((asset: Asset) => {
-            if(asset.movementOffset) {
-              asset.movementOffset.x = cell.position.x
-              asset.movementOffset.y = cell.position.y
+            if(asset.movement && asset.movement.movementOffset) {
+              asset.movement.movementOffset.x = cell.position.x
+              asset.movement.movementOffset.y = cell.position.y
               asset.movement.resetTrackingToCell(cell)
             }
           })
@@ -139,9 +139,9 @@ export class RotationController {
 
           const assets = GSM.AssetController.getAssetsByCell(cell)
           assets.forEach((asset: Asset) => {
-            if(asset.movementOffset) {
-              asset.movementOffset.x = cell.position.x
-              asset.movementOffset.y = cell.position.y
+            if(asset.movement && asset.movement.movementOffset) {
+              asset.movement.movementOffset.x = cell.position.x
+              asset.movement.movementOffset.y = cell.position.y
               asset.movement.resetTrackingToCell(cell)
             }
           })

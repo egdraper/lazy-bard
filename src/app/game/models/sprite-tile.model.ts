@@ -1,35 +1,9 @@
+import { assetType } from '../db/asset-items';
+import { SpriteOrientation } from '../extensions/character/direction.ts/direction';
 import { Movement } from '../extensions/character/movement.ts/base.movement';
-import { AssetItemsViewModel, Speed } from './asset.model';
-import { Size, Location, SpriteLocation, Cell, Position, Grid, RenderingLayers } from './map';
+import { AssetTypeViewModel } from './asset.model';
+import { SpriteLocation, Cell, Position, RenderingLayers } from './map';
 
-export class GridAsset<T = any> {
-  id: string; // x:0;y:0;z:0;layer:character
-  cell: Cell; // not saved
-  tile: T;
-  zIndex: number;
-  selected: boolean;
-}
-export class Asset extends GridAsset {
-  public override tile: AssetTile;
-  public movement: Movement;
-  public moving = false;
-  public animating = false;
-  public hovering = true;
-
-  // location
-  public cellId?: string;
-  public gridId: string;
-  public movementOffset: Position; 
-}
-
-export class TerrainAsset extends GridAsset{
-  public override tile: TerrainTile
-}
-
-export class BackgroundAsset extends GridAsset{
-  public override tile: BackgroundTile
-  public override zIndex: number = 0
-}
 
 export abstract class Tile {
   id: string;
@@ -38,15 +12,19 @@ export abstract class Tile {
   selected?: boolean;
   layer?: RenderingLayers
 
-  constructor(layer: RenderingLayers) {
+  constructor(
+    layer: RenderingLayers,
+    imageUrl?: string,
+    ) {
+    this.imageUrl = imageUrl
     this.layer = layer
   }
 }
 
 export class BackgroundTile extends Tile {
   drawsWith?: SpriteLocation;
-  constructor() {
-    super(RenderingLayers.BaseLayer)
+  constructor(imageUrl: string) {
+    super(RenderingLayers.BaseLayer, imageUrl)
   }
 }
 
@@ -64,14 +42,14 @@ export class TerrainTile extends Tile {
   }
 }
 
-export class AssetTile extends Tile {
-  assetDrawRules: AssetItemsViewModel;
-  animation?: SpriteAnimation;
+export class ObjectTile extends Tile {
+  assetDrawRules: AssetTypeViewModel;
   obstacleObstructionX?: number;
   obstacleObstructionY?: number;
 
-  constructor(layer: RenderingLayers) {
-    super(layer)
+  constructor(layer: RenderingLayers, imageUrl: string, drawRuleName) {
+    super(layer, imageUrl)
+    this.assetDrawRules = assetType.find(item => item.id === drawRuleName)
   }
 }
 
@@ -91,13 +69,7 @@ export class DrawableItemViewModel {
 
 export class SpriteAnimation {
   public changeEveryNthFrame: number = 16;
-  public spriteXPosition = [
-    'rightFootForward',
-    'neutral',
-    'leftFootForward',
-    'neutral',
-  ];
-  public spriteYPosition: string = 'down';
+  public orientation: SpriteOrientation = new SpriteOrientation()
   public positionCounter = 0;
 }
 

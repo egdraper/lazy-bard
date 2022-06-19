@@ -2,8 +2,8 @@ import { ThisReceiver } from '@angular/compiler'
 import { Subject } from 'rxjs'
 import { GSM } from '../game-state-manager.service'
 import { Cell, Grid, NeighborLocation, RenderingLayers } from '../models/map'
-import { Asset, GridAsset } from '../models/sprite-tile.model'
-import { getHoveredOverGridAsset } from './utils/selected-sprite-tile'
+import { Asset, GridAsset } from '../models/asset.model'
+import { getTopAssetBlockingCell } from './utils/selected-sprite-tile'
 
 export class AssetController {
   public assetClicked = new Subject<GridAsset>()
@@ -13,6 +13,41 @@ export class AssetController {
   constructor() {
     GSM.MouseController.cellClick.subscribe(this.onCellClicked.bind(this))
     GSM.FrameController.frameFire.subscribe(this.animateAsset.bind(this))
+  }
+
+  // what makes an asset playable
+  // what makes them terrain
+
+  /*
+     Asset has life
+*/
+  public addAsset(gridAsset: GridAsset, cell: Cell, zIndex: number, layer: RenderingLayers): void {
+    gridAsset.cell = cell
+    gridAsset.zIndex = zIndex
+
+    if (!cell.assets) {
+      cell.assets = {}
+    }
+
+    if (!cell.assets[zIndex]) {
+      cell.assets[zIndex] = {}
+    }
+
+    cell.assets[zIndex][layer] = gridAsset
+    
+    this.refreshAssetIterator()
+  }
+
+  public getAsset(cell: Cell, zIndex: number, layer: RenderingLayers): GridAsset {
+    if(!cell.assets[zIndex]) {
+      return null
+    }
+
+    if(!cell.assets[zIndex][layer]) {
+      return null
+    }
+
+    return cell.assets[zIndex][layer]
   }
 
   public iterateAsset(callBack: (asset: GridAsset) => void) {
@@ -82,7 +117,7 @@ export class AssetController {
     return gridAsset
   }
 
-  public getAssetByCellAtZ(cell: Cell, zIndex): GridAsset {
+  public getAssetByCellAtZ(cell: Cell, zIndex: number): GridAsset {
     return this.getAssetsByCell(cell).find((asset) => asset.zIndex === zIndex)
   }
 
@@ -100,35 +135,6 @@ export class AssetController {
       }
     })
     return assets
-  }
-
-  public getAsset(cell: Cell, zIndex: number, layer: RenderingLayers): GridAsset {
-    if(!cell.assets[zIndex]) {
-      return null
-    }
-
-    if(!cell.assets[zIndex][layer]) {
-      return null
-    }
-
-    return cell.assets[zIndex][layer]
-  }
-
-  public addAsset(gridAsset: GridAsset, cell: Cell, zIndex: number, layer: RenderingLayers): void {
-    gridAsset.cell = cell
-    gridAsset.zIndex = zIndex
-
-    if (!cell.assets) {
-      cell.assets = {}
-    }
-
-    if (!cell.assets[zIndex]) {
-      cell.assets[zIndex] = {}
-    }
-
-    cell.assets[zIndex][layer] = gridAsset
-    
-    this.refreshAssetIterator()
   }
 
   public removeAsset(cell: Cell, zIndex: number, layer: RenderingLayers): void {
@@ -152,8 +158,10 @@ export class AssetController {
     })
   }
 
+  // Helper
+
   private onCellClicked(cell: Cell): void {
-    const asset = getHoveredOverGridAsset(cell);
+    const asset = getTopAssetBlockingCell(cell);
     
     if (asset) {
       this.assetClicked.next(asset)
@@ -164,7 +172,7 @@ export class AssetController {
   private animateAsset(frame: number): void {
     GSM.AssetController.iterateAsset((asset: Asset) => {
       if (asset.animating) {
-        if (frame % asset.tile.animation.changeEveryNthFrame === 0) {
+        if (frame % asset.animation.changeEveryNthFrame === 0) {
           asset.movement.updateAnimation()
         }
       }

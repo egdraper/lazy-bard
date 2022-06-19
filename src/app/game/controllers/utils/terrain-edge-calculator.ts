@@ -1,6 +1,7 @@
 import { GSM } from "../../game-state-manager.service"
+import { GridAsset } from "../../models/asset.model"
 import { MapRotationIndex, NeighborLocation, RenderingLayers } from "../../models/map"
-import { DrawableItemViewModel, GridAsset, TerrainTile } from "../../models/sprite-tile.model"
+import { DrawableItemViewModel, TerrainTile } from "../../models/sprite-tile.model"
 
 export class TerrainEdgeCalculator {
   public static calculateTerrainEdges(gridAsset: GridAsset, terrainTile: TerrainTile, drawableItem: DrawableItemViewModel): TerrainTile {

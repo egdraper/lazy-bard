@@ -1,4 +1,4 @@
-import { Asset } from "src/app/game/models/sprite-tile.model"
+import { Asset } from "../../models/asset.model"
 import { GSM } from "../../game-state-manager.service"
 import { Cell, RenderingLayers } from "../../models/map"
 

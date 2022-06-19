@@ -2,7 +2,7 @@ import { drawableItems } from "../../db/drawable-items.db"
 import { TerrainEdgeCalculator } from "./terrain-edge-calculator"
 import { GSM } from "../../game-state-manager.service"
 import { RenderingLayers, NeighborLocation } from "../../models/map"
-import { TerrainAsset } from "../../models/sprite-tile.model"
+import { TerrainAsset } from "../../models/asset.model"
 
 export function terrainCleanup() {
   GSM.AssetController.iterateAsset((asset: TerrainAsset) => {

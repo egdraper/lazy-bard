@@ -1,9 +1,11 @@
 
-import { assetItems } from 'src/app/game/db/asset-items';
-import { Cell, Position, RenderingLayers } from 'src/app/game/models/map';
-import { Asset, AssetTile, GridAsset, SpriteAnimation } from 'src/app/game/models/sprite-tile.model';
+import { assetType } from 'src/app/game/db/asset-items';
+import { Cell, RenderingLayers } from 'src/app/game/models/map';
+import { Asset, GridAsset } from '../../models/asset.model';
 import { GSM } from '../../game-state-manager.service';
 import { Running } from './movement.ts/run.movement';
+import { ObjectTile, SpriteAnimation } from '../../models/sprite-tile.model';
+import { Walking } from './movement.ts/walking.movement';
 
 export class PlayableAssetEventHandler {
   public selectedPlayableAssets: Asset[] = []
@@ -47,17 +49,10 @@ export class PlayableAssetEventHandler {
   // MOCK This will be a database thing
   private addPlayableCharacter(cell: Cell, zIndex: number): void {
     // setup asset
-    const playerAsset = new Asset();
-    playerAsset.tile = new AssetTile(RenderingLayers.CharacterLayer)
-    // playerAsset.tile.assetDrawRules = assetItems.find(item => item.id === "standardSmallItem")
-    playerAsset.tile.assetDrawRules = assetItems.find(item => item.id === "standardCreature")
-    playerAsset.tile.animation = new SpriteAnimation()
-    // playerAsset.movement = new Skip(playerAsset)
-    playerAsset.movement = new Running(playerAsset)
-    playerAsset.cell = cell
-    playerAsset.movementOffset = new Position(cell.position.x, cell.position.y, 0)
-    // playerAsset.tile.imageUrl = 'assets/images/item_002.png';
-    playerAsset.tile.imageUrl = 'assets/images/character_012.png';
+    const playerAsset = new Asset(cell);
+    playerAsset.tile = new ObjectTile(RenderingLayers.CharacterLayer, 'assets/images/character_012.png', "standardCreature")
+    playerAsset.animation = new SpriteAnimation()
+    playerAsset.movement = new Walking(playerAsset)
     playerAsset.animating = true
     
     GSM.AssetController.addAsset(playerAsset, cell, zIndex, RenderingLayers.CharacterLayer)
