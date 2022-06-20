@@ -3,6 +3,7 @@ import { getTopAssetBlockingCell } from '../../controllers/utils/selected-sprite
 import { GSM } from '../../game-state-manager.service'
 import { RenderingLayers } from '../../models/map'
 import { Renderer } from '../../models/renderer'
+import { MotionObjectTile } from '../../models/sprite-tile.model'
 
 
 export class PlayableAssetRenderer implements Renderer {
@@ -10,6 +11,8 @@ export class PlayableAssetRenderer implements Renderer {
   public renderingLayer: RenderingLayers = RenderingLayers.CharacterLayer
 
   public beforeDraw(asset: Asset, frame?: number): void {
+    if(asset.tile.layer !== RenderingLayers.CharacterLayer) { return }
+
     this.ctx.fillStyle = '#424247'
     this.ctx.beginPath()
 
@@ -50,7 +53,9 @@ export class PlayableAssetRenderer implements Renderer {
     }
   }
 
-  public onDraw(asset: Asset): void {
+  public onDraw(asset: Asset<MotionObjectTile>): void {
+    if(asset.tile.layer !== RenderingLayers.CharacterLayer) { return }
+
     this.ctx.drawImage(
       GSM.ImageController.getImage(asset.tile.imageUrl),
       asset.tile.assetDrawRules.xMotionTilePos[asset.animation.positionCounter],

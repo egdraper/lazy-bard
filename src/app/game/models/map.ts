@@ -55,6 +55,7 @@ export enum NeighborLocation {
 export enum RenderingLayers {
   BaseLayer = "baseLayer",
   TerrainLayer = "terrainLayer",
+  ObjectLayer = "objectLayer",
   CharacterLayer = "characterLayer",
   // StructureLayer = "structureLayer",
   // PartitionLayer = "partitionLayer",

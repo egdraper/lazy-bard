@@ -54,6 +54,12 @@ export class GameComponent implements AfterViewInit{
         data: null
       })
     }
+    if(event.code === "KeyO") {
+      GSM.ActionController.generalActionFire.next({
+        name: "addObject",
+        data: null
+      })
+    }
     if(event.code === "KeyZ") {
       GSM.ActionController.generalActionFire.next({
         name: "deleteTerrain",

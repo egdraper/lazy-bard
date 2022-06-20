@@ -42,7 +42,7 @@ export class TerrainTile extends Tile {
   }
 }
 
-export class ObjectTile extends Tile {
+export class MotionObjectTile extends Tile {
   assetDrawRules: AssetTypeViewModel;
   obstacleObstructionX?: number;
   obstacleObstructionY?: number;
@@ -50,6 +50,12 @@ export class ObjectTile extends Tile {
   constructor(layer: RenderingLayers, imageUrl: string, drawRuleName) {
     super(layer, imageUrl)
     this.assetDrawRules = assetType.find(item => item.id === drawRuleName)
+  }
+}
+
+export class ObjectTile extends Tile {
+  constructor(layer: RenderingLayers, imageUrl: string) {
+    super(layer, imageUrl)
   }
 }
 
