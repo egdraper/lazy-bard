@@ -1,17 +1,14 @@
-import { assetType } from 'src/app/game/db/asset-items';
 import { Cell, RenderingLayers } from 'src/app/game/models/map';
-import { Asset, GridAsset } from '../../models/asset.model';
+import { assetType } from '../../db/asset-items';
 import { GSM } from '../../game-state-manager.service';
-import { Running } from './movement.ts/run.movement';
+import { Asset, GridAsset } from '../../models/asset.model';
 import {
-  MotionObjectTile,
-  ObjectTile,
-  SpriteAnimation,
+  AssetTile,
+  SpriteAnimation
 } from '../../models/sprite-tile.model';
 import { Walking } from './movement.ts/walking.movement';
-import { of } from 'rxjs';
 
-export class PlayableAssetEventHandler {
+export class AssetEventHandler {
   public selectedPlayableAssets: Asset[] = [];
 
   constructor() {
@@ -24,7 +21,7 @@ export class PlayableAssetEventHandler {
   public onAssetClicked(asset: GridAsset) {
     const character = asset;
 
-    if (character.tile.layer !== RenderingLayers.CharacterLayer) {
+    if (character.tile.layer !== RenderingLayers.AssetLayer) {
       return;
     }
 
@@ -70,8 +67,8 @@ export class PlayableAssetEventHandler {
   private addPlayableCharacter(cell: Cell, zIndex: number): void {
     // setup asset
     const playerAsset = new Asset(cell);
-    playerAsset.tile = new MotionObjectTile(
-      RenderingLayers.CharacterLayer,
+    playerAsset.tile = new AssetTile(
+      RenderingLayers.AssetLayer,
       'assets/images/character_012.png',
       'standardCreature'
     );
@@ -83,7 +80,7 @@ export class PlayableAssetEventHandler {
       playerAsset,
       cell,
       zIndex,
-      RenderingLayers.CharacterLayer
+      RenderingLayers.AssetLayer
     );
     GSM.ImageController.addImageBySrcUrl(playerAsset.tile.imageUrl);
   }
@@ -92,16 +89,18 @@ export class PlayableAssetEventHandler {
   private addNonPlayableAsset(cell: Cell, zIndex: number): void {
     // setup asset
     const objectAsset = new Asset(cell);
-    objectAsset.tile = new ObjectTile(
-      RenderingLayers.ObjectLayer,
-      'assets/images/pots/pot2.png'
+    objectAsset.tile = new AssetTile(
+      RenderingLayers.AssetLayer,
+      'assets/images/trees/tree1.png',
+      'standardXLTree'
     );
+    objectAsset.animation = new SpriteAnimation();
 
     GSM.AssetController.addAsset(
       objectAsset,
       cell,
       zIndex,
-      RenderingLayers.CharacterLayer
+      RenderingLayers.AssetLayer
     );
     GSM.ImageController.addImageBySrcUrl(objectAsset.tile.imageUrl);
   }

@@ -88,8 +88,8 @@ export abstract class Movement {
         newCell,
         this.asset.zIndex,
         this.asset.zIndex,
-        RenderingLayers.CharacterLayer,
-        RenderingLayers.CharacterLayer
+        RenderingLayers.AssetLayer,
+        RenderingLayers.AssetLayer
       )
       
       this.movementOffset.x = this.cellTrackPosX

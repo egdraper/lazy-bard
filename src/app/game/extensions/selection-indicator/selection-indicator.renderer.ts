@@ -5,7 +5,7 @@ import { Renderer } from '../../models/renderer'
 
 export class SelectionIndicatorRenderer implements Renderer {
   ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
-  public renderingLayer: RenderingLayers = RenderingLayers.CharacterLayer
+  public renderingLayer: RenderingLayers = RenderingLayers.AssetLayer
 
   private posX
   private posY

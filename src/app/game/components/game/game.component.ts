@@ -114,21 +114,21 @@ export class GameComponent implements AfterViewInit{
     if(event.code === "KeyH") {
       const asset = GSM.AssetController.getSelectedAssets()[0]
       asset.hovering = true
-      GSM.AssetController.changeZAxis("up", asset, RenderingLayers.CharacterLayer)
+      GSM.AssetController.changeZAxis("up", asset, RenderingLayers.AssetLayer)
     }
     if(event.code === "KeyN") {
      const asset = GSM.AssetController.getSelectedAssets()[0]
      const topAsset = GSM.AssetController.getTopAssetPerCell(asset.cell, RenderingLayers.TerrainLayer)
     
      if((!topAsset && (asset.zIndex !== 0)) || (topAsset && topAsset.zIndex < asset.zIndex)) {
-       GSM.AssetController.changeZAxis("down", asset, RenderingLayers.CharacterLayer)
+       GSM.AssetController.changeZAxis("down", asset, RenderingLayers.AssetLayer)
      } else {
        asset.hovering = false
      }
     }
     if(event.code === "KeyY") {
      const asset = GSM.AssetController.getSelectedAssets()[0]
-     GSM.AssetController.changeZAxis("down", asset, RenderingLayers.CharacterLayer)
+     GSM.AssetController.changeZAxis("down", asset, RenderingLayers.AssetLayer)
     }
   }
 }

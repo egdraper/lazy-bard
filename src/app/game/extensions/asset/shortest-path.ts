@@ -73,8 +73,8 @@ export class ShortestPath extends TravelPath {
             }
 
             let creatureOnSquare  
-            if(cell.assets && cell.assets[this.asset.zIndex] && cell.assets[this.asset.zIndex][RenderingLayers.CharacterLayer]) {
-              creatureOnSquare = !!cell.assets[this.asset.zIndex][RenderingLayers.CharacterLayer]
+            if(cell.assets && cell.assets[this.asset.zIndex] && cell.assets[this.asset.zIndex][RenderingLayers.AssetLayer]) {
+              creatureOnSquare = !!cell.assets[this.asset.zIndex][RenderingLayers.AssetLayer]
             }
 
             if ((!cell.obstructions[this.asset.zIndex] && !creatureOnSquare) && !store.some(i => index === i)) {

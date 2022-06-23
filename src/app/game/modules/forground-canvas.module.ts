@@ -2,9 +2,8 @@
 import { CanvasCTX } from "src/app/game/models/extension.model"
 import { CanvasLayerExtension } from "src/app/game/models/renderer"
 import { CanvasModule } from "../extensions/addon-base"
+import { AssetExtension } from "../extensions/asset/asset.extension"
 
-import { PlayableAssetExtension } from "../extensions/character/character.extension"
-import { ObjectExtension } from "../extensions/object/object.extension"
 import { SelectionIndicatorExtension } from "../extensions/selection-indicator/selection-indicator.extension"
 import { TerrainTextureExtension } from "../extensions/terrain-texture/terrain-texture.extension"
 
@@ -15,7 +14,6 @@ export class ForegroundCanvasModule extends CanvasModule {
   public extensions: CanvasLayerExtension[] = [
     new TerrainTextureExtension,
     new SelectionIndicatorExtension(),
-    new ObjectExtension(),
-    new PlayableAssetExtension(), 
+    new AssetExtension(), 
   ]
 }

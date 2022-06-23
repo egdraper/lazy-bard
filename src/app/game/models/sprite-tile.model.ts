@@ -1,6 +1,6 @@
 import { assetType } from '../db/asset-items';
-import { SpriteOrientation } from '../extensions/character/direction.ts/direction';
-import { Movement } from '../extensions/character/movement.ts/base.movement';
+import { SpriteOrientation } from '../extensions/asset/direction.ts/direction';
+
 import { AssetTypeViewModel } from './asset.model';
 import { SpriteLocation, Cell, Position, RenderingLayers } from './map';
 
@@ -42,20 +42,14 @@ export class TerrainTile extends Tile {
   }
 }
 
-export class MotionObjectTile extends Tile {
+export class AssetTile extends Tile {
   assetDrawRules: AssetTypeViewModel;
   obstacleObstructionX?: number;
   obstacleObstructionY?: number;
 
-  constructor(layer: RenderingLayers, imageUrl: string, drawRuleName) {
+  constructor(layer: RenderingLayers, imageUrl: string, drawRuleName: string) {
     super(layer, imageUrl)
     this.assetDrawRules = assetType.find(item => item.id === drawRuleName)
-  }
-}
-
-export class ObjectTile extends Tile {
-  constructor(layer: RenderingLayers, imageUrl: string) {
-    super(layer, imageUrl)
   }
 }
 

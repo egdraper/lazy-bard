@@ -1,6 +1,7 @@
-import { Movement } from "../extensions/character/movement.ts/base.movement"
-import { Cell, Position, RenderingLayers, Size } from "./map"
-import { MotionObjectTile, BackgroundTile, TerrainTile, SpriteAnimation, Tile } from "./sprite-tile.model"
+
+import { Movement } from "../extensions/asset/movement.ts/base.movement";
+import { Cell, Position, Size } from "./map"
+import { AssetTile, BackgroundTile, TerrainTile, SpriteAnimation, Tile } from "./sprite-tile.model"
 
 export type Speed = 1 | 2 | 4 | 8 | 16 | 32 | 64
 
@@ -10,7 +11,6 @@ export class GridAsset<T = any> {
   tile: T;
   zIndex: number;
   selected: boolean;
-  layer: RenderingLayers
 }
 
 export class Asset<T = Tile> extends GridAsset {
@@ -69,4 +69,5 @@ export class AssetTypeViewModel {
   yDirectionTilePos: SpriteDirection
   xPosOffset: number
   yPosOffset: number
+  obstructed: {[zIndex: number]: {x: number, y: number, offsetX?: number, offsetY?: number}}
 }
