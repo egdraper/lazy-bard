@@ -24,7 +24,7 @@ export class ShortestPath extends TravelPath {
   public find(start: Cell, end: Cell, asset: Asset): Cell[] {
     this.asset = asset
     const zAsset = GSM.AssetController.getAssetByCellAtZ(end, asset.zIndex)
-    if(zAsset && !zAsset.cell.obstructions[zAsset.zIndex]) {
+    if(zAsset && !zAsset.blocks.obstructions[zAsset.zIndex]) {
   
     } else {
       end = this.verifyClosetLocation(start, end)

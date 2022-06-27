@@ -35,8 +35,8 @@ export class CellNeighborsController {
       gridAsset: GridAsset,
       neighborLocation: NeighborLocation,
     ): { [layer: string]: GridAsset; } {
-      const x = Number(gridAsset.cell.id.split(":")[0].match(/\d+/))
-      const y = Number(gridAsset.cell.id.split(":")[1].match(/\d+/))
+      const x = Number(gridAsset.blocks.id.split(":")[0].match(/\d+/))
+      const y = Number(gridAsset.blocks.id.split(":")[1].match(/\d+/))
     switch (neighborLocation) {
       case NeighborLocation.North:
         return GSM.GameData.map.grid[`x${x}:y${y - 1}`]?.assets[gridAsset.zIndex]

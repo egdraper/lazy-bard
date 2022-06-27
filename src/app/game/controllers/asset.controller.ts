@@ -22,7 +22,7 @@ export class AssetController {
      Asset has life
 */
   public addAsset(gridAsset: GridAsset, cell: Cell, zIndex: number, layer: RenderingLayers): void {
-    gridAsset.cell = cell
+    gridAsset.blocks = cell
     gridAsset.zIndex = zIndex
 
     if (!cell.assets) {
@@ -64,14 +64,14 @@ export class AssetController {
     
     if (direction === "up") {
       if(upAsset && upAsset[layer] && upAsset[layer].tile?.layer === asset.tile.layer ) { return }
-      this.removeAsset(asset.cell, asset.zIndex, layer)
-      this.addAsset(asset, asset.cell, asset.zIndex+1, layer)
+      this.removeAsset(asset.blocks, asset.zIndex, layer)
+      this.addAsset(asset, asset.blocks, asset.zIndex+1, layer)
       return
     }
     if (direction === "down") {
       if(downAsset && downAsset[layer] && downAsset[layer].tile?.layer === asset.tile.layer ) { return }
-      this.removeAsset(asset.cell, asset.zIndex, layer)
-      this.addAsset(asset, asset.cell, asset.zIndex-1, layer)
+      this.removeAsset(asset.blocks, asset.zIndex, layer)
+      this.addAsset(asset, asset.blocks, asset.zIndex-1, layer)
       return
     }
   }
@@ -122,7 +122,7 @@ export class AssetController {
   }
 
   public switchAssetToNewCell(asset: GridAsset, currentCell: Cell, newCell: Cell, currentZIndex: number, newZIndex: number, currentLayer: RenderingLayers, newLayer: RenderingLayers) {
-    asset.cell = newCell
+    asset.blocks = newCell
     GSM.AssetController.addAsset(asset, newCell, newZIndex, newLayer)
     GSM.AssetController.removeAsset(currentCell, currentZIndex, currentLayer)
   }

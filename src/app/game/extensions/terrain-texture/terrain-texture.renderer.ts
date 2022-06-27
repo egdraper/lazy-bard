@@ -21,8 +21,8 @@ export class TerrainPaintBrushRenderer implements Renderer {
         asset.tile.drawsWith.y * GSM.Settings.blockSize,
         GSM.Settings.blockSize,
         GSM.Settings.blockSize,
-        asset.cell.position.x + itemDetails.offsetX,
-        asset.cell.position.y + itemDetails.offsetY - (asset.zIndex * GSM.Settings.blockSize),
+        asset.blocks.position.x + itemDetails.offsetX,
+        asset.blocks.position.y + itemDetails.offsetY - (asset.zIndex * GSM.Settings.blockSize),
         GSM.Settings.blockSize,
         GSM.Settings.blockSize,
       )
@@ -35,8 +35,8 @@ export class TerrainPaintBrushRenderer implements Renderer {
         asset.tile.drawsWithTop.y * GSM.Settings.blockSize,
         GSM.Settings.blockSize,
         GSM.Settings.blockSize,
-        asset.cell.position.x + itemDetails.offsetX,
-        asset.cell.position.y + itemDetails.offsetY - GSM.Settings.blockSize - (asset.zIndex * GSM.Settings.blockSize),
+        asset.blocks.position.x + itemDetails.offsetX,
+        asset.blocks.position.y + itemDetails.offsetY - GSM.Settings.blockSize - (asset.zIndex * GSM.Settings.blockSize),
         GSM.Settings.blockSize,
         GSM.Settings.blockSize,
       )

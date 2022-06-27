@@ -14,11 +14,11 @@ export class AssetRenderer implements Renderer {
     this.ctx.fillStyle = '#424247'
     this.ctx.beginPath()
 
-    const topAsset = GSM.AssetController.getTopAssetPerCell(asset.cell, RenderingLayers.TerrainLayer)
-    const movementOffsetX = asset.movement ? asset.movement.movementOffset.x : asset.cell.position.x
-    const movementOffsetY = asset.movement ? asset.movement.movementOffset.y : asset.cell.position.y
+    const topAsset = GSM.AssetController.getTopAssetPerCell(asset.blocks, RenderingLayers.TerrainLayer)
+    const movementOffsetX = asset.movement ? asset.movement.movementOffset.x : asset.blocks.position.x
+    const movementOffsetY = asset.movement ? asset.movement.movementOffset.y : asset.blocks.position.y
 
-    const walkOverAsset = getTopAssetBlockingCell(asset.cell)
+    const walkOverAsset = getTopAssetBlockingCell(asset.blocks)
     let shadowZ = asset.zIndex
     if(walkOverAsset && walkOverAsset.zIndex <= shadowZ ) {
       shadowZ = walkOverAsset ? walkOverAsset.zIndex * GSM.Settings.blockSize : 0
@@ -55,8 +55,8 @@ export class AssetRenderer implements Renderer {
   // }
 
   public onDraw(asset: Asset<AssetTile>): void {
-    const movementOffsetX = asset.movement ? asset.movement.movementOffset.x : asset.cell.position.x
-    const movementOffsetY = asset.movement ? asset.movement.movementOffset.y : asset.cell.position.y
+    const movementOffsetX = asset.movement ? asset.movement.movementOffset.x : asset.blocks.position.x
+    const movementOffsetY = asset.movement ? asset.movement.movementOffset.y : asset.blocks.position.y
 
     this.ctx.drawImage(
       GSM.ImageController.getImage(asset.tile.imageUrl),

@@ -54,7 +54,7 @@ export abstract class Movement {
     this.subscribeToFrameTimer()
     this.setStartingMotionCells()
     this.setTracking()
-    this.animation.orientation.autoSetOrientation(this.asset.cell, this.nextCell)
+    this.animation.orientation.autoSetOrientation(this.asset.blocks, this.nextCell)
     if(!this.isNextCellPassable()) { this.endMovement() }
   }
 
@@ -70,8 +70,8 @@ export abstract class Movement {
     let nextXMove = 0
     let nextYMove = 0
   
-    if (this.nextCell.location.x !== this.asset.cell.location.x) { nextXMove = this.nextCell.location.x > this.asset.cell.location.x ? this.speed : this.speed * -1 }
-    if (this.nextCell.location.y !== this.asset.cell.location.y) { nextYMove = this.nextCell.location.y > this.asset.cell.location.y ? this.speed : this.speed * -1 }
+    if (this.nextCell.location.x !== this.asset.blocks.location.x) { nextXMove = this.nextCell.location.x > this.asset.blocks.location.x ? this.speed : this.speed * -1 }
+    if (this.nextCell.location.y !== this.asset.blocks.location.y) { nextYMove = this.nextCell.location.y > this.asset.blocks.location.y ? this.speed : this.speed * -1 }
   
     this.cellTrackPosX += nextXMove
     this.cellTrackPosY += nextYMove    
@@ -102,7 +102,7 @@ export abstract class Movement {
 
       if (this.redirection) {
         this.endMovement()
-        this.start(this.asset.cell, this.redirection.end, this.redirection.charactersOnGrid)
+        this.start(this.asset.blocks, this.redirection.end, this.redirection.charactersOnGrid)
       }
 
       if (!this.nextCell || !this.isNextCellPassable()) {
@@ -115,7 +115,7 @@ export abstract class Movement {
   
   protected prepareNextMovement(): void {
     this.distanceToNextCell = GSM.Settings.blockSize
-    this.asset.animation.orientation.autoSetOrientation(this.asset.cell, this.nextCell)
+    this.asset.animation.orientation.autoSetOrientation(this.asset.blocks, this.nextCell)
   }
 
   protected setCurrentPath(startCell: Cell, endCell: Cell): void {

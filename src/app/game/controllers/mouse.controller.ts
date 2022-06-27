@@ -44,7 +44,7 @@ export class MouseController {
 
   private onCellClick(): void {
     this.hoveringZAxisAtMouseDown = 0;
-    const cell = this.hoveringCellZAxisAtMouseDown ? this.hoveringCellZAxisAtMouseDown.cell : this.hoveringCell
+    const cell = this.hoveringCellZAxisAtMouseDown ? this.hoveringCellZAxisAtMouseDown.blocks : this.hoveringCell
     this.cellAtZIndexClicked.next({cell: cell, zIndex: this.hoveringZAxis})
   }
 

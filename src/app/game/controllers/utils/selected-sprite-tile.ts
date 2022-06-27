@@ -11,12 +11,12 @@ export function getTopAssetBlockingCell(hoveringCell: Cell): GridAsset {
     assets.forEach((asset) => {
       GSM.GridController.layerIterator.forEach(layer => {
         if(asset.tile?.layer !== layer ) { return }
-          const withinX = hoveringCell.position.x === asset.cell.position.x
-          const withinY = hoveringCell.position.y >= (asset.cell.position.y - (GSM.AssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y < asset.cell.position.y + GSM.Settings.blockSize
+          const withinX = hoveringCell.position.x === asset.blocks.position.x
+          const withinY = hoveringCell.position.y >= (asset.blocks.position.y - (GSM.AssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y < asset.blocks.position.y + GSM.Settings.blockSize
     
           if(withinX && withinY) {
 
-          if(asset.zIndex === Math.abs(hoveringCell.location.y - asset.cell.location.y)) {
+          if(asset.zIndex === Math.abs(hoveringCell.location.y - asset.blocks.location.y)) {
             selectedAsset = asset            
           }
         }
@@ -34,12 +34,12 @@ export function getAssetsBlockingCell(hoveringCell: Cell): GridAsset[] {
     assets.forEach((asset) => {
       GSM.GridController.layerIterator.forEach(layer => {
         if(asset.tile?.layer !== layer ) { return }
-          const withinX = hoveringCell.position.x === asset.cell.position.x
-          const withinY = hoveringCell.position.y >= (asset.cell.position.y - (GSM.AssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y < asset.cell.position.y + GSM.Settings.blockSize
+          const withinX = hoveringCell.position.x === asset.blocks.position.x
+          const withinY = hoveringCell.position.y >= (asset.blocks.position.y - (GSM.AssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y < asset.blocks.position.y + GSM.Settings.blockSize
     
           if(withinX && withinY) {
 
-          if(asset.zIndex === Math.abs(hoveringCell.location.y - asset.cell.location.y)) {
+          if(asset.zIndex === Math.abs(hoveringCell.location.y - asset.blocks.location.y)) {
             selectedAsset.push(asset)            
           }
         }
@@ -57,12 +57,12 @@ export function getTilesBlockingCell(hoveringCell: Cell, layer: RenderingLayers)
     assets.forEach((asset) => {
       GSM.GridController.layerIterator.forEach(layer => {
         if(asset.tile?.layer !== layer ) { return }
-          const withinX = hoveringCell.position.x === asset.cell.position.x
-          const withinY = hoveringCell.position.y >= (asset.cell.position.y - (GSM.AssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y < asset.cell.position.y + GSM.Settings.blockSize
+          const withinX = hoveringCell.position.x === asset.blocks.position.x
+          const withinY = hoveringCell.position.y >= (asset.blocks.position.y - (GSM.AssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y < asset.blocks.position.y + GSM.Settings.blockSize
     
           if(withinX && withinY) {
 
-          if(asset.zIndex === Math.abs(hoveringCell.location.y - asset.cell.location.y)) {
+          if(asset.zIndex === Math.abs(hoveringCell.location.y - asset.blocks.location.y)) {
             selectedAsset.push(asset.tile)            
           }
         }

@@ -18,12 +18,12 @@ export function terrainCleanup() {
 
     if (leftTileId !== cellTileId && rightTileId !== cellTileId) {
       delete asset.tile[RenderingLayers.TerrainLayer]
-      asset.cell.obstructions[asset.zIndex] = false
+      asset.blocks.obstructions[asset.zIndex] = false
     }
     
     if (topTileId !== cellTileId &&  bottomTileId !== cellTileId) {
       delete asset.tile[RenderingLayers.TerrainLayer]
-      asset.cell.obstructions[asset.zIndex] = false
+      asset.blocks.obstructions[asset.zIndex] = false
     }
        
     if(asset.tile.drawableTileId) {

@@ -118,7 +118,7 @@ export class GameComponent implements AfterViewInit{
     }
     if(event.code === "KeyN") {
      const asset = GSM.AssetController.getSelectedAssets()[0]
-     const topAsset = GSM.AssetController.getTopAssetPerCell(asset.cell, RenderingLayers.TerrainLayer)
+     const topAsset = GSM.AssetController.getTopAssetPerCell(asset.blocks, RenderingLayers.TerrainLayer)
     
      if((!topAsset && (asset.zIndex !== 0)) || (topAsset && topAsset.zIndex < asset.zIndex)) {
        GSM.AssetController.changeZAxis("down", asset, RenderingLayers.AssetLayer)

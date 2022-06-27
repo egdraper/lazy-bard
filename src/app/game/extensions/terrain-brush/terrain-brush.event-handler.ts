@@ -21,7 +21,7 @@ export class TerrainTreeBrushEventHandler {
         mouseHoveringZAsset = {zIndex: 0, cell: cell} as any
       }
       const itemDetails = drawableItems.find(item => item.id === drawableTile.id)
-      const newCell = GSM.GridController.getCellByLocation(mouseHoveringZAsset.cell.location.x, mouseHoveringZAsset.cell.location.y)
+      const newCell = GSM.GridController.getCellByLocation(mouseHoveringZAsset.blocks.location.x, mouseHoveringZAsset.blocks.location.y)
       const northCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.North)
       const northEastCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.NorthEast)
       const eastCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.East)       

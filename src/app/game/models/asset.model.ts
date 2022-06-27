@@ -7,7 +7,7 @@ export type Speed = 1 | 2 | 4 | 8 | 16 | 32 | 64
 
 export class GridAsset<T = any> {
   id: string; // x:0;y:0;z:0;layer:character
-  cell: Cell; // not saved
+  blocks: { zIndex: number, cell: Cell, obstructed: boolean }[]; // not saved
   tile: T;
   zIndex: number;
   selected: boolean;
@@ -26,7 +26,7 @@ export class Asset<T = Tile> extends GridAsset {
 
   constructor(cell: Cell) {
     super();
-    this.cell = cell
+    this.blocks = cell
   }
 }
 
@@ -41,9 +41,9 @@ export class BackgroundAsset extends GridAsset{
   constructor(
     cell: Cell,      
     tile: BackgroundTile
-    ) {
+  ) {
     super();
-    this.cell = cell
+    this.blocks = cell
     this.tile = tile
   }
 }
@@ -69,5 +69,13 @@ export class AssetTypeViewModel {
   yDirectionTilePos: SpriteDirection
   xPosOffset: number
   yPosOffset: number
-  obstructed: {[zIndex: number]: {x: number, y: number, offsetX?: number, offsetY?: number}}
+  obstructed: string[]
+}
+
+export class AssetInfo {
+  id: number
+  type: string
+  name: string
+  url: string
+  rule: string
 }

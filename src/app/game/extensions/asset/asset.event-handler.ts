@@ -52,7 +52,7 @@ export class AssetEventHandler {
     ) {
       const selectedCharacter = GSM.AssetController.getSelectedAssets();
       selectedCharacter.forEach((asset: Asset) => {
-        asset.movement.start(asset.cell, event.cell, []);
+        asset.movement.start(asset.blocks, event.cell, []);
       });
       return;
     }
