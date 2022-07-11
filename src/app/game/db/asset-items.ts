@@ -1,6 +1,6 @@
-import { Asset, AssetInfo, AssetTypeViewModel } from "../models/asset.model";
+import { Asset, AssetInfo, AssetAttributes } from "../models/asset.model";
 
-export const assetType: AssetTypeViewModel[]  = [
+export const assetAttributes: AssetAttributes[]  = [
   {
     id: 'standardCreature',
     size: { x: 1, y: 1, z: 1 },
@@ -51,6 +51,27 @@ export const assetType: AssetTypeViewModel[]  = [
     yPosOffset: -88,
     obstructed: ["111"]
   },
+  {
+    id: 'standardTerrain',
+    size: { x: 1, y: 1, z: 1 },
+    drawSize: {x: 16, y: 16 },
+    xMotionTilePos: [0, 0, 0, 0 ],
+    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
+    xPosOffset: -31,
+    yPosOffset: -88,
+    obstructed: ["1"]
+  },
+  {
+    id: 'standardDrawableTree',
+    size: { x: 1, y: 1, z: 1 },
+    drawSize: {x: 16, y: 16 },
+    xMotionTilePos: [0, 0, 0, 0 ],
+    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
+    xPosOffset: -31,
+    yPosOffset: -88,
+    obstructed: ["1"]
+  },
+
 ];
 
 
@@ -70,7 +91,7 @@ export const assets: AssetInfo[] = [
     rule: "standardLTree"
   },
   {
-    id: 2,
+    id: 3,
     type: "tree",
     name: "Large Tree Green",
     url: "assets/images/trees/tree3.png",

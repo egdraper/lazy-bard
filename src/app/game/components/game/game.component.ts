@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, HostListener } from '@angular/core';
 import { terrainCleanup } from '../../controllers/utils/terrain-cleanup';
+import { drawableItems } from '../../db/drawable-items.db';
 import { GSM } from '../../game-state-manager.service';
+import { Asset } from '../../models/asset.model';
 import { RenderingLayers } from '../../models/map';
 
 
@@ -21,7 +23,7 @@ export class GameComponent implements AfterViewInit{
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame("firstGame", 35, 35, "forest")
+      this.gameStateManager.newGame("firstGame",150, 150, "forest")
       GSM.ActionController.generalActionFire.subscribe(action => {
         this.selected = action.name 
       })
@@ -78,17 +80,13 @@ export class GameComponent implements AfterViewInit{
     if(event.code === "KeyE") {
       GSM.ActionController.generalActionFire.next({
         name: "paintingTerrain",
-        data: {
-          id: "Trees-GrassBase",
-        }
+        data: drawableItems.find(item => item.id === "Trees-GrassBase")
       })
     }
     if(event.code === "KeyR") {
       GSM.ActionController.generalActionFire.next({
         name: "paintingTerrain",
-        data: {
-          id: "StoneCliff-StoneBase2",
-        }
+        data: drawableItems.find(item => item.id === "StoneCliff-StoneBase2")
       })
     }
     if(event.code === "KeyX") {
@@ -99,7 +97,7 @@ export class GameComponent implements AfterViewInit{
     }
     if(event.code === "KeyP") {
       GSM.RotationController.rotateClockwise()
-      terrainCleanup()
+      terrainCleanup(undefined)
     }
     if(event.code === "KeyG") {
       this.selected = "starting Game"
@@ -112,23 +110,23 @@ export class GameComponent implements AfterViewInit{
       GSM.FrameController.start()  
     }
     if(event.code === "KeyH") {
-      const asset = GSM.AssetController.getSelectedAssets()[0]
+      const asset = GSM.AssetController.getSelectedAssets()[0] as Asset
       asset.hovering = true
-      GSM.AssetController.changeZAxis("up", asset, RenderingLayers.AssetLayer)
+      GSM.AssetController.changeZAxis("up", asset)
     }
     if(event.code === "KeyN") {
-     const asset = GSM.AssetController.getSelectedAssets()[0]
-     const topAsset = GSM.AssetController.getTopAssetPerCell(asset.blocks, RenderingLayers.TerrainLayer)
+    //  const asset = GSM.AssetController.getSelectedAssets()[0]
+    //  const topAsset = GSM.AssetController.getTopAssetPerCell(asset.anchorCell, RenderingLayers.TerrainLayer)
     
-     if((!topAsset && (asset.zIndex !== 0)) || (topAsset && topAsset.zIndex < asset.zIndex)) {
-       GSM.AssetController.changeZAxis("down", asset, RenderingLayers.AssetLayer)
-     } else {
-       asset.hovering = false
-     }
+    //  if((!topAsset && (asset.baseZIndex !== 0)) || (topAsset && topAsset.baseZIndex < asset.baseZIndex)) {
+    //    GSM.AssetController.changeZAxis("down", asset)
+    //  } else {
+    //    asset.hovering = false
+    //  }
     }
     if(event.code === "KeyY") {
      const asset = GSM.AssetController.getSelectedAssets()[0]
-     GSM.AssetController.changeZAxis("down", asset, RenderingLayers.AssetLayer)
+     GSM.AssetController.changeZAxis("down", asset)
     }
   }
 }

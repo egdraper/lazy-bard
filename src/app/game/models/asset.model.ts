@@ -1,16 +1,39 @@
 
+import { zip } from "rxjs";
+import { assetAttributes } from "../db/asset-items";
 import { Movement } from "../extensions/asset/movement.ts/base.movement";
-import { Cell, Position, Size } from "./map"
+import { GSM } from "../game-state-manager.service";
+import { Cell, Position, RenderingLayers, Size } from "./map"
 import { AssetTile, BackgroundTile, TerrainTile, SpriteAnimation, Tile } from "./sprite-tile.model"
 
 export type Speed = 1 | 2 | 4 | 8 | 16 | 32 | 64
 
+export class BlockEdge {
+  north?: boolean
+  east?: boolean
+  south?: boolean
+  west?: boolean
+  up?: boolean
+  down?: boolean
+}
+export class AssetBlock {
+  id: string
+  zIndex: number
+  cell: Cell
+  obstructed: boolean
+  edge: BlockEdge
+  ownerAssetId: string
+}
+
 export class GridAsset<T = any> {
-  id: string; // x:0;y:0;z:0;layer:character
-  blocks: { zIndex: number, cell: Cell, obstructed: boolean }[]; // not saved
+  id: string; 
+  ownedBlockIds: string[]; 
   tile: T;
-  zIndex: number;
-  selected: boolean;
+  attributesId: string;
+  attributes: AssetAttributes // not saved
+  layer: RenderingLayers
+  baseZIndex: number
+  anchorCell: Cell
 }
 
 export class Asset<T = Tile> extends GridAsset {
@@ -24,26 +47,26 @@ export class Asset<T = Tile> extends GridAsset {
   public cellId?: string;
   public gridId: string; 
 
-  constructor(cell: Cell) {
+  constructor(cell: Cell, assetTypeId: string) {
     super();
-    this.blocks = cell
+    this.anchorCell = cell
+    this.attributesId = assetTypeId
   }
-}
 
+}
 export class TerrainAsset extends GridAsset{
   public override tile: TerrainTile
 }
 
 export class BackgroundAsset extends GridAsset{
   public override tile: BackgroundTile
-  public override zIndex: number = 0
 
   constructor(
     cell: Cell,      
     tile: BackgroundTile
   ) {
     super();
-    this.blocks = cell
+    this.anchorCell = cell
     this.tile = tile
   }
 }
@@ -61,7 +84,7 @@ export class SpriteDirection {
   up: number
 }
 
-export class AssetTypeViewModel {
+export class AssetAttributes {
   id: string
   size: Size
   drawSize: Size

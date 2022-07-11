@@ -1,6 +1,6 @@
 import { GSM } from "../game-state-manager.service"
-import { Cell, NeighborLocation } from "../models/map"
-import { GridAsset } from "../models/asset.model"
+import { AssetBlock, GridAsset } from "../models/asset.model"
+import { Cell, NeighborLocation, RenderingLayers } from "../models/map"
 
 export class CellNeighborsController {
   public getImmediateNeighborCell(
@@ -31,67 +31,92 @@ export class CellNeighborsController {
     return null
   }
 
-    public getImmediateNeighboringAsset(
-      gridAsset: GridAsset,
-      neighborLocation: NeighborLocation,
-    ): { [layer: string]: GridAsset; } {
-      const x = Number(gridAsset.blocks.id.split(":")[0].match(/\d+/))
-      const y = Number(gridAsset.blocks.id.split(":")[1].match(/\d+/))
+  public getImmediateNeighboringAssets(
+    gridAsset: GridAsset,
+    neighborLocation: NeighborLocation,
+    layer?: RenderingLayers
+  ): GridAsset[] {
+    let blocks: AssetBlock[] = []
     switch (neighborLocation) {
       case NeighborLocation.North:
-        return GSM.GameData.map.grid[`x${x}:y${y - 1}`]?.assets[gridAsset.zIndex]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { north: true })
+        return this.filterAssets(blocks, 0, -1, 0, layer)
       case NeighborLocation.East:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y}`]?.assets[gridAsset.zIndex]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { east: true })
+        return this.filterAssets(blocks, 1, 0, 0, layer)
       case NeighborLocation.South:
-        return GSM.GameData.map.grid[`x${x}:y${y + 1}`]?.assets[gridAsset.zIndex]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { south: true })
+        return this.filterAssets(blocks, 0, 1, 0, layer)
       case NeighborLocation.West:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y}`]?.assets[gridAsset.zIndex]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { west: true })
+        return this.filterAssets(blocks, -1, 0, 0, layer)
       case NeighborLocation.NorthEast:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y - 1}`]?.assets[gridAsset.zIndex]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { north: true, east: true })
+        return this.filterAssets(blocks, 1, -1, 0, layer)
       case NeighborLocation.SouthEast:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y + 1}`]?.assets[gridAsset.zIndex]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { south: true, east: true })
+        return this.filterAssets(blocks, 1, 1, 0, layer)
       case NeighborLocation.SouthWest:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y + 1}`]?.assets[gridAsset.zIndex]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { south: true, west: true })
+        return this.filterAssets(blocks, -1, 1, 0, layer)
       case NeighborLocation.NorthWest:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y - 1}`]?.assets[gridAsset.zIndex]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { north: true, west: true })
+        return this.filterAssets(blocks, -1, -1, 0, layer)
       case NeighborLocation.Up:
-        return GSM.GameData.map.grid[`x${x}:y${y}`]?.assets[gridAsset.zIndex + 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { up: true })
+        return this.filterAssets(blocks, 0, 0, 1, layer)
       case NeighborLocation.UpNorth:
-        return GSM.GameData.map.grid[`x${x}:y${y - 1}`]?.assets[gridAsset.zIndex + 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { up: true, north: true })
+        return this.filterAssets(blocks, 0, -1, 1, layer)
       case NeighborLocation.UpEast:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y}`]?.assets[gridAsset.zIndex + 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { up: true, east: true })
+        return this.filterAssets(blocks, 1, 0, 1, layer)
       case NeighborLocation.UpSouth:
-        return GSM.GameData.map.grid[`x${x}:y${y + 1}`]?.assets[gridAsset.zIndex + 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { up: true, south: true })
+        return this.filterAssets(blocks, 0, 1, 1, layer)
       case NeighborLocation.UpWest:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y}`]?.assets[gridAsset.zIndex + 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { up: true, west: true })
+        return this.filterAssets(blocks, -1, 0, 1, layer)
       case NeighborLocation.UpNorthEast:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y - 1}`]?.assets[gridAsset.zIndex + 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { up: true, north: true , east: true })
+        return this.filterAssets(blocks, 1, -1, 1, layer)
       case NeighborLocation.UpSouthEast:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y + 1}`]?.assets[gridAsset.zIndex + 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { up: true, south: true , east: true })
+        return this.filterAssets(blocks, 1, 1, 1, layer)
       case NeighborLocation.UpSouthWest:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y + 1}`]?.assets[gridAsset.zIndex + 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { up: true, south: true , west: true })
+        return this.filterAssets(blocks, -1, 1, 1, layer)
       case NeighborLocation.UpNorthWest:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y - 1}`]?.assets[gridAsset.zIndex + 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { up: true, north: true , west: true })
+        return this.filterAssets(blocks, -1, -1, -1, layer)
       case NeighborLocation.Down:
-        return GSM.GameData.map.grid[`x${x}:y${y}`]?.assets[gridAsset.zIndex - 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { down: true })
+        return this.filterAssets(blocks, 0, 0, -1, layer)
       case NeighborLocation.DownNorth:
-        return GSM.GameData.map.grid[`x${x}:y${y - 1}`]?.assets[gridAsset.zIndex - 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { down: true, north: true })
+        return this.filterAssets(blocks, 0, -1, -1, layer)
       case NeighborLocation.DownEast:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y}`]?.assets[gridAsset.zIndex - 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { down: true, east: true })
+        return this.filterAssets(blocks, 1, 0, -1, layer)
       case NeighborLocation.DownSouth:
-        return GSM.GameData.map.grid[`x${x}:y${y + 1}`]?.assets[gridAsset.zIndex - 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { down: true, south: true })
+        return this.filterAssets(blocks, 0, 1, -1, layer)
       case NeighborLocation.DownWest:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y}`]?.assets[gridAsset.zIndex - 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { down: true, west: true })
+        return this.filterAssets(blocks, -1, 0, -1, layer)
       case NeighborLocation.DownNorthEast:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y - 1}`]?.assets[gridAsset.zIndex - 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { down: true, north: true, east: true})
+        return this.filterAssets(blocks, 1, -1, -1, layer)
       case NeighborLocation.DownSouthEast:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y + 1}`]?.assets[gridAsset.zIndex - 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { down: true, south: true, east: true})
+        return this.filterAssets(blocks, 1, 1, -1, layer)
       case NeighborLocation.DownSouthWest:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y + 1}`]?.assets[gridAsset.zIndex - 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { down: true, south: true, west: true})
+        return this.filterAssets(blocks, -1, 1, -1, layer)
       case NeighborLocation.DownNorthWest:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y - 1}`]?.assets[gridAsset.zIndex - 1]
+        blocks = GSM.AssetController.getAllAssetBlocksByEdge(gridAsset, { down: true, north: true, west: true})
+        return this.filterAssets(blocks, -1, -1, -1, layer)
     }
-    return null
   }
 
   public getHorizontalNeighborsCell(cell: Cell): Cell[] {
@@ -107,47 +132,74 @@ export class CellNeighborsController {
     return cells
   }  
 
-  public getHorizontalNeighborsAsset(gridAsset: GridAsset): { [layer: string]: GridAsset; }[] {
-    const gridAssets: { [layer: string]: GridAsset; }[] = []
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.North))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.East))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.South))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.West))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.NorthEast))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.SouthEast))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.SouthWest))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.NorthWest))
+  public getHorizontalNeighborsAsset(asset: GridAsset, layer?: RenderingLayers): GridAsset[][] | GridAsset[] {
+    const gridAssets: GridAsset[][] = []
+    gridAssets.push(this.getImmediateNeighboringAssets(asset, NeighborLocation.North, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(asset, NeighborLocation.East, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(asset, NeighborLocation.South, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(asset, NeighborLocation.West, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(asset, NeighborLocation.NorthEast, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(asset, NeighborLocation.SouthEast, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(asset, NeighborLocation.SouthWest, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(asset, NeighborLocation.NorthWest, layer))
     return gridAssets
   }  
 
-  public getAllImmediateNeighbors(gridAsset: GridAsset): { [layer: string]: GridAsset; }[] {
-    const gridAssets: { [layer: string]: GridAsset; }[] = []
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.North))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.East))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.South))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.West))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.NorthEast))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.SouthEast))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.SouthWest))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.NorthWest))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.Up))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.UpNorth))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.UpEast))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.UpSouth))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.UpWest))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.UpNorthEast))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.UpSouthEast))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.UpSouthWest))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.UpNorthWest))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.Down))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.DownNorth))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.DownEast))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.DownSouth))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.DownWest))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.DownNorthEast))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.DownSouthEast))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.DownSouthWest))
-    gridAssets.push(this.getImmediateNeighboringAsset(gridAsset, NeighborLocation.DownNorthWest))
+  public getAllImmediateNeighbors(gridAsset: GridAsset, layer?: RenderingLayers): GridAsset[][] | GridAsset[] {
+
+    this.a = 0
+    const gridAssets: GridAsset[][] = []
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.North, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.East, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.South, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.West, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.NorthEast, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.SouthEast, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.SouthWest, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.NorthWest, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.Up, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.UpNorth, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.UpEast, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.UpSouth, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.UpWest, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.UpNorthEast, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.UpSouthEast, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.UpSouthWest, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.UpNorthWest, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.Down, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.DownNorth, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.DownEast, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.DownSouth, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.DownWest, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.DownNorthEast, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.DownSouthEast, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.DownSouthWest, layer))
+    gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.DownNorthWest, layer))
     return gridAssets
   }
+
+  public getRelativeNeighbor(cell: Cell, xDistance: number, yDistance: number): Cell {
+    const x = cell.location.x + xDistance
+    const y = cell.location.y + yDistance
+
+    return GSM.GridController.getCellByLocation(x, y)
+  }
+  private a = 0
+  private filterAssets(blocks: AssetBlock[], xDirection: number, yDirection: number, zOffset: number = 0, layer: RenderingLayers ) {
+    let gridAssets
+    blocks.forEach(block => {
+      const neighborCell = GSM.GameData.map.grid[`x${block.cell.location.x + xDirection}:y${block.cell.location.y + yDirection}`]
+      let neighborAssets
+      
+      if(layer) {
+        neighborAssets = GSM.AssetController.getAsset(neighborCell, block.zIndex + zOffset, layer)
+        gridAssets = neighborAssets
+      } else {
+        neighborAssets = GSM.AssetController.getAssetsByCellAtZ(neighborCell, block.zIndex + zOffset)
+        gridAssets = [...gridAssets, ...neighborAssets]
+      }
+    })
+    return gridAssets
+  }
+
 }

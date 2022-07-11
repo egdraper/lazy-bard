@@ -1,7 +1,7 @@
-import { assetType } from '../db/asset-items';
+import { assetAttributes } from '../db/asset-items';
 import { SpriteOrientation } from '../extensions/asset/direction.ts/direction';
 
-import { AssetTypeViewModel } from './asset.model';
+import { AssetAttributes } from './asset.model';
 import { SpriteLocation, Cell, Position, RenderingLayers } from './map';
 
 
@@ -43,13 +43,13 @@ export class TerrainTile extends Tile {
 }
 
 export class AssetTile extends Tile {
-  assetDrawRules: AssetTypeViewModel;
+  assetDrawRules: AssetAttributes;
   obstacleObstructionX?: number;
   obstacleObstructionY?: number;
 
   constructor(layer: RenderingLayers, imageUrl: string, drawRuleName: string) {
     super(layer, imageUrl)
-    this.assetDrawRules = assetType.find(item => item.id === drawRuleName)
+    this.assetDrawRules = assetAttributes.find(item => item.id === drawRuleName)
   }
 }
 
@@ -57,11 +57,11 @@ export class DrawableItemViewModel {
   drawingRules: TerrainTile[];
   id: string;
   imageUrl: string;
+  assetAttributeId: string;
   name: string;
   offsetX: number;
   offsetY: number;
   spriteType: string;
-  variableHeight: number;
   staticHeight?: number;
   defaultTopBackground?: string;
   expandable?: boolean;

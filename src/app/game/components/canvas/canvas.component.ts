@@ -38,15 +38,7 @@ export class CanvasComponent implements AfterViewInit {
     const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale)
     const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale)
     
-    const cell = GSM.GridController.getCellByPosition(mousePosX, mousePosY)
-    
-    GSM.MouseController.cellClick.next(cell)
-    GSM.MouseController.mouseClick.next({x: mousePosX, y: mousePosY})
-    
-    const occupiedCell = GSM.AssetController.getAssetsByCell(cell)
-    if(occupiedCell.length === 0) {
-      GSM.MouseController.emptyCellClicked.next(cell)
-    }
+    GSM.MouseController.mouseClick.next({posX: mousePosX, posY: mousePosY})
   }
 
   public onMouseDown(event: MouseEvent): void {
@@ -142,5 +134,4 @@ export class CanvasComponent implements AfterViewInit {
 
     return { width: perfectWidth * GSM.Settings.scale, height: perfectHeight * GSM.Settings.scale }
   }
-  
 }

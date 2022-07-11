@@ -9,7 +9,7 @@ export class Sneaking extends Movement {
   private tempSpeed
 
   constructor(public asset: Asset) {
-    super(asset.animation, new Position(asset.blocks.position.x, asset.blocks.position.y, 0))
+    super(asset.animation, new Position(asset.ownedBlockIds.position.x, asset.ownedBlockIds.position.y, 0))
     this.tempSpeed = GSM.Settings.speed
     GSM.Settings.speed = Math.round(GSM.Settings.speed / 2)
   }

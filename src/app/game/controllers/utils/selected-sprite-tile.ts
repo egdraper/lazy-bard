@@ -1,73 +1,36 @@
 import { GSM } from "../../game-state-manager.service"
-import { Cell, RenderingLayers } from "../../models/map"
-import { GridAsset } from "../../models/asset.model"
-import { Tile } from "../../models/sprite-tile.model"
+import { AssetBlock, GridAsset } from "../../models/asset.model"
+import { Cell } from "../../models/map"
 
-export function getTopAssetBlockingCell(hoveringCell: Cell): GridAsset {
-  let selectedAsset: GridAsset
-  
-  GSM.GridController.iterateYCells(hoveringCell.location.x, cell => {
-    const assets = GSM.AssetController.getAssetsByCell(cell)
-    assets.forEach((asset) => {
-      GSM.GridController.layerIterator.forEach(layer => {
-        if(asset.tile?.layer !== layer ) { return }
-          const withinX = hoveringCell.position.x === asset.blocks.position.x
-          const withinY = hoveringCell.position.y >= (asset.blocks.position.y - (GSM.AssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y < asset.blocks.position.y + GSM.Settings.blockSize
-    
-          if(withinX && withinY) {
+export function getAllAssetsBlocksBeingHovered(hoveringCell: Cell): AssetBlock[] {
+  const coveringBlocks: AssetBlock[] = []
+  GSM.GridController.iterateYCells(hoveringCell.location.x, (cell: Cell) => {
+    if(cell.location.y < hoveringCell.location.y) { return }
 
-          if(asset.zIndex === Math.abs(hoveringCell.location.y - asset.blocks.location.y)) {
-            selectedAsset = asset            
-          }
-        }
-      })
+    const distanceFromHoveringCell = cell.location.y - hoveringCell.location.y
+    GSM.AssetController.getAllAssetBlocksAtCell(cell).forEach(assetBlock => {
+      if(assetBlock.zIndex === distanceFromHoveringCell) {
+        coveringBlocks.push(assetBlock)
+      }
     })
   })
-  return selectedAsset
+  return coveringBlocks
 }
 
-export function getAssetsBlockingCell(hoveringCell: Cell): GridAsset[] {
-  let selectedAsset: GridAsset[] = []
-  
-  GSM.GridController.iterateYCells(hoveringCell.location.x, cell => {
-    const assets = GSM.AssetController.getAssetsByCell(cell)
-    assets.forEach((asset) => {
-      GSM.GridController.layerIterator.forEach(layer => {
-        if(asset.tile?.layer !== layer ) { return }
-          const withinX = hoveringCell.position.x === asset.blocks.position.x
-          const withinY = hoveringCell.position.y >= (asset.blocks.position.y - (GSM.AssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y < asset.blocks.position.y + GSM.Settings.blockSize
-    
-          if(withinX && withinY) {
-
-          if(asset.zIndex === Math.abs(hoveringCell.location.y - asset.blocks.location.y)) {
-            selectedAsset.push(asset)            
-          }
-        }
-      })
-    })
-  })
-  return selectedAsset
+export function getAllAssetsBeingHovered(hoveringCell: Cell): GridAsset[] {
+  const assetBlocks = getAllAssetsBlocksBeingHovered(hoveringCell)
+  return assetBlocks.map(block => GSM.AssetController.getAssetById(block.ownerAssetId))
 }
 
-export function getTilesBlockingCell(hoveringCell: Cell, layer: RenderingLayers): Tile[] {
-  let selectedAsset: Tile[] = []
-  
-  GSM.GridController.iterateYCells(hoveringCell.location.x, cell => {
-    const assets = GSM.AssetController.getAssetsByCell(cell)
-    assets.forEach((asset) => {
-      GSM.GridController.layerIterator.forEach(layer => {
-        if(asset.tile?.layer !== layer ) { return }
-          const withinX = hoveringCell.position.x === asset.blocks.position.x
-          const withinY = hoveringCell.position.y >= (asset.blocks.position.y - (GSM.AssetController.getTopAssetPerCell(cell).zIndex * GSM.Settings.blockSize)) && hoveringCell.position.y < asset.blocks.position.y + GSM.Settings.blockSize
-    
-          if(withinX && withinY) {
+export function getTopAssetBeingHovered(hoveringCell: Cell): GridAsset{
+  const topBlock = getAllAssetsBlocksBeingHovered(hoveringCell).pop()
+  if(topBlock) {
+    return GSM.AssetController.getAssetById(topBlock.ownerAssetId)
+  } else {
+    return undefined
+  }
+}
 
-          if(asset.zIndex === Math.abs(hoveringCell.location.y - asset.blocks.location.y)) {
-            selectedAsset.push(asset.tile)            
-          }
-        }
-      })
-    })
-  })
-  return selectedAsset
+export function getTopAssetBlockBeingHovered(hoveringCell: Cell): AssetBlock {
+  return getAllAssetsBlocksBeingHovered(hoveringCell).pop()
 }

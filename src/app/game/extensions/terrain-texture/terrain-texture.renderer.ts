@@ -12,34 +12,36 @@ export class TerrainPaintBrushRenderer implements Renderer {
     if(!asset.tile || !asset.tile.drawableTileId) { return }
     
     const itemDetails = drawableItems.find(item => item.id === asset.tile.drawableTileId)
-
-    this.ctx.imageSmoothingEnabled = false
-    if(asset.tile.drawsWith) {      
-      this.ctx.drawImage(
-        GSM.ImageController.getImage(asset.tile.imageUrl),
-        asset.tile.drawsWith.x * GSM.Settings.blockSize,
-        asset.tile.drawsWith.y * GSM.Settings.blockSize,
-        GSM.Settings.blockSize,
-        GSM.Settings.blockSize,
-        asset.blocks.position.x + itemDetails.offsetX,
-        asset.blocks.position.y + itemDetails.offsetY - (asset.zIndex * GSM.Settings.blockSize),
-        GSM.Settings.blockSize,
-        GSM.Settings.blockSize,
-      )
-    }
     
-    if(asset.tile.drawsWithTop) {      
-      this.ctx.drawImage(
-        GSM.ImageController.getImage(asset.tile.imageUrl),
-        asset.tile.drawsWithTop.x * GSM.Settings.blockSize,
-        asset.tile.drawsWithTop.y * GSM.Settings.blockSize,
-        GSM.Settings.blockSize,
-        GSM.Settings.blockSize,
-        asset.blocks.position.x + itemDetails.offsetX,
-        asset.blocks.position.y + itemDetails.offsetY - GSM.Settings.blockSize - (asset.zIndex * GSM.Settings.blockSize),
-        GSM.Settings.blockSize,
-        GSM.Settings.blockSize,
-      )
-     }
+
+      this.ctx.imageSmoothingEnabled = false
+      if(asset.tile.drawsWith) {      
+        this.ctx.drawImage(
+          GSM.ImageController.getImage(asset.tile.imageUrl),
+          asset.tile.drawsWith.x * GSM.Settings.blockSize,
+          asset.tile.drawsWith.y * GSM.Settings.blockSize,
+          GSM.Settings.blockSize,
+          GSM.Settings.blockSize * asset.ownedBlockIds.length,
+          asset.anchorCell.position.x + itemDetails.offsetX,
+          asset.anchorCell.position.y + itemDetails.offsetY - (asset.baseZIndex * GSM.Settings.blockSize),
+          GSM.Settings.blockSize,
+          GSM.Settings.blockSize * asset.ownedBlockIds.length,
+        )
+      }
+      
+      if(asset.tile.drawsWithTop) {      
+        this.ctx.drawImage(
+          GSM.ImageController.getImage(asset.tile.imageUrl),
+          asset.tile.drawsWithTop.x * GSM.Settings.blockSize,
+          asset.tile.drawsWithTop.y * GSM.Settings.blockSize,
+          GSM.Settings.blockSize,
+          GSM.Settings.blockSize,
+          asset.anchorCell.position.x + itemDetails.offsetX,
+          asset.anchorCell.position.y + itemDetails.offsetY - GSM.Settings.blockSize - (asset.baseZIndex * GSM.Settings.blockSize),
+          GSM.Settings.blockSize,
+          GSM.Settings.blockSize,
+        )
+       }
+
   }
 }

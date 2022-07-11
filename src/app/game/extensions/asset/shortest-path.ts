@@ -23,10 +23,8 @@ export class ShortestPath extends TravelPath {
 
   public find(start: Cell, end: Cell, asset: Asset): Cell[] {
     this.asset = asset
-    const zAsset = GSM.AssetController.getAssetByCellAtZ(end, asset.zIndex)
-    if(zAsset && !zAsset.blocks.obstructions[zAsset.zIndex]) {
-  
-    } else {
+    
+    if (GSM.AssetController.isCellBlockObstructed(end, asset.baseZIndex)) {
       end = this.verifyClosetLocation(start, end)
     } 
     return this.start(start, end)
@@ -72,12 +70,9 @@ export class ShortestPath extends TravelPath {
               return
             }
 
-            let creatureOnSquare  
-            if(cell.assets && cell.assets[this.asset.zIndex] && cell.assets[this.asset.zIndex][RenderingLayers.AssetLayer]) {
-              creatureOnSquare = !!cell.assets[this.asset.zIndex][RenderingLayers.AssetLayer]
-            }
+            let blockObstructed = GSM.AssetController.isCellBlockObstructed(cell, this.asset.baseZIndex)
 
-            if ((!cell.obstructions[this.asset.zIndex] && !creatureOnSquare) && !store.some(i => index === i)) {
+            if ((!blockObstructed && !store.some(i => index === i))) {
               if (!visited[`x${cell.location.x}:y${cell.location.y}`]) {
                 visited[`x${cell.location.x}:y${cell.location.y}`] = {
                   cell,
@@ -91,25 +86,25 @@ export class ShortestPath extends TravelPath {
               }
             }
 
-            if (index === 0 && cell.obstructions[this.asset.zIndex]) {
+            if (index === 0 && blockObstructed) {
               // skip 7 4
               store.push(7)
               store.push(4)
             }
   
-            if (index === 1 && cell.obstructions[this.asset.zIndex]) {
+            if (index === 1 && blockObstructed) {
               // skip 4 5
               store.push(4)
               store.push(5)
             }
   
-            if (index === 2 && cell.obstructions[this.asset.zIndex]) {
+            if (index === 2 && blockObstructed) {
               // skip 5 6
               store.push(5)
               store.push(6)
             }
   
-            if (index === 3 && cell.obstructions[this.asset.zIndex]) {
+            if (index === 3 && blockObstructed) {
               // skip 6 7
               store.push(6)
               store.push(7)
@@ -144,7 +139,7 @@ export class ShortestPath extends TravelPath {
   }
 
   public isBadLocation(end: Cell): boolean {
-    return end.obstructions[this.asset.zIndex] || !!GSM.AssetController.getAssetByCellAtZ(end, this.asset.zIndex)
+    return GSM.AssetController.isCellBlockObstructed(end, this.asset.baseZIndex)
   }
 
   private alternateDiagonal(visited: Visited, index: number): any {

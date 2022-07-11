@@ -8,7 +8,7 @@ export class Walking extends Movement {
   public travelPath: TravelPath = new ShortestPath()
   
   constructor(public asset: Asset) {
-    super(asset.animation, new Position(asset.blocks.position.x, asset.blocks.position.y, 0))
+    super(asset.animation, new Position(asset.anchorCell.position.x, asset.anchorCell.position.y, 0))
   }
   
   public move(event: {assetPosX: number, assetPosY: number, assetPosZ: number, pathTrackPosX: number, pathTrackPosY: number, speed: number, distanceToNextCell: number, distanceToFinalCell: number}): {newPosX: number, newPosY: number, newPosZ:number} {

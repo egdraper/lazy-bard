@@ -1,27 +1,21 @@
 import { Cell, RenderingLayers } from 'src/app/game/models/map';
-import { assetType } from '../../db/asset-items';
 import { GSM } from '../../game-state-manager.service';
 import { Asset, GridAsset } from '../../models/asset.model';
-import {
-  AssetTile,
-  SpriteAnimation
-} from '../../models/sprite-tile.model';
+import { AssetTile, SpriteAnimation } from '../../models/sprite-tile.model';
 import { Walking } from './movement.ts/walking.movement';
 
 export class AssetEventHandler {
   public selectedPlayableAssets: Asset[] = [];
 
   constructor() {
-    GSM.AssetController.assetClicked.subscribe(this.onAssetClicked.bind(this));
-    GSM.MouseController.cellAtZIndexClicked.subscribe(
-      this.onCellClicked.bind(this)
-    );
+    GSM.MouseController.assetClick.subscribe(this.onAssetClicked.bind(this));
+    GSM.MouseController.cellClick.subscribe(this.onCellClicked.bind(this));
   }
 
   public onAssetClicked(asset: GridAsset) {
-    const character = asset;
+    if(!asset) { return }
 
-    if (character.tile.layer !== RenderingLayers.AssetLayer) {
+    if (asset.tile.layer !== RenderingLayers.AssetLayer) {
       return;
     }
 
@@ -33,32 +27,32 @@ export class AssetEventHandler {
       return
     }
 
-    character.selected = !character.selected;
+    GSM.AssetController.toggleAssetSelection(asset)
     GSM.ActionController.generalActionFire.next({
       name: 'characterSelected',
-      data: character,
+      data: asset,
     });
   }
 
-  public onCellClicked(event: { cell: Cell; zIndex: number }): void {
+  public onCellClicked(): void {
     if (GSM.ActionController.generalActionFire.value.name === 'addCharacter') {
       GSM.AssetController.deselectAllAssets();
-      this.addPlayableCharacter(event.cell, event.zIndex);
+      this.addPlayableCharacter(GSM.MouseController.hoveringCell, GSM.MouseController.hoveringZAxis);
       return;
     }
 
     if (
       GSM.ActionController.generalActionFire.value.name === 'characterSelected'
     ) {
-      const selectedCharacter = GSM.AssetController.getSelectedAssets();
-      selectedCharacter.forEach((asset: Asset) => {
-        asset.movement.start(asset.blocks, event.cell, []);
+     
+      GSM.AssetController.getSelectedAssets().forEach((asset: Asset) => {
+        asset.movement.start(asset.anchorCell, GSM.MouseController.hoveringCell, []);
       });
       return;
     }
 
     if (GSM.ActionController.generalActionFire.value.name === 'addObject') {
-      this.addNonPlayableAsset(event.cell, event.zIndex);
+      this.addNonPlayableAsset(GSM.MouseController.hoveringCell, GSM.MouseController.hoveringZAxis);
       return;
     }
   }
@@ -66,7 +60,7 @@ export class AssetEventHandler {
   // MOCK This will be a database thing
   private addPlayableCharacter(cell: Cell, zIndex: number): void {
     // setup asset
-    const playerAsset = new Asset(cell);
+    const playerAsset = new Asset(cell, 'standardCreature');
     playerAsset.tile = new AssetTile(
       RenderingLayers.AssetLayer,
       'assets/images/character_012.png',
@@ -75,12 +69,12 @@ export class AssetEventHandler {
     playerAsset.animation = new SpriteAnimation();
     playerAsset.movement = new Walking(playerAsset);
     playerAsset.animating = true;
+    playerAsset.layer = RenderingLayers.AssetLayer
 
     GSM.AssetController.addAsset(
       playerAsset,
       cell,
       zIndex,
-      RenderingLayers.AssetLayer
     );
     GSM.ImageController.addImageBySrcUrl(playerAsset.tile.imageUrl);
   }
@@ -88,19 +82,20 @@ export class AssetEventHandler {
   // MOCK This will be a database thing
   private addNonPlayableAsset(cell: Cell, zIndex: number): void {
     // setup asset
-    const objectAsset = new Asset(cell);
+    const objectAsset = new Asset(cell, 'standardXLTree');
     objectAsset.tile = new AssetTile(
       RenderingLayers.AssetLayer,
       'assets/images/trees/tree1.png',
       'standardXLTree'
     );
+
     objectAsset.animation = new SpriteAnimation();
+    objectAsset.layer = RenderingLayers.AssetLayer
 
     GSM.AssetController.addAsset(
       objectAsset,
       cell,
-      zIndex,
-      RenderingLayers.AssetLayer
+      zIndex
     );
     GSM.ImageController.addImageBySrcUrl(objectAsset.tile.imageUrl);
   }

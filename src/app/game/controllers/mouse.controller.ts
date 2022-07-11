@@ -1,20 +1,33 @@
 import { Subject } from 'rxjs';
 import { GSM } from '../game-state-manager.service';
 import { Cell, MousePosition } from '../models/map';
-import { GridAsset } from '../models/asset.model';
-import { getTopAssetBlockingCell } from './utils/selected-sprite-tile';
+import { AssetBlock, GridAsset } from '../models/asset.model';
+import { getAllAssetsBeingHovered, getAllAssetsBlocksBeingHovered, getTopAssetBeingHovered, getTopAssetBlockBeingHovered } from './utils/selected-sprite-tile';
+
 
 export class MouseController {
   // Events
   public cellClick = new Subject<Cell>();
-  public emptyCellClicked = new Subject<Cell>();
-  public cellAtZIndexClicked = new Subject<{ cell: Cell; zIndex: number }>();
-  public cellMouseEntered = new Subject<Cell>();
+  public cellDown = new Subject<Cell>();
+  public cellUp = new Subject<Cell>();
+  public cellHover = new Subject<Cell>();
+  public assetClick = new Subject<GridAsset>();
+  public assetDown = new Subject<GridAsset>();
+  public assetUp = new Subject<GridAsset>()
+  public assetHover = new Subject<GridAsset>();
+  public assetBlockClick = new Subject<AssetBlock>();
+  public assetBlockDown = new Subject<AssetBlock>();
+  public assetBlockUp = new Subject<AssetBlock>()
+  public assetBlockHover = new Subject<AssetBlock>();
+  public zAxisHover = new Subject<number>();
+  public zAxisDown = new Subject<number>();
+  public zAxisUp = new Subject<number>();
+  public zAxisClick = new Subject<number>();
 
   public mouseDown = new Subject();
   public mouseUp = new Subject();
   public mouseHover = new Subject();
-  public mouseClick = new Subject<{ x: number; y: number }>();
+  public mouseClick = new Subject();
 
   // Hover state
   public hoveringPosX: number = 0;
@@ -22,67 +35,72 @@ export class MouseController {
   public hoveringCellId: string = '';
   public hoveringCell: Cell = null;
   public hoveringGridAsset: GridAsset;
-  public hoveringCellAtZAxisIterator: Cell[] = [];
+  public hoveringGridAssets: GridAsset[]
+  public hoveringAssetBlock: AssetBlock
+  public hoveringAssetBlocks: AssetBlock[];
   public hoveringCellAtZAxis: Cell;
   public hoveringZAxis: number = 0;
   public hoveringZAxisAtMouseDown: number = 0;
-  public hoveringCellZAxisAtMouseDown: GridAsset;
 
   constructor() {
     this.mouseHover.subscribe(this.onMouseHover.bind(this));
-    this.cellMouseEntered.subscribe(this.onMouseCellEnter.bind(this));
+    this.mouseUp.subscribe(this.onMouseUp.bind(this));
+    this.mouseClick.subscribe(this.onMouseClick.bind(this));
     this.mouseDown.subscribe(this.onMouseDown.bind(this));
-    this.mouseUp.subscribe(this.onCellClick.bind(this));
   }
 
-  private onMouseDown(event: MousePosition): void {
-    const gridAsset = this.selectTerrainTile(this.hoveringCell);
-    this.hoveringZAxisAtMouseDown = gridAsset?.zIndex || 0;
-    this.hoveringCellZAxisAtMouseDown = gridAsset;
-    this.cellMouseEntered.next(this.hoveringCell);
+  private onMouseDown(): void {
+    this.assetDown.next(this.hoveringGridAsset)
+    this.assetBlockDown.next(this.hoveringAssetBlock)
+    this.cellDown.next(this.hoveringCell)
+    this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
   }
 
-  private onCellClick(): void {
-    this.hoveringZAxisAtMouseDown = 0;
-    const cell = this.hoveringCellZAxisAtMouseDown ? this.hoveringCellZAxisAtMouseDown.blocks : this.hoveringCell
-    this.cellAtZIndexClicked.next({cell: cell, zIndex: this.hoveringZAxis})
+  private onMouseUp(): void {
+    this.assetUp.next(this.hoveringGridAsset)
+    this.assetBlockUp.next(this.hoveringAssetBlock)
+    this.cellUp.next(this.hoveringCell)
+    this.zAxisUp.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
+  }
+
+  private onMouseClick(): void {
+    this.assetClick.next(this.hoveringGridAsset)
+    this.assetBlockClick.next(this.hoveringAssetBlock)
+    this.cellClick.next(this.hoveringCell)
+    this.zAxisClick.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
   }
 
   private onMouseHover(event: MousePosition): void {
-    this.setMouseDetails(event);
-  }
+    const newHoveringCell = GSM.GridController.getCellByPosition(event.posX, event.posY)
+    if(!newHoveringCell) { return }
+    if(newHoveringCell.id !== this.hoveringCell?.id) {
+      this.hoveringCell = newHoveringCell
+      this.cellHover.next(this.hoveringCell)
 
-  private onMouseCellEnter(cell: Cell): void {
-    this.selectTerrainTile(cell);
-  }
-
-  private setMouseDetails(event: MousePosition): void {
-    this.hoveringPosX = event.posX;
-    this.hoveringPosY = event.posY;
-
-    const hoveringCell = GSM.GridController.getCellByPosition(
-      this.hoveringPosX,
-      this.hoveringPosY
-    );
-
-    if (hoveringCell && this.hoveringCellId !== hoveringCell.id) {
-      this.hoveringCellId = hoveringCell.id;
-      this.hoveringCell = hoveringCell;
-      this.cellMouseEntered.next(this.hoveringCell);
-    }
-  }
-
-  private selectTerrainTile(cell: Cell): GridAsset {
-    const gridAsset = getTopAssetBlockingCell(cell);
-
-    if (gridAsset) {
-      this.hoveringZAxis = gridAsset.zIndex;
-      this.hoveringGridAsset = gridAsset;
-      return gridAsset;
-    } else {
-      this.hoveringGridAsset = null;
-      this.hoveringZAxis = 0
-      return null;
+      const gridAsset = getTopAssetBeingHovered(this.hoveringCell);
+      const gridAssets = getAllAssetsBeingHovered(this.hoveringCell)
+      const assetBlock = getTopAssetBlockBeingHovered(this.hoveringCell);
+      const assetBlocks = getAllAssetsBlocksBeingHovered(this.hoveringCell)
+  
+      if(assetBlock) {
+        this.hoveringZAxis = gridAsset ? gridAsset.baseZIndex : 0
+        this.hoveringAssetBlocks = assetBlocks
+        this.hoveringGridAsset = gridAsset
+        this.hoveringGridAssets = gridAssets
+        this.hoveringAssetBlock = assetBlock
+        this.assetHover.next(gridAsset)
+        this.assetBlockHover.next(assetBlock)
+        this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
+      } else {
+        this.hoveringGridAsset = null
+        this.hoveringAssetBlock = null
+        this.hoveringAssetBlocks = []
+        this.hoveringGridAssets = []
+        this.hoveringZAxis = 0
+        this.assetHover.next(null)
+        this.assetBlockHover.next(null)
+        this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
+      }
     }
   }
 }

@@ -1,3 +1,4 @@
+import { ThisReceiver } from '@angular/compiler'
 import { Subject } from 'rxjs'
 import { GSM } from '../game-state-manager.service'
 import { Cell, RenderingLayers, GameMap, Grid, Size, MapRotationIndex } from '../models/map'
@@ -21,10 +22,7 @@ export class MapController {
     }
   }
 
-  public getCellByPosition(
-    x: number,
-    y: number,
-  ): Cell {
+  public getCellByPosition(x: number, y: number ): Cell {
     while (x % GSM.Settings.blockSize !== 0) {
       x--
     }
@@ -36,7 +34,7 @@ export class MapController {
   }
 
   public getCellByLocation(x: number, y: number): Cell {
-    return GSM.GridController.gridIterator[GSM.RotationController.currentRotationIndex].find(a => a.location.x === x && a.location.y === y)
+    return GSM.GameData.map.grid[`x${x}:y${y}`]
   }
 
   public getCellById(cellId: string): Cell {
@@ -60,10 +58,8 @@ export class MapController {
       for (let x = 0; x < GSM.GameData.map.size.x; x++) {
         const cell: Cell = {
           id: `x${x}:y${y}`,
-          location: { x, y},
-          obstructions: {},
-          assets: {},
-          position: { x: x * GSM.Settings.blockSize, y: y * GSM.Settings.blockSize},
+          location: { x, y },
+          position: { x: x * GSM.Settings.blockSize, y: y * GSM.Settings.blockSize },
         }
 
         GSM.GameData.map.grid[`x${x}:y${y}`] = cell

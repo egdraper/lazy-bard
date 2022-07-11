@@ -7,6 +7,7 @@ export class Settings {
   public speed: number = 6
   public scale: number = 2
   public blockToFeet = 5;
+  public maxHeight = 2;
 }
 
 export class CanvasSpecs {

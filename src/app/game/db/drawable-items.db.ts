@@ -5,16 +5,17 @@ import { trees } from "./trees.db"
 export const drawableItems: DrawableItemViewModel[] = [
   {
     id: "Trees-GrassBase",
+    assetAttributeId: "standardDrawableTree",
     name: "Green Trees with Grass Base",
     spriteType: "DrawableNaturalWall",
     imageUrl: "assets/images/tree-transparent-base.png",
     offsetX: 0,
     offsetY: 0,
-    variableHeight: 2,
-    staticHeight: 2,
-    drawingRules: trees
+    drawingRules: trees,
+    staticHeight: 2
   }, {
     id: "StoneCliff-StoneBase2",
+    assetAttributeId: "standardTerrain",
     expandable: true,
     defaultTopBackground: "greenGrass",
     name: "Stone Cliff with Stone Base",
@@ -22,7 +23,6 @@ export const drawableItems: DrawableItemViewModel[] = [
     imageUrl: "assets/images/RockWallGrassBase.png",
     offsetX: 0,
     offsetY: 0,
-    variableHeight: 1,
     drawingRules: RockWall
   },
 ]

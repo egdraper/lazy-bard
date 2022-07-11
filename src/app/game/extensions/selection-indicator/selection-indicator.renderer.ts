@@ -13,7 +13,7 @@ export class SelectionIndicatorRenderer implements Renderer {
   private height
 
   public onDraw(asset: Asset, frame: number): void {
-    if (!asset || !asset.selected) {
+    if (!asset || !GSM.AssetController.selectedAssets[asset.id]) {
       return
     }
 
@@ -30,7 +30,7 @@ export class SelectionIndicatorRenderer implements Renderer {
 
     this.animateMarker(asset, frame)
     this.ctx.beginPath()
-    this.ctx.rect(this.posX, this.posY - (asset.zIndex * GSM.Settings.blockSize) , this.width, this.height)
+    this.ctx.rect(this.posX, this.posY - (asset.baseZIndex * GSM.Settings.blockSize) , this.width, this.height)
     this.ctx.lineWidth = 2
     this.ctx.strokeStyle = color
     this.ctx.stroke()

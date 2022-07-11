@@ -16,8 +16,8 @@ export class BaseTextureRenderer implements BackgroundRenderer {
       asset.tile.drawsWith.y,
       GSM.Settings.blockSize,
       GSM.Settings.blockSize,
-      asset.blocks.position.x,
-      asset.blocks.position.y,
+      asset.anchorCell.position.x,
+      asset.anchorCell.position.y,
       GSM.Settings.blockSize,
       GSM.Settings.blockSize
     )
