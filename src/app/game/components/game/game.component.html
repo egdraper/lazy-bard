@@ -1,9 +1,16 @@
 <div class="game" *ngIf="gameStateManager.loadingFinished">
   <div style="color:white; position: absolute; top: 115px">
-    <h6> X: {{ mouseController?.hoveringPosX }}</h6>
-    <h6> Y: {{ mouseController?.hoveringPosY }}</h6>
-    <h6> Cell: {{ mouseController?.hoveringCellId }}</h6>
-    <h6> Cell: {{ mouseController?.hoveringSpriteTileCell?.id }}</h6>
+    <h6>X: {{ mouseController?.hoveringPosX }} </h6>
+    <h6>Y: {{ mouseController?.hoveringPosY }} </h6>
+    <h6>HCid: {{ mouseController?.hoveringCell?.id }} </h6>
+    <!-- <h6>{{ mouseController.hoveringCell }} </h6> -->
+    <h6>HGAid: {{ mouseController?.hoveringGridAsset?.id }} </h6>
+    <!-- <h6>{{ mouseController.hoveringGridAssets }} </h6> -->
+    <h6>HABid: {{ mouseController?.hoveringAssetBlock?.id }} </h6>
+    <!-- <h6>{{ mouseController.hoveringAssetBlocks }} </h6> -->
+    <h6>HCAZ: {{ mouseController?.hoveringCellAtZAxis }} </h6>
+    <h6>Z: {{ mouseController?.hoveringZAxis }} </h6>
+    <h6>MDZ: {{ mouseController?.hoveringZAxisAtMouseDown }} </h6>
      
     <h1 style="color:white">{{selected}}</h1>
   </div>

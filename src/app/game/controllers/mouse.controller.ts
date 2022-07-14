@@ -50,6 +50,7 @@ export class MouseController {
   }
 
   private onMouseDown(): void {
+    this.hoveringZAxisAtMouseDown = this.hoveringZAxis
     this.assetDown.next(this.hoveringGridAsset)
     this.assetBlockDown.next(this.hoveringAssetBlock)
     this.cellDown.next(this.hoveringCell)
@@ -72,25 +73,26 @@ export class MouseController {
 
   private onMouseHover(event: MousePosition): void {
     const newHoveringCell = GSM.GridController.getCellByPosition(event.posX, event.posY)
+    this.hoveringPosX = event.posX
+    this.hoveringPosY = event.posY
     if(!newHoveringCell) { return }
     if(newHoveringCell.id !== this.hoveringCell?.id) {
       this.hoveringCell = newHoveringCell
-      this.cellHover.next(this.hoveringCell)
-
+      
       const gridAsset = getTopAssetBeingHovered(this.hoveringCell);
       const gridAssets = getAllAssetsBeingHovered(this.hoveringCell)
       const assetBlock = getTopAssetBlockBeingHovered(this.hoveringCell);
       const assetBlocks = getAllAssetsBlocksBeingHovered(this.hoveringCell)
-  
+      
       if(assetBlock) {
-        this.hoveringZAxis = gridAsset ? gridAsset.baseZIndex : 0
+        this.hoveringZAxis = assetBlock ? assetBlock.zIndex + 1 : 0
         this.hoveringAssetBlocks = assetBlocks
         this.hoveringGridAsset = gridAsset
         this.hoveringGridAssets = gridAssets
         this.hoveringAssetBlock = assetBlock
         this.assetHover.next(gridAsset)
         this.assetBlockHover.next(assetBlock)
-        this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
+        this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex + 1 : 0)
       } else {
         this.hoveringGridAsset = null
         this.hoveringAssetBlock = null
@@ -101,6 +103,7 @@ export class MouseController {
         this.assetBlockHover.next(null)
         this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
       }
+      this.cellHover.next(this.hoveringCell)
     }
   }
 }

@@ -9,7 +9,7 @@ export function getAllAssetsBlocksBeingHovered(hoveringCell: Cell): AssetBlock[]
 
     const distanceFromHoveringCell = cell.location.y - hoveringCell.location.y
     GSM.AssetController.getAllAssetBlocksAtCell(cell).forEach(assetBlock => {
-      if(assetBlock.zIndex === distanceFromHoveringCell) {
+      if(assetBlock.zIndex + 1 === distanceFromHoveringCell) {
         coveringBlocks.push(assetBlock)
       }
     })

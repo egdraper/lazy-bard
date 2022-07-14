@@ -43,7 +43,7 @@ export class MapController {
  
   public createGameMap(size: Size): void {
     GSM.GameData.map = new GameMap(size)
-    GSM.GameData.map.id = Math.random().toString()
+    GSM.GameData.map.id = Math.floor(Math.random() * 100000000).toString()
     this.setupMap()
 
     Object.keys(RenderingLayers).forEach(key => {

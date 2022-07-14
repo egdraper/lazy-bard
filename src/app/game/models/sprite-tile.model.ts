@@ -63,7 +63,6 @@ export class DrawableItemViewModel {
   offsetY: number;
   spriteType: string;
   staticHeight?: number;
-  defaultTopBackground?: string;
   expandable?: boolean;
 }
 

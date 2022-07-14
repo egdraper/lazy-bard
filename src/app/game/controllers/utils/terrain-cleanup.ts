@@ -4,18 +4,42 @@ import { GSM } from "../../game-state-manager.service"
 import { RenderingLayers, NeighborLocation } from "../../models/map"
 import { GridAsset, TerrainAsset } from "../../models/asset.model"
 
-export function terrainCleanup(asset: GridAsset) {
-  if(!asset) { return }
+export function terrainCleanup(asset?: GridAsset) {
+  let assets
+  if(asset) { 
+    assets = [...GSM.CellNeighborsController.getAllImmediateNeighbors(asset, RenderingLayers.TerrainLayer), asset]
+  } else {
+    assets = GSM.AssetController.assetArray
+  }
+  
   // GSM.AssetController.iterateAsset((asset: TerrainAsset) => {
     // if(asset.tile.layer !== RenderingLayers.TerrainLayer) { return }
     // const layer = RenderingLayers.TerrainLayer
-    const neighbors = [asset, ...GSM.CellNeighborsController.getHorizontalNeighborsAsset(asset, RenderingLayers.TerrainLayer)]
-    // const cellTileId = asset.tile.drawableTileId
+    // const directNeighbor = GSM.CellNeighborsController.getHorizontalNeighborsAsset(asset, RenderingLayers.TerrainLayer)
+    // directNeighbor.forEach(neighborAsset => {
+    //   if(neighborAsset) {
+    //     const checkNeighbors = GSM.CellNeighborsController.getHorizontalNeighborsAsset(neighborAsset, RenderingLayers.TerrainLayer) as GridAsset[]
+    //     const cellTileId = asset.tile.drawableTileId
 
-    // const leftTileId = neighbors[NeighborLocation.West] ? neighbors[NeighborLocation.West][0]?.tile?.drawableTileId : undefined
-    // const rightTileId = neighbors[NeighborLocation.East] ? neighbors[NeighborLocation.East][0]?.tile?.drawableTileId : undefined
-    // const topTileId = neighbors[NeighborLocation.North] ? neighbors[NeighborLocation.North][0]?.tile?.drawableTileId : undefined
-    // const bottomTileId = neighbors[NeighborLocation.South] ? neighbors[NeighborLocation.South][0]?.tile?.drawableTileId : undefined
+    //     const leftTileId = checkNeighbors[NeighborLocation.West] ? checkNeighbors[NeighborLocation.West]?.tile?.drawableTileId : undefined
+    //     const rightTileId = checkNeighbors[NeighborLocation.East] ? checkNeighbors[NeighborLocation.East]?.tile?.drawableTileId : undefined
+    //     const topTileId = checkNeighbors[NeighborLocation.North] ? checkNeighbors[NeighborLocation.North]?.tile?.drawableTileId : undefined
+    //     const bottomTileId = checkNeighbors[NeighborLocation.South] ? checkNeighbors[NeighborLocation.South]?.tile?.drawableTileId : undefined
+       
+    //     if (leftTileId !== cellTileId && rightTileId !== cellTileId) {
+    //       delete GSM.AssetController.assets[neighborAsset.id]
+    //     }
+    //     if (topTileId !== cellTileId &&  bottomTileId !== cellTileId) {
+    //       delete GSM.AssetController.assets[neighborAsset.id]
+    //     }
+    //   }
+    // })
+
+
+   
+
+
+
 
     // NEEDS FIXED WITH DEBUGGER
     // if (leftTileId !== cellTileId && rightTileId !== cellTileId) {
@@ -27,11 +51,12 @@ export function terrainCleanup(asset: GridAsset) {
     //   delete asset.tile[RenderingLayers.TerrainLayer]
     //   asset.ownedBlocks.obstructions[asset.zIndex] = false
     // }
-  neighbors.forEach((_asset: GridAsset) => {   
+  assets.forEach((_asset: GridAsset) => {  
+  
     if(!_asset) { return }
     if(_asset.tile.layer !== RenderingLayers.TerrainLayer) { return }
     if(_asset.tile.drawableTileId) {
-      const itemDetails = drawableItems.find(item => item.id === asset.tile.drawableTileId)
+      const itemDetails = drawableItems.find(item => item.id === _asset.tile.drawableTileId)
       TerrainEdgeCalculator.calculateTerrainEdges(_asset, _asset.tile, itemDetails)
     }
   })      

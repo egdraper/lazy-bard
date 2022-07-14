@@ -17,7 +17,6 @@ export const drawableItems: DrawableItemViewModel[] = [
     id: "StoneCliff-StoneBase2",
     assetAttributeId: "standardTerrain",
     expandable: true,
-    defaultTopBackground: "greenGrass",
     name: "Stone Cliff with Stone Base",
     spriteType: "DrawableNaturalWall",
     imageUrl: "assets/images/RockWallGrassBase.png",

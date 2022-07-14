@@ -21,7 +21,7 @@ export class AssetController {
   public addAsset(asset: GridAsset, anchoringCell: Cell, zIndex: number): void {
     asset.baseZIndex = zIndex
     asset.anchorCell = anchoringCell
-    asset.id = `map:${GSM.GameData.map.id}-asset:${Math.floor(Math.random() * 1000000000000)}`;
+    asset.id = `map:${GSM.GameData.map.id}-cell:${anchoringCell.id}:z${zIndex}:${asset.layer}`;
 
     this.setAssetAttributes(asset);
     this.updateBlockProperty(asset, anchoringCell, zIndex);
@@ -142,9 +142,7 @@ export class AssetController {
   }
 
   public iterateAsset(callBack: (asset: GridAsset) => void) {
-    Object.keys(this.assets).forEach(key => {
-      callBack(this.assets[key])
-    })
+    this.assetArray.forEach(asset => { callBack(asset) })
   }
 
   public deselectAllAssets(): void {
@@ -172,24 +170,26 @@ export class AssetController {
 
     asset.anchorCell = newCell
     this.updateBlockProperty(asset, asset.anchorCell, newZIndex)
-    // this.refreshAssetIterator()
+    this.refreshAssetIterator()
   }
 
-  public removeAsset(asset: Asset, layer: RenderingLayers): void {
+  public removeAsset(asset: GridAsset, layer: RenderingLayers): void {
     this.assetArray = this.assetArray.filter(savedAsset => asset.id !== savedAsset.id)
-    // this.refreshAssetIterator()
+    asset.ownedBlockIds.forEach(id => { delete this.assetBlocks[id] })
+    this.assets[asset.id]
+    this.refreshAssetIterator()
   }
 
   public refreshAssetIterator(): void {
-    // const newAssetList: GridAsset[] = []
+    const newAssetList: GridAsset[] = []
 
-    // GSM.GridController.iterateCells((cell) => {
-    //   const gridAsset = this.getAssetsByAnchorCell(cell)
-    //   gridAsset.forEach(asset => {
-    //     newAssetList.push(asset);
-    //   })      
-    // })
-    // this.assetArray = newAssetList
+    GSM.GridController.iterateCells((cell) => {
+      const gridAssets = this.getAssetsByAnchorCell(cell)
+      gridAssets.forEach(asset => {
+        newAssetList.push(asset);
+      })      
+    })
+    this.assetArray = newAssetList
   }
 
   // Helper
