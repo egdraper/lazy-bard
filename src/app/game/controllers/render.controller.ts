@@ -43,12 +43,12 @@ export class RendererController {
   }
 
   private renderAssets(frame: number) {
+    GSM.AssetController.iterateAsset(asset => {
     this.iterateRenderers(renderer => {
       if(renderer.renderingLayer === RenderingLayers.BaseLayer) {
         return
       }
 
-      GSM.AssetController.iterateAsset(asset => {
         if(asset.tile.layer !== renderer.renderingLayer) { return }
         if(renderer.beforeDraw) {
           renderer.beforeDraw(asset, frame)

@@ -48,10 +48,13 @@ export class AssetController {
     return this.assets[block?.ownerAssetId]
   }
 
-  public getAssetsByCellAtZ(cell: Cell, zIndex: number): GridAsset[] {
+  public getAssetsByCellAtZ(cell: Cell, zIndex: number): {layer: RenderingLayers, asset: GridAsset}[] {
     const assets = []
     GSM.RendererController.iterateRenderingLayers(layer => {
-      assets.push(this.getAsset(cell, zIndex, layer))
+      const asset = this.getAsset(cell, zIndex, layer)
+      if(asset) {
+        assets.push({layer, asset})
+      }
     })
     return assets
   }
@@ -63,7 +66,7 @@ export class AssetController {
 
   public getAssetsByAnchorCell(cell: Cell): GridAsset[] {
     const assets = this.getAssetsByCell(cell)
-    return assets.filter(asset => asset.anchorCell === cell)
+    return assets.filter(asset => asset.anchorCell.id === cell.id)
   }
 
   public getSelectedAssets(): GridAsset[] {
@@ -192,6 +195,39 @@ export class AssetController {
     this.assetArray = newAssetList
   }
 
+  public getAllAssetsBlocksCoveringCell(coveredCell: Cell): AssetBlock[] {
+    const coveringBlocks: AssetBlock[] = []
+    GSM.GridController.iterateYCells(coveredCell.location.x, (cell: Cell) => {
+      if(cell.location.y < coveredCell.location.y) { return }
+  
+      const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
+      GSM.AssetController.getAllAssetBlocksAtCell(cell).forEach(assetBlock => {
+        if(assetBlock.zIndex + 1 === distanceFromHoveringCell) {
+          coveringBlocks.push(assetBlock)
+        }
+      })
+    })
+    return coveringBlocks
+  }
+  
+  public getAllAssetsCoveringCell(hoveringCell: Cell): GridAsset[] {
+    const assetBlocks = this.getAllAssetsBlocksCoveringCell(hoveringCell)
+    return assetBlocks.map(block => GSM.AssetController.getAssetById(block.ownerAssetId))
+  }
+  
+ public getTopAssetCoveringCell(hoveringCell: Cell): GridAsset{
+    const topBlock = this.getAllAssetsBlocksCoveringCell(hoveringCell).pop()
+    if(topBlock) {
+      return GSM.AssetController.getAssetById(topBlock.ownerAssetId)
+    } else {
+      return undefined
+    }
+  }
+  
+  public getTopAssetBlockCoveringCell(hoveringCell: Cell): AssetBlock {
+    return this.getAllAssetsBlocksCoveringCell(hoveringCell).pop()
+  }
+
   // Helper
 
   private animateAsset(frame: number): void {
@@ -205,7 +241,7 @@ export class AssetController {
   }
 
   // May need to be its own util
-  public setAssetAttributes(asset: GridAsset): void {
+  private setAssetAttributes(asset: GridAsset): void {
     asset.attributes = assetAttributes.find((attribute) => asset.attributesId === attribute.id)
   }
 

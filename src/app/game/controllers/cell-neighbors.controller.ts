@@ -146,8 +146,6 @@ export class CellNeighborsController {
   }  
 
   public getAllImmediateNeighbors(gridAsset: GridAsset, layer?: RenderingLayers): GridAsset[][] | GridAsset[] {
-
-    this.a = 0
     const gridAssets: GridAsset[][] = []
     gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.North, layer))
     gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.East, layer))
@@ -184,9 +182,9 @@ export class CellNeighborsController {
 
     return GSM.GridController.getCellByLocation(x, y)
   }
-  private a = 0
+
   private filterAssets(blocks: AssetBlock[], xDirection: number, yDirection: number, zOffset: number = 0, layer: RenderingLayers ) {
-    let gridAssets
+    let gridAssets = []
     blocks.forEach(block => {
       const neighborCell = GSM.GameData.map.grid[`x${block.cell.location.x + xDirection}:y${block.cell.location.y + yDirection}`]
       let neighborAssets
@@ -196,7 +194,9 @@ export class CellNeighborsController {
         gridAssets = neighborAssets
       } else {
         neighborAssets = GSM.AssetController.getAssetsByCellAtZ(neighborCell, block.zIndex + zOffset)
-        gridAssets = [...gridAssets, ...neighborAssets]
+        if(neighborAssets.length !== 0) {
+          gridAssets = [...gridAssets, ...neighborAssets]
+        }
       }
     })
     return gridAssets

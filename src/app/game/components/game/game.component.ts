@@ -3,7 +3,6 @@ import { terrainCleanup } from '../../controllers/utils/terrain-cleanup';
 import { drawableItems } from '../../db/drawable-items.db';
 import { GSM } from '../../game-state-manager.service';
 import { Asset } from '../../models/asset.model';
-import { RenderingLayers } from '../../models/map';
 
 
 @Component({
@@ -115,14 +114,14 @@ export class GameComponent implements AfterViewInit{
       GSM.AssetController.changeZAxis("up", asset)
     }
     if(event.code === "KeyN") {
-    //  const asset = GSM.AssetController.getSelectedAssets()[0]
-    //  const topAsset = GSM.AssetController.getTopAssetPerCell(asset.anchorCell, RenderingLayers.TerrainLayer)
+     const asset = GSM.AssetController.getSelectedAssets()[0] as Asset
+     const topAsset = GSM.AssetController.getTopAssetCoveringCell(asset.anchorCell)
     
-    //  if((!topAsset && (asset.baseZIndex !== 0)) || (topAsset && topAsset.baseZIndex < asset.baseZIndex)) {
-    //    GSM.AssetController.changeZAxis("down", asset)
-    //  } else {
-    //    asset.hovering = false
-    //  }
+     if((!topAsset && (asset.baseZIndex !== 0)) || (topAsset && topAsset.baseZIndex + topAsset.attributes.size.z < asset.baseZIndex)) {
+       GSM.AssetController.changeZAxis("down", asset)
+     } else {
+       asset.hovering = false
+     }
     }
     if(event.code === "KeyY") {
      const asset = GSM.AssetController.getSelectedAssets()[0]

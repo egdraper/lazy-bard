@@ -46,7 +46,7 @@ export class AssetEventHandler {
     ) {
      
       GSM.AssetController.getSelectedAssets().forEach((asset: Asset) => {
-        asset.movement.start(asset.anchorCell, GSM.MouseController.hoveringCell, []);
+        asset.movement.start(asset.anchorCell, GSM.MouseController.hoveringCellAtZAxis, []);
       });
       return;
     }
