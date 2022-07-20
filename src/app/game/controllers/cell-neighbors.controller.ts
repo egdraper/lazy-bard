@@ -12,21 +12,21 @@ export class CellNeighborsController {
     
     switch (neighborLocation) {
       case NeighborLocation.North:
-        return GSM.GameData.map.grid[`x${x}:y${y - 1}`]
+        return GSM.GridController.getCellByLocation(x ,y - 1)
       case NeighborLocation.East:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y}`]
+        return GSM.GridController.getCellByLocation(x + 1, y)
       case NeighborLocation.South:
-        return GSM.GameData.map.grid[`x${x}:y${y + 1}`]
+        return GSM.GridController.getCellByLocation(x ,y + 1)
       case NeighborLocation.West:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y}`]
+        return GSM.GridController.getCellByLocation(x - 1, y)
       case NeighborLocation.NorthEast:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y - 1}`]
+        return GSM.GridController.getCellByLocation(x + 1, y - 1)
       case NeighborLocation.SouthEast:
-        return GSM.GameData.map.grid[`x${x + 1}:y${y + 1}`]
+        return GSM.GridController.getCellByLocation(x + 1, y + 1)
       case NeighborLocation.SouthWest:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y + 1}`]
+        return GSM.GridController.getCellByLocation(x - 1, y + 1)
       case NeighborLocation.NorthWest:
-        return GSM.GameData.map.grid[`x${x - 1}:y${y - 1}`]
+        return GSM.GridController.getCellByLocation(x - 1, y - 1)
     }
     return null
   }
@@ -186,7 +186,7 @@ export class CellNeighborsController {
   private filterAssets(blocks: AssetBlock[], xDirection: number, yDirection: number, zOffset: number = 0, layer: RenderingLayers ) {
     let gridAssets = []
     blocks.forEach(block => {
-      const neighborCell = GSM.GameData.map.grid[`x${block.cell.location.x + xDirection}:y${block.cell.location.y + yDirection}`]
+      const neighborCell = GSM.GridController.getCellByLocation(block.cell.location.x + xDirection, block.cell.location.y + yDirection)
       let neighborAssets
       
       if(layer) {

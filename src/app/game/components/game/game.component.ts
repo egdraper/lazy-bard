@@ -4,128 +4,142 @@ import { drawableItems } from '../../db/drawable-items.db';
 import { GSM } from '../../game-state-manager.service';
 import { Asset } from '../../models/asset.model';
 
-
 @Component({
   selector: 'gm-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  styleUrls: ['./game.component.scss'],
 })
-export class GameComponent implements AfterViewInit{
-  public selected = "nothing"
-  public mouseController
+export class GameComponent implements AfterViewInit {
+  public selected = 'nothing';
+  public mouseController;
 
   constructor(public gameStateManager: GSM) {
     setTimeout(() => {
-      this.mouseController = GSM.MouseController
-    },150);
+      this.mouseController = GSM.MouseController;
+    }, 150);
   }
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame("firstGame", 20, 20, "forest")
-      GSM.ActionController.generalActionFire.subscribe(action => {
-        this.selected = action.name 
-      })
-    })
+      this.gameStateManager.newGame('firstGame', 20, 20, 'forest');
+      GSM.ActionController.generalActionFire.subscribe((action) => {
+        this.selected = action.name;
+      });
+    });
   }
 
-  @HostListener("document:keyup", ["$event"])
+  @HostListener('document:keyup', ['$event'])
   public keyPress(event: KeyboardEvent) {
-    if(event.code === "Escape") {
+    if (event.code === 'Escape') {
       GSM.ActionController.generalActionFire.next({
-        name: "",
-        data: null
-      })
+        name: '',
+        data: null,
+      });
     }
-    if(event.code === "Delete") {
-      GSM.ActionController.generalActionFire.next({
-        name: "delete",
-        data: null
-      })
+    if (event.code === 'Delete' || event.code === 'Backspace') {
+      GSM.KeyController.deletePressed.next(event)
     }
-    if(event.code === "KeyQ") {
+    if (event.code === 'KeyQ') {
       GSM.ActionController.generalActionFire.next({
-        name: "addCharacter",
-        data: null
-      })
+        name: 'addCharacter',
+        data: null,
+      });
     }
-    if(event.code === "KeyB") {
+    if (event.code === 'KeyB') {
       GSM.ActionController.generalActionFire.next({
-        name: "generateBackground",
-        data: null
-      })
+        name: 'generateBackground',
+        data: null,
+      });
     }
-    if(event.code === "KeyO") {
+    if (event.code === 'KeyO') {
       GSM.ActionController.generalActionFire.next({
-        name: "addObject",
-        data: null
-      })
+        name: 'addObject',
+        data: null,
+      });
     }
-    if(event.code === "KeyZ") {
+    if (event.code === 'KeyZ') {
       GSM.ActionController.generalActionFire.next({
-        name: "deleteTerrain",
-        data: null
-      })
+        name: 'deleteTerrain',
+        data: null,
+      });
     }
-    if(event.code === "KeyT") {
+    if (event.code === 'KeyT') {
       GSM.ActionController.generalActionFire.next({
-        name: "generateTerrain",
+        name: 'generateTerrain',
         data: {
-          terrainId: "Trees-GreenBase",
-          backgroundId: "greenGrass"
-        }
-      })
+          terrainId: 'Trees-GreenBase',
+          backgroundId: 'greenGrass',
+        },
+      });
     }
-    if(event.code === "KeyE") {
+    if (event.code === 'KeyE') {
       GSM.ActionController.generalActionFire.next({
-        name: "paintingTerrain",
-        data: drawableItems.find(item => item.id === "Trees-GrassBase")
-      })
+        name: 'paintingTerrain',
+        data: drawableItems.find((item) => item.id === 'Trees-GrassBase'),
+      });
     }
-    if(event.code === "KeyR") {
+    if (event.code === 'KeyR') {
       GSM.ActionController.generalActionFire.next({
-        name: "paintingTerrain",
-        data: drawableItems.find(item => item.id === "StoneCliff-StoneBase2")
-      })
+        name: 'paintingTerrain',
+        data: drawableItems.find((item) => item.id === 'StoneCliff-StoneBase2'),
+      });
     }
-    if(event.code === "KeyX") {
+    if (event.code === 'KeyX') {
       GSM.ActionController.generalActionFire.next({
-        name: "selectTool",
-        data: null
-      })
+        name: 'selectTool',
+        data: null,
+      });
     }
-    if(event.code === "KeyP") {
-      GSM.RotationController.rotateClockwise()
-      terrainCleanup(undefined)
+    if (event.code === 'KeyP') {
+      GSM.RotationController.rotateClockwise();
+      terrainCleanup(undefined);
     }
-    if(event.code === "KeyG") {
-      this.selected = "starting Game"
+    if (event.code === 'KeyG') {
+      this.selected = 'starting Game';
       GSM.ActionController.generalActionFire.next({
-        name: "startGame",
-        data: null
-      })
+        name: 'startGame',
+        data: null,
+      });
 
-      GSM.RendererController.start()
-      GSM.FrameController.start()  
+      GSM.RendererController.start();
+      GSM.FrameController.start();
     }
-    if(event.code === "KeyH") {
-      const asset = GSM.AssetController.getSelectedAssets()[0] as Asset
-      asset.hovering = true
-      GSM.AssetController.changeZAxis("up", asset)
+    if (event.code === 'KeyH') {
+      const asset = GSM.AssetController.getSelectedAssets()[0] as Asset;
+      asset.hovering = true;
+      GSM.AssetController.changeZAxis('up', asset);
     }
-    if(event.code === "KeyN") {
-     const asset = GSM.AssetController.getSelectedAssets()[0] as Asset
-     const topAsset = GSM.AssetController.getTopAssetCoveringCell(asset.anchorCell)
-    
-     if((!topAsset && (asset.baseZIndex !== 0)) || (topAsset && topAsset.baseZIndex + topAsset.attributes.size.z < asset.baseZIndex)) {
-       GSM.AssetController.changeZAxis("down", asset)
-     } else {
-       asset.hovering = false
-     }
+    if (event.code === 'KeyN') {
+      const asset = GSM.AssetController.getSelectedAssets()[0] as Asset;
+      const topAsset = GSM.AssetController.getTopAssetCoveringCell(
+        asset.anchorCell
+      );
+
+      if (
+        (!topAsset && asset.baseZIndex !== 0) ||
+        (topAsset &&
+          topAsset.baseZIndex + topAsset.attributes.size.z < asset.baseZIndex)
+      ) {
+        GSM.AssetController.changeZAxis('down', asset);
+      } else {
+        asset.hovering = false;
+      }
     }
-    if(event.code === "KeyY") {
-     const asset = GSM.AssetController.getSelectedAssets()[0]
-     GSM.AssetController.changeZAxis("down", asset)
+    if (event.code === 'KeyY') {
+      const asset = GSM.AssetController.getSelectedAssets()[0];
+      GSM.AssetController.changeZAxis('down', asset);
+    }
+    if (event.code === 'KeyS') {
+      GSM.ActionController.generalActionFire.next({
+        name: 'assetSelect',
+        data: null,
+      });
+    }
+    if (event.code === 'KeyA') {
+      GSM.ActionController.generalActionFire.next({
+        name: 'characterSelected',
+        data: null,
+      });
     }
   }
 }

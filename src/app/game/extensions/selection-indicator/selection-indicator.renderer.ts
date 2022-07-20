@@ -13,7 +13,7 @@ export class SelectionIndicatorRenderer implements Renderer {
   private height
 
   public onDraw(asset: Asset, frame: number): void {
-    if (!asset || !GSM.AssetController.selectedAssets[asset.id]) {
+    if (!asset || !GSM.AssetController.selectedAssets.find(_asset => _asset.id === asset.id)) {
       return
     }
 
@@ -37,15 +37,18 @@ export class SelectionIndicatorRenderer implements Renderer {
   }
 
   private animateMarker(asset: Asset, frame: number): void {
+    const movementOffsetX = asset.movement ? asset?.movement.movementOffset.x : asset.anchorCell.position.x
+    const movementOffsetY = asset.movement ? asset?.movement.movementOffset.y : asset.anchorCell.position.y
+    
     if (frame <= 32) {
-      this.posX = asset.movement.movementOffset.x - Math.floor(frame / 6)
-      this.posY = asset.movement.movementOffset.y - Math.floor(frame / 6)
+      this.posX = movementOffsetX - Math.floor(frame / 6)
+      this.posY =  movementOffsetY - Math.floor(frame / 6)
       this.width = GSM.Settings.blockSize + Math.floor(frame / 3)
       this.height = GSM.Settings.blockSize + Math.floor(frame / 3)
     }
     if (frame > 32) {
-      this.posX = asset.movement.movementOffset.x - Math.abs(Math.floor(frame / 6) - 12)
-      this.posY = asset.movement.movementOffset.y - Math.abs(Math.floor(frame / 6) - 12)
+      this.posX = movementOffsetX - Math.abs(Math.floor(frame / 6) - 12)
+      this.posY =  movementOffsetY - Math.abs(Math.floor(frame / 6) - 12)
       this.width =
         GSM.Settings.blockSize + Math.abs(Math.floor(frame / 3) - 24)
       this.height =

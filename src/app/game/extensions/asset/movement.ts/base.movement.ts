@@ -2,7 +2,7 @@ import { Subscription } from "rxjs"
 import { Asset } from "../../../models/asset.model"
 import { GSM } from "../../../game-state-manager.service"
 import { Cell, Position, RenderingLayers } from "../../../models/map"
-import { TravelPath } from "../shortest-path"
+import { TravelPath } from "../shortest-paths/shortest-path"
 import { SpriteAnimation } from "src/app/game/models/sprite-tile.model"
 
 export abstract class Movement {

@@ -34,7 +34,7 @@ export class MapController {
   }
 
   public getCellByLocation(x: number, y: number): Cell {
-    return GSM.GameData.map.grid[`x${x}:y${y}`]
+    return GSM.GridController.gridIterator[GSM.RotationController.currentRotationIndex].find(a => a.location.x === x && a.location.y === y)
   }
 
   public getCellById(cellId: string): Cell {

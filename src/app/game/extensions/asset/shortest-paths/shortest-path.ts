@@ -1,6 +1,6 @@
-import { Asset } from "../../models/asset.model"
-import { GSM } from "../../game-state-manager.service"
-import { Cell, RenderingLayers } from "../../models/map"
+import { Asset } from "../../../models/asset.model"
+import { GSM } from "../../../game-state-manager.service"
+import { Cell, RenderingLayers } from "../../../models/map"
 
 export interface Visited {
   cell?: Cell

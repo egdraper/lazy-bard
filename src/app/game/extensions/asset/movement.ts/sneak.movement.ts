@@ -1,7 +1,7 @@
 import { Position } from "src/app/game/models/map"
 import { GSM } from "../../../../game/game-state-manager.service"
 import { Asset } from "../../../models/asset.model"
-import { ShortestPath, TravelPath } from "../shortest-path"
+import { ShortestPath, TravelPath } from "../shortest-paths/shortest-path"
 import { Movement } from "./base.movement"
 
 export class Sneaking extends Movement {   

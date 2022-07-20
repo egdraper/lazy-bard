@@ -1,5 +1,5 @@
 import { Movement } from "./base.movement"
-import { ShortestPath, TravelPath } from "../shortest-path"
+import { ShortestPath, TravelPath } from "../shortest-paths/shortest-path"
 import { GSM } from "src/app/game/game-state-manager.service"
 import { Asset } from "../../../models/asset.model"
 import { Position } from "src/app/game/models/map"

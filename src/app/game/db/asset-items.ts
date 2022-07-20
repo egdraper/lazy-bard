@@ -27,9 +27,9 @@ export const assetAttributes: AssetAttributes[]  = [
     drawSize: {x: 96, y: 96 },
     xMotionTilePos: [0, 0, 0, 0 ],
     yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
-    xPosOffset: -31,
-    yPosOffset: -88,
-    obstructed: ["0000:0110:0110:0000", "0000:0110:0110:0000", "1111:1111:1111:1111", "1111:1111:1111:1111"]
+    xPosOffset: -13,
+    yPosOffset: -103,
+    obstructed: ["0000:0110:0110:0000", "0000:0110:0110:0000", "0110:1111:1111:0110", "0110:1111:1111:0110"]
   },
   {
     id: 'standardLTree',
@@ -68,10 +68,9 @@ export const assetAttributes: AssetAttributes[]  = [
     xMotionTilePos: [0, 0, 0, 0 ],
     yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
     xPosOffset: -31,
-    yPosOffset: -88,
+    yPosOffset: -0,
     obstructed: ["1"]
   },
-
 ];
 
 

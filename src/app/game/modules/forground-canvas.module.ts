@@ -14,6 +14,6 @@ export class ForegroundCanvasModule extends CanvasModule {
   public extensions: CanvasLayerExtension[] = [
     new TerrainTextureExtension,
     new SelectionIndicatorExtension(),
-    new AssetExtension(), 
+    new AssetExtension(),
   ]
 }

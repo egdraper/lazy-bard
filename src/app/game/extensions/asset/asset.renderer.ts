@@ -12,26 +12,24 @@ export class AssetRenderer implements Renderer {
   public beforeDraw(asset: Asset, frame?: number): void {
     this.ctx.beginPath()
     
-    const movementOffsetX = asset.movement ? asset.movement.movementOffset.x : asset.anchorCell.position.x
-    const movementOffsetY = asset.movement ? asset.movement.movementOffset.y : asset.anchorCell.position.y
+    const movementOffsetX = asset.movement ? asset?.movement.movementOffset.x : asset.anchorCell.position.x
+    const movementOffsetY = asset.movement ? asset?.movement.movementOffset.y : asset.anchorCell.position.y
     const checkCell = GSM.GridController.getCellByLocation(asset.anchorCell.location.x, asset.anchorCell.location.y - asset.baseZIndex)
     const walkOverAsset = GSM.AssetController.getTopAssetCoveringCell(checkCell)
-    let shadowZ = asset.baseZIndex
-    if(walkOverAsset && walkOverAsset.baseZIndex <= shadowZ ) {
-      shadowZ = walkOverAsset ? walkOverAsset.baseZIndex * GSM.Settings.blockSize : 0
-    } 
     
     this.ctx.fillStyle = '#424247'
+    this.ctx.globalAlpha = .7
     this.ctx.ellipse(
-      movementOffsetX + GSM.Settings.blockSize / 2,
-      (movementOffsetY + (GSM.Settings.blockSize / 2)) - ((walkOverAsset ? walkOverAsset.baseZIndex + walkOverAsset.attributes.size.z : 0) * GSM.Settings.blockSize),
-      8, 
-       4, 
-       0, 
-       0, 
-       Math.PI * 2
-       )   
+      movementOffsetX + GSM.Settings.blockSize / 2 + (Math.floor((asset.attributes.size.x * GSM.Settings.blockSize) / 2)),
+      (movementOffsetY + (GSM.Settings.blockSize / 2)) - ((walkOverAsset ? 0 : 0) * GSM.Settings.blockSize) - (Math.floor((asset.attributes.size.y * GSM.Settings.blockSize) / 4)),
+      (asset.attributes.size.x / 2) * GSM.Settings.blockSize, 
+      (asset.attributes.size.y / 4) * GSM.Settings.blockSize, 
+      0, 
+      0, 
+      Math.PI * 2
+    )    
     this.ctx.fill()
+    this.ctx.globalAlpha = 1 
   }
  
   public onDraw(asset: Asset<AssetTile>): void {

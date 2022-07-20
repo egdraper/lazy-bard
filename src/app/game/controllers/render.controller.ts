@@ -48,7 +48,7 @@ export class RendererController {
       if(renderer.renderingLayer === RenderingLayers.BaseLayer) {
         return
       }
-
+      
         if(asset.tile.layer !== renderer.renderingLayer) { return }
         if(renderer.beforeDraw) {
           renderer.beforeDraw(asset, frame)

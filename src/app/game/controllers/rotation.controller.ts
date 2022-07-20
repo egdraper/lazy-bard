@@ -1,6 +1,7 @@
 import { GSM } from '../game-state-manager.service'
 import { MapRotationIndex } from '../models/map'
 import { Asset } from '../models/asset.model'
+import { terrainCleanup } from './utils/terrain-cleanup'
 
 export class RotationController {
   public currentRotationIndex: MapRotationIndex = MapRotationIndex.northUp
