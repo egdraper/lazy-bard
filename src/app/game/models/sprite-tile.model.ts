@@ -61,7 +61,6 @@ export class DrawableItemViewModel {
   name: string;
   offsetX: number;
   offsetY: number;
-  spriteType: string;
   staticHeight?: number;
   expandable?: boolean;
 }

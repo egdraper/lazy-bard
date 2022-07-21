@@ -28,7 +28,7 @@ export const RockWall: TerrainTile[] = [
         eastNeighbor: true,
         southEastNeighbor: null,
         southNeighbor: false,
-        southWestNeighbor: false,
+        southWestNeighbor: null,
         westNeighbor: false,
         northWestNeighbor: null,
       },

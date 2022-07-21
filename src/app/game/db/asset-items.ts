@@ -29,7 +29,12 @@ export const assetAttributes: AssetAttributes[]  = [
     yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
     xPosOffset: -13,
     yPosOffset: -103,
-    obstructed: ["0000:0110:0110:0000", "0000:0110:0110:0000", "0110:1111:1111:0110", "0110:1111:1111:0110"]
+    obstructed: [
+      "0000:0110:0110:0000",
+      "0000:0110:0110:0000",
+      "0110:1111:1111:0110", 
+      "0110:1111:1111:0110"
+    ]
   },
   {
     id: 'standardLTree',
@@ -39,7 +44,11 @@ export const assetAttributes: AssetAttributes[]  = [
     yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
     xPosOffset: -31,
     yPosOffset: -88,
-    obstructed: ["000:010:000", "111:111:111", "111:111:111"]
+    obstructed: [
+      "000:010:000",
+      "111:111:111",
+      "111:111:111"
+    ]
   },
   {
     id: 'standardLogTree',
@@ -71,6 +80,36 @@ export const assetAttributes: AssetAttributes[]  = [
     yPosOffset: -0,
     obstructed: ["1"]
   },
+  {
+    id: 'standardRoad',
+    size: { x: 1, y: 1, z: 0 },
+    drawSize: {x: 16, y: 16 },
+    xMotionTilePos: [0, 0, 0, 0 ],
+    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
+    xPosOffset: 0,
+    yPosOffset: 0,
+    obstructed: ["0"]
+  },
+  {
+    id: 'hugeTree',
+    size: { x: 6, y: 6 , z: 7 },
+    drawSize: {x: 144, y: 144 },
+    xMotionTilePos: [0, 0, 0, 0 ],
+    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
+    xPosOffset: -24,
+    yPosOffset: -168,
+    obstructed: 
+    [
+      "000000:000000:001100:001100:000000:000000",
+      "000000:000000:001100:001100:000000:000000",
+      "000000:000000:001100:001100:000000:000000", 
+      "000000:000000:001100:001100:000000:000000",
+      "001100:011110:111111:111111:011110:001100",
+      "001100:011110:111111:111111:011110:001100",
+      "001100:011110:111111:111111:011110:001100",
+    ]
+  }
+  
 ];
 
 
@@ -95,6 +134,13 @@ export const assets: AssetInfo[] = [
     name: "Large Tree Green",
     url: "assets/images/trees/tree3.png",
     rule: "standardLTree"
+  },
+  {
+    id: 4,
+    type: "tree",
+    name: "Huge Tree Green",
+    url: "assets/images/trees/sprite_tree.png",
+    rule: "hugeTree"
   },
 ]
 

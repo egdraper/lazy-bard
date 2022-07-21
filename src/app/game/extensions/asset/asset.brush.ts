@@ -11,10 +11,14 @@ export class AssetBrush {
     GSM.MouseController.cellClick.subscribe(this.onCellClicked.bind(this));
   }
 
+  public getCellAtSelectedAssetsZIndex(zIndex: number, cellClicked: Cell) {
+    return GSM.GridController.getCellByLocation(cellClicked.location.x, cellClicked.location.y + zIndex)
+  }
+
   public onCellClicked(): void {
     if (GSM.ActionController.generalActionFire.value.name === 'characterSelected') {    
       GSM.AssetController.getSelectedAssets().forEach((asset: Asset) => {
-        asset.movement.start(asset.anchorCell, GSM.MouseController.hoveringCellAtZAxis, []);
+        asset.movement.start(asset.anchorCell, this.getCellAtSelectedAssetsZIndex(asset.baseZIndex, GSM.MouseController.hoveringCell), []);
       });
       return;
     }
@@ -61,15 +65,15 @@ export class AssetBrush {
     // MOCK This will be a database thing
     private addNonPlayableAsset(cell: Cell, zIndex: number): void {
       // setup asset
-      const objectAsset = new Asset(cell, 'standardSmallItem');
+      const objectAsset = new Asset(cell, 'hugeTree');
       objectAsset.tile = new AssetTile(
-        RenderingLayers.AssetLayer,
-        'assets/images/pots/pot7.png',
-        'standardSmallItem'
+        RenderingLayers.ObjectLayer,
+        'assets/images/sprite_tree.png',
+        'hugeTree'
       );
   
       objectAsset.animation = new SpriteAnimation();
-      objectAsset.layer = RenderingLayers.AssetLayer
+      objectAsset.layer = RenderingLayers.ObjectLayer
   
       GSM.AssetController.addAsset(
         objectAsset,

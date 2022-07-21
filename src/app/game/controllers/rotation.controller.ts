@@ -2,6 +2,7 @@ import { GSM } from '../game-state-manager.service'
 import { MapRotationIndex } from '../models/map'
 import { Asset } from '../models/asset.model'
 import { terrainCleanup } from './utils/terrain-cleanup'
+import { generateBackgroundImage } from './utils/create-background-image'
 
 export class RotationController {
   public currentRotationIndex: MapRotationIndex = MapRotationIndex.northUp
@@ -160,6 +161,11 @@ export class RotationController {
     }
 
     GSM.AssetController.refreshAssetIterator()
+    GSM.CanvasModuleController.canvasModules.forEach(module => {
+      if(module.canvas === "base") {
+        GSM.ImageController.baseLayerImage = generateBackgroundImage(module.renderers)
+      }
+    })
   }
 
   public rotateCounterClockwise(): void {}

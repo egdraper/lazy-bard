@@ -9,6 +9,7 @@ import { GridLineExtension } from "../extensions/grid-lines/grid-lines.extension
 
 export class BaseCanvasModule extends CanvasModule {
   public ctx = CanvasCTX.Background
+  public canvas: string = "base"
  
   // order matters for rendering
   public extensions: CanvasLayerExtension[] = [

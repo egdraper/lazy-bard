@@ -42,7 +42,7 @@ export class BaseTextureExtension extends CanvasLayerExtension {
 
   // MOCKS DB call from Server
   private getBackgroundImages(): TextureSprite[] {
-    return backgroundSprites.filter(sprite => sprite.textureType === "background")
+    return backgroundSprites.filter(sprite => sprite.id === "greenGrass")
   }
 
   private setBackgroundImages(): void {

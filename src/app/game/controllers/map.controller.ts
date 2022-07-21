@@ -34,6 +34,22 @@ export class MapController {
   }
 
   public getCellByLocation(x: number, y: number): Cell {
+    if(GSM.RotationController.currentRotationIndex === MapRotationIndex.northUp) {
+      return GSM.GameData.map.grid[`x${x}:y${y}`]
+    }
+    
+    if(GSM.RotationController.currentRotationIndex === MapRotationIndex.westUp) {
+      return GSM.GameData.map.grid[`x${y}:y${(GSM.GameData.map.size.x - 1) - x}`]
+    }
+    
+    if(GSM.RotationController.currentRotationIndex === MapRotationIndex.southUp) {
+      return GSM.GameData.map.grid[`x${(GSM.GameData.map.size.x - 1) - x}:y${(GSM.GameData.map.size.y - 1) - y}`]
+    }
+    
+    if(GSM.RotationController.currentRotationIndex === MapRotationIndex.eastUp) {
+      return GSM.GameData.map.grid[`x${(GSM.GameData.map.size.y - 1) - y}:y${x}`]
+    }
+    
     return GSM.GridController.gridIterator[GSM.RotationController.currentRotationIndex].find(a => a.location.x === x && a.location.y === y)
   }
 
@@ -53,11 +69,12 @@ export class MapController {
 
   public setupMap(): void {   
     this.gridIterator[DEFAULT_ITERATOR] = []
-    
+    let iterationOrder = 0
     for (let y = 0; y < GSM.GameData.map.size.y; y++) {
       for (let x = 0; x < GSM.GameData.map.size.x; x++) {
         const cell: Cell = {
           id: `x${x}:y${y}`,
+          iterationOrder: iterationOrder++,
           location: { x, y },
           position: { x: x * GSM.Settings.blockSize, y: y * GSM.Settings.blockSize },
         }

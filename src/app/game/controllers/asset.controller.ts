@@ -1,4 +1,3 @@
-import { identifierName } from '@angular/compiler';
 import { Subject } from 'rxjs';
 import { assetAttributes } from '../db/asset-items';
 import { GSM } from '../game-state-manager.service';
@@ -7,7 +6,8 @@ import { Cell, MapRotationIndex, NeighborLocation, RenderingLayers, Size } from 
 
 export class AssetController {
   public assets: { [assetId: string]: GridAsset } = {}
-  public assetArray: GridAsset[] = [];
+  public assetArray: GridAsset[] = []
+
   public selectedAssets: GridAsset[] = []
   public assetBlocks: { [coordinate: string]: AssetBlock } = {}   // coordinate format:  "x1:y1:z2:character"
   public backgroundAssets: BackgroundAsset[] = []
@@ -16,9 +16,15 @@ export class AssetController {
 
   constructor() {
     GSM.FrameController.frameFire.subscribe(this.animateAsset.bind(this));
+    // this.assetArray[MapRotationIndex.northUp] = []
+    // this.assetArray[MapRotationIndex.westUp] = []
+    // this.assetArray[MapRotationIndex.southUp] = []
+    // this.assetArray[MapRotationIndex.eastUp] = []
   }
 
   public addAsset(asset: GridAsset, anchoringCell: Cell, zIndex: number): void {
+    if(!anchoringCell) { return }
+
     asset.baseZIndex = zIndex
     asset.anchorCell = anchoringCell
     asset.id = `map:${GSM.GameData.map.id}-cell:${anchoringCell.id}:z${zIndex}:${asset.layer}`;
@@ -44,6 +50,7 @@ export class AssetController {
   }
 
   public getAsset(cell: Cell, zIndex: number, layer: RenderingLayers): GridAsset {
+    if(!cell) { return null}
     const block = this.assetBlocks[`${cell.id}:z${zIndex}:${layer}`];
     return this.assets[block?.ownerAssetId]
   }
@@ -115,8 +122,8 @@ export class AssetController {
   }
 
   public getAllAssetBlocksByEdge(asset: GridAsset, edge: BlockEdge ): AssetBlock[] {
+    if(!asset.ownedBlockIds) { return [] }
     let assetBlocks = []
-
     const blocks = asset.ownedBlockIds.map(id => this.getAssetBlockById(id))
     
     assetBlocks = blocks.filter(block => {
@@ -178,7 +185,6 @@ export class AssetController {
   }
 
   public removeAsset(asset: GridAsset, layer: RenderingLayers): void {
-    this.assetArray = this.assetArray.filter(savedAsset => asset.id !== savedAsset.id)
     asset.ownedBlockIds.forEach(id => { delete this.assetBlocks[id] })
     delete this.selectedAssets[asset.id]
     delete this.assets[asset.id]
@@ -186,45 +192,40 @@ export class AssetController {
   }
 
   public refreshAssetIterator(): void {
-    const newAssetList: GridAsset[] = []
-    // const _x = GSM.GameData.map.size.x
-    // const _y = GSM.GameData.map.size.y
-    // const _z = GSM.Settings.maxHeight
+    const tempArray = []
+    let finalTemp = []
 
-    // for(let y = 0; y < _y; y++) {
-    //   for(let x = 0; x < _x; x++) {
-    //     for(let z = 0; z < _z; z++) {
-          // GSM.RendererController.iterateRenderingLayers(layer => {
-            this.iterateEverythingAtRotationIndex((cellId: string, zIndex: number, layer: RenderingLayers) => {
-              const asset = this.assets[`map:${GSM.GameData.map.id}-cell:${cellId}:z${zIndex}:${layer}`]
-              if(asset) { newAssetList.push( asset) }
-            })
-      //     })
-      //   }
-      // }
-    // }
-    this.assetArray = newAssetList
-
-
-    // GSM.GridController.iterateCells((cell) => {
-    //   const gridAssets = this.getAssetsByAnchorCell(cell)
-    //   if(gridAssets.length > 0) { debugger }
-    //   gridAssets.forEach(asset => {
-    //     newAssetList.push(asset);
-    //   })
-    // })
-  }
-
-  private iterateEverythingAtRotationIndex(callback: (cellId: string, zIndex: number, layer: RenderingLayers) => void) {
-    const _z = GSM.Settings.maxHeight
-    
-    GSM.GridController.gridIterator[GSM.RotationController.currentRotationIndex].forEach((cell: Cell) => {
-      for(let z = 0; z < _z; z++) {
-        GSM.RendererController.iterateRenderingLayers(layer => {
-          callback(cell.id, z, layer)
-        })
-      }
+    Object.keys(this.assets).forEach(key => {
+      tempArray.push(this.assets[key])
     })
+
+    finalTemp = tempArray.sort((a: GridAsset, b: GridAsset) => {
+      if(a.anchorCell.location.y < b.anchorCell.location.y) {
+        return -1
+      }
+      if(a.anchorCell.location.y > b.anchorCell.location.y) {
+        return 1
+      }
+
+      if(a.anchorCell.location.x < b.anchorCell.location.x) {
+        return -1
+      }
+      if(a.anchorCell.location.x > b.anchorCell.location.x) {
+        return 1
+      }
+
+      if(a.anchorCell.location.x === b.anchorCell.location.x && a.anchorCell.location.y === b.anchorCell.location.y) {
+        if(a.baseZIndex < b.baseZIndex) {
+          return -1
+        } else {
+          return 1
+        }
+      }
+
+      return 0
+    })
+
+    this.assetArray = finalTemp
   }
 
   public getAllAssetsBlocksCoveringCell(coveredCell: Cell): AssetBlock[] {

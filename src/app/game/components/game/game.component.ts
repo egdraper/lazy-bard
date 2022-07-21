@@ -21,7 +21,7 @@ export class GameComponent implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame('firstGame', 20, 20, 'forest');
+      this.gameStateManager.newGame('firstGame', 20,20, 'forest');
       GSM.ActionController.generalActionFire.subscribe((action) => {
         this.selected = action.name;
       });
@@ -76,6 +76,12 @@ export class GameComponent implements AfterViewInit {
       GSM.ActionController.generalActionFire.next({
         name: 'paintingTerrain',
         data: drawableItems.find((item) => item.id === 'Trees-GrassBase'),
+      });
+    }
+    if (event.code === 'KeyF') {
+      GSM.ActionController.generalActionFire.next({
+        name: 'paintingTerrain',
+        data: drawableItems.find((item) => item.id === 'Road'),
       });
     }
     if (event.code === 'KeyR') {

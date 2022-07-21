@@ -12,14 +12,14 @@ export class GridLinesRenderer implements BackgroundRenderer {
     this.ctx.beginPath()
     this.ctx.moveTo(background.anchorCell.position.x + .5, background.anchorCell.position.y + .5)
     this.ctx.lineTo(background.anchorCell.position.x + .5, background.anchorCell.position.y + GSM.Settings.blockSize + .5)
-    this.ctx.strokeStyle = "rgba(75, 75, 75,.5)"
+    this.ctx.strokeStyle = "rgba(75, 75, 75, .3)"
     this.ctx.stroke()
 
     // Vertical Lines
     this.ctx.beginPath()
     this.ctx.moveTo(background.anchorCell.position.x - .5, background.anchorCell.position.y - .5)
-    this.ctx.lineTo((background.anchorCell.position.x) + GSM.Settings.blockSize - .5, background.anchorCell.position.y + .5)
-    this.ctx.strokeStyle = "rgba(75, 75, 75,.5)"
+    this.ctx.lineTo((background.anchorCell.position.x) + GSM.Settings.blockSize - .5, background.anchorCell.position.y - .5)
+    this.ctx.strokeStyle = "rgba(75, 75, 75, .3)"
     this.ctx.stroke()
   }
 }

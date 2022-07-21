@@ -53,6 +53,7 @@ export class MouseController {
     this.assetBlockDown.next(this.hoveringAssetBlock)
     this.cellDown.next(this.hoveringCell)
     this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
+    GSM.GridController.getCellByLocation(this.hoveringCell.location.x, this.hoveringCell.location.y)
   }
 
   private onMouseUp(): void {

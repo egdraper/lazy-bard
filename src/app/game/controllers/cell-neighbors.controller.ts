@@ -6,27 +6,24 @@ export class CellNeighborsController {
   public getImmediateNeighborCell(
     cell: Cell,
     neighborLocation: NeighborLocation
-  ): Cell {
-    const x = Number(cell.id.split(":")[0].match(/\d+/))
-    const y = Number(cell.id.split(":")[1].match(/\d+/))
-    
+  ): Cell {   
     switch (neighborLocation) {
       case NeighborLocation.North:
-        return GSM.GridController.getCellByLocation(x ,y - 1)
+        return GSM.GridController.getCellByLocation(cell.location.x ,cell.location.y - 1)
       case NeighborLocation.East:
-        return GSM.GridController.getCellByLocation(x + 1, y)
+        return GSM.GridController.getCellByLocation(cell.location.x + 1, cell.location.y)
       case NeighborLocation.South:
-        return GSM.GridController.getCellByLocation(x ,y + 1)
+        return GSM.GridController.getCellByLocation(cell.location.x ,cell.location.y + 1)
       case NeighborLocation.West:
-        return GSM.GridController.getCellByLocation(x - 1, y)
+        return GSM.GridController.getCellByLocation(cell.location.x - 1, cell.location.y)
       case NeighborLocation.NorthEast:
-        return GSM.GridController.getCellByLocation(x + 1, y - 1)
+        return GSM.GridController.getCellByLocation(cell.location.x + 1, cell.location.y - 1)
       case NeighborLocation.SouthEast:
-        return GSM.GridController.getCellByLocation(x + 1, y + 1)
+        return GSM.GridController.getCellByLocation(cell.location.x + 1, cell.location.y + 1)
       case NeighborLocation.SouthWest:
-        return GSM.GridController.getCellByLocation(x - 1, y + 1)
+        return GSM.GridController.getCellByLocation(cell.location.x - 1, cell.location.y + 1)
       case NeighborLocation.NorthWest:
-        return GSM.GridController.getCellByLocation(x - 1, y - 1)
+        return GSM.GridController.getCellByLocation(cell.location.x - 1, cell.location.y - 1)
     }
     return null
   }

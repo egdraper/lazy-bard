@@ -16,6 +16,7 @@ export class Cell {
   public id: string // x0:y0
   public location: Location // {x: 0, y: 0}
   public position: Position // not saved
+  public iterationOrder: number
 }
 
 export enum NeighborLocation {

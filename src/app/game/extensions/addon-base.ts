@@ -4,7 +4,8 @@ import { CanvasLayerExtension, Renderer } from "../models/renderer"
 
 export abstract class CanvasModule {
     public abstract extensions: Extension[]
-    public abstract ctx: CanvasCTX    
+    public abstract ctx: CanvasCTX 
+    public abstract canvas: string    
     
     private _renderers: Renderer[] = []
     public get renderers() {

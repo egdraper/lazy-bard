@@ -9,4 +9,12 @@ export const backgroundSprites: TextureSprite[] = [
     fullImageWidth: 23,
     fullImageHeight: 0,
   },
+  {
+    id: 'dessert1',
+    textureType: 'background',
+    baseTexture: 'forest',
+    imageUrl: 'assets/images/terrain-dessert-strip.png',
+    fullImageWidth: 29,
+    fullImageHeight: 0,
+  },
 ];
