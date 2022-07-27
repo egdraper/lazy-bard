@@ -46,11 +46,11 @@ export class AssetBrush {
   // MOCK This will be a database thing
   private addPlayableCharacter(cell: Cell, zIndex: number): void {
     // setup asset
-    const playerAsset = new Asset(cell, 'standardCreature');
+    const playerAsset = new Asset(cell, 'standardLargeMonster');
     playerAsset.tile = new AssetTile(
       RenderingLayers.AssetLayer,
-      'assets/images/character_012.png',
-      'standardCreature'
+      'assets/images/monster_001.png',
+      'standardLargeMonster'
     );
 
     playerAsset.animation = new SpriteAnimation();
@@ -64,12 +64,13 @@ export class AssetBrush {
 
     // MOCK This will be a database thing
     private addNonPlayableAsset(cell: Cell, zIndex: number): void {
+      GSM.RendererController.renderAsAssets(RenderingLayers.ObjectLayer)
       // setup asset
-      const objectAsset = new Asset(cell, 'hugeTree');
+      const objectAsset = new Asset(cell, 'standardXLTree');
       objectAsset.tile = new AssetTile(
         RenderingLayers.ObjectLayer,
-        'assets/images/sprite_tree.png',
-        'hugeTree'
+        'assets/images/trees/tree1.png',
+        'standardXLTree'
       );
   
       objectAsset.animation = new SpriteAnimation();
@@ -81,5 +82,6 @@ export class AssetBrush {
         zIndex
       );
       GSM.ImageController.addImageBySrcUrl(objectAsset.tile.imageUrl);
+      GSM.RendererController.renderAsSingleImage(RenderingLayers.ObjectLayer)
     }
 }

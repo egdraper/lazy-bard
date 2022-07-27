@@ -3,7 +3,7 @@ import { GSM } from "../../game-state-manager.service"
 export class AddonRenderer {
   public ctx = GSM.CanvasController.backgroundCTX
 
-  public draw(image: HTMLImageElement, elevation: number): void {
+  public draw(image: HTMLImageElement): void {
     if(!image) { return }
     
     this.ctx.imageSmoothingEnabled = false

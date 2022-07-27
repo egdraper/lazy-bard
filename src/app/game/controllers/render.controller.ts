@@ -1,15 +1,17 @@
 import { Subscription } from "rxjs"
-import { CanvasModule } from "../extensions/addon-base"
+import { RootCanvasModule } from "../modules/root.module"
 import { GSM } from "../game-state-manager.service"
 import { CanvasCTX } from "../models/extension.model"
 import { RenderingLayers } from "../models/map"
 import { Renderer } from "../models/renderer"
 import { AddonRenderer } from "./utils/addon-renderer.util"
+import { generateBackgroundImage, generateLayerImage } from "./utils/create-background-image"
 
 export class RendererController {
-  public foregroundCanvasRenderer: AddonRenderer
   public baseCanvasRenderer: AddonRenderer
-
+  public foregroundCanvasRenderer: AddonRenderer
+  
+  private renderAsSingeImages: {[layer: string]: boolean } = {}
   private subscriptions: Subscription[] = []
   
   public start() {
@@ -19,6 +21,15 @@ export class RendererController {
   
   public stop(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe())
+  }
+
+  public renderAsSingleImage(layer: RenderingLayers) {
+    this.renderAsSingeImages[layer] = true
+    generateLayerImage("foreground", layer)
+  }
+
+  public renderAsAssets(layer: RenderingLayers) {
+    this.renderAsSingeImages[layer] = false
   }
 
   public iterateRenderingLayers(callBack: (layer: RenderingLayers) => void) {
@@ -34,20 +45,27 @@ export class RendererController {
   private onFrameFire(frame: number): void {
     if(!(GSM.CanvasModuleController.canvasModules && GSM.CanvasModuleController.canvasModules.length !== 0)) { return }
     this.clearCanvases()    
-    this.renderBackground()
+    this.renderLayers()
     this.renderAssets(frame)
   }
 
-  private renderBackground() {
-    this.baseCanvasRenderer.draw(GSM.ImageController.baseLayerImage, 0)
+  private renderLayers() {
+    // always render as an image
+    this.baseCanvasRenderer.draw(GSM.ImageController.renderingLayerImages[RenderingLayers.BaseLayer])
+
+    if(this.renderAsSingeImages[RenderingLayers.TerrainLayer]) {
+      this.foregroundCanvasRenderer.draw(GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer])
+    }
+    if(this.renderAsSingeImages[RenderingLayers.ObjectLayer]) {
+      this.foregroundCanvasRenderer.draw(GSM.ImageController.renderingLayerImages[RenderingLayers.ObjectLayer])
+    }
   }
 
   private renderAssets(frame: number) {
     GSM.AssetController.iterateAsset(asset => {
     this.iterateRenderers(renderer => {
-      if(renderer.renderingLayer === RenderingLayers.BaseLayer) {
-        return
-      }
+      if(renderer.renderingLayer === RenderingLayers.BaseLayer) { return }
+      if(this.renderAsSingeImages[renderer.renderingLayer]) { return }
       
         if(asset.tile.layer !== renderer.renderingLayer) { return }
         if(renderer.beforeDraw) {
@@ -65,15 +83,17 @@ export class RendererController {
     })
   }
    
-  private clearCanvases(): void {
+  public clearCanvases(): void {
     const canvas = GSM.CanvasController
     canvas.backgroundCTX.clearRect(0,0, GSM.GameData.map.size.x * GSM.Settings.blockSize, GSM.GameData.map.size.y * GSM.Settings.blockSize)
     canvas.backgroundCTX.imageSmoothingEnabled = false
     canvas.foregroundCTX.clearRect(0,0, GSM.GameData.map.size.x * GSM.Settings.blockSize, GSM.GameData.map.size.y * GSM.Settings.blockSize)
     canvas.foregroundCTX.imageSmoothingEnabled = false   
+    canvas.fullImageCTX.clearRect(0,0, GSM.GameData.map.size.x * GSM.Settings.blockSize, GSM.GameData.map.size.y * GSM.Settings.blockSize)
+    canvas.fullImageCTX.imageSmoothingEnabled = false   
   }  
 
-  private setupRenderers(canvasModule: CanvasModule): void {
+  private setupRenderers(canvasModule: RootCanvasModule): void {
     this.foregroundCanvasRenderer = new AddonRenderer()
     this.baseCanvasRenderer = new AddonRenderer()  
        
@@ -86,14 +106,14 @@ export class RendererController {
         renderer.ctx = GSM.CanvasController.foregroundCTX
         this.foregroundCanvasRenderer.ctx = renderer.ctx
       }
-      if(canvasModule.ctx === CanvasCTX.Fog) {
-        renderer.ctx = GSM.CanvasController.fogCTX
-        this.foregroundCanvasRenderer.ctx = renderer.ctx
-      }
-      if(canvasModule.ctx === CanvasCTX.BlackoutFog) {
-        renderer.ctx = GSM.CanvasController.blackoutCTX
-        this.foregroundCanvasRenderer.ctx = renderer.ctx
-      }
+      // if(canvasModule.ctx === CanvasCTX.Fog) {
+      //   renderer.ctx = GSM.CanvasController.fogCTX
+      //   this..ctx = renderer.ctx
+      // }
+      // if(canvasModule.ctx === CanvasCTX.BlackoutFog) {
+      //   renderer.ctx = GSM.CanvasController.blackoutCTX
+      //   this.foregroundCanvasRenderer.ctx = renderer.ctx
+      // }
     })
   }
 }

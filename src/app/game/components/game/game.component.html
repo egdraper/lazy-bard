@@ -1,4 +1,12 @@
 <div class="game" *ngIf="gameStateManager.loadingFinished">
+
+  <div>
+    <gm-editor-side-nav></gm-editor-side-nav>
+  </div>
+  <div class="game-view">
+    <gm-canvas></gm-canvas>
+  </div>
+
   <div style="color:white; position: absolute; top: 115px">
     <h6>X: {{ mouseController?.hoveringPosX }} </h6>
     <h6>Y: {{ mouseController?.hoveringPosY }} </h6>
@@ -12,13 +20,11 @@
     <h6>HCAZ: {{ mouseController?.hoveringCellAtZAxis?.id }} </h6>
     <h6>Z: {{ mouseController?.hoveringZAxis }} </h6>
     <h6>MDZ: {{ mouseController?.hoveringZAxisAtMouseDown }} </h6>
-     
+    <h6>A#: {{ assetController?.assetArray.length }} </h6>
+
+  <label for="vol">Brush (1-10)</label>
+  <input #input type="number" [(ngModel)]="settings.brushSize">
+
     <h1 style="color:white">{{selected}}</h1>
-  </div>
-  <div>
-    <gm-editor-side-nav></gm-editor-side-nav>
-  </div>
-  <div class="game-view">
-    <gm-canvas></gm-canvas>
   </div>
 </div>

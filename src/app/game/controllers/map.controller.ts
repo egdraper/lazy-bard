@@ -33,6 +33,22 @@ export class MapController {
     return GSM.GridController.gridIterator[GSM.RotationController.currentRotationIndex].find(a => a.position.x === x && a.position.y === y)
   }
 
+  public getCellsWithinRadius(cell: Cell, radius: number): Cell[] {
+    const _x = Math.floor(radius / 2)
+    const _y = Math.floor(radius / 2)
+    const cornerX = cell.location.x - _x
+    const cornerY = cell.location.y - _y
+    
+    const cells = []
+    for(let y = 0; y < radius; y++ ) {
+      for(let x = 0; x < radius; x++) {
+        cells.push(this.getCellByLocation(cornerX + x, cornerY + y))
+      }
+    }
+
+    return cells
+  }
+
   public getCellByLocation(x: number, y: number): Cell {
     if(GSM.RotationController.currentRotationIndex === MapRotationIndex.northUp) {
       return GSM.GameData.map.grid[`x${x}:y${y}`]

@@ -12,6 +12,16 @@ export const assetAttributes: AssetAttributes[]  = [
     obstructed: ["1"]
   },
   {
+    id: 'standardLargeMonster',
+    size: { x: 2, y: 2, z: 3 },
+    drawSize: {x: 32, y: 50 },
+    xMotionTilePos: [0, 32, 64, 32],
+    yDirectionTilePos: { down: 0, left: 50, right: 100, up: 150 },
+    xPosOffset: -4,
+    yPosOffset: -32,
+    obstructed: ["11:11","11:11","11:11"]
+  },
+  {
     id: 'standardSmallItem',
     size: { x: 1, y: 1, z:1 },
     drawSize: {x: 16, y: 16 },

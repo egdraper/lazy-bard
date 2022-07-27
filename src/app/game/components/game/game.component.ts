@@ -12,16 +12,24 @@ import { Asset } from '../../models/asset.model';
 export class GameComponent implements AfterViewInit {
   public selected = 'nothing';
   public mouseController;
+  public assetController
+  public settings
 
   constructor(public gameStateManager: GSM) {
     setTimeout(() => {
       this.mouseController = GSM.MouseController;
+      this.assetController = GSM.AssetController
+      this.settings = GSM.Settings
     }, 150);
+  }
+
+  public onChange(value): void {
+    GSM.Settings.brushSize = value
   }
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame('firstGame', 20,20, 'forest');
+      this.gameStateManager.newGame('firstGame',30,30, 'forest');
       GSM.ActionController.generalActionFire.subscribe((action) => {
         this.selected = action.name;
       });

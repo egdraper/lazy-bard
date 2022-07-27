@@ -7,6 +7,5 @@ export class GameData {
   public assets: GridAsset[]
   
   // core cache
-  public images: { [imageUrl: string]: HTMLImageElement } = {};
   public loadedMaps: { [gameMapId: string]: GameMap } = {}
 } 

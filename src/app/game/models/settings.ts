@@ -8,6 +8,7 @@ export class Settings {
   public scale: number = 2
   public blockToFeet = 5;
   public maxHeight = 10;
+  public brushSize = 4
 }
 
 export class CanvasSpecs {

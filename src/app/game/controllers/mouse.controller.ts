@@ -5,9 +5,9 @@ import { AssetBlock, GridAsset } from '../models/asset.model';
 
 export class MouseController {
   // Events
+  public cellUp = new Subject<Cell>();
   public cellClick = new Subject<Cell>();
   public cellDown = new Subject<Cell>();
-  public cellUp = new Subject<Cell>();
   public cellHover = new Subject<Cell>();
   public assetClick = new Subject<GridAsset>();
   public assetDown = new Subject<GridAsset>();

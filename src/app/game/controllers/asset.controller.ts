@@ -55,6 +55,11 @@ export class AssetController {
     return this.assets[block?.ownerAssetId]
   }
 
+  public getAssetAtLocation(x: number, y: number, zIndex: number, layer: RenderingLayers): GridAsset {
+    const cell = GSM.GridController.getCellByLocation(x,y)
+    return this.getAsset(cell, zIndex, layer)
+  }
+
   public getAssetsByCellAtZ(cell: Cell, zIndex: number): {layer: RenderingLayers, asset: GridAsset}[] {
     const assets = []
     GSM.RendererController.iterateRenderingLayers(layer => {

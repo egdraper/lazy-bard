@@ -7,7 +7,7 @@ import { FrameController } from './controllers/timing.controller';
 
 import { Settings } from './models/settings';
 import { CanvasModuleController } from './controllers/canvas-module.controller';
-import { Extensions } from './extensions.register';
+import { CanvasModules } from './module.register';
 import { ImagesController } from './controllers/images.controller';
 import { CellNeighborsController } from './controllers/cell-neighbors.controller';
 import { GameData } from './game-data';
@@ -29,7 +29,7 @@ export class GSM {
   public static CanvasModuleController: CanvasModuleController
   public static CellNeighborsController: CellNeighborsController
   public static ActionController: ActionController
-  public static Extensions: Extensions
+  public static Extensions: CanvasModules
   public static FrameController: FrameController
   public static GridController: MapController
   public static ImageController: ImagesController
@@ -55,7 +55,7 @@ export class GSM {
     GSM.ActionController = new ActionController()
     GSM.CanvasModuleController = new CanvasModuleController()
     GSM.RendererController = new RendererController() 
-    GSM.Extensions = new Extensions() 
+    GSM.Extensions = new CanvasModules() 
     GSM.GridController = new MapController()
     GSM.RotationController = new RotationController()
     GSM.GridController.createGameMap({x: width, y: height})
