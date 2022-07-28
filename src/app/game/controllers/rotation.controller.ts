@@ -52,7 +52,7 @@ export class RotationController {
             cell.position.x = newX * GSM.Settings.blockSize
             cell.position.y = newY * GSM.Settings.blockSize
 
-            const assets = GSM.AssetController.getAssetsByCell(cell)
+            const assets = GSM.AssetController.getAssetsByAnchorCell(cell)
             assets.forEach((asset: Asset) => {
               if(asset.movement && asset.movement.movementOffset) {
                 asset.movement.movementOffset.x = cell.position.x
@@ -160,6 +160,10 @@ export class RotationController {
     } else {
       this.currentRotationIndex++
     }
+
+    GSM.AssetController.assetArray.forEach((asset: Asset) => {
+      asset.anchorCell = GSM.GridController.getCellByLocation(asset.anchorCell.location.x, asset.anchorCell.location.y + asset.attributes.size.y - 1)
+    })
 
     GSM.AssetController.refreshAssetIterator()
     terrainCleanup()

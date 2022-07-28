@@ -66,7 +66,7 @@ export const RockWall: TerrainTile[] = [
       {
         id: 'MidCenter',
         default: true,
-        topWith: {x: 3, y: 12 },
+        topWith: {x: 3, y: 13 },
         drawWhen: {
           northNeighbor: true,
           northEastNeighbor: true,
@@ -234,6 +234,34 @@ export const RockWall: TerrainTile[] = [
           southEastNeighbor: true,
           southNeighbor: true,
           southWestNeighbor: true,
+          westNeighbor: true,
+          northWestNeighbor: true,
+        },
+      },
+      {
+        id: 'corner',
+        topWith: {x: 3, y: 12 },
+        drawWhen: {
+          northNeighbor: true,
+          northEastNeighbor: true,
+          eastNeighbor: true,
+          southEastNeighbor: false,
+          southNeighbor: true,
+          southWestNeighbor: true,
+          westNeighbor: true,
+          northWestNeighbor: false,
+        },
+      },
+      {
+        id: 'corner2',
+        topWith: {x: 4, y: 12 },
+        drawWhen: {
+          northNeighbor: true,
+          northEastNeighbor: false,
+          eastNeighbor: true,
+          southEastNeighbor: true,
+          southNeighbor: true,
+          southWestNeighbor: false,
           westNeighbor: true,
           northWestNeighbor: true,
         },

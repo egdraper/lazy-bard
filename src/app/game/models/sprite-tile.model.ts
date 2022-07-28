@@ -63,6 +63,7 @@ export class DrawableItemViewModel {
   offsetY: number;
   staticHeight?: number;
   expandable?: boolean;
+  backgroundTerrainId?: string;
 }
 
 export class SpriteAnimation {

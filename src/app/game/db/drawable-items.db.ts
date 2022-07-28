@@ -18,7 +18,8 @@ export const drawableItems: DrawableItemViewModel[] = [
     assetAttributeId: "standardTerrain",
     expandable: true,
     name: "Stone Cliff with Stone Base",
-    imageUrl: "assets/images/StoneGrayWall.png",
+    imageUrl: "assets/images/RockWallGrassBase1.png",
+    backgroundTerrainId: "greenGrass",
     offsetX: 0,
     offsetY: 0,
     drawingRules: RockWall
@@ -26,7 +27,7 @@ export const drawableItems: DrawableItemViewModel[] = [
     id: "Road",
     assetAttributeId: "standardRoad",
     name: "Road",
-    imageUrl: "assets/images/roads/road1.png",
+    imageUrl: "assets/images/roads/road7.png",
     offsetX: 0,
     offsetY: 0,
     drawingRules: RoadRules

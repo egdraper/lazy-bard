@@ -17,7 +17,7 @@ export const assetAttributes: AssetAttributes[]  = [
     drawSize: {x: 32, y: 50 },
     xMotionTilePos: [0, 32, 64, 32],
     yDirectionTilePos: { down: 0, left: 50, right: 100, up: 150 },
-    xPosOffset: -4,
+    xPosOffset: -16,
     yPosOffset: -32,
     obstructed: ["11:11","11:11","11:11"]
   },

@@ -302,6 +302,7 @@ export class AssetController {
           const cellY = asset.anchorCell.location.y - distanceFromAnchor;
           const cellX = asset.anchorCell.location.x + xIndex;
           const cell = GSM.GridController.getCellByLocation(cellX, cellY);
+          
           const blockEdge: BlockEdge = {
             down: zIndexOffset === 0,
             up: zIndexOffset === asset.attributes.size.z - 1,

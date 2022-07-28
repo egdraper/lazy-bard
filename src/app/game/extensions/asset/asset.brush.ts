@@ -46,11 +46,11 @@ export class AssetBrush {
   // MOCK This will be a database thing
   private addPlayableCharacter(cell: Cell, zIndex: number): void {
     // setup asset
-    const playerAsset = new Asset(cell, 'standardLargeMonster');
+    const playerAsset = new Asset(cell, 'standardCreature');
     playerAsset.tile = new AssetTile(
       RenderingLayers.AssetLayer,
-      'assets/images/monster_001.png',
-      'standardLargeMonster'
+      'assets/images/character_010.png',
+      'standardCreature'
     );
 
     playerAsset.animation = new SpriteAnimation();
@@ -69,7 +69,7 @@ export class AssetBrush {
       const objectAsset = new Asset(cell, 'standardXLTree');
       objectAsset.tile = new AssetTile(
         RenderingLayers.ObjectLayer,
-        'assets/images/trees/tree1.png',
+        'assets/images/trees/tree2.png',
         'standardXLTree'
       );
   

@@ -86,7 +86,7 @@ export class MouseController {
       
       if(assetBlock) {
         this.hoveringCellAtZAxis = assetBlock.cell
-        this.hoveringZAxis = assetBlock ? assetBlock.zIndex + 1 : 0
+        this.hoveringZAxis = gridAsset.attributes.size.z > 0 ? assetBlock.zIndex + 1 : assetBlock.zIndex
         this.hoveringAssetBlocks = assetBlocks
         this.hoveringGridAsset = gridAsset
         this.hoveringGridAssets = gridAssets

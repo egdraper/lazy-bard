@@ -1,7 +1,9 @@
+import { backgroundSprites } from "../../db/background.db"
+import { BaseTextureRandomGenerator } from "../../extensions/base-texture/base-texture.generator"
 import { GSM } from "../../game-state-manager.service"
 import { GridAsset } from "../../models/asset.model"
 import { NeighborLocation, RenderingLayers } from "../../models/map"
-import { DrawableItemViewModel, TerrainTile } from "../../models/sprite-tile.model"
+import { AssetTile, DrawableItemViewModel, TerrainTile } from "../../models/sprite-tile.model"
 
 export class TerrainEdgeCalculator {
   public static calculateTerrainEdges(gridAsset: GridAsset, terrainTile: TerrainTile, drawableItem: DrawableItemViewModel): TerrainTile {
@@ -78,7 +80,20 @@ export class TerrainEdgeCalculator {
       
     this.setTilesForVerticalRendering(tile, upMatch, downMatch, upSouthMatch, southMatch, downSouthMatch)
 
-    tile.imageUrl = drawableItem.imageUrl
+    if(tile.id === "MidCenter" && drawableItem.backgroundTerrainId) {
+      const backgroundTexture = backgroundSprites.find(bgTile => bgTile.id === drawableItem.backgroundTerrainId)
+      GSM.ImageController.addImageBySrcUrl(backgroundTexture.imageUrl)
+      
+      if(gridAsset.tile.imageUrl === backgroundTexture.imageUrl) {
+        tile = gridAsset.tile
+      } else {
+        tile.imageUrl = backgroundTexture.imageUrl
+        tile.drawsWithTop = BaseTextureRandomGenerator.getRandomTerrain(backgroundTexture)
+      }
+    } else {
+      tile.imageUrl = drawableItem.imageUrl
+    }
+
     tile.drawableTileId = terrainTile.drawableTileId   
     tile.layer = RenderingLayers.TerrainLayer
 
