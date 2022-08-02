@@ -38,7 +38,7 @@ export class AssetRenderer implements Renderer {
 
     this.ctx.drawImage(
       GSM.ImageController.getImage(asset.tile.imageUrl),
-      asset.tile.assetDrawRules.xMotionTilePos[asset.animation.positionCounter],
+      asset.movement.moving ? asset.tile.assetDrawRules.xMotionTilePos[asset.animation.positionCounter] : asset.tile.assetDrawRules.xMotionTilePos[1],
       asset.tile.assetDrawRules.yDirectionTilePos[asset.animation.orientation.currentOrientation],
       asset.tile.assetDrawRules.drawSize.x,
       asset.tile.assetDrawRules.drawSize.y,

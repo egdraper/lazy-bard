@@ -88,7 +88,6 @@ export class TerrainTreeBrushEventHandler {
         }   
       })  
       terrainCleanup()
-      console.log(cellCount)   
     }
     
 

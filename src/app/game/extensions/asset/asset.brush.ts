@@ -2,6 +2,8 @@ import { Cell, RenderingLayers } from 'src/app/game/models/map';
 import { GSM } from '../../game-state-manager.service';
 import { Asset } from '../../models/asset.model';
 import { AssetTile, SpriteAnimation } from '../../models/sprite-tile.model';
+import { Running } from './movement.ts/run.movement';
+import { Sneaking } from './movement.ts/sneak.movement';
 import { Walking } from './movement.ts/walking.movement';
 
 export class AssetBrush {
@@ -54,7 +56,7 @@ export class AssetBrush {
     );
 
     playerAsset.animation = new SpriteAnimation();
-    playerAsset.movement = new Walking(playerAsset);
+    playerAsset.movement = new Running(playerAsset);
     playerAsset.animating = true;
     playerAsset.layer = RenderingLayers.AssetLayer
 

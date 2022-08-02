@@ -1,8 +1,11 @@
 import { AfterViewInit, Component, HostListener } from '@angular/core';
 import { terrainCleanup } from '../../controllers/utils/terrain-cleanup';
 import { drawableItems } from '../../db/drawable-items.db';
+import { Running } from '../../extensions/asset/movement.ts/run.movement';
+import { Sneaking } from '../../extensions/asset/movement.ts/sneak.movement';
+import { Walking } from '../../extensions/asset/movement.ts/walking.movement';
 import { GSM } from '../../game-state-manager.service';
-import { Asset } from '../../models/asset.model';
+import { Asset, GridAsset } from '../../models/asset.model';
 
 @Component({
   selector: 'gm-game',
@@ -154,6 +157,21 @@ export class GameComponent implements AfterViewInit {
         name: 'characterSelected',
         data: null,
       });
+    }
+    if (event.code === 'KeyL') {
+      GSM.AssetController.selectedAssets.forEach((asset: Asset) => {
+        asset.movement = new Running(asset)
+      })
+    }
+    if (event.code === 'KeyK') {
+      GSM.AssetController.selectedAssets.forEach((asset: Asset) => {
+        asset.movement = new Sneaking(asset)
+      })
+    }
+    if (event.code === 'KeyJ') {
+      GSM.AssetController.selectedAssets.forEach((asset: Asset) => {
+        asset.movement = new Walking(asset)
+      })
     }
   }
 }

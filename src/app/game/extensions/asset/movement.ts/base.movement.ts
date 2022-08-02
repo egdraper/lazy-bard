@@ -9,6 +9,7 @@ export abstract class Movement {
   protected abstract asset: Asset
   public movementOffset: Position
   public moving = false
+  public speed: number = 1
   
   protected abstract travelPath: TravelPath
   
@@ -20,7 +21,6 @@ export abstract class Movement {
   protected distanceToNextCell = 0
   
   private onFinished: () => void    
-  private speed: number = 1
   private cellTrackPosX = 0
   private cellTrackPosY = 0
 

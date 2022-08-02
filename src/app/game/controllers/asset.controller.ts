@@ -233,11 +233,9 @@ export class AssetController {
     this.assetArray = finalTemp
   }
 
-  public getAllAssetsBlocksCoveringCell(coveredCell: Cell): AssetBlock[] {
+  public getAllAssetBlocksCoveringCell(coveredCell: Cell): AssetBlock[] {
     const coveringBlocks: AssetBlock[] = []
-    GSM.GridController.iterateYCells(coveredCell.location.x, (cell: Cell) => {
-      if(cell.location.y < coveredCell.location.y) { return }
-  
+    GSM.GridController.iterateYCellsFrom(coveredCell.location.y, coveredCell.location.x, (cell: Cell) => {
       const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
       GSM.AssetController.getAllAssetBlocksAtCell(cell).forEach(assetBlock => {
         if(assetBlock.zIndex + 1 === distanceFromHoveringCell) {
@@ -247,14 +245,27 @@ export class AssetController {
     })
     return coveringBlocks
   }
+
+  public getFrontBlockCoveringCell(coveredCell: Cell): AssetBlock[] {
+    const coveringBlocks: AssetBlock[] = []
+    GSM.GridController.iterateYCellsFrom(coveredCell.location.y, coveredCell.location.x, (cell: Cell) => {
+      const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
+      GSM.AssetController.getAllAssetBlocksAtCell(cell).forEach(assetBlock => {
+        if(assetBlock.zIndex === distanceFromHoveringCell) {
+          coveringBlocks.push(assetBlock)
+        }
+      })
+    })
+    return coveringBlocks
+  }
   
   public getAllAssetsCoveringCell(hoveringCell: Cell): GridAsset[] {
-    const assetBlocks = this.getAllAssetsBlocksCoveringCell(hoveringCell)
+    const assetBlocks = this.getAllAssetBlocksCoveringCell(hoveringCell)
     return assetBlocks.map(block => GSM.AssetController.getAssetById(block.ownerAssetId))
   }
   
  public getTopAssetCoveringCell(hoveringCell: Cell): GridAsset{
-    const topBlock = this.getAllAssetsBlocksCoveringCell(hoveringCell).pop()
+    const topBlock = this.getAllAssetBlocksCoveringCell(hoveringCell).pop()
     if(topBlock) {
       return GSM.AssetController.getAssetById(topBlock.ownerAssetId)
     } else {
@@ -263,7 +274,7 @@ export class AssetController {
   }
   
   public getTopAssetBlockCoveringCell(hoveringCell: Cell): AssetBlock {
-    return this.getAllAssetsBlocksCoveringCell(hoveringCell).pop()
+    return this.getAllAssetBlocksCoveringCell(hoveringCell).pop()
   }
 
   // Helper

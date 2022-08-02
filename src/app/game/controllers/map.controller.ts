@@ -21,6 +21,11 @@ export class MapController {
       callBack(this.getCellByLocation(x, y))
     }
   }
+  public iterateYCellsFrom(startY: number, x: number, callBack: (cell: Cell) => void): void {
+    for(let y = startY; y < GSM.GameData.map.size.y; y++) {
+      callBack(this.getCellByLocation(x, y))
+    }
+  }
 
   public getCellByPosition(x: number, y: number ): Cell {
     while (x % GSM.Settings.blockSize !== 0) {

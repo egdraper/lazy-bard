@@ -82,11 +82,16 @@ export class MouseController {
       const gridAsset = GSM.AssetController.getTopAssetCoveringCell(this.hoveringCell);
       const gridAssets = GSM.AssetController.getAllAssetsCoveringCell(this.hoveringCell)
       const assetBlock = GSM.AssetController.getTopAssetBlockCoveringCell(this.hoveringCell);
-      const assetBlocks = GSM.AssetController.getAllAssetsBlocksCoveringCell(this.hoveringCell)
-      
+      const assetBlocks = GSM.AssetController.getAllAssetBlocksCoveringCell(this.hoveringCell)
+      const frontFaceBlock = GSM.AssetController.getFrontBlockCoveringCell(this.hoveringCell);
+
       if(assetBlock) {
+        
         this.hoveringCellAtZAxis = assetBlock.cell
         this.hoveringZAxis = gridAsset.attributes.size.z > 0 ? assetBlock.zIndex + 1 : assetBlock.zIndex
+        if(frontFaceBlock.length > assetBlocks.length) {
+          this.hoveringZAxis = assetBlock.zIndex
+        }
         this.hoveringAssetBlocks = assetBlocks
         this.hoveringGridAsset = gridAsset
         this.hoveringGridAssets = gridAssets
