@@ -63,7 +63,7 @@ export class GSM {
     GSM.KeyController = new KeyController()
     GSM.MouseController = new MouseController()
     GSM.AssetController = new AssetController()
-    GSM.GameData.map.baseTexture = baseTexture
+    GSM.GridController.map.baseTexture = baseTexture
     
     //Order Doesn't Matter
     GSM.CellNeighborsController = new CellNeighborsController()

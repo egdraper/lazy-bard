@@ -8,20 +8,20 @@ export class AddonRenderer {
     
     this.ctx.imageSmoothingEnabled = false
     // this.ctx.globalAlpha = 1 - (Math.abs(GSM.GridController.currentElevationLayerIndex - elevation) * .3)
-    // this.ctx.globalAlpha = GSM.GameData.map.currentElevationLayerIndex < elevation ? .5 : 1
-    // this.ctx.filter = GSM.GameData.map.currentElevationLayerIndex > elevation ? 'grayscale(.6)' : "";
-    // this.ctx.filter = GSM.GameData.map.currentElevationLayerIndex < elevation ? 'grayscale(.6)' : "";
+    // this.ctx.globalAlpha = GSM.GridController.map.currentElevationLayerIndex < elevation ? .5 : 1
+    // this.ctx.filter = GSM.GridController.map.currentElevationLayerIndex > elevation ? 'grayscale(.6)' : "";
+    // this.ctx.filter = GSM.GridController.map.currentElevationLayerIndex < elevation ? 'grayscale(.6)' : "";
 
     this.ctx.drawImage(
       image,
       0,
       0,
-      GSM.GameData.map.size.x * GSM.Settings.blockSize,
-      GSM.GameData.map.size.y * GSM.Settings.blockSize,
+      GSM.GridController.map.size.x * GSM.Settings.blockSize,
+      GSM.GridController.map.size.y * GSM.Settings.blockSize,
       0,
       0,
-      GSM.GameData.map.size.x * GSM.Settings.blockSize,
-      GSM.GameData.map.size.y * GSM.Settings.blockSize,
+      GSM.GridController.map.size.x * GSM.Settings.blockSize,
+      GSM.GridController.map.size.y * GSM.Settings.blockSize,
     )
     this.ctx.globalAlpha = 1
     this.ctx.filter = "none";

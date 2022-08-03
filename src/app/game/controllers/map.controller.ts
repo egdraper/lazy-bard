@@ -6,6 +6,7 @@ import { Cell, RenderingLayers, GameMap, Grid, Size, MapRotationIndex } from '..
 const DEFAULT_ITERATOR = MapRotationIndex.northUp
 
 export class MapController {
+  public map: GameMap
   public newGridCreated: Subject<Grid> = new Subject<Grid>()  
   public layerIterator: RenderingLayers[] = []
   public gridIterator: {[rotation: number]: Cell[]} = {}
@@ -17,12 +18,12 @@ export class MapController {
   }
 
   public iterateYCells(x: number, callBack: (cell: Cell) => void): void {
-    for(let y = 0; y < GSM.GameData.map.size.y; y++) {
+    for(let y = 0; y < GSM.GridController.map.size.y; y++) {
       callBack(this.getCellByLocation(x, y))
     }
   }
   public iterateYCellsFrom(startY: number, x: number, callBack: (cell: Cell) => void): void {
-    for(let y = startY; y < GSM.GameData.map.size.y; y++) {
+    for(let y = startY; y < GSM.GridController.map.size.y; y++) {
       callBack(this.getCellByLocation(x, y))
     }
   }
@@ -56,31 +57,31 @@ export class MapController {
 
   public getCellByLocation(x: number, y: number): Cell {
     if(GSM.RotationController.currentRotationIndex === MapRotationIndex.northUp) {
-      return GSM.GameData.map.grid[`x${x}:y${y}`]
+      return GSM.GridController.map.grid[`x${x}:y${y}`]
     }
     
     if(GSM.RotationController.currentRotationIndex === MapRotationIndex.westUp) {
-      return GSM.GameData.map.grid[`x${y}:y${(GSM.GameData.map.size.x - 1) - x}`]
+      return GSM.GridController.map.grid[`x${y}:y${(GSM.GridController.map.size.x - 1) - x}`]
     }
     
     if(GSM.RotationController.currentRotationIndex === MapRotationIndex.southUp) {
-      return GSM.GameData.map.grid[`x${(GSM.GameData.map.size.x - 1) - x}:y${(GSM.GameData.map.size.y - 1) - y}`]
+      return GSM.GridController.map.grid[`x${(GSM.GridController.map.size.x - 1) - x}:y${(GSM.GridController.map.size.y - 1) - y}`]
     }
     
     if(GSM.RotationController.currentRotationIndex === MapRotationIndex.eastUp) {
-      return GSM.GameData.map.grid[`x${(GSM.GameData.map.size.y - 1) - y}:y${x}`]
+      return GSM.GridController.map.grid[`x${(GSM.GridController.map.size.y - 1) - y}:y${x}`]
     }
     
     return GSM.GridController.gridIterator[GSM.RotationController.currentRotationIndex].find(a => a.location.x === x && a.location.y === y)
   }
 
   public getCellById(cellId: string): Cell {
-    return GSM.GameData.map.grid[cellId]
+    return GSM.GridController.map.grid[cellId]
   }
  
   public createGameMap(size: Size): void {
-    GSM.GameData.map = new GameMap(size)
-    GSM.GameData.map.id = Math.floor(Math.random() * 100000000).toString()
+    GSM.GridController.map = new GameMap(size)
+    GSM.GridController.map.id = Math.floor(Math.random() * 100000000).toString()
     this.setupMap()
 
     Object.keys(RenderingLayers).forEach(key => {
@@ -91,8 +92,8 @@ export class MapController {
   public setupMap(): void {   
     this.gridIterator[DEFAULT_ITERATOR] = []
     let iterationOrder = 0
-    for (let y = 0; y < GSM.GameData.map.size.y; y++) {
-      for (let x = 0; x < GSM.GameData.map.size.x; x++) {
+    for (let y = 0; y < GSM.GridController.map.size.y; y++) {
+      for (let x = 0; x < GSM.GridController.map.size.x; x++) {
         const cell: Cell = {
           id: `x${x}:y${y}`,
           iterationOrder: iterationOrder++,
@@ -100,11 +101,11 @@ export class MapController {
           position: { x: x * GSM.Settings.blockSize, y: y * GSM.Settings.blockSize },
         }
 
-        GSM.GameData.map.grid[`x${x}:y${y}`] = cell
+        GSM.GridController.map.grid[`x${x}:y${y}`] = cell
         this.gridIterator[DEFAULT_ITERATOR].push(cell)
       }
     }
 
-    this.newGridCreated.next(GSM.GameData.map)
+    this.newGridCreated.next(GSM.GridController.map)
   }
 }

@@ -17,27 +17,27 @@ export class RotationController {
     GSM.GridController.gridIterator[MapRotationIndex.southUp] = []
     GSM.GridController.gridIterator[MapRotationIndex.eastUp] = []
     
-    for (let x = 0; x < GSM.GameData.map.size.x; x++) {
-      for (let y = GSM.GameData.map.size.y - 1; y >= 0;  y--) {
+    for (let x = 0; x < GSM.GridController.map.size.x; x++) {
+      for (let y = GSM.GridController.map.size.y - 1; y >= 0;  y--) {
         GSM.GridController.gridIterator[MapRotationIndex.westUp].push(GSM.GridController.getCellById(`x${x}:y${y}`))
       }
     }      
 
-    for (let y = GSM.GameData.map.size.y - 1; y >= 0;  y--) {
-      for (let x = GSM.GameData.map.size.x - 1; x >= 0; x--) {
+    for (let y = GSM.GridController.map.size.y - 1; y >= 0;  y--) {
+      for (let x = GSM.GridController.map.size.x - 1; x >= 0; x--) {
         GSM.GridController.gridIterator[MapRotationIndex.southUp].push(GSM.GridController.getCellById(`x${x}:y${y}`))
       }
     }
 
-    for (let x = GSM.GameData.map.size.x - 1; x >= 0; x--) {
-      for (let y = 0; y < GSM.GameData.map.size.y; y++) {
+    for (let x = GSM.GridController.map.size.x - 1; x >= 0; x--) {
+      for (let y = 0; y < GSM.GridController.map.size.y; y++) {
         GSM.GridController.gridIterator[MapRotationIndex.eastUp].push(GSM.GridController.getCellById(`x${x}:y${y}`))
       }
     }
   } 
 
   public rotateClockwise(): void {
-    const map = GSM.GameData.map
+    const map = GSM.GridController.map
 
     if (this.currentRotationIndex === MapRotationIndex.northUp) {
       let newX = map.size.x - 1

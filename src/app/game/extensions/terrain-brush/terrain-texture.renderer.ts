@@ -8,13 +8,14 @@ export class TerrainPaintBrushRenderer implements Renderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.TerrainLayer
 
-  public onDraw(asset: TerrainAsset): void {
+  public onDraw(asset: TerrainAsset, frame: number, opacity: number = 1): void {
     if(!asset.tile || !asset.tile.drawableTileId) { return }
     
     const itemDetails = drawableItems.find(item => item.id === asset.tile.drawableTileId)
     
 
       this.ctx.imageSmoothingEnabled = false
+      this.ctx.globalAlpha = opacity
       if(asset.tile.drawsWith) {      
         this.ctx.drawImage(
           GSM.ImageController.getImage(asset.tile.imageUrl),
@@ -42,6 +43,8 @@ export class TerrainPaintBrushRenderer implements Renderer {
           GSM.Settings.blockSize,
         )
        }
+
+       this.ctx.globalAlpha = 1
 
   }
 }

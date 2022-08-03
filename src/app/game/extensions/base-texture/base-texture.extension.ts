@@ -32,7 +32,7 @@ export class BaseTextureExtension extends CanvasLayerExtension {
   }
 
   private loadBaseTextureSpriteIntoRenderer(textureSprites: TextureSprite[]): void {
-    const textureSprite = textureSprites.find(sprite => sprite.baseTexture === GSM.GameData.map.baseTexture)
+    const textureSprite = textureSprites.find(sprite => sprite.baseTexture === GSM.GridController.map.baseTexture)
     if(textureSprite) {
       this.baseTexture = textureSprite
     } else {

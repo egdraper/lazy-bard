@@ -2,10 +2,12 @@ import { Subscription } from "rxjs"
 import { RootCanvasModule } from "../modules/root.module"
 import { GSM } from "../game-state-manager.service"
 import { CanvasCTX } from "../models/extension.model"
-import { RenderingLayers } from "../models/map"
+import { Grid, RenderingLayers } from "../models/map"
 import { Renderer } from "../models/renderer"
 import { AddonRenderer } from "./utils/addon-renderer.util"
 import { generateBackgroundImage, generateLayerImage } from "./utils/create-background-image"
+import { GridAsset } from "../models/asset.model"
+import { identifierName } from "@angular/compiler"
 
 export class RendererController {
   public baseCanvasRenderer: AddonRenderer
@@ -56,6 +58,7 @@ export class RendererController {
     if(this.renderAsSingeImages[RenderingLayers.TerrainLayer]) {
       this.foregroundCanvasRenderer.draw(GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer])
     }
+    
     if(this.renderAsSingeImages[RenderingLayers.ObjectLayer]) {
       this.foregroundCanvasRenderer.draw(GSM.ImageController.renderingLayerImages[RenderingLayers.ObjectLayer])
     }
@@ -63,11 +66,12 @@ export class RendererController {
 
   private renderAssets(frame: number) {
     GSM.AssetController.iterateAsset(asset => {
-    this.iterateRenderers(renderer => {
-      if(renderer.renderingLayer === RenderingLayers.BaseLayer) { return }
-      if(this.renderAsSingeImages[renderer.renderingLayer]) { return }
-      
+      this.iterateRenderers(renderer => {
+        if(renderer.renderingLayer === RenderingLayers.BaseLayer) { return }      
+        if(this.renderAsSingeImages[renderer.renderingLayer]) { return }      
         if(asset.tile.layer !== renderer.renderingLayer) { return }
+
+        
         if(renderer.beforeDraw) {
           renderer.beforeDraw(asset, frame)
         } 
@@ -80,16 +84,84 @@ export class RendererController {
           renderer.afterDraw(asset, frame)
         }
       })
+      if(asset.layer === RenderingLayers.AssetLayer) {
+        this.renderAroundAsset(asset, frame)
+      }
     })
+  }
+
+  // private paintAroundAsset(asset: GridAsset) {
+  //   if(!GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer] ) { return }
+  //   const ctx = GSM.CanvasController.foregroundCTX
+  //   ctx.imageSmoothingEnabled = false
+  //   // this.ctx.globalAlpha = 1 - (Math.abs(GSM.GridController.currentElevationLayerIndex - elevation) * .3)
+  //   // this.ctx.globalAlpha = GSM.GridController.map.currentElevationLayerIndex < elevation ? .5 : 1
+  //   // this.ctx.filter = GSM.GridController.map.currentElevationLayerIndex > elevation ? 'grayscale(.6)' : "";
+  //   // this.ctx.filter = GSM.GridController.map.currentElevationLayerIndex < elevation ? 'grayscale(.6)' : "";
+  //   ctx.globalAlpha = .50
+  //   ctx.drawImage(
+  //     GSM.ImageController.renderingLayerImages[RenderingLayers.ObjectLayer],
+  //     asset.anchorCell.position.x - 64,
+  //     asset.anchorCell.position.y - 96,
+  //     128,
+  //     128,
+  //     asset.anchorCell.position.x - 64,
+  //     asset.anchorCell.position.y - 96,
+  //     128,
+  //     128,
+  //   )
+  //   ctx.drawImage(
+  //     GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer],
+  //     asset.anchorCell.position.x - 64,
+  //     asset.anchorCell.position.y - 96,
+  //     128,
+  //     128,
+  //     asset.anchorCell.position.x - 64,
+  //     asset.anchorCell.position.y - 96,
+  //     128,
+  //     128,
+  //   )
+  //   ctx.globalAlpha = 1
+  // }
+
+  private renderAroundAsset(asset: GridAsset, frame) {
+    const cells = GSM.GridController.getCellsWithinRadius(asset.anchorCell, 5)
+    const assets = new Set<GridAsset>()
+    
+    cells.forEach(cell => {
+      const asset = GSM.AssetController.getAllAssetBlocksCoveringCell(cell)
+      asset.forEach(a => assets.add(GSM.AssetController.getAssetById(a.ownerAssetId)))
+    })
+
+    const array = GSM.AssetController.sortAssets(Array.from(assets))
+    array.forEach(_asset => {
+      if(!_asset) { return } 
+      this.iterateRenderers(renderer => {
+        if(renderer.renderingLayer === RenderingLayers.BaseLayer) { return }
+        if(_asset.tile.layer !== renderer.renderingLayer) { return }
+        if(renderer.beforeDraw) {
+          renderer.beforeDraw(_asset, frame, .33)
+        }
+  
+        if(renderer.onDraw) {
+          renderer.onDraw(_asset, frame, .33)
+        }
+  
+        if(renderer.afterDraw) {
+          renderer.afterDraw(_asset, frame, .33)
+        }
+      })
+    })
+
   }
    
   public clearCanvases(): void {
     const canvas = GSM.CanvasController
-    canvas.backgroundCTX.clearRect(0,0, GSM.GameData.map.size.x * GSM.Settings.blockSize, GSM.GameData.map.size.y * GSM.Settings.blockSize)
+    canvas.backgroundCTX.clearRect(0,0, GSM.GridController.map.size.x * GSM.Settings.blockSize, GSM.GridController.map.size.y * GSM.Settings.blockSize)
     canvas.backgroundCTX.imageSmoothingEnabled = false
-    canvas.foregroundCTX.clearRect(0,0, GSM.GameData.map.size.x * GSM.Settings.blockSize, GSM.GameData.map.size.y * GSM.Settings.blockSize)
+    canvas.foregroundCTX.clearRect(0,0, GSM.GridController.map.size.x * GSM.Settings.blockSize, GSM.GridController.map.size.y * GSM.Settings.blockSize)
     canvas.foregroundCTX.imageSmoothingEnabled = false   
-    canvas.fullImageCTX.clearRect(0,0, GSM.GameData.map.size.x * GSM.Settings.blockSize, GSM.GameData.map.size.y * GSM.Settings.blockSize)
+    canvas.fullImageCTX.clearRect(0,0, GSM.GridController.map.size.x * GSM.Settings.blockSize, GSM.GridController.map.size.y * GSM.Settings.blockSize)
     canvas.fullImageCTX.imageSmoothingEnabled = false   
   }  
 

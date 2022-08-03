@@ -27,7 +27,7 @@ export class AssetController {
 
     asset.baseZIndex = zIndex
     asset.anchorCell = anchoringCell
-    asset.id = `map:${GSM.GameData.map.id}-cell:${anchoringCell.id}:z${zIndex}:${asset.layer}`;
+    asset.id = `map:${GSM.GridController.map.id}-cell:${anchoringCell.id}:z${zIndex}:${asset.layer}`;
 
     this.setAssetAttributes(asset);
     this.updateBlockProperty(asset, anchoringCell, zIndex);
@@ -183,7 +183,7 @@ export class AssetController {
     delete this.assets[asset.id]
 
     asset.anchorCell = newCell
-    asset.id = `map:${GSM.GameData.map.id}-cell:${newCell.id}:z${newZIndex}:${asset.layer}`;
+    asset.id = `map:${GSM.GridController.map.id}-cell:${newCell.id}:z${newZIndex}:${asset.layer}`;
     this.assets[asset.id] = asset
     this.updateBlockProperty(asset, asset.anchorCell, newZIndex)
     this.refreshAssetIterator()
@@ -198,43 +198,17 @@ export class AssetController {
 
   public refreshAssetIterator(): void {
     const tempArray = []
-    let finalTemp = []
 
     Object.keys(this.assets).forEach(key => {
       tempArray.push(this.assets[key])
     })
 
-    finalTemp = tempArray.sort((a: GridAsset, b: GridAsset) => {
-      if(a.anchorCell.location.y < b.anchorCell.location.y) {
-        return -1
-      }
-      if(a.anchorCell.location.y > b.anchorCell.location.y) {
-        return 1
-      }
-
-      if(a.anchorCell.location.x < b.anchorCell.location.x) {
-        return -1
-      }
-      if(a.anchorCell.location.x > b.anchorCell.location.x) {
-        return 1
-      }
-
-      if(a.anchorCell.location.x === b.anchorCell.location.x && a.anchorCell.location.y === b.anchorCell.location.y) {
-        if(a.baseZIndex < b.baseZIndex) {
-          return -1
-        } else {
-          return 1
-        }
-      }
-
-      return 0
-    })
-
-    this.assetArray = finalTemp
+    this.assetArray = this.sortAssets(tempArray)
   }
 
   public getAllAssetBlocksCoveringCell(coveredCell: Cell): AssetBlock[] {
     const coveringBlocks: AssetBlock[] = []
+    
     GSM.GridController.iterateYCellsFrom(coveredCell.location.y, coveredCell.location.x, (cell: Cell) => {
       const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
       GSM.AssetController.getAllAssetBlocksAtCell(cell).forEach(assetBlock => {
@@ -341,5 +315,35 @@ export class AssetController {
         distanceFromAnchor--
       });
     });
+  }
+
+  public sortAssets(assetArray: GridAsset[]): GridAsset[] {
+    let sortedArray = []
+    sortedArray = assetArray.sort((a: GridAsset, b: GridAsset) => {
+      if(a.anchorCell.location.y < b.anchorCell.location.y) {
+        return -1
+      }
+      if(a.anchorCell.location.y > b.anchorCell.location.y) {
+        return 1
+      }
+
+      if(a.anchorCell.location.x < b.anchorCell.location.x) {
+        return -1
+      }
+      if(a.anchorCell.location.x > b.anchorCell.location.x) {
+        return 1
+      }
+
+      if(a.anchorCell.location.x === b.anchorCell.location.x && a.anchorCell.location.y === b.anchorCell.location.y) {
+        if(a.baseZIndex < b.baseZIndex) {
+          return -1
+        } else {
+          return 1
+        }
+      }
+
+      return 0
+    })
+    return sortedArray
   }
 }

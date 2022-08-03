@@ -9,7 +9,7 @@ export class AssetRenderer implements Renderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.AssetLayer
 
-  public beforeDraw(asset: Asset, frame?: number): void {
+  public beforeDraw(asset: Asset, frame?: number, opacity: number = 1): void {
     this.ctx.beginPath()
     
     const movementOffsetX = asset.movement ? asset?.movement.movementOffset.x : asset.anchorCell.position.x
@@ -32,10 +32,11 @@ export class AssetRenderer implements Renderer {
     this.ctx.globalAlpha = 1 
   }
  
-  public onDraw(asset: Asset<AssetTile>): void {
+  public onDraw(asset: Asset<AssetTile>, frame?: number, opacity: number = 1 ): void {
     const movementOffsetX = asset.movement ? asset.movement.movementOffset.x : asset.anchorCell.position.x
     const movementOffsetY = asset.movement ? asset.movement.movementOffset.y : asset.anchorCell.position.y
 
+    this.ctx.globalAlpha = opacity
     this.ctx.drawImage(
       GSM.ImageController.getImage(asset.tile.imageUrl),
       asset.movement.moving ? asset.tile.assetDrawRules.xMotionTilePos[asset.animation.positionCounter] : asset.tile.assetDrawRules.xMotionTilePos[1],
@@ -47,5 +48,7 @@ export class AssetRenderer implements Renderer {
       asset.tile.assetDrawRules.drawSize.x,
       asset.tile.assetDrawRules.drawSize.y
     )
+
+    this.ctx.globalAlpha = 1
   }
 }

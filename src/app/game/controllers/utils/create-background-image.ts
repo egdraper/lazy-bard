@@ -6,8 +6,8 @@ import { Renderer } from "../../models/renderer"
 export function generateBackgroundImage(renderers: Renderer[]): void {
     if(!GSM.CanvasController.fullImageCTX) { return null }
 
-    GSM.CanvasController.fullImageCTX.canvas.width = GSM.GameData.map.size.x * GSM.Settings.blockSize
-    GSM.CanvasController.fullImageCTX.canvas.height = GSM.GameData.map.size.y * GSM.Settings.blockSize
+    GSM.CanvasController.fullImageCTX.canvas.width = GSM.GridController.map.size.x * GSM.Settings.blockSize
+    GSM.CanvasController.fullImageCTX.canvas.height = GSM.GridController.map.size.y * GSM.Settings.blockSize
        
     let tempCTX 
     renderers.forEach((renderer)=> {
@@ -39,9 +39,9 @@ export function generateBackgroundImage(renderers: Renderer[]): void {
   
     if(!GSM.CanvasController.fullImageCTX) { return null }
 
-    GSM.CanvasController.fullImageCTX.canvas.width = GSM.GameData.map.size.x * GSM.Settings.blockSize
-    GSM.CanvasController.fullImageCTX.canvas.height = GSM.GameData.map.size.y * GSM.Settings.blockSize
-    GSM.CanvasController.fullImageCTX.clearRect(0,0, GSM.GameData.map.size.x * GSM.Settings.blockSize, GSM.GameData.map.size.y * GSM.Settings.blockSize)
+    GSM.CanvasController.fullImageCTX.canvas.width = GSM.GridController.map.size.x * GSM.Settings.blockSize
+    GSM.CanvasController.fullImageCTX.canvas.height = GSM.GridController.map.size.y * GSM.Settings.blockSize
+    GSM.CanvasController.fullImageCTX.clearRect(0,0, GSM.GridController.map.size.x * GSM.Settings.blockSize, GSM.GridController.map.size.y * GSM.Settings.blockSize)
     GSM.CanvasController.fullImageCTX.imageSmoothingEnabled = false   
 
     let tempCTX 
