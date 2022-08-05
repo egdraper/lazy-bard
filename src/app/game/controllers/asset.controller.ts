@@ -3,6 +3,7 @@ import { assetAttributes } from '../db/asset-items';
 import { GSM } from '../game-state-manager.service';
 import { Asset, AssetBlock, BackgroundAsset, BlockEdge, GridAsset } from '../models/asset.model';
 import { Cell, MapRotationIndex, NeighborLocation, RenderingLayers, Size } from '../models/map';
+import { TerrainTile, Tile } from '../models/sprite-tile.model';
 
 export class AssetController {
   public assets: { [assetId: string]: GridAsset } = {}
@@ -108,6 +109,18 @@ export class AssetController {
 
   public getAssetBlock(cell: Cell, zIndex: number, layer: RenderingLayers): AssetBlock {
     return this.assetBlocks[`${cell.id}:z${zIndex}:${layer}`]
+  }
+
+  public getAssetBlocksAtZ(cell: Cell, zIndex: number): AssetBlock[] {
+    const assetBlocks = []
+
+    GSM.RendererController.iterateRenderingLayers((layer) => {
+      const block = this.assetBlocks[`${cell.id}:z${zIndex}:${layer}`]
+      if(block) {
+        assetBlocks.push(block)
+      }
+    })
+    return assetBlocks
   }
 
   public getAssetBlockInAsset(cell: Cell, zIndex: number, layer: RenderingLayers): AssetBlock[] {
@@ -251,6 +264,21 @@ export class AssetController {
     return this.getAllAssetBlocksCoveringCell(hoveringCell).pop()
   }
 
+  public getAssetsCoveringCellAtZ(coveredCell: Cell, zIndex: number): AssetBlock[] {
+    const coveringBlocks: AssetBlock[] = []
+    
+    GSM.GridController.iterateYCellsFrom(coveredCell.location.y, coveredCell.location.x, (cell: Cell) => {
+      const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
+      GSM.AssetController.getAssetBlocksAtZ(cell, zIndex + distanceFromHoveringCell).forEach(assetBlock => {
+        if(assetBlock.obstructed) {
+          coveringBlocks.push(assetBlock)
+        }
+      })
+  
+    })
+    return coveringBlocks
+  }
+
   // Helper
 
   private animateAsset(frame: number): void {
@@ -320,6 +348,17 @@ export class AssetController {
   public sortAssets(assetArray: GridAsset[]): GridAsset[] {
     let sortedArray = []
     sortedArray = assetArray.sort((a: GridAsset, b: GridAsset) => {
+      if(a.anchorCell.location.x === b.anchorCell.location.x && a.anchorCell.location.y === b.anchorCell.location.y) {
+        if(a.baseZIndex < b.baseZIndex) {
+          return -1
+        } 
+        if(a.baseZIndex === b.baseZIndex) {
+          if(a.layer < b.layer) {
+            return -1
+          }
+          return 1
+        }
+      }
       if(a.anchorCell.location.y < b.anchorCell.location.y) {
         return -1
       }
@@ -334,16 +373,18 @@ export class AssetController {
         return 1
       }
 
-      if(a.anchorCell.location.x === b.anchorCell.location.x && a.anchorCell.location.y === b.anchorCell.location.y) {
-        if(a.baseZIndex < b.baseZIndex) {
-          return -1
-        } else {
-          return 1
-        }
-      }
 
       return 0
     })
+    // sortedArray = sortedArray.filter((a: GridAsset<TerrainTile>) => {
+    //   if(!a.tile.topWith) { return true }
+
+    //   if(a.tile.drawsWith || a.tile.drawsWithTop) {
+    //     return true
+    //   }
+
+    //   return false
+    // })
     return sortedArray
   }
 }

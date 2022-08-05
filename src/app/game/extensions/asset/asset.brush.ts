@@ -51,12 +51,12 @@ export class AssetBrush {
     const playerAsset = new Asset(cell, 'standardCreature');
     playerAsset.tile = new AssetTile(
       RenderingLayers.AssetLayer,
-      'assets/images/character_010.png',
+      'assets/images/character_008.png',
       'standardCreature'
     );
 
     playerAsset.animation = new SpriteAnimation();
-    playerAsset.movement = new Running(playerAsset);
+    playerAsset.movement = new Walking(playerAsset);
     playerAsset.animating = true;
     playerAsset.layer = RenderingLayers.AssetLayer
 

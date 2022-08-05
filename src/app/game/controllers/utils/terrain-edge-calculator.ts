@@ -104,6 +104,7 @@ export class TerrainEdgeCalculator {
   private static setTilesForVerticalRendering(tile: TerrainTile, upMatch: boolean, downMatch: boolean, upForwardMatch: boolean, forwardMatch: boolean, downForwardMatch: boolean ): void {
     if (upMatch && upForwardMatch) {
       tile.drawsWith = undefined
+      tile.drawsWithTop = undefined
     } else if (upMatch && !upForwardMatch && forwardMatch) {
       tile.drawsWithTop = tile.topWith
     } else if (upMatch && downMatch && !forwardMatch && !downForwardMatch) {

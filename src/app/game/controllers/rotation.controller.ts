@@ -37,6 +37,7 @@ export class RotationController {
   } 
 
   public rotateClockwise(): void {
+    const assets = GSM.AssetController.assets
     const map = GSM.GridController.map
 
     if (this.currentRotationIndex === MapRotationIndex.northUp) {
@@ -165,8 +166,8 @@ export class RotationController {
       asset.anchorCell = GSM.GridController.getCellByLocation(asset.anchorCell.location.x, asset.anchorCell.location.y + asset.attributes.size.y - 1)
     })
 
-    GSM.AssetController.refreshAssetIterator()
     terrainCleanup()
+    GSM.AssetController.refreshAssetIterator()
 
     const module = GSM.CanvasModuleController.canvasModules.find(module => module.canvasName === "base")
     generateBackgroundImage(module.renderers)

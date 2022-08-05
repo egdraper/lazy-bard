@@ -1,13 +1,13 @@
 import { Subscription } from "rxjs"
-import { RootCanvasModule } from "../modules/root.module"
 import { GSM } from "../game-state-manager.service"
+import { GridAsset } from "../models/asset.model"
 import { CanvasCTX } from "../models/extension.model"
-import { Grid, RenderingLayers } from "../models/map"
+import { RenderingLayers } from "../models/map"
 import { Renderer } from "../models/renderer"
+import { RootCanvasModule } from "../modules/root.module"
 import { AddonRenderer } from "./utils/addon-renderer.util"
 import { generateBackgroundImage, generateLayerImage } from "./utils/create-background-image"
-import { GridAsset } from "../models/asset.model"
-import { identifierName } from "@angular/compiler"
+import { terrainCleanup } from "./utils/terrain-cleanup"
 
 export class RendererController {
   public baseCanvasRenderer: AddonRenderer
@@ -27,7 +27,13 @@ export class RendererController {
 
   public renderAsSingleImage(layer: RenderingLayers) {
     this.renderAsSingeImages[layer] = true
+    terrainCleanup()
+    GSM.AssetController.refreshAssetIterator()
+    
+    const module = GSM.CanvasModuleController.canvasModules.find(module => module.canvasName === "base")
+    generateBackgroundImage(module.renderers)
     generateLayerImage("foreground", layer)
+    generateLayerImage("foreground", RenderingLayers.ObjectLayer)
   }
 
   public renderAsAssets(layer: RenderingLayers) {
@@ -70,8 +76,6 @@ export class RendererController {
         if(renderer.renderingLayer === RenderingLayers.BaseLayer) { return }      
         if(this.renderAsSingeImages[renderer.renderingLayer]) { return }      
         if(asset.tile.layer !== renderer.renderingLayer) { return }
-
-        
         if(renderer.beforeDraw) {
           renderer.beforeDraw(asset, frame)
         } 
@@ -85,44 +89,38 @@ export class RendererController {
         }
       })
       if(asset.layer === RenderingLayers.AssetLayer) {
-        this.renderAroundAsset(asset, frame)
+        this.paintAroundAsset(asset)
       }
     })
   }
 
-  // private paintAroundAsset(asset: GridAsset) {
-  //   if(!GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer] ) { return }
-  //   const ctx = GSM.CanvasController.foregroundCTX
-  //   ctx.imageSmoothingEnabled = false
-  //   // this.ctx.globalAlpha = 1 - (Math.abs(GSM.GridController.currentElevationLayerIndex - elevation) * .3)
-  //   // this.ctx.globalAlpha = GSM.GridController.map.currentElevationLayerIndex < elevation ? .5 : 1
-  //   // this.ctx.filter = GSM.GridController.map.currentElevationLayerIndex > elevation ? 'grayscale(.6)' : "";
-  //   // this.ctx.filter = GSM.GridController.map.currentElevationLayerIndex < elevation ? 'grayscale(.6)' : "";
-  //   ctx.globalAlpha = .50
-  //   ctx.drawImage(
-  //     GSM.ImageController.renderingLayerImages[RenderingLayers.ObjectLayer],
-  //     asset.anchorCell.position.x - 64,
-  //     asset.anchorCell.position.y - 96,
-  //     128,
-  //     128,
-  //     asset.anchorCell.position.x - 64,
-  //     asset.anchorCell.position.y - 96,
-  //     128,
-  //     128,
-  //   )
-  //   ctx.drawImage(
-  //     GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer],
-  //     asset.anchorCell.position.x - 64,
-  //     asset.anchorCell.position.y - 96,
-  //     128,
-  //     128,
-  //     asset.anchorCell.position.x - 64,
-  //     asset.anchorCell.position.y - 96,
-  //     128,
-  //     128,
-  //   )
-  //   ctx.globalAlpha = 1
-  // }
+  private paintAroundAsset(asset: GridAsset) {
+    if(!GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer] ) { return }
+    const ctx = GSM.CanvasController.foregroundCTX
+    const coveringAsset = GSM.AssetController.getAssetsCoveringCellAtZ(asset.anchorCell, asset.baseZIndex).length > 1
+      
+    GSM.RendererController.iterateRenderingLayers(layer => {
+      if(layer === RenderingLayers.BaseLayer) { return }     
+      if(layer === RenderingLayers.AssetLayer) { return }
+
+      const offset =  coveringAsset ? 64 : 0
+
+      ctx.globalAlpha = .44
+      ctx.drawImage(
+        GSM.ImageController.renderingLayerImages[layer],
+        asset.anchorCell.position.x - 64,
+        asset.anchorCell.position.y - offset,
+        128,
+        128,
+        asset.anchorCell.position.x - 64,
+        asset.anchorCell.position.y - offset,
+        128,
+        128,
+      )
+    })
+
+    ctx.globalAlpha = 1
+  }
 
   private renderAroundAsset(asset: GridAsset, frame) {
     const cells = GSM.GridController.getCellsWithinRadius(asset.anchorCell, 5)
@@ -140,15 +138,15 @@ export class RendererController {
         if(renderer.renderingLayer === RenderingLayers.BaseLayer) { return }
         if(_asset.tile.layer !== renderer.renderingLayer) { return }
         if(renderer.beforeDraw) {
-          renderer.beforeDraw(_asset, frame, .33)
+          renderer.beforeDraw(_asset, frame)
         }
   
         if(renderer.onDraw) {
-          renderer.onDraw(_asset, frame, .33)
+          renderer.onDraw(_asset, frame)
         }
   
         if(renderer.afterDraw) {
-          renderer.afterDraw(_asset, frame, .33)
+          renderer.afterDraw(_asset, frame)
         }
       })
     })

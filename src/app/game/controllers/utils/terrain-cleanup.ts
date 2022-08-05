@@ -13,7 +13,6 @@ export function terrainCleanup(asset?: GridAsset) {
     const RightAsset = GSM.AssetController.getAssetAtLocation(asset.anchorCell.location.x + 1, asset.anchorCell.location.y, asset.baseZIndex, RenderingLayers.TerrainLayer)
  
     if(leftAsset?.tile?.drawableTileId !== asset?.tile?.drawableTileId && RightAsset?.tile?.drawableTileId !== asset?.tile?.drawableTileId) {
-      GSM.AssetController.removeAsset(asset, RenderingLayers.TerrainLayer)
       return false
     }
 
