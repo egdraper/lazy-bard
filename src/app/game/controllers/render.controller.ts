@@ -97,13 +97,16 @@ export class RendererController {
   private paintAroundAsset(asset: GridAsset) {
     if(!GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer] ) { return }
     const ctx = GSM.CanvasController.foregroundCTX
-    const coveringAsset = GSM.AssetController.getAssetsCoveringCellAtZ(asset.anchorCell, asset.baseZIndex).length > 1
-      
+    const coveringAsset = GSM.AssetController.getAssetBlocksCoveringCellAtZ(asset.anchorCell, asset.baseZIndex).length > 0
+    const bob = GSM.AssetController.getFrontBlocksCoveringCellAtZ(asset.anchorCell, asset.baseZIndex).length > 1
+    console.log("a", bob)
+    console.log("b", coveringAsset)
+    if(!bob && !coveringAsset) { return }
     GSM.RendererController.iterateRenderingLayers(layer => {
       if(layer === RenderingLayers.BaseLayer) { return }     
       if(layer === RenderingLayers.AssetLayer) { return }
 
-      const offset =  coveringAsset ? 64 : 0
+      const offset =  coveringAsset ? 64 : bob ? (asset.baseZIndex * GSM.Settings.blockSize) : 0
 
       ctx.globalAlpha = .44
       ctx.drawImage(
@@ -120,37 +123,6 @@ export class RendererController {
     })
 
     ctx.globalAlpha = 1
-  }
-
-  private renderAroundAsset(asset: GridAsset, frame) {
-    const cells = GSM.GridController.getCellsWithinRadius(asset.anchorCell, 5)
-    const assets = new Set<GridAsset>()
-    
-    cells.forEach(cell => {
-      const asset = GSM.AssetController.getAllAssetBlocksCoveringCell(cell)
-      asset.forEach(a => assets.add(GSM.AssetController.getAssetById(a.ownerAssetId)))
-    })
-
-    const array = GSM.AssetController.sortAssets(Array.from(assets))
-    array.forEach(_asset => {
-      if(!_asset) { return } 
-      this.iterateRenderers(renderer => {
-        if(renderer.renderingLayer === RenderingLayers.BaseLayer) { return }
-        if(_asset.tile.layer !== renderer.renderingLayer) { return }
-        if(renderer.beforeDraw) {
-          renderer.beforeDraw(_asset, frame)
-        }
-  
-        if(renderer.onDraw) {
-          renderer.onDraw(_asset, frame)
-        }
-  
-        if(renderer.afterDraw) {
-          renderer.afterDraw(_asset, frame)
-        }
-      })
-    })
-
   }
    
   public clearCanvases(): void {

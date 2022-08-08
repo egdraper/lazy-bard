@@ -226,7 +226,9 @@ export class AssetController {
       const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
       GSM.AssetController.getAllAssetBlocksAtCell(cell).forEach(assetBlock => {
         if(assetBlock.zIndex + 1 === distanceFromHoveringCell) {
-          coveringBlocks.push(assetBlock)
+          if(assetBlock.obstructed) {
+            coveringBlocks.push(assetBlock)
+          }
         }
       })
     })
@@ -239,9 +241,42 @@ export class AssetController {
       const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
       GSM.AssetController.getAllAssetBlocksAtCell(cell).forEach(assetBlock => {
         if(assetBlock.zIndex === distanceFromHoveringCell) {
+          if(assetBlock.obstructed) {
+            coveringBlocks.push(assetBlock)
+          }
+        }
+      })
+    })
+    return coveringBlocks
+  }
+
+  public getAssetBlocksCoveringCellAtZ(coveredCell: Cell, zIndex: number): AssetBlock[] {
+    const coveringBlocks: AssetBlock[] = []
+    
+    GSM.GridController.iterateYCellsFrom(coveredCell.location.y + 1, coveredCell.location.x, (cell: Cell) => {
+      const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
+      GSM.AssetController.getAssetBlocksAtZ(cell, zIndex + distanceFromHoveringCell - (zIndex === 0 ? 1 : 0)).forEach(assetBlock => {
+        if(assetBlock.obstructed) {
           coveringBlocks.push(assetBlock)
         }
       })
+  
+    })
+    return coveringBlocks
+  }
+
+
+  public getFrontBlocksCoveringCellAtZ(coveredCell: Cell, zIndex: number): AssetBlock[] {
+    const coveringBlocks: AssetBlock[] = []
+    
+    GSM.GridController.iterateYCellsFrom(coveredCell.location.y + 1, coveredCell.location.x, (cell: Cell) => {
+      const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
+      GSM.AssetController.getAssetBlocksAtZ(cell, zIndex + distanceFromHoveringCell - (zIndex === 0 ? 1 : 0)).forEach(assetBlock => {
+        if(assetBlock.obstructed) {
+          coveringBlocks.push(assetBlock)
+        }
+      })
+  
     })
     return coveringBlocks
   }
@@ -264,20 +299,6 @@ export class AssetController {
     return this.getAllAssetBlocksCoveringCell(hoveringCell).pop()
   }
 
-  public getAssetsCoveringCellAtZ(coveredCell: Cell, zIndex: number): AssetBlock[] {
-    const coveringBlocks: AssetBlock[] = []
-    
-    GSM.GridController.iterateYCellsFrom(coveredCell.location.y, coveredCell.location.x, (cell: Cell) => {
-      const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
-      GSM.AssetController.getAssetBlocksAtZ(cell, zIndex + distanceFromHoveringCell).forEach(assetBlock => {
-        if(assetBlock.obstructed) {
-          coveringBlocks.push(assetBlock)
-        }
-      })
-  
-    })
-    return coveringBlocks
-  }
 
   // Helper
 

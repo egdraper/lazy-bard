@@ -36,6 +36,7 @@ export class MouseController {
   public hoveringGridAssets: GridAsset[]
   public hoveringAssetBlock: AssetBlock
   public hoveringAssetBlocks: AssetBlock[];
+  public hoveringAssetBlockFront: AssetBlock
   public hoveringCellAtZAxis: Cell;
   public hoveringZAxis: number = 0;
   public hoveringZAxisAtMouseDown: number = 0;
@@ -85,13 +86,9 @@ export class MouseController {
       const assetBlocks = GSM.AssetController.getAllAssetBlocksCoveringCell(this.hoveringCell)
       const frontFaceBlock = GSM.AssetController.getFrontBlockCoveringCell(this.hoveringCell);
 
-      if(assetBlock) {
-        
+      if(assetBlock) {        
         this.hoveringCellAtZAxis = assetBlock.cell
         this.hoveringZAxis = gridAsset.attributes.size.z > 0 ? assetBlock.zIndex + 1 : assetBlock.zIndex
-        if(frontFaceBlock.length > assetBlocks.length) {
-          this.hoveringZAxis = assetBlock.zIndex
-        }
         this.hoveringAssetBlocks = assetBlocks
         this.hoveringGridAsset = gridAsset
         this.hoveringGridAssets = gridAssets
@@ -105,11 +102,27 @@ export class MouseController {
         this.hoveringAssetBlock = null
         this.hoveringAssetBlocks = []
         this.hoveringGridAssets = []
+        this.hoveringAssetBlockFront = undefined
         this.hoveringZAxis = 0
         this.assetHover.next(null)
         this.assetBlockHover.next(null)
         this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
       }
+
+      if(frontFaceBlock.length > 0 && frontFaceBlock.length > assetBlocks.length) {
+        this.hoveringAssetBlocks = frontFaceBlock
+        this.hoveringAssetBlockFront = frontFaceBlock[frontFaceBlock.length - 1]
+        this.hoveringAssetBlock = frontFaceBlock[frontFaceBlock.length - 1]
+        this.hoveringCellAtZAxis = frontFaceBlock[frontFaceBlock.length - 1].cell
+        this.hoveringGridAsset = GSM.AssetController.getAssetById(this.hoveringAssetBlockFront.ownerAssetId)
+        this.hoveringGridAssets = frontFaceBlock.map(asset => GSM.AssetController.getAssetById(asset.ownerAssetId))
+        this.hoveringZAxis = this.hoveringAssetBlockFront.zIndex
+        this.assetHover.next(this.hoveringGridAsset)
+        this.assetBlockHover.next(frontFaceBlock[frontFaceBlock.length - 1])
+        this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex + 1 : 0)
+      }
+
+
       this.cellHover.next(this.hoveringCell)
     }
   }

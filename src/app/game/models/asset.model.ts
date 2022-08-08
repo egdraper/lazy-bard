@@ -16,6 +16,7 @@ export class BlockEdge {
   up?: boolean
   down?: boolean
 }
+
 export class AssetBlock {
   id: string
   zIndex: number

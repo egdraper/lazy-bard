@@ -21,6 +21,7 @@
     <h6>Z: {{ mouseController?.hoveringZAxis }} </h6>
     <h6>MDZ: {{ mouseController?.hoveringZAxisAtMouseDown }} </h6>
     <h6>A#: {{ assetController?.assetArray.length }} </h6>
+    <h6>frontBlock#: {{ mouseController?.hoveringAssetBlockFront?.id }} </h6>
 
   <label for="vol">Brush (1-10)</label>
   <input #input type="number" [(ngModel)]="settings.brushSize">
