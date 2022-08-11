@@ -1,4 +1,3 @@
-import { ThisReceiver } from '@angular/compiler'
 import { Subject } from 'rxjs'
 import { GSM } from '../game-state-manager.service'
 import { Cell, RenderingLayers, GameMap, Grid, Size, MapRotationIndex } from '../models/map'

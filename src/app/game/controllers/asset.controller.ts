@@ -56,7 +56,7 @@ export class AssetController {
     return this.assets[block?.ownerAssetId]
   }
 
-  public getAssetAtLocation(x: number, y: number, zIndex: number, layer: RenderingLayers): GridAsset {
+  public getAssetByLocation(x: number, y: number, zIndex: number, layer: RenderingLayers): GridAsset {
     const cell = GSM.GridController.getCellByLocation(x,y)
     return this.getAsset(cell, zIndex, layer)
   }
@@ -145,12 +145,12 @@ export class AssetController {
     const blocks = asset.ownedBlockIds.map(id => this.getAssetBlockById(id))
     
     assetBlocks = blocks.filter(block => {
-      return (edge.down === block.edge.down || edge.down === undefined)
-        && (edge.up === block.edge.up || edge.up === undefined)
-        && (edge.north === block.edge.north || edge.north === undefined)
-        && (edge.east === block.edge.east || edge.east === undefined)
-        && (edge.south === block.edge.south || edge.south === undefined)
-        && (edge.west === block.edge.west || edge.west === undefined)
+      return (edge.down === block?.edge.down || edge.down === undefined)
+        && (edge.up === block?.edge.up || edge.up === undefined)
+        && (edge.north === block?.edge.north || edge.north === undefined)
+        && (edge.east === block?.edge.east || edge.east === undefined)
+        && (edge.south === block?.edge.south || edge.south === undefined)
+        && (edge.west === block?.edge.west || edge.west === undefined)
       })
     return assetBlocks
   }
@@ -202,7 +202,7 @@ export class AssetController {
     this.refreshAssetIterator()
   }
 
-  public removeAsset(asset: GridAsset, layer: RenderingLayers): void {
+  public removeAsset(asset: GridAsset): void {
     asset.ownedBlockIds.forEach(id => { delete this.assetBlocks[id] })
     delete this.selectedAssets[asset.id]
     delete this.assets[asset.id]
@@ -225,10 +225,8 @@ export class AssetController {
     GSM.GridController.iterateYCellsFrom(coveredCell.location.y, coveredCell.location.x, (cell: Cell) => {
       const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
       GSM.AssetController.getAllAssetBlocksAtCell(cell).forEach(assetBlock => {
-        if(assetBlock.zIndex + 1 === distanceFromHoveringCell) {
-          if(assetBlock.obstructed) {
-            coveringBlocks.push(assetBlock)
-          }
+        if(assetBlock.zIndex + (assetBlock.obstructed ? 1 : 0) === distanceFromHoveringCell) {
+          coveringBlocks.push(assetBlock)
         }
       })
     })
@@ -255,32 +253,15 @@ export class AssetController {
     
     GSM.GridController.iterateYCellsFrom(coveredCell.location.y + 1, coveredCell.location.x, (cell: Cell) => {
       const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
-      GSM.AssetController.getAssetBlocksAtZ(cell, zIndex + distanceFromHoveringCell - (zIndex === 0 ? 1 : 0)).forEach(assetBlock => {
+      GSM.AssetController.getAssetBlocksAtZ(cell, zIndex + distanceFromHoveringCell - 1).forEach(assetBlock => {
         if(assetBlock.obstructed) {
           coveringBlocks.push(assetBlock)
         }
-      })
-  
+      })  
     })
     return coveringBlocks
   }
 
-
-  public getFrontBlocksCoveringCellAtZ(coveredCell: Cell, zIndex: number): AssetBlock[] {
-    const coveringBlocks: AssetBlock[] = []
-    
-    GSM.GridController.iterateYCellsFrom(coveredCell.location.y + 1, coveredCell.location.x, (cell: Cell) => {
-      const distanceFromHoveringCell = cell.location.y - coveredCell.location.y
-      GSM.AssetController.getAssetBlocksAtZ(cell, zIndex + distanceFromHoveringCell - (zIndex === 0 ? 1 : 0)).forEach(assetBlock => {
-        if(assetBlock.obstructed) {
-          coveringBlocks.push(assetBlock)
-        }
-      })
-  
-    })
-    return coveringBlocks
-  }
-  
   public getAllAssetsCoveringCell(hoveringCell: Cell): GridAsset[] {
     const assetBlocks = this.getAllAssetBlocksCoveringCell(hoveringCell)
     return assetBlocks.map(block => GSM.AssetController.getAssetById(block.ownerAssetId))

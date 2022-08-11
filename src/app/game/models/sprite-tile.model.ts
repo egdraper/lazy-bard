@@ -4,31 +4,28 @@ import { SpriteOrientation } from '../extensions/asset/direction.ts/direction';
 import { AssetAttributes } from './asset.model';
 import { SpriteLocation, Cell, Position, RenderingLayers } from './map';
 
-
 export abstract class Tile {
   id: string;
   imageUrl?: string;
   default?: boolean;
   selected?: boolean;
-  layer?: RenderingLayers
+  layer?: RenderingLayers;
 
-  constructor(
-    layer: RenderingLayers,
-    imageUrl?: string,
-    ) {
-    this.imageUrl = imageUrl
-    this.layer = layer
+  constructor(layer: RenderingLayers, imageUrl?: string) {
+    this.imageUrl = imageUrl;
+    this.layer = layer;
   }
 }
 
 export class BackgroundTile extends Tile {
   drawsWith?: SpriteLocation;
   constructor(imageUrl: string) {
-    super(RenderingLayers.BaseLayer, imageUrl)
+    super(RenderingLayers.BaseLayer, imageUrl);
   }
 }
 
 export class TerrainTile extends Tile {
+  drawableTile?: DrawableTile;
   drawableTileId?: string;
   drawWhen?: DrawWhen;
   topWith?: SpriteLocation;
@@ -38,7 +35,7 @@ export class TerrainTile extends Tile {
   drawsWithTop?: SpriteLocation;
 
   constructor() {
-    super(RenderingLayers.TerrainLayer)
+    super(RenderingLayers.TerrainLayer);
   }
 }
 
@@ -48,12 +45,14 @@ export class AssetTile extends Tile {
   obstacleObstructionY?: number;
 
   constructor(layer: RenderingLayers, imageUrl: string, drawRuleName: string) {
-    super(layer, imageUrl)
-    this.assetDrawRules = assetAttributes.find(item => item.id === drawRuleName)
+    super(layer, imageUrl);
+    this.assetDrawRules = assetAttributes.find(
+      (item) => item.id === drawRuleName
+    );
   }
 }
 
-export class DrawableItemViewModel {
+export class DrawableTile {
   drawingRules: TerrainTile[];
   id: string;
   imageUrl: string;
@@ -68,7 +67,7 @@ export class DrawableItemViewModel {
 
 export class SpriteAnimation {
   public changeEveryNthFrame: number = 16;
-  public orientation: SpriteOrientation = new SpriteOrientation()
+  public orientation: SpriteOrientation = new SpriteOrientation();
   public positionCounter = 0;
 }
 

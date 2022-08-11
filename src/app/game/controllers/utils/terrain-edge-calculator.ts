@@ -3,10 +3,10 @@ import { BaseTextureRandomGenerator } from "../../extensions/base-texture/base-t
 import { GSM } from "../../game-state-manager.service"
 import { GridAsset } from "../../models/asset.model"
 import { NeighborLocation, RenderingLayers } from "../../models/map"
-import { AssetTile, DrawableItemViewModel, TerrainTile } from "../../models/sprite-tile.model"
+import { AssetTile, DrawableTile, TerrainTile } from "../../models/sprite-tile.model"
 
 export class TerrainEdgeCalculator {
-  public static calculateTerrainEdges(gridAsset: GridAsset, terrainTile: TerrainTile, drawableItem: DrawableItemViewModel): TerrainTile {
+  public static calculateTerrainEdges(gridAsset: GridAsset<TerrainTile>, terrainTile: TerrainTile, drawableItem: DrawableTile): TerrainTile {
     const neighboringCells = GSM.CellNeighborsController.getAllImmediateNeighbors(gridAsset, RenderingLayers.TerrainLayer) as GridAsset[]
     const northNeighbor = neighboringCells[NeighborLocation.North]
     const northEastNeighbor = neighboringCells[NeighborLocation.NorthEast]
@@ -22,14 +22,14 @@ export class TerrainEdgeCalculator {
     const upSouth = neighboringCells[NeighborLocation.UpSouth]
         
     const neighborsTerrain = {
-      northWestMatch: northWestNeighbor ? northWestNeighbor?.tile?.drawableTileId === terrainTile.drawableTileId : false,
-      northMatch: northNeighbor ? northNeighbor?.tile?.drawableTileId === terrainTile.drawableTileId : false,
-      northEastMatch: northEastNeighbor ? northEastNeighbor?.tile?.drawableTileId === terrainTile.drawableTileId : false,
-      westMatch: westNeighbor ? westNeighbor?.tile?.drawableTileId === terrainTile.drawableTileId : false,
-      eastMatch: eastNeighbor ? eastNeighbor?.tile?.drawableTileId === terrainTile.drawableTileId : false,
-      southWestMatch: southWestNeighbor ? southWestNeighbor?.tile?.drawableTileId === terrainTile.drawableTileId : false,
-      southMatch: southNeighbor ? southNeighbor?.tile?.drawableTileId === terrainTile.drawableTileId : false,
-      southEastMatch: southEastNeighbor ? southEastNeighbor?.tile?.drawableTileId === terrainTile.drawableTileId : false
+      northWestMatch: northWestNeighbor ? northWestNeighbor?.tile?.drawableTile.assetAttributeId === terrainTile.drawableTile.assetAttributeId : false,
+      northMatch: northNeighbor ? northNeighbor?.tile?.drawableTile.assetAttributeId === terrainTile.drawableTile.assetAttributeId : false,
+      northEastMatch: northEastNeighbor ? northEastNeighbor?.tile?.drawableTile.assetAttributeId === terrainTile.drawableTile.assetAttributeId : false,
+      westMatch: westNeighbor ? westNeighbor?.tile?.drawableTile.assetAttributeId === terrainTile.drawableTile.assetAttributeId : false,
+      eastMatch: eastNeighbor ? eastNeighbor?.tile?.drawableTile.assetAttributeId === terrainTile.drawableTile.assetAttributeId : false,
+      southWestMatch: southWestNeighbor ? southWestNeighbor?.tile?.drawableTile.assetAttributeId === terrainTile.drawableTile.assetAttributeId : false,
+      southMatch: southNeighbor ? southNeighbor?.tile?.drawableTile.assetAttributeId === terrainTile.drawableTile.assetAttributeId : false,
+      southEastMatch: southEastNeighbor ? southEastNeighbor?.tile?.drawableTile.assetAttributeId === terrainTile.drawableTile.assetAttributeId : false
     }
         
     let tile = {...drawableItem.drawingRules.find((terrainTile: TerrainTile) => {
@@ -62,24 +62,24 @@ export class TerrainEdgeCalculator {
       northWestMatch
     })}
 
-    const upId = upNeighbor ? upNeighbor?.tile?.drawableTileId : null
-    const downId = downNeighbor ? downNeighbor?.tile?.drawableTileId : null
-    const downSouthId = downSouth ? downSouth?.tile?.drawableTileId : null
-    const upSouthId = upSouth ? upSouth?.tile?.drawableTileId : null
-    const southId = southNeighbor ? southNeighbor?.tile?.drawableTileId : null
+    const upId = upNeighbor ? upNeighbor?.tile?.drawableTile.assetAttributeId : null
+    const downId = downNeighbor ? downNeighbor?.tile?.drawableTile.assetAttributeId : null
+    const downSouthId = downSouth ? downSouth?.tile?.drawableTile.assetAttributeId: null
+    const upSouthId = upSouth ? upSouth?.tile?.drawableTile.assetAttributeId : null
+    const southId = southNeighbor ? southNeighbor?.tile?.drawableTile.assetAttributeId : null
 
-    const upMatch = upId && upId === terrainTile.drawableTileId
-    const downMatch = downId && downId === terrainTile.drawableTileId
-    const upSouthMatch = upSouthId && upSouthId === terrainTile.drawableTileId
-    const southMatch = southId && southId === terrainTile.drawableTileId
-    const downSouthMatch = downSouthId && downSouthId === terrainTile.drawableTileId
+    const upMatch = upId && upId === terrainTile.drawableTile.assetAttributeId
+    const downMatch = downId && downId === terrainTile.drawableTile.assetAttributeId
+    const upSouthMatch = upSouthId && upSouthId === terrainTile.drawableTile.assetAttributeId
+    const southMatch = southId && southId === terrainTile.drawableTile.assetAttributeId
+    const downSouthMatch = downSouthId && downSouthId === terrainTile.drawableTile.assetAttributeId
     
     if (!tile) {
       tile = {...drawableItem.drawingRules.find((tile: TerrainTile) => tile.default)}
     }
       
     this.setTilesForVerticalRendering(tile, upMatch, downMatch, upSouthMatch, southMatch, downSouthMatch)
-
+    
     if(tile.id === "MidCenter" && drawableItem.backgroundTerrainId) {
       const backgroundTexture = backgroundSprites.find(bgTile => bgTile.id === drawableItem.backgroundTerrainId)
       GSM.ImageController.addImageBySrcUrl(backgroundTexture.imageUrl)
@@ -93,8 +93,11 @@ export class TerrainEdgeCalculator {
     } else {
       tile.imageUrl = drawableItem.imageUrl
     }
+    // this.drawBackgroundForCenterTile(tile, drawableItem, gridAsset)
+
 
     tile.drawableTileId = terrainTile.drawableTileId   
+    tile.drawableTile = terrainTile.drawableTile
     tile.layer = RenderingLayers.TerrainLayer
 
     gridAsset.tile = tile
@@ -124,6 +127,22 @@ export class TerrainEdgeCalculator {
       tile.drawsWith = tile.baseWith
     } else {
       tile.drawsWith = undefined
+    }
+  }
+
+  private static drawBackgroundForCenterTile(tile, drawableItem, gridAsset) {
+    if(tile.id === "MidCenter" && drawableItem.backgroundTerrainId) {
+      const backgroundTexture = backgroundSprites.find(bgTile => bgTile.id === drawableItem.backgroundTerrainId)
+      GSM.ImageController.addImageBySrcUrl(backgroundTexture.imageUrl)
+      
+      if(gridAsset.tile.imageUrl === backgroundTexture.imageUrl) {
+        tile = gridAsset.tile
+      } else {
+        tile.imageUrl = backgroundTexture.imageUrl
+        tile.drawsWithTop = BaseTextureRandomGenerator.getRandomTerrain(backgroundTexture)
+      }
+    } else {
+      tile.imageUrl = drawableItem.imageUrl
     }
   }
 }

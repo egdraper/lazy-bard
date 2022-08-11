@@ -3,13 +3,13 @@ import { Asset, AssetInfo, AssetAttributes } from "../models/asset.model";
 export const assetAttributes: AssetAttributes[]  = [
   {
     id: 'standardCreature',
-    size: { x: 1, y: 1, z: 1 },
+    size: { x: 1, y: 1, z: 2 },
     drawSize: {x: 25, y: 36 },
     xMotionTilePos: [0, 26, 52, 26],
     yDirectionTilePos: { down: 0, left: 36, right: 72, up: 108 },
     xPosOffset: -4,
     yPosOffset: -24,
-    obstructed: ["1"]
+    obstructed: ["1","1"]
   },
   {
     id: 'standardLargeMonster',

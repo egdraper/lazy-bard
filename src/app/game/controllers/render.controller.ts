@@ -97,16 +97,21 @@ export class RendererController {
   private paintAroundAsset(asset: GridAsset) {
     if(!GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer] ) { return }
     const ctx = GSM.CanvasController.foregroundCTX
-    const coveringAsset = GSM.AssetController.getAssetBlocksCoveringCellAtZ(asset.anchorCell, asset.baseZIndex).length > 0
-    const bob = GSM.AssetController.getFrontBlocksCoveringCellAtZ(asset.anchorCell, asset.baseZIndex).length > 1
-    console.log("a", bob)
-    console.log("b", coveringAsset)
-    if(!bob && !coveringAsset) { return }
+
+    const blocks = asset.ownedBlockIds.map(id => GSM.AssetController.getAssetBlockById(id))
+
+    let topCoveringAsset = GSM.AssetController.getAssetBlocksCoveringCellAtZ(blocks[0].cell, blocks[0].zIndex).pop()
+    const topCoveringAsset2 = GSM.AssetController.getAssetBlocksCoveringCellAtZ(blocks[1].cell, blocks[1].zIndex).pop()
+
+    const index = topCoveringAsset2 ? 1 : 0
+    topCoveringAsset = topCoveringAsset2 ? topCoveringAsset2 : topCoveringAsset
+    if(!topCoveringAsset) { return }
+    
     GSM.RendererController.iterateRenderingLayers(layer => {
       if(layer === RenderingLayers.BaseLayer) { return }     
       if(layer === RenderingLayers.AssetLayer) { return }
 
-      const offset =  coveringAsset ? 64 : bob ? (asset.baseZIndex * GSM.Settings.blockSize) : 0
+      const offset = (((topCoveringAsset.cell.location.y - asset.anchorCell.location.y) - (topCoveringAsset.zIndex - blocks[index].zIndex)) + (blocks[index].zIndex - 1)) * GSM.Settings.blockSize
 
       ctx.globalAlpha = .44
       ctx.drawImage(

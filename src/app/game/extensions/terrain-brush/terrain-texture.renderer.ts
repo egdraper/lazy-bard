@@ -3,6 +3,7 @@ import { TerrainAsset } from "../../models/asset.model"
 import { drawableItems } from "../../db/drawable-items.db"
 import { GSM } from "../../game-state-manager.service"
 import { RenderingLayers } from "../../models/map"
+import { of } from "rxjs"
 
 export class TerrainPaintBrushRenderer implements Renderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
@@ -12,7 +13,6 @@ export class TerrainPaintBrushRenderer implements Renderer {
     if(!asset.tile || !asset.tile.drawableTileId) { return }
     
     const itemDetails = drawableItems.find(item => item.id === asset.tile.drawableTileId)
-    
 
       this.ctx.imageSmoothingEnabled = false
       this.ctx.globalAlpha = opacity
@@ -29,7 +29,7 @@ export class TerrainPaintBrushRenderer implements Renderer {
           GSM.Settings.blockSize * asset.ownedBlockIds.length,
         )
       }
-      
+
       if(asset.tile.drawsWithTop) {      
         this.ctx.drawImage(
           GSM.ImageController.getImage(asset.tile.imageUrl),

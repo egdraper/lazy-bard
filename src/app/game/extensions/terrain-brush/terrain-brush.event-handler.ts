@@ -1,10 +1,10 @@
-import { terrainCleanup } from 'src/app/game/controllers/utils/terrain-cleanup';
+import { cleanOrphanedTerrain, terrainCleanup } from 'src/app/game/controllers/utils/terrain-cleanup';
 import { drawableItems } from 'src/app/game/db/drawable-items.db';
 import { Cell, NeighborLocation, RenderingLayers } from 'src/app/game/models/map';
-import { DrawableItemViewModel, TerrainTile } from 'src/app/game/models/sprite-tile.model';
+import { DrawableTile, TerrainTile } from 'src/app/game/models/sprite-tile.model';
 import { assetAttributes } from '../../db/asset-items';
 import { GSM } from '../../game-state-manager.service';
-import { Asset, GridAsset } from '../../models/asset.model';
+import { GridAsset } from '../../models/asset.model';
 
 export class TerrainTreeBrushEventHandler {
   constructor() {
@@ -20,7 +20,7 @@ export class TerrainTreeBrushEventHandler {
       let cellCount = 0
       _cells.forEach((cell) => {
         GSM.RendererController.renderAsAssets(RenderingLayers.TerrainLayer)
-        const drawableTile = GSM.ActionController.generalActionFire.value.data as DrawableItemViewModel
+        const drawableTile = GSM.ActionController.generalActionFire.value.data as DrawableTile
          
         let hoveringZAxis = GSM.MouseController.hoveringZAxisAtMouseDown
         const newCell = GSM.GridController.getCellByLocation(cell.location.x, cell.location.y)
@@ -32,23 +32,28 @@ export class TerrainTreeBrushEventHandler {
         const southWestCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.SouthWest)
         const westCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.West)
         const northWestCell = GSM.CellNeighborsController.getImmediateNeighborCell(newCell, NeighborLocation.NorthWest)
-        const asset = GSM.AssetController.getAsset(newCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)
         
-        let expandable 
-        if(asset) {
-         expandable = drawableItems.find(item => item.id === asset.tile.drawableTileId).expandable
-        }
+        const downAsset = GSM.AssetController.getAsset(newCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)
+        const northDownAsset = GSM.AssetController.getAsset(northCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)
+        const northEastDownAsset = GSM.AssetController.getAsset(northEastCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)
+        const eastDownAsset = GSM.AssetController.getAsset(eastCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)
+        const southEastDownAsset = GSM.AssetController.getAsset(southEastCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)
+        const southDownAsset = GSM.AssetController.getAsset(southCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)
+        const southWestDownAsset = GSM.AssetController.getAsset(southWestCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)
+        const westDownAsset = GSM.AssetController.getAsset(westCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)
+        const northWestDownAsset = GSM.AssetController.getAsset(northWestCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)
   
-        const newId = GSM.AssetController.getAsset(newCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId && expandable
-        const northId = GSM.AssetController.getAsset(northCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId && expandable
-        const northEastId = GSM.AssetController.getAsset(northEastCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId && expandable
-        const eastId = GSM.AssetController.getAsset(eastCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId  && expandable
-        const southEastId = GSM.AssetController.getAsset(southEastCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId && expandable
-        const southId = GSM.AssetController.getAsset(southCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId && expandable
-        const southWestId = GSM.AssetController.getAsset(southWestCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId && expandable
-        const westId = GSM.AssetController.getAsset(westCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId && expandable
-        const northWestId = GSM.AssetController.getAsset(northWestCell, hoveringZAxis-1, RenderingLayers.TerrainLayer)?.tile?.drawableTileId && expandable
+        const newId = downAsset?.tile?.drawableTile?.expandable
+        const northId = northDownAsset?.tile?.drawableTile?.expandable
+        const northEastId = northEastDownAsset?.tile?.drawableTile?.expandable
+        const eastId = eastDownAsset?.tile?.drawableTile?.expandable
+        const southEastId = southEastDownAsset?.tile?.drawableTile?.expandable
+        const southId = southDownAsset?.tile?.drawableTile?.expandable
+        const southWestId = southWestDownAsset?.tile?.drawableTile?.expandable
+        const westId = westDownAsset?.tile?.drawableTile?.expandable
+        const northWestId = northWestDownAsset?.tile?.drawableTile?.expandable
   
+
         let cells
         let placementLocationFound = false
         if(hoveringZAxis === 0) {
@@ -78,6 +83,7 @@ export class TerrainTreeBrushEventHandler {
             newAsset.baseZIndex = hoveringZAxis + i
             newAsset.tile = new TerrainTile()
             newAsset.tile.drawableTileId = drawableTile.id
+            newAsset.tile.drawableTile = drawableTile
             newAsset.layer = RenderingLayers.TerrainLayer
             newAsset.attributes = assetAttributes.find(attribute => attribute.id === drawableTile.assetAttributeId)
             newAsset.attributesId = drawableTile.assetAttributeId
@@ -105,14 +111,15 @@ export class TerrainTreeBrushEventHandler {
 
   private removeAllAboveTerrain(asset: GridAsset): void {
     GSM.AssetController.getAssetsByAnchorCell(asset.anchorCell).forEach((_asset: GridAsset) => {
-      if(_asset.baseZIndex > asset.baseZIndex && asset.tile.drawableTileId !== _asset.tile.drawableTileId) {
-        GSM.AssetController.removeAsset(_asset, RenderingLayers.TerrainLayer)
+      if(_asset.baseZIndex > asset.baseZIndex && (asset.tile.drawableTile.assetAttributeId !== _asset.tile.drawableTile.assetAttributeId || !_asset.tile.drawableTile.expandable )) {
+        GSM.AssetController.removeAsset(_asset)
       }
     })
   }
 
   private onMouseUp(): void {
     if(GSM.ActionController.generalActionFire.value.name === "paintingTerrain") {
+      cleanOrphanedTerrain()
       terrainCleanup()
       setTimeout(() => {
         GSM.RendererController.renderAsSingleImage(RenderingLayers.TerrainLayer)

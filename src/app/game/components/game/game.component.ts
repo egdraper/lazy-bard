@@ -86,7 +86,7 @@ export class GameComponent implements AfterViewInit {
     if (event.code === 'KeyE') {
       GSM.ActionController.generalActionFire.next({
         name: 'paintingTerrain',
-        data: drawableItems.find((item) => item.id === 'Trees-GrassBase'),
+        data: drawableItems.find((item) => item.id === 'StoneCliff-StoneBase3'),
       });
     }
     if (event.code === 'KeyF') {

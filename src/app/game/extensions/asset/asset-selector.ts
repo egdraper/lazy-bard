@@ -14,7 +14,7 @@ export class AssetSelector {
 
   public onDeletePressed() {
     GSM.AssetController.selectedAssets.forEach(asset => {
-      GSM.AssetController.removeAsset(asset, asset.layer)
+      GSM.AssetController.removeAsset(asset)
     })
   }
 
