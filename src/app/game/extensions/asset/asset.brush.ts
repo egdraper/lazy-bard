@@ -2,8 +2,6 @@ import { Cell, RenderingLayers } from 'src/app/game/models/map';
 import { GSM } from '../../game-state-manager.service';
 import { Asset } from '../../models/asset.model';
 import { AssetTile, SpriteAnimation } from '../../models/sprite-tile.model';
-import { Running } from './movement.ts/run.movement';
-import { Sneaking } from './movement.ts/sneak.movement';
 import { Walking } from './movement.ts/walking.movement';
 
 export class AssetBrush {
@@ -13,24 +11,23 @@ export class AssetBrush {
     GSM.MouseController.cellClick.subscribe(this.onCellClicked.bind(this));
   }
 
-  public getCellAtSelectedAssetsZIndex(zIndex: number, cellClicked: Cell) {
-    return GSM.GridController.getCellByLocation(cellClicked.location.x, cellClicked.location.y + zIndex)
-  }
-
   public onCellClicked(): void {
     if (GSM.ActionController.generalActionFire.value.name === 'characterSelected') {    
       GSM.AssetController.getSelectedAssets().forEach((asset: Asset) => {
-        asset.movement.start(asset.anchorCell, this.getCellAtSelectedAssetsZIndex(asset.baseZIndex, GSM.MouseController.hoveringCell), []);
+        asset.movement.start(asset.anchorCell, GSM.GridController.getCellAtZAxis(GSM.MouseController.hoveringCell, asset.baseZIndex), []);
       });
       return;
     }
 
     if (GSM.ActionController.generalActionFire.value.name === 'addCharacter') {
       GSM.AssetController.deselectAllAssets();
-      if(GSM.MouseController.hoveringGridAsset?.tile?.drawableTileId) {
-        this.addPlayableCharacter(GSM.MouseController.hoveringCellAtZAxis, GSM.MouseController.hoveringZAxis);
+
+      const a = GSM.AssetController.getTopAssetCoveringCell(GSM.MouseController.hoveringCell, [RenderingLayers.AssetLayer, RenderingLayers.ObjectLayer])
+      if(a) {
+        const zIndex = a.baseZIndex + a?.attributes.size.x
+        this.addPlayableCharacter(a.anchorCell, zIndex);
       } else {
-        this.addPlayableCharacter(GSM.MouseController.hoveringCellAtZAxis, 0);
+        this.addPlayableCharacter(GSM.MouseController.hoveringCell, 0);
       }
       return;
     }
@@ -51,7 +48,7 @@ export class AssetBrush {
     const playerAsset = new Asset(cell, 'standardCreature');
     playerAsset.tile = new AssetTile(
       RenderingLayers.AssetLayer,
-      'assets/images/character_008.png',
+      'assets/images/character_012.png',
       'standardCreature'
     );
 
@@ -66,24 +63,23 @@ export class AssetBrush {
 
     // MOCK This will be a database thing
     private addNonPlayableAsset(cell: Cell, zIndex: number): void {
-      GSM.RendererController.renderAsAssets(RenderingLayers.ObjectLayer)
+      GSM.RendererController.renderAsAssets()
       // setup asset
-      const objectAsset = new Asset(cell, 'standardXLTree');
-      objectAsset.tile = new AssetTile(
+      const newObjectAsset = new Asset(cell, 'standardXLTree');
+      newObjectAsset.tile = new AssetTile(
         RenderingLayers.ObjectLayer,
         'assets/images/trees/tree2.png',
         'standardXLTree'
       );
   
-      objectAsset.animation = new SpriteAnimation();
-      objectAsset.layer = RenderingLayers.ObjectLayer
+      newObjectAsset.animation = new SpriteAnimation();
+      newObjectAsset.layer = RenderingLayers.ObjectLayer
   
-      GSM.AssetController.addAsset(
-        objectAsset,
-        cell,
-        zIndex
-      );
-      GSM.ImageController.addImageBySrcUrl(objectAsset.tile.imageUrl);
-      GSM.RendererController.renderAsSingleImage(RenderingLayers.ObjectLayer)
+      GSM.AssetController.addAsset(newObjectAsset, cell, zIndex);
+      GSM.ImageController.addImageBySrcUrl(newObjectAsset.tile.imageUrl);
+ 
+      setTimeout(() => {
+        GSM.RendererController.renderAsSingleImage()
+      }, 60);
     }
 }

@@ -77,6 +77,10 @@ export class MapController {
   public getCellById(cellId: string): Cell {
     return GSM.GridController.map.grid[cellId]
   }
+
+  public getCellAtZAxis(cellOver: Cell, zIndex: number ) {
+    return GSM.GridController.getCellByLocation(cellOver.location.x, cellOver.location.y + zIndex)
+  }
  
   public createGameMap(size: Size): void {
     GSM.GridController.map = new GameMap(size)

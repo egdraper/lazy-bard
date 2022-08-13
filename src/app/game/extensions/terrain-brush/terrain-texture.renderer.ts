@@ -3,7 +3,6 @@ import { TerrainAsset } from "../../models/asset.model"
 import { drawableItems } from "../../db/drawable-items.db"
 import { GSM } from "../../game-state-manager.service"
 import { RenderingLayers } from "../../models/map"
-import { of } from "rxjs"
 
 export class TerrainPaintBrushRenderer implements Renderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX

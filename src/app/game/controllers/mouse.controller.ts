@@ -40,6 +40,7 @@ export class MouseController {
   public hoveringCellAtZAxis: Cell;
   public hoveringZAxis: number = 0;
   public hoveringZAxisAtMouseDown: number = 0;
+  public hoveringCellAtZAxisOnMouseDown: Cell;
 
   constructor() {
     this.mouseHover.subscribe(this.onMouseHover.bind(this));
@@ -79,6 +80,7 @@ export class MouseController {
     if(!newHoveringCell) { return }
     if(newHoveringCell.id !== this.hoveringCell?.id) {
       this.hoveringCell = newHoveringCell
+      this.hoveringCellAtZAxisOnMouseDown = GSM.GridController.getCellAtZAxis(this.hoveringCell, this.hoveringZAxisAtMouseDown)
       
       const gridAsset = GSM.AssetController.getTopAssetCoveringCell(this.hoveringCell);
       const gridAssets = GSM.AssetController.getAllAssetsCoveringCell(this.hoveringCell)
@@ -121,7 +123,6 @@ export class MouseController {
         this.assetBlockHover.next(frontFaceBlock[frontFaceBlock.length - 1])
         this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex + 1 : 0)
       }
-
 
       this.cellHover.next(this.hoveringCell)
     }

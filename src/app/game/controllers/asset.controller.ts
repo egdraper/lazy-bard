@@ -1,5 +1,6 @@
 import { Subject } from 'rxjs';
 import { assetAttributes } from '../db/asset-items';
+import { Orientation } from '../extensions/asset/direction.ts/direction';
 import { GSM } from '../game-state-manager.service';
 import { Asset, AssetBlock, BackgroundAsset, BlockEdge, GridAsset } from '../models/asset.model';
 import { Cell, MapRotationIndex, NeighborLocation, RenderingLayers, Size } from '../models/map';
@@ -17,10 +18,7 @@ export class AssetController {
 
   constructor() {
     GSM.FrameController.frameFire.subscribe(this.animateAsset.bind(this));
-    // this.assetArray[MapRotationIndex.northUp] = []
-    // this.assetArray[MapRotationIndex.westUp] = []
-    // this.assetArray[MapRotationIndex.southUp] = []
-    // this.assetArray[MapRotationIndex.eastUp] = []
+    GSM.KeyController.keyDown.subscribe(this.setDirectionByKey.bind(this))
   }
 
   public addAsset(asset: GridAsset, anchoringCell: Cell, zIndex: number): void {
@@ -63,13 +61,23 @@ export class AssetController {
 
   public getAssetsByCellAtZ(cell: Cell, zIndex: number): {layer: RenderingLayers, asset: GridAsset}[] {
     const assets = []
-    GSM.RendererController.iterateRenderingLayers(layer => {
+    GSM.RendererController.iterateAllRenderingLayers(layer => {
       const asset = this.getAsset(cell, zIndex, layer)
       if(asset) {
         assets.push({layer, asset})
       }
     })
     return assets
+  }
+
+  public getTopAssetByCell(cell: Cell, excludeLayers?: RenderingLayers[]): GridAsset {
+    const blocks = this.getAllAssetBlocksAtCell(cell)
+    const assets = blocks.map(block => this.getAssetById(block.ownerAssetId))
+    const assetsWithLayer = assets.filter(asset => !excludeLayers.includes(asset.layer))
+    
+    if(assetsWithLayer.length === 0 ) { return null} 
+    
+    return assetsWithLayer.pop()
   }
 
   public getAssetByAnchorCell(cell: Cell): GridAsset {
@@ -88,10 +96,12 @@ export class AssetController {
 
   public isCellBlockObstructed(cell: Cell, zIndex): boolean {
     let obstructed = false
-    GSM.RendererController.iterateRenderingLayers(layer => {
+    
+    GSM.RendererController.iterateAllRenderingLayers(layer => {
       const assetBlock = this.getAssetBlock(cell, zIndex, layer)
       if (assetBlock && assetBlock.obstructed) { obstructed = true }
     })
+
     return obstructed
   }
 
@@ -114,7 +124,7 @@ export class AssetController {
   public getAssetBlocksAtZ(cell: Cell, zIndex: number): AssetBlock[] {
     const assetBlocks = []
 
-    GSM.RendererController.iterateRenderingLayers((layer) => {
+    GSM.RendererController.iterateAllRenderingLayers((layer) => {
       const block = this.assetBlocks[`${cell.id}:z${zIndex}:${layer}`]
       if(block) {
         assetBlocks.push(block)
@@ -130,7 +140,7 @@ export class AssetController {
 
   public getAllAssetBlocksAtCell(cell: Cell): AssetBlock[] {
     const assetBlocks = []
-    GSM.RendererController.iterateRenderingLayers(layer => {
+    GSM.RendererController.iterateAllRenderingLayers(layer => {
       for(let i = 0; i < GSM.Settings.maxHeight; i++) {
         const assetBlock = this.assetBlocks[`${cell.id}:z${i}:${layer}`]
         if(assetBlock) { assetBlocks.push(assetBlock) }
@@ -158,7 +168,7 @@ export class AssetController {
   public getAssetsByCell(cell: Cell): GridAsset[] {
     const assetList: GridAsset[] = []
     for(let i = 0; i < GSM.Settings.maxHeight; i++) {
-      GSM.RendererController.iterateRenderingLayers(layer => {
+      GSM.RendererController.iterateAllRenderingLayers(layer => {
         const asset = this.getAsset(cell, i, layer)
         if (asset && !assetList.find(a => a.id === asset.id)) { assetList.push(asset) }
       })
@@ -175,8 +185,8 @@ export class AssetController {
   }
 
   public changeZAxis(direction: 'up' | 'down', asset: GridAsset): void {
-    const upAssets = GSM.CellNeighborsController.getImmediateNeighboringAssets(asset, NeighborLocation.Up);
-    const downAssets = GSM.CellNeighborsController.getImmediateNeighboringAssets(asset, NeighborLocation.Down);
+    const upAssets = GSM.AssetController.getAssetBlocksAtZ(asset.anchorCell, asset.baseZIndex + asset.attributes.size.z)
+    const downAssets = GSM.AssetController.getAssetBlocksAtZ(asset.anchorCell, asset.baseZIndex - 1);
 
     if (direction === 'up' && upAssets.length === 0) {
       this.updateBlockProperty(asset, asset.anchorCell, ++asset.baseZIndex);
@@ -267,10 +277,13 @@ export class AssetController {
     return assetBlocks.map(block => GSM.AssetController.getAssetById(block.ownerAssetId))
   }
   
- public getTopAssetCoveringCell(hoveringCell: Cell): GridAsset{
-    const topBlock = this.getAllAssetBlocksCoveringCell(hoveringCell).pop()
-    if(topBlock) {
-      return GSM.AssetController.getAssetById(topBlock.ownerAssetId)
+ public getTopAssetCoveringCell(hoveringCell: Cell, excludeLayers: RenderingLayers[] = []): GridAsset{
+    const blocks = this.getAllAssetBlocksCoveringCell(hoveringCell)
+    const assets = blocks.map(block => GSM.AssetController.getAssetById(block.ownerAssetId))
+    const filteredAssets = assets.filter(asset => !excludeLayers.includes(asset.layer)) 
+   
+    if(filteredAssets.length > 0) {
+      return filteredAssets.pop()
     } else {
       return undefined
     }
@@ -279,7 +292,6 @@ export class AssetController {
   public getTopAssetBlockCoveringCell(hoveringCell: Cell): AssetBlock {
     return this.getAllAssetBlocksCoveringCell(hoveringCell).pop()
   }
-
 
   // Helper
 
@@ -305,6 +317,12 @@ export class AssetController {
     let yOffset = Math.floor(asset.attributes.size.y / 2)
     yOffset = Math.floor(yOffset / 2)
     
+    if(asset.ownedBlockIds) {
+      asset.ownedBlockIds.forEach(id => {
+        delete this.assetBlocks[id]
+      })
+    }
+
     asset.ownedBlockIds = [];
     asset.anchorCell = GSM.GridController.getCellByLocation(selectedCell.location.x - xOffset, selectedCell.location.y + yOffset)
 
@@ -388,5 +406,27 @@ export class AssetController {
     //   return false
     // })
     return sortedArray
+  }
+
+  protected setDirectionByKey(keyEvent: KeyboardEvent): void {
+    this.selectedAssets.forEach((asset: Asset) => {
+      if(asset.animation.orientation) {
+        if (keyEvent.code === 'KeyW') {
+          asset.animation.orientation.currentOrientation = Orientation.Up
+        }
+    
+        if (keyEvent.code === 'KeyA') {
+          asset.animation.orientation.currentOrientation = Orientation.Left
+        }
+    
+        if (keyEvent.code === 'KeyD') {
+          asset.animation.orientation.currentOrientation= Orientation.Right
+        }
+    
+        if (keyEvent.code === 'KeyS') {
+          asset.animation.orientation.currentOrientation = Orientation.Down
+        }
+      }
+    })
   }
 }

@@ -48,14 +48,17 @@ export abstract class Movement {
     }
     
     this.setCurrentPath(startCell, endCell)
-    
+    this.setStartingMotionCells()
+    this.setTracking()
+    if(!this.isNextCellPassable()) { 
+      this.endMovement() 
+      return
+    }
+
     this.moving = true
     
     this.subscribeToFrameTimer()
-    this.setStartingMotionCells()
-    this.setTracking()
     this.animation.orientation.autoSetOrientation(this.asset.anchorCell, this.nextCell)
-    if(!this.isNextCellPassable()) { this.endMovement() }
   }
 
   public updateAnimation() {
@@ -147,8 +150,11 @@ export abstract class Movement {
   protected endMovement(): void {
     this.currentPath = null
     this.moving = false
-    this.movementSubscription.unsubscribe()
-           
+
+    if(this.movementSubscription) {
+      this.movementSubscription.unsubscribe()
+    }
+    
     if(this.onFinished) { 
       const onFinished = this.onFinished
       this.onFinished = undefined

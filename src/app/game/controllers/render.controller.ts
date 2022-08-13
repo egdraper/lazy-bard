@@ -1,6 +1,6 @@
 import { Subscription } from "rxjs"
 import { GSM } from "../game-state-manager.service"
-import { GridAsset } from "../models/asset.model"
+import { AssetBlock, BlockEdge, GridAsset } from "../models/asset.model"
 import { CanvasCTX } from "../models/extension.model"
 import { RenderingLayers } from "../models/map"
 import { Renderer } from "../models/renderer"
@@ -25,23 +25,37 @@ export class RendererController {
     this.subscriptions.forEach(subscription => subscription.unsubscribe())
   }
 
-  public renderAsSingleImage(layer: RenderingLayers) {
-    this.renderAsSingeImages[layer] = true
+  public renderAsSingleImage() {
     terrainCleanup()
     GSM.AssetController.refreshAssetIterator()
     
     const module = GSM.CanvasModuleController.canvasModules.find(module => module.canvasName === "base")
     generateBackgroundImage(module.renderers)
-    generateLayerImage("foreground", layer)
-    generateLayerImage("foreground", RenderingLayers.ObjectLayer)
+    
+    GSM.RendererController.iterateStaticAssetRenderingLayers(layer => {        
+      generateLayerImage("foreground", layer)
+      this.renderAsSingeImages[layer] = true
+    })
   }
 
-  public renderAsAssets(layer: RenderingLayers) {
-    this.renderAsSingeImages[layer] = false
+  public renderAsAssets() {
+    GSM.RendererController.iterateStaticAssetRenderingLayers(layer => {
+      this.renderAsSingeImages[layer] = false
+    })
   }
 
-  public iterateRenderingLayers(callBack: (layer: RenderingLayers) => void) {
-    Object.values(RenderingLayers).forEach(layer => callBack(layer))
+  public iterateStaticAssetRenderingLayers(callBack: (layer: RenderingLayers) => void) {
+    Object.values(RenderingLayers).forEach(layer => {
+      if(layer === RenderingLayers.BaseLayer || layer === RenderingLayers.AssetLayer) { return }
+      callBack(layer)
+    })
+  }
+
+  public iterateAllRenderingLayers(callBack: (layer: RenderingLayers) => void) {
+    Object.values(RenderingLayers).forEach(layer => {
+      if(layer === RenderingLayers.BaseLayer) { return }
+      callBack(layer)
+    })
   }
 
   public iterateRenderers(callback: (renderer: Renderer) => void): void {
@@ -52,7 +66,7 @@ export class RendererController {
     
   private onFrameFire(frame: number): void {
     if(!(GSM.CanvasModuleController.canvasModules && GSM.CanvasModuleController.canvasModules.length !== 0)) { return }
-    this.clearCanvases()    
+    GSM.CanvasController.clearCanvases()    
     this.renderLayers()
     this.renderAssets(frame)
   }
@@ -98,20 +112,31 @@ export class RendererController {
     if(!GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer] ) { return }
     const ctx = GSM.CanvasController.foregroundCTX
 
-    const blocks = asset.ownedBlockIds.map(id => GSM.AssetController.getAssetBlockById(id))
+    const blocks = GSM.AssetController.getAllAssetBlocksByEdge(asset, {south: true})
 
-    let topCoveringAsset = GSM.AssetController.getAssetBlocksCoveringCellAtZ(blocks[0].cell, blocks[0].zIndex).pop()
-    const topCoveringAsset2 = GSM.AssetController.getAssetBlocksCoveringCellAtZ(blocks[1].cell, blocks[1].zIndex).pop()
+    const coverings = blocks.map(block => {
+      const coveringAsset = GSM.AssetController.getAssetBlocksCoveringCellAtZ(block.cell, block.zIndex).pop()
+      return { block: block, coveringBlock: coveringAsset }
+    })
 
-    const index = topCoveringAsset2 ? 1 : 0
-    topCoveringAsset = topCoveringAsset2 ? topCoveringAsset2 : topCoveringAsset
-    if(!topCoveringAsset) { return }
+    let topCoveringAsset: AssetBlock = null
+    let coveredBlock
     
-    GSM.RendererController.iterateRenderingLayers(layer => {
-      if(layer === RenderingLayers.BaseLayer) { return }     
-      if(layer === RenderingLayers.AssetLayer) { return }
+    for(let i = coverings.length - 1; i >= 0; i--  ) {
+      if(coverings[i]?.coveringBlock) {
+        topCoveringAsset = coverings[i].coveringBlock
+        coveredBlock = coverings[i].block
+        break
+      }
+    }
 
-      const offset = (((topCoveringAsset.cell.location.y - asset.anchorCell.location.y) - (topCoveringAsset.zIndex - blocks[index].zIndex)) + (blocks[index].zIndex - 1)) * GSM.Settings.blockSize
+    if(!topCoveringAsset || GSM.AssetController.getAssetById(topCoveringAsset.ownerAssetId).layer === RenderingLayers.AssetLayer) { return }
+    
+    GSM.RendererController.iterateStaticAssetRenderingLayers(layer => {
+      const cellYDifference = (topCoveringAsset.cell.location.y - asset.anchorCell.location.y)
+      const assetZIndexDifference = (topCoveringAsset.zIndex - coveredBlock.zIndex)
+      
+      const offset = ((cellYDifference - assetZIndexDifference) + (coveredBlock.zIndex - 1)) * GSM.Settings.blockSize
 
       ctx.globalAlpha = .44
       ctx.drawImage(
@@ -130,16 +155,6 @@ export class RendererController {
     ctx.globalAlpha = 1
   }
    
-  public clearCanvases(): void {
-    const canvas = GSM.CanvasController
-    canvas.backgroundCTX.clearRect(0,0, GSM.GridController.map.size.x * GSM.Settings.blockSize, GSM.GridController.map.size.y * GSM.Settings.blockSize)
-    canvas.backgroundCTX.imageSmoothingEnabled = false
-    canvas.foregroundCTX.clearRect(0,0, GSM.GridController.map.size.x * GSM.Settings.blockSize, GSM.GridController.map.size.y * GSM.Settings.blockSize)
-    canvas.foregroundCTX.imageSmoothingEnabled = false   
-    canvas.fullImageCTX.clearRect(0,0, GSM.GridController.map.size.x * GSM.Settings.blockSize, GSM.GridController.map.size.y * GSM.Settings.blockSize)
-    canvas.fullImageCTX.imageSmoothingEnabled = false   
-  }  
-
   private setupRenderers(canvasModule: RootCanvasModule): void {
     this.foregroundCanvasRenderer = new AddonRenderer()
     this.baseCanvasRenderer = new AddonRenderer()  

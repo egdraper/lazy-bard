@@ -1,6 +1,5 @@
-import { cleanOrphanedTerrain, terrainCleanup } from 'src/app/game/controllers/utils/terrain-cleanup';
-import { drawableItems } from 'src/app/game/db/drawable-items.db';
-import { Cell, NeighborLocation, RenderingLayers } from 'src/app/game/models/map';
+import { terrainCleanup } from 'src/app/game/controllers/utils/terrain-cleanup';
+import { NeighborLocation, RenderingLayers } from 'src/app/game/models/map';
 import { DrawableTile, TerrainTile } from 'src/app/game/models/sprite-tile.model';
 import { assetAttributes } from '../../db/asset-items';
 import { GSM } from '../../game-state-manager.service';
@@ -8,18 +7,18 @@ import { GridAsset } from '../../models/asset.model';
 
 export class TerrainTreeBrushEventHandler {
   constructor() {
-    GSM.MouseController.cellClick.subscribe(this.onEmptyCellClicked.bind(this));
-    GSM.MouseController.cellDown.subscribe(this.onEmptyCellClicked.bind(this));
+    GSM.MouseController.cellDown.subscribe(this.cellClicked.bind(this));
     GSM.MouseController.cellHover.subscribe(this.onMouseEnteredCell.bind(this));
     GSM.MouseController.mouseUp.subscribe(this.onMouseUp.bind(this));
   }
 
-  private onEmptyCellClicked(cell1: Cell): void {
+  private cellClicked(): void {
     if(GSM.ActionController.generalActionFire.value.name === "paintingTerrain") {
-      const _cells = GSM.GridController.getCellsWithinRadius(GSM.MouseController.hoveringCellAtZAxis, GSM.Settings.brushSize)
-      let cellCount = 0
-      _cells.forEach((cell) => {
-        GSM.RendererController.renderAsAssets(RenderingLayers.TerrainLayer)
+      const cells = GSM.GridController.getCellsWithinRadius(GSM.MouseController.hoveringCellAtZAxisOnMouseDown, GSM.Settings.brushSize)
+
+      cells.forEach((cell) => {
+        if(!cell) { return }
+        GSM.RendererController.renderAsAssets()
         const drawableTile = GSM.ActionController.generalActionFire.value.data as DrawableTile
          
         let hoveringZAxis = GSM.MouseController.hoveringZAxisAtMouseDown
@@ -89,29 +88,36 @@ export class TerrainTreeBrushEventHandler {
             newAsset.attributesId = drawableTile.assetAttributeId
             GSM.AssetController.addAsset(newAsset, cell, hoveringZAxis + i)
             this.removeAllAboveTerrain(newAsset)        
-            cellCount++
           })
         }   
       })  
       terrainCleanup()
     }
-    
-
-
-
   }
 
-  private onMouseEnteredCell(cell: Cell): void {
+  private onMouseEnteredCell(): void {
     const actionName = GSM.ActionController.generalActionFire.value.name    
     if(actionName !== "paintingTerrain" && actionName !== "deleteTerrain") { return }    
     if(!GSM.KeyController.keysPressed.has("mouseDown")) { return }
 
-    this.onEmptyCellClicked(cell)
+    this.cellClicked()
   }
 
   private removeAllAboveTerrain(asset: GridAsset): void {
-    GSM.AssetController.getAssetsByAnchorCell(asset.anchorCell).forEach((_asset: GridAsset) => {
-      if(_asset.baseZIndex > asset.baseZIndex && (asset.tile.drawableTile.assetAttributeId !== _asset.tile.drawableTile.assetAttributeId || !_asset.tile.drawableTile.expandable )) {
+    GSM.AssetController.getAssetsByCell(asset.anchorCell).forEach((_asset: GridAsset) => {
+      const isAboveAssetAnObject = !_asset.tile.drawableTileId
+      const isAssetAbove = _asset.baseZIndex > asset.baseZIndex
+      const isAboveTerrainTypeDifferent = asset.tile?.drawableTile?.assetAttributeId !== _asset.tile?.drawableTile?.assetAttributeId
+      const isAboveTerrainNonExpandable = !_asset.tile?.drawableTile?.expandable
+      const assetHasHeightOfZero = asset.attributes.size.z === 0
+
+      
+      if((isAssetAbove && (isAboveTerrainTypeDifferent || isAboveTerrainNonExpandable)) || isAboveAssetAnObject) {
+        if(assetHasHeightOfZero && isAboveAssetAnObject && _asset.baseZIndex === asset.baseZIndex) {
+          // add If Shift Down remove the trees.
+          return
+        }
+
         GSM.AssetController.removeAsset(_asset)
       }
     })
@@ -119,10 +125,9 @@ export class TerrainTreeBrushEventHandler {
 
   private onMouseUp(): void {
     if(GSM.ActionController.generalActionFire.value.name === "paintingTerrain") {
-      cleanOrphanedTerrain()
       terrainCleanup()
       setTimeout(() => {
-        GSM.RendererController.renderAsSingleImage(RenderingLayers.TerrainLayer)
+        GSM.RendererController.renderAsSingleImage()
       })
     }
   }
