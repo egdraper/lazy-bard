@@ -2,13 +2,14 @@ import { Subscription } from "rxjs"
 import { Asset } from "../../../models/asset.model"
 import { GSM } from "../../../game-state-manager.service"
 import { Cell, Position, RenderingLayers } from "../../../models/map"
-import { TravelPath } from "../shortest-path"
+import { TravelPath } from "../shortest-paths/shortest-path"
 import { SpriteAnimation } from "src/app/game/models/sprite-tile.model"
 
 export abstract class Movement {
   protected abstract asset: Asset
   public movementOffset: Position
   public moving = false
+  public speed: number = 1
   
   protected abstract travelPath: TravelPath
   
@@ -20,7 +21,6 @@ export abstract class Movement {
   protected distanceToNextCell = 0
   
   private onFinished: () => void    
-  private speed: number = 1
   private cellTrackPosX = 0
   private cellTrackPosY = 0
 
@@ -48,14 +48,17 @@ export abstract class Movement {
     }
     
     this.setCurrentPath(startCell, endCell)
-    
+    this.setStartingMotionCells()
+    this.setTracking()
+    if(!this.isNextCellPassable()) { 
+      this.endMovement() 
+      return
+    }
+
     this.moving = true
     
     this.subscribeToFrameTimer()
-    this.setStartingMotionCells()
-    this.setTracking()
-    this.animation.orientation.autoSetOrientation(this.asset.cell, this.nextCell)
-    if(!this.isNextCellPassable()) { this.endMovement() }
+    this.animation.orientation.autoSetOrientation(this.asset.anchorCell, this.nextCell)
   }
 
   public updateAnimation() {
@@ -70,8 +73,8 @@ export abstract class Movement {
     let nextXMove = 0
     let nextYMove = 0
   
-    if (this.nextCell.location.x !== this.asset.cell.location.x) { nextXMove = this.nextCell.location.x > this.asset.cell.location.x ? this.speed : this.speed * -1 }
-    if (this.nextCell.location.y !== this.asset.cell.location.y) { nextYMove = this.nextCell.location.y > this.asset.cell.location.y ? this.speed : this.speed * -1 }
+    if (this.nextCell.location.x !== this.asset.anchorCell.location.x) { nextXMove = this.nextCell.location.x > this.asset.anchorCell.location.x ? this.speed : this.speed * -1 }
+    if (this.nextCell.location.y !== this.asset.anchorCell.location.y) { nextYMove = this.nextCell.location.y > this.asset.anchorCell.location.y ? this.speed : this.speed * -1 }
   
     this.cellTrackPosX += nextXMove
     this.cellTrackPosY += nextYMove    
@@ -84,12 +87,8 @@ export abstract class Movement {
       
       GSM.AssetController.switchAssetToNewCell(
         this.asset,
-        this.previousCell,
         newCell,
-        this.asset.zIndex,
-        this.asset.zIndex,
-        RenderingLayers.AssetLayer,
-        RenderingLayers.AssetLayer
+        this.asset.baseZIndex
       )
       
       this.movementOffset.x = this.cellTrackPosX
@@ -102,7 +101,7 @@ export abstract class Movement {
 
       if (this.redirection) {
         this.endMovement()
-        this.start(this.asset.cell, this.redirection.end, this.redirection.charactersOnGrid)
+        this.start(this.asset.anchorCell, this.redirection.end, this.redirection.charactersOnGrid)
       }
 
       if (!this.nextCell || !this.isNextCellPassable()) {
@@ -115,7 +114,7 @@ export abstract class Movement {
   
   protected prepareNextMovement(): void {
     this.distanceToNextCell = GSM.Settings.blockSize
-    this.asset.animation.orientation.autoSetOrientation(this.asset.cell, this.nextCell)
+    this.asset.animation.orientation.autoSetOrientation(this.asset.anchorCell, this.nextCell)
   }
 
   protected setCurrentPath(startCell: Cell, endCell: Cell): void {
@@ -151,8 +150,11 @@ export abstract class Movement {
   protected endMovement(): void {
     this.currentPath = null
     this.moving = false
-    this.movementSubscription.unsubscribe()
-           
+
+    if(this.movementSubscription) {
+      this.movementSubscription.unsubscribe()
+    }
+    
     if(this.onFinished) { 
       const onFinished = this.onFinished
       this.onFinished = undefined
@@ -164,8 +166,8 @@ export abstract class Movement {
     let nextTerrainAsset
     let previousTerrainAsset
     if(this.nextCell) {
-      nextTerrainAsset = GSM.AssetController.getAsset(this.nextCell, this.asset.zIndex - 1, RenderingLayers.TerrainLayer)
-      previousTerrainAsset = GSM.AssetController.getAsset(this.previousCell, this.asset.zIndex - 1, RenderingLayers.TerrainLayer)
+      nextTerrainAsset = GSM.AssetController.getAsset(this.nextCell, this.asset.baseZIndex - 1, RenderingLayers.TerrainLayer)
+      previousTerrainAsset = GSM.AssetController.getAsset(this.previousCell, this.asset.baseZIndex - 1, RenderingLayers.TerrainLayer)
     } else {
       return false
     }

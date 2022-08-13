@@ -1,24 +1,28 @@
 import { GSM } from "../game-state-manager.service"
+import { RenderingLayers } from "../models/map"
 
 export class ImagesController {
-  public baseLayerImage: HTMLImageElement
-  public elevationLayersImages: {[elevation: number]: HTMLImageElement } = {} 
+  // caches all sprite images by URL
+  public images: { [imageUrl: string]: HTMLImageElement } = {};
+
+  // caches an image for each rendering layer
+  public renderingLayerImages: {[layer: string]: HTMLImageElement } = {}
 
   public getImage(url: string): HTMLImageElement {
-    return GSM.GameData.images[url]
+    return this.images[url]
   }
 
   public addImageBySrcUrl(url: string): void {
-    if (GSM.GameData.images[url]) {
+    if (this.images[url]) {
       return
     }
 
     const newImage = new Image()
     newImage.src = url
-    GSM.GameData.images[url] = newImage
+    this.images[url] = newImage
   }
 
   public removeImage(url: string): void {
-    delete GSM.GameData.images[url]
+    delete this.images[url]
   }
 }

@@ -1,17 +1,31 @@
 <div class="game" *ngIf="gameStateManager.loadingFinished">
-  <div style="color:white; position: absolute; top: 115px">
-    <h6> X: {{ mouseController?.hoveringPosX }}</h6>
-    <h6> Y: {{ mouseController?.hoveringPosY }}</h6>
-    <h6> Cell: {{ mouseController?.hoveringCellId }}</h6>
-    <h6> Cell: {{ mouseController?.hoveringSpriteTileCell?.id }}</h6>
-    <h6 *ngFor="let cell of mouseController?.hoveringCellAtZAxisIterator"> Z: {{cell?.elevationIndex}}: {{ cell?.id }}</h6>
-     
-    <h1 style="color:white">{{selected}}</h1>
-  </div>
+
   <div>
     <gm-editor-side-nav></gm-editor-side-nav>
   </div>
   <div class="game-view">
     <gm-canvas></gm-canvas>
+  </div>
+
+  <div style="color:white; position: absolute; top: 115px">
+    <h6>X: {{ mouseController?.hoveringPosX }} </h6>
+    <h6>Y: {{ mouseController?.hoveringPosY }} </h6>
+    <h6>HCid: {{ mouseController?.hoveringCell?.id }} </h6>
+    <!-- <h6>{{ mouseController.hoveringCell }} </h6> -->
+    <h6>HGAid: {{ mouseController?.hoveringGridAsset?.id }} </h6>
+    <!-- <h6>{{ mouseController.hoveringGridAssets }} </h6> -->
+    <h6>HABid: {{ mouseController?.hoveringAssetBlock?.cell?.id }} </h6>
+    <h6>Obstructed: {{ mouseController?.hoveringAssetBlock?.obstructed}} </h6>
+    <!-- <h6>{{ mouseController.hoveringAssetBlocks }} </h6> -->
+    <h6>HCAZ: {{ mouseController?.hoveringCellAtZAxis?.id }} </h6>
+    <h6>Z: {{ mouseController?.hoveringZAxis }} </h6>
+    <h6>MDZ: {{ mouseController?.hoveringZAxisAtMouseDown }} </h6>
+    <h6>A#: {{ assetController?.assetArray.length }} </h6>
+    <h6>frontBlock#: {{ mouseController?.hoveringAssetBlockFront?.id }} </h6>
+
+  <label for="vol">Brush (1-10)</label>
+  <input #input type="number" [(ngModel)]="settings.brushSize">
+
+    <h1 style="color:white">{{selected}}</h1>
   </div>
 </div>

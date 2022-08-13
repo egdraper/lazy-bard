@@ -1,10 +1,9 @@
-import { CanvasModule } from '../extensions/addon-base';
-import { Extension } from '../models/extension.model';
+import { RootCanvasModule } from '../modules/root.module';
 
 export class CanvasModuleController {
-  public canvasModules: CanvasModule[] = [];
+  public canvasModules: RootCanvasModule[] = [];
 
-  public registerModule(canvasModule: CanvasModule) {
+  public registerModule(canvasModule: RootCanvasModule) {
     this.canvasModules.push(canvasModule);
   }
 }

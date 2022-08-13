@@ -1,34 +1,31 @@
-import { assetType } from '../db/asset-items';
+import { assetAttributes } from '../db/asset-items';
 import { SpriteOrientation } from '../extensions/asset/direction.ts/direction';
 
-import { AssetTypeViewModel } from './asset.model';
+import { AssetAttributes } from './asset.model';
 import { SpriteLocation, Cell, Position, RenderingLayers } from './map';
-
 
 export abstract class Tile {
   id: string;
   imageUrl?: string;
   default?: boolean;
   selected?: boolean;
-  layer?: RenderingLayers
+  layer?: RenderingLayers;
 
-  constructor(
-    layer: RenderingLayers,
-    imageUrl?: string,
-    ) {
-    this.imageUrl = imageUrl
-    this.layer = layer
+  constructor(layer: RenderingLayers, imageUrl?: string) {
+    this.imageUrl = imageUrl;
+    this.layer = layer;
   }
 }
 
 export class BackgroundTile extends Tile {
   drawsWith?: SpriteLocation;
   constructor(imageUrl: string) {
-    super(RenderingLayers.BaseLayer, imageUrl)
+    super(RenderingLayers.BaseLayer, imageUrl);
   }
 }
 
 export class TerrainTile extends Tile {
+  drawableTile?: DrawableTile;
   drawableTileId?: string;
   drawWhen?: DrawWhen;
   topWith?: SpriteLocation;
@@ -38,38 +35,39 @@ export class TerrainTile extends Tile {
   drawsWithTop?: SpriteLocation;
 
   constructor() {
-    super(RenderingLayers.TerrainLayer)
+    super(RenderingLayers.TerrainLayer);
   }
 }
 
 export class AssetTile extends Tile {
-  assetDrawRules: AssetTypeViewModel;
+  assetDrawRules: AssetAttributes;
   obstacleObstructionX?: number;
   obstacleObstructionY?: number;
 
   constructor(layer: RenderingLayers, imageUrl: string, drawRuleName: string) {
-    super(layer, imageUrl)
-    this.assetDrawRules = assetType.find(item => item.id === drawRuleName)
+    super(layer, imageUrl);
+    this.assetDrawRules = assetAttributes.find(
+      (item) => item.id === drawRuleName
+    );
   }
 }
 
-export class DrawableItemViewModel {
+export class DrawableTile {
   drawingRules: TerrainTile[];
   id: string;
   imageUrl: string;
+  assetAttributeId: string;
   name: string;
   offsetX: number;
   offsetY: number;
-  spriteType: string;
-  variableHeight: number;
   staticHeight?: number;
-  defaultTopBackground?: string;
   expandable?: boolean;
+  backgroundTerrainId?: string;
 }
 
 export class SpriteAnimation {
   public changeEveryNthFrame: number = 16;
-  public orientation: SpriteOrientation = new SpriteOrientation()
+  public orientation: SpriteOrientation = new SpriteOrientation();
   public positionCounter = 0;
 }
 

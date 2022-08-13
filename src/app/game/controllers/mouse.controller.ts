@@ -1,20 +1,31 @@
 import { Subject } from 'rxjs';
 import { GSM } from '../game-state-manager.service';
 import { Cell, MousePosition } from '../models/map';
-import { GridAsset } from '../models/asset.model';
-import { getTopAssetBlockingCell } from './utils/selected-sprite-tile';
+import { AssetBlock, GridAsset } from '../models/asset.model';
 
 export class MouseController {
   // Events
+  public cellUp = new Subject<Cell>();
   public cellClick = new Subject<Cell>();
-  public emptyCellClicked = new Subject<Cell>();
-  public cellAtZIndexClicked = new Subject<{ cell: Cell; zIndex: number }>();
-  public cellMouseEntered = new Subject<Cell>();
+  public cellDown = new Subject<Cell>();
+  public cellHover = new Subject<Cell>();
+  public assetClick = new Subject<GridAsset>();
+  public assetDown = new Subject<GridAsset>();
+  public assetUp = new Subject<GridAsset>()
+  public assetHover = new Subject<GridAsset>();
+  public assetBlockClick = new Subject<AssetBlock>();
+  public assetBlockDown = new Subject<AssetBlock>();
+  public assetBlockUp = new Subject<AssetBlock>()
+  public assetBlockHover = new Subject<AssetBlock>();
+  public zAxisHover = new Subject<number>();
+  public zAxisDown = new Subject<number>();
+  public zAxisUp = new Subject<number>();
+  public zAxisClick = new Subject<number>();
 
   public mouseDown = new Subject();
   public mouseUp = new Subject();
   public mouseHover = new Subject();
-  public mouseClick = new Subject<{ x: number; y: number }>();
+  public mouseClick = new Subject();
 
   // Hover state
   public hoveringPosX: number = 0;
@@ -22,67 +33,98 @@ export class MouseController {
   public hoveringCellId: string = '';
   public hoveringCell: Cell = null;
   public hoveringGridAsset: GridAsset;
-  public hoveringCellAtZAxisIterator: Cell[] = [];
+  public hoveringGridAssets: GridAsset[]
+  public hoveringAssetBlock: AssetBlock
+  public hoveringAssetBlocks: AssetBlock[];
+  public hoveringAssetBlockFront: AssetBlock
   public hoveringCellAtZAxis: Cell;
   public hoveringZAxis: number = 0;
   public hoveringZAxisAtMouseDown: number = 0;
-  public hoveringCellZAxisAtMouseDown: GridAsset;
+  public hoveringCellAtZAxisOnMouseDown: Cell;
 
   constructor() {
     this.mouseHover.subscribe(this.onMouseHover.bind(this));
-    this.cellMouseEntered.subscribe(this.onMouseCellEnter.bind(this));
+    this.mouseUp.subscribe(this.onMouseUp.bind(this));
+    this.mouseClick.subscribe(this.onMouseClick.bind(this));
     this.mouseDown.subscribe(this.onMouseDown.bind(this));
-    this.mouseUp.subscribe(this.onCellClick.bind(this));
   }
 
-  private onMouseDown(event: MousePosition): void {
-    const gridAsset = this.selectTerrainTile(this.hoveringCell);
-    this.hoveringZAxisAtMouseDown = gridAsset?.zIndex || 0;
-    this.hoveringCellZAxisAtMouseDown = gridAsset;
-    this.cellMouseEntered.next(this.hoveringCell);
+  private onMouseDown(): void {
+    this.hoveringZAxisAtMouseDown = this.hoveringZAxis
+    this.assetDown.next(this.hoveringGridAsset)
+    this.assetBlockDown.next(this.hoveringAssetBlock)
+    this.cellDown.next(this.hoveringCell)
+    this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
+    GSM.GridController.getCellByLocation(this.hoveringCell.location.x, this.hoveringCell.location.y)
   }
 
-  private onCellClick(): void {
-    this.hoveringZAxisAtMouseDown = 0;
-    const cell = this.hoveringCellZAxisAtMouseDown ? this.hoveringCellZAxisAtMouseDown.cell : this.hoveringCell
-    this.cellAtZIndexClicked.next({cell: cell, zIndex: this.hoveringZAxis})
+  private onMouseUp(): void {
+    this.assetUp.next(this.hoveringGridAsset)
+    this.assetBlockUp.next(this.hoveringAssetBlock)
+    this.cellUp.next(this.hoveringCell)
+    this.zAxisUp.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
+  }
+
+  private onMouseClick(): void {
+    this.assetClick.next(this.hoveringGridAsset)
+    this.assetBlockClick.next(this.hoveringAssetBlock)
+    this.cellClick.next(this.hoveringCell)
+    this.zAxisClick.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
   }
 
   private onMouseHover(event: MousePosition): void {
-    this.setMouseDetails(event);
-  }
+    const newHoveringCell = GSM.GridController.getCellByPosition(event.posX, event.posY)
 
-  private onMouseCellEnter(cell: Cell): void {
-    this.selectTerrainTile(cell);
-  }
+    this.hoveringPosX = event.posX
+    this.hoveringPosY = event.posY
+    if(!newHoveringCell) { return }
+    if(newHoveringCell.id !== this.hoveringCell?.id) {
+      this.hoveringCell = newHoveringCell
+      this.hoveringCellAtZAxisOnMouseDown = GSM.GridController.getCellAtZAxis(this.hoveringCell, this.hoveringZAxisAtMouseDown)
+      
+      const gridAsset = GSM.AssetController.getTopAssetCoveringCell(this.hoveringCell);
+      const gridAssets = GSM.AssetController.getAllAssetsCoveringCell(this.hoveringCell)
+      const assetBlock = GSM.AssetController.getTopAssetBlockCoveringCell(this.hoveringCell);
+      const assetBlocks = GSM.AssetController.getAllAssetBlocksCoveringCell(this.hoveringCell)
+      const frontFaceBlock = GSM.AssetController.getFrontBlockCoveringCell(this.hoveringCell);
 
-  private setMouseDetails(event: MousePosition): void {
-    this.hoveringPosX = event.posX;
-    this.hoveringPosY = event.posY;
+      if(assetBlock) {        
+        this.hoveringCellAtZAxis = assetBlock.cell
+        this.hoveringZAxis = gridAsset.attributes.size.z > 0 ? assetBlock.zIndex + 1 : assetBlock.zIndex
+        this.hoveringAssetBlocks = assetBlocks
+        this.hoveringGridAsset = gridAsset
+        this.hoveringGridAssets = gridAssets
+        this.hoveringAssetBlock = assetBlock
+        this.assetHover.next(gridAsset)
+        this.assetBlockHover.next(assetBlock)
+        this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex + 1 : 0)
+      } else {
+        this.hoveringCellAtZAxis = newHoveringCell
+        this.hoveringGridAsset = null
+        this.hoveringAssetBlock = null
+        this.hoveringAssetBlocks = []
+        this.hoveringGridAssets = []
+        this.hoveringAssetBlockFront = undefined
+        this.hoveringZAxis = 0
+        this.assetHover.next(null)
+        this.assetBlockHover.next(null)
+        this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex : 0)
+      }
 
-    const hoveringCell = GSM.GridController.getCellByPosition(
-      this.hoveringPosX,
-      this.hoveringPosY
-    );
+      if(frontFaceBlock.length > 0 && frontFaceBlock.length > assetBlocks.length) {
+        this.hoveringAssetBlocks = frontFaceBlock
+        this.hoveringAssetBlockFront = frontFaceBlock[frontFaceBlock.length - 1]
+        this.hoveringAssetBlock = frontFaceBlock[frontFaceBlock.length - 1]
+        this.hoveringCellAtZAxis = frontFaceBlock[frontFaceBlock.length - 1].cell
+        this.hoveringGridAsset = GSM.AssetController.getAssetById(this.hoveringAssetBlockFront.ownerAssetId)
+        this.hoveringGridAssets = frontFaceBlock.map(asset => GSM.AssetController.getAssetById(asset.ownerAssetId))
+        this.hoveringZAxis = this.hoveringAssetBlockFront.zIndex
+        this.assetHover.next(this.hoveringGridAsset)
+        this.assetBlockHover.next(frontFaceBlock[frontFaceBlock.length - 1])
+        this.zAxisDown.next(this.hoveringAssetBlock ? this.hoveringAssetBlock.zIndex + 1 : 0)
+      }
 
-    if (hoveringCell && this.hoveringCellId !== hoveringCell.id) {
-      this.hoveringCellId = hoveringCell.id;
-      this.hoveringCell = hoveringCell;
-      this.cellMouseEntered.next(this.hoveringCell);
-    }
-  }
-
-  private selectTerrainTile(cell: Cell): GridAsset {
-    const gridAsset = getTopAssetBlockingCell(cell);
-
-    if (gridAsset) {
-      this.hoveringZAxis = gridAsset.zIndex;
-      this.hoveringGridAsset = gridAsset;
-      return gridAsset;
-    } else {
-      this.hoveringGridAsset = null;
-      this.hoveringZAxis = 0
-      return null;
+      this.cellHover.next(this.hoveringCell)
     }
   }
 }

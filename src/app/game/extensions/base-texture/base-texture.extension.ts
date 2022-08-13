@@ -32,7 +32,7 @@ export class BaseTextureExtension extends CanvasLayerExtension {
   }
 
   private loadBaseTextureSpriteIntoRenderer(textureSprites: TextureSprite[]): void {
-    const textureSprite = textureSprites.find(sprite => sprite.baseTexture === GSM.GameData.map.baseTexture)
+    const textureSprite = textureSprites.find(sprite => sprite.baseTexture === GSM.GridController.map.baseTexture)
     if(textureSprite) {
       this.baseTexture = textureSprite
     } else {
@@ -42,16 +42,14 @@ export class BaseTextureExtension extends CanvasLayerExtension {
 
   // MOCKS DB call from Server
   private getBackgroundImages(): TextureSprite[] {
-    return backgroundSprites.filter(sprite => sprite.textureType === "background")
+    return backgroundSprites.filter(sprite => sprite.id === "greenGrass")
   }
 
   private setBackgroundImages(): void {
     GSM.GridController.iterateCells((cell: Cell) => {
-      cell.backgroundAsset = new BackgroundAsset(
-        cell,
-        new BackgroundTile(this.baseTexture?.imageUrl || "")
-      )
-      BaseTextureRandomGenerator.autoFillBackgroundTerrain(cell.backgroundAsset.tile, this.baseTexture)
+      const backgroundAsset = new BackgroundAsset(cell, new BackgroundTile(this.baseTexture?.imageUrl || ""))
+      BaseTextureRandomGenerator.autoFillBackgroundTerrain(backgroundAsset.tile, this.baseTexture)
+      GSM.AssetController.addBackgroundAsset(backgroundAsset, 0)
     })
   }
 }

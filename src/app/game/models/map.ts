@@ -5,7 +5,6 @@ export class GameMap {
   public name: string
   public baseTexture: string
   public grid: {[cellId: string]: Cell } = {}
-  // public assets?: {[cellId: string]: {[zIndex:number]: {[layer: string ]: GridAsset}}} = {}  
   // public backgroundTiles?: {[cellId: string]:  BackgroundTile} = {}  
 
   constructor(public size: Size) { }
@@ -15,12 +14,9 @@ export class GameMap {
 
 export class Cell {
   public id: string // x0:y0
-  public obstructions: {[z: string]: boolean} // id format "x0:y0:z0"
   public location: Location // {x: 0, y: 0}
   public position: Position // not saved
-
-  public assets?: {[zIndex:number]: {[layer: string ]: GridAsset}}  
-  public backgroundAsset?: BackgroundAsset  
+  public iterationOrder: number
 }
 
 export enum NeighborLocation {

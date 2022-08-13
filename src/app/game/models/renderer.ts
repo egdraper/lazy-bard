@@ -6,15 +6,15 @@ import { BackgroundTile, TerrainTile } from "./sprite-tile.model"
 export interface Renderer {
   ctx: CanvasRenderingContext2D
   renderingLayer: RenderingLayers
-  beforeDraw?: (asset: GridAsset, frame?: number) => void
-  onDraw?: (any: GridAsset, frame?: number) => void
-  afterDraw?: (any: GridAsset, frame?: number) => void
+  beforeDraw?: (asset: GridAsset, frame?: number, opacity?: number) => void
+  onDraw?: (any: GridAsset, frame?: number, opacity?: number) => void
+  afterDraw?: (any: GridAsset, frame?: number, opacity?: number) => void
 }
 
 export interface BackgroundRenderer extends Renderer {
-  beforeDraw?: (asset: BackgroundTile, frame?: number) => void
-  onDraw?: (tile: BackgroundTile, frame?: number ) => void 
-  afterDraw?: (any: BackgroundTile, frame?: number) => void
+  beforeDraw?: (asset: BackgroundTile, frame?: number, opacity?: number) => void
+  onDraw?: (tile: BackgroundTile, frame?: number, opacity?: number ) => void 
+  afterDraw?: (any: BackgroundTile, frame?: number, opacity?: number) => void
 }
 
 export class RenderOptionsEvent {

@@ -38,15 +38,7 @@ export class CanvasComponent implements AfterViewInit {
     const mousePosX = Math.round(Math.abs(event.offsetX) / GSM.Settings.scale)
     const mousePosY = Math.round(Math.abs(event.offsetY) / GSM.Settings.scale)
     
-    const cell = GSM.GridController.getCellByPosition(mousePosX, mousePosY)
-    
-    GSM.MouseController.cellClick.next(cell)
-    GSM.MouseController.mouseClick.next({x: mousePosX, y: mousePosY})
-    
-    const occupiedCell = GSM.AssetController.getAssetsByCell(cell)
-    if(occupiedCell.length === 0) {
-      GSM.MouseController.emptyCellClicked.next(cell)
-    }
+    GSM.MouseController.mouseClick.next({posX: mousePosX, posY: mousePosY})
   }
 
   public onMouseDown(event: MouseEvent): void {
@@ -120,16 +112,16 @@ export class CanvasComponent implements AfterViewInit {
 
     
     // sets the width of canvas if grid is less than screen size
-    if(perfectWidth > GSM.GameData.map.size.x * GSM.Settings.blockSize) {
-      perfectWidth = GSM.GameData.map.size.x * GSM.Settings.blockSize
+    if(perfectWidth > GSM.GridController.map.size.x * GSM.Settings.blockSize) {
+      perfectWidth = GSM.GridController.map.size.x * GSM.Settings.blockSize
       
       // sets the container div's width to match grid size for centering
       if(container) {
         container.style.width = `${perfectWidth.toString()}px`
       }      
     }
-    if(perfectHeight > GSM.GameData.map.size.y * GSM.Settings.blockSize) {
-      perfectHeight = GSM.GameData.map.size.y * GSM.Settings.blockSize
+    if(perfectHeight > GSM.GridController.map.size.y * GSM.Settings.blockSize) {
+      perfectHeight = GSM.GridController.map.size.y * GSM.Settings.blockSize
     }
     
     // sets the canvas width to line up with the grid's edges if grid is larger than canvas
@@ -142,5 +134,4 @@ export class CanvasComponent implements AfterViewInit {
 
     return { width: perfectWidth * GSM.Settings.scale, height: perfectHeight * GSM.Settings.scale }
   }
-  
 }

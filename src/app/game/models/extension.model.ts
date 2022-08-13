@@ -1,4 +1,4 @@
-import { Extensions } from "../extensions.register";
+import { CanvasModules } from "../module.register";
 import { Renderer } from "./renderer";
 
 export class Extension {
