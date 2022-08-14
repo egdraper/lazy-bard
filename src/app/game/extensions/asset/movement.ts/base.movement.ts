@@ -1,12 +1,12 @@
 import { Subscription } from "rxjs"
-import { Asset } from "../../../models/asset.model"
+import { PlaceableAsset } from "../../../models/asset.model"
 import { GSM } from "../../../game-state-manager.service"
 import { Cell, Position, RenderingLayers } from "../../../models/map"
 import { TravelPath } from "../shortest-paths/shortest-path"
-import { SpriteAnimation } from "src/app/game/models/sprite-tile.model"
+import { SpriteAnimation } from "../animation/animation"
 
 export abstract class Movement {
-  protected abstract asset: Asset
+  protected abstract asset: PlaceableAsset
   public movementOffset: Position
   public moving = false
   public speed: number = 1
@@ -14,7 +14,7 @@ export abstract class Movement {
   protected abstract travelPath: TravelPath
   
   protected currentPath: Cell[] = []
-  protected redirection: { start: Cell, end: Cell, charactersOnGrid: Asset[] }
+  protected redirection: { start: Cell, end: Cell, charactersOnGrid: PlaceableAsset[] }
   protected nextCell: Cell
   protected previousCell: Cell
   protected movementSubscription: Subscription
@@ -37,7 +37,7 @@ export abstract class Movement {
     this.cellTrackPosY = cell.position.y
   }
 
-  public start(startCell: Cell, endCell: Cell, charactersOnGrid: Asset[], onFinished?: ()=> void): void {
+  public start(startCell: Cell, endCell: Cell, charactersOnGrid: PlaceableAsset[], onFinished?: ()=> void): void {
     this.onFinished = onFinished
     
     if (this.moving) {
@@ -58,7 +58,7 @@ export abstract class Movement {
     this.moving = true
     
     this.subscribeToFrameTimer()
-    this.animation.orientation.autoSetOrientation(this.asset.anchorCell, this.nextCell)
+    this.asset.orientation.autoSetOrientation(this.asset.anchorCell, this.nextCell)
   }
 
   public updateAnimation() {
@@ -114,7 +114,7 @@ export abstract class Movement {
   
   protected prepareNextMovement(): void {
     this.distanceToNextCell = GSM.Settings.blockSize
-    this.asset.animation.orientation.autoSetOrientation(this.asset.anchorCell, this.nextCell)
+    this.asset.orientation.autoSetOrientation(this.asset.anchorCell, this.nextCell)
   }
 
   protected setCurrentPath(startCell: Cell, endCell: Cell): void {

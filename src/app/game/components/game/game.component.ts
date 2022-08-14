@@ -5,7 +5,7 @@ import { Running } from '../../extensions/asset/movement.ts/run.movement';
 import { Sneaking } from '../../extensions/asset/movement.ts/sneak.movement';
 import { Walking } from '../../extensions/asset/movement.ts/walking.movement';
 import { GSM } from '../../game-state-manager.service';
-import { Asset, GridAsset } from '../../models/asset.model';
+import { PlaceableAsset, Asset } from '../../models/asset.model';
 
 @Component({
   selector: 'gm-game',
@@ -122,12 +122,12 @@ export class GameComponent implements AfterViewInit {
       GSM.FrameController.start();
     }
     if (event.code === 'KeyH') {
-      const asset = GSM.AssetController.getSelectedAssets()[0] as Asset;
+      const asset = GSM.AssetController.getSelectedAssets()[0] as PlaceableAsset;
       asset.hovering = true;
       GSM.AssetController.changeZAxis('up', asset);
     }
     if (event.code === 'KeyN') {
-      const asset = GSM.AssetController.getSelectedAssets()[0] as Asset;
+      const asset = GSM.AssetController.getSelectedAssets()[0] as PlaceableAsset;
       const topAsset = GSM.AssetController.getTopAssetCoveringCell(
         asset.anchorCell
       );
@@ -159,17 +159,17 @@ export class GameComponent implements AfterViewInit {
       });
     }
     if (event.code === 'KeyL') {
-      GSM.AssetController.selectedAssets.forEach((asset: Asset) => {
+      GSM.AssetController.selectedAssets.forEach((asset: PlaceableAsset) => {
         asset.movement = new Running(asset)
       })
     }
     if (event.code === 'KeyK') {
-      GSM.AssetController.selectedAssets.forEach((asset: Asset) => {
+      GSM.AssetController.selectedAssets.forEach((asset: PlaceableAsset) => {
         asset.movement = new Sneaking(asset)
       })
     }
     if (event.code === 'KeyJ') {
-      GSM.AssetController.selectedAssets.forEach((asset: Asset) => {
+      GSM.AssetController.selectedAssets.forEach((asset: PlaceableAsset) => {
         asset.movement = new Walking(asset)
       })
     }

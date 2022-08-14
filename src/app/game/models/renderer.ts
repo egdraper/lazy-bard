@@ -1,4 +1,4 @@
-import { GridAsset } from "./asset.model"
+import { Asset } from "./asset.model"
 import { Extension } from "./extension.model"
 import { RenderingLayers } from "./map"
 import { BackgroundTile, TerrainTile } from "./sprite-tile.model"
@@ -6,9 +6,9 @@ import { BackgroundTile, TerrainTile } from "./sprite-tile.model"
 export interface Renderer {
   ctx: CanvasRenderingContext2D
   renderingLayer: RenderingLayers
-  beforeDraw?: (asset: GridAsset, frame?: number, opacity?: number) => void
-  onDraw?: (any: GridAsset, frame?: number, opacity?: number) => void
-  afterDraw?: (any: GridAsset, frame?: number, opacity?: number) => void
+  beforeDraw?: (asset: Asset, frame?: number, opacity?: number) => void
+  onDraw?: (any: Asset, frame?: number, opacity?: number) => void
+  afterDraw?: (any: Asset, frame?: number, opacity?: number) => void
 }
 
 export interface BackgroundRenderer extends Renderer {

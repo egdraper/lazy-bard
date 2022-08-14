@@ -1,6 +1,6 @@
 import { Subscription } from "rxjs"
 import { GSM } from "../game-state-manager.service"
-import { AssetBlock, BlockEdge, GridAsset } from "../models/asset.model"
+import { AssetBlock, BlockEdge, Asset } from "../models/asset.model"
 import { CanvasCTX } from "../models/extension.model"
 import { RenderingLayers } from "../models/map"
 import { Renderer } from "../models/renderer"
@@ -108,7 +108,7 @@ export class RendererController {
     })
   }
 
-  private paintAroundAsset(asset: GridAsset) {
+  private paintAroundAsset(asset: Asset) {
     if(!GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer] ) { return }
     const ctx = GSM.CanvasController.foregroundCTX
 

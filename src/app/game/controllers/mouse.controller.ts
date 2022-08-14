@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 import { GSM } from '../game-state-manager.service';
 import { Cell, MousePosition } from '../models/map';
-import { AssetBlock, GridAsset } from '../models/asset.model';
+import { AssetBlock, Asset } from '../models/asset.model';
 
 export class MouseController {
   // Events
@@ -9,10 +9,10 @@ export class MouseController {
   public cellClick = new Subject<Cell>();
   public cellDown = new Subject<Cell>();
   public cellHover = new Subject<Cell>();
-  public assetClick = new Subject<GridAsset>();
-  public assetDown = new Subject<GridAsset>();
-  public assetUp = new Subject<GridAsset>()
-  public assetHover = new Subject<GridAsset>();
+  public assetClick = new Subject<Asset>();
+  public assetDown = new Subject<Asset>();
+  public assetUp = new Subject<Asset>()
+  public assetHover = new Subject<Asset>();
   public assetBlockClick = new Subject<AssetBlock>();
   public assetBlockDown = new Subject<AssetBlock>();
   public assetBlockUp = new Subject<AssetBlock>()
@@ -32,8 +32,8 @@ export class MouseController {
   public hoveringPosY: number = 0;
   public hoveringCellId: string = '';
   public hoveringCell: Cell = null;
-  public hoveringGridAsset: GridAsset;
-  public hoveringGridAssets: GridAsset[]
+  public hoveringGridAsset: Asset;
+  public hoveringGridAssets: Asset[]
   public hoveringAssetBlock: AssetBlock
   public hoveringAssetBlocks: AssetBlock[];
   public hoveringAssetBlockFront: AssetBlock

@@ -1,13 +1,13 @@
 import { Position } from "src/app/game/models/map"
 import { GSM } from "../../../../game/game-state-manager.service"
-import { Asset } from "../../../models/asset.model"
+import { PlaceableAsset } from "../../../models/asset.model"
 import { ShortestPath, TravelPath } from "../shortest-paths/shortest-path"
 import { Movement } from "./base.movement"
 
 export class Sneaking extends Movement {   
   public travelPath: TravelPath = new ShortestPath()
   
-  constructor(public asset: Asset) {
+  constructor(public asset: PlaceableAsset) {
     super(asset.animation, new Position(asset.anchorCell.position.x, asset.anchorCell.position.y, 0))
     this.speed = .25
   }

@@ -1,4 +1,4 @@
-import { BackgroundAsset, GridAsset } from "./asset.model"
+import { BackgroundAsset, Asset } from "./asset.model"
 
 export class GameMap {
   public id: string

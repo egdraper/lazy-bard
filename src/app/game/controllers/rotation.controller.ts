@@ -1,6 +1,6 @@
 import { GSM } from '../game-state-manager.service'
 import { MapRotationIndex, RenderingLayers } from '../models/map'
-import { Asset } from '../models/asset.model'
+import { PlaceableAsset } from '../models/asset.model'
 import { generateBackgroundImage, generateLayerImage } from './utils/create-background-image'
 import { terrainCleanup } from './utils/terrain-cleanup'
 
@@ -54,7 +54,7 @@ export class RotationController {
             cell.position.y = newY * GSM.Settings.blockSize
 
             const assets = GSM.AssetController.getAssetsByAnchorCell(cell)
-            assets.forEach((asset: Asset) => {
+            assets.forEach((asset: PlaceableAsset) => {
               if(asset.movement && asset.movement.movementOffset) {
                 asset.movement.movementOffset.x = cell.position.x
                 asset.movement.movementOffset.y = cell.position.y
@@ -84,7 +84,7 @@ export class RotationController {
           cell.position.y = newX * GSM.Settings.blockSize
          
           const assets = GSM.AssetController.getAssetsByCell(cell)
-          assets.forEach((asset: Asset) => {
+          assets.forEach((asset: PlaceableAsset) => {
             if(asset.movement && asset.movement.movementOffset) {
               asset.movement.movementOffset.x = cell.position.x
               asset.movement.movementOffset.y = cell.position.y
@@ -114,7 +114,7 @@ export class RotationController {
           cell.position.y = newY * GSM.Settings.blockSize
 
           const assets = GSM.AssetController.getAssetsByCell(cell)
-          assets.forEach((asset: Asset) => {
+          assets.forEach((asset: PlaceableAsset) => {
             if(asset.movement && asset.movement.movementOffset) {
               asset.movement.movementOffset.x = cell.position.x
               asset.movement.movementOffset.y = cell.position.y
@@ -142,7 +142,7 @@ export class RotationController {
           cell.position.y = newX * GSM.Settings.blockSize
 
           const assets = GSM.AssetController.getAssetsByCell(cell)
-          assets.forEach((asset: Asset) => {
+          assets.forEach((asset: PlaceableAsset) => {
             if(asset.movement && asset.movement.movementOffset) {
               asset.movement.movementOffset.x = cell.position.x
               asset.movement.movementOffset.y = cell.position.y
@@ -162,7 +162,7 @@ export class RotationController {
       this.currentRotationIndex++
     }
 
-    GSM.AssetController.assetArray.forEach((asset: Asset) => {
+    GSM.AssetController.assetArray.forEach((asset: PlaceableAsset) => {
       asset.anchorCell = GSM.GridController.getCellByLocation(asset.anchorCell.location.x, asset.anchorCell.location.y + asset.attributes.size.y - 1)
     })
 

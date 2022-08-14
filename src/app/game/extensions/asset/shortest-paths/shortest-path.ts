@@ -1,4 +1,4 @@
-import { Asset } from "../../../models/asset.model"
+import { PlaceableAsset } from "../../../models/asset.model"
 import { GSM } from "../../../game-state-manager.service"
 import { Cell, RenderingLayers } from "../../../models/map"
 
@@ -13,15 +13,15 @@ export interface Visited {
 }
 
 export abstract class TravelPath {
-  public abstract find(start: Cell, end: Cell, asset?: Asset ): Cell[] 
+  public abstract find(start: Cell, end: Cell, asset?: PlaceableAsset ): Cell[] 
 } 
 
 export class ShortestPath extends TravelPath {
   private maxSearches = 2000000
   private searchIndex = 0
-  private asset: Asset
+  private asset: PlaceableAsset
 
-  public find(start: Cell, end: Cell, asset: Asset): Cell[] {
+  public find(start: Cell, end: Cell, asset: PlaceableAsset): Cell[] {
     this.asset = asset
     
     if (GSM.AssetController.isCellBlockObstructed(end, asset.baseZIndex)) {

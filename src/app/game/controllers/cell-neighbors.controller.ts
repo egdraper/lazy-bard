@@ -1,5 +1,5 @@
 import { GSM } from "../game-state-manager.service"
-import { AssetBlock, GridAsset } from "../models/asset.model"
+import { AssetBlock, Asset } from "../models/asset.model"
 import { Cell, NeighborLocation, RenderingLayers } from "../models/map"
 
 export class CellNeighborsController {
@@ -29,10 +29,10 @@ export class CellNeighborsController {
   }
 
   public getImmediateNeighboringAssets(
-    gridAsset: GridAsset,
+    gridAsset: Asset,
     neighborLocation: NeighborLocation,
     layer?: RenderingLayers
-  ): GridAsset[] {
+  ): Asset[] {
     let blocks: AssetBlock[] = []
     switch (neighborLocation) {
       case NeighborLocation.North:
@@ -129,8 +129,8 @@ export class CellNeighborsController {
     return cells
   }  
 
-  public getHorizontalNeighborsAsset(asset: GridAsset, layer?: RenderingLayers): GridAsset[][] | GridAsset[] {
-    const gridAssets: GridAsset[][] = []
+  public getHorizontalNeighborsAsset(asset: Asset, layer?: RenderingLayers): Asset[][] | Asset[] {
+    const gridAssets: Asset[][] = []
     gridAssets.push(this.getImmediateNeighboringAssets(asset, NeighborLocation.North, layer))
     gridAssets.push(this.getImmediateNeighboringAssets(asset, NeighborLocation.East, layer))
     gridAssets.push(this.getImmediateNeighboringAssets(asset, NeighborLocation.South, layer))
@@ -142,8 +142,8 @@ export class CellNeighborsController {
     return gridAssets
   }  
 
-  public getAllImmediateNeighbors(gridAsset: GridAsset, layer?: RenderingLayers): GridAsset[][] | GridAsset[] {
-    const gridAssets: GridAsset[][] = []
+  public getAllImmediateNeighbors(gridAsset: Asset, layer?: RenderingLayers): Asset[][] | Asset[] {
+    const gridAssets: Asset[][] = []
     gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.North, layer))
     gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.East, layer))
     gridAssets.push(this.getImmediateNeighboringAssets(gridAsset, NeighborLocation.South, layer))

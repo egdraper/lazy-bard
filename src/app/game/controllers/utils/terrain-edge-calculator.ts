@@ -1,13 +1,13 @@
 import { backgroundSprites } from "../../db/background.db"
 import { BaseTextureRandomGenerator } from "../../extensions/base-texture/base-texture.generator"
 import { GSM } from "../../game-state-manager.service"
-import { GridAsset } from "../../models/asset.model"
+import { Asset } from "../../models/asset.model"
 import { NeighborLocation, RenderingLayers } from "../../models/map"
 import { AssetTile, DrawableTile, TerrainTile } from "../../models/sprite-tile.model"
 
 export class TerrainEdgeCalculator {
-  public static calculateTerrainEdges(gridAsset: GridAsset<TerrainTile>, terrainTile: TerrainTile, drawableItem: DrawableTile): TerrainTile {
-    const neighboringCells = GSM.CellNeighborsController.getAllImmediateNeighbors(gridAsset, RenderingLayers.TerrainLayer) as GridAsset[]
+  public static calculateTerrainEdges(gridAsset: Asset<TerrainTile>, terrainTile: TerrainTile, drawableItem: DrawableTile): TerrainTile {
+    const neighboringCells = GSM.CellNeighborsController.getAllImmediateNeighbors(gridAsset, RenderingLayers.TerrainLayer) as Asset[]
     const northNeighbor = neighboringCells[NeighborLocation.North]
     const northEastNeighbor = neighboringCells[NeighborLocation.NorthEast]
     const eastNeighbor = neighboringCells[NeighborLocation.East]

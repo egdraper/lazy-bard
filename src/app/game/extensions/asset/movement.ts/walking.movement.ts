@@ -1,13 +1,13 @@
 import { Movement } from "./base.movement"
 import { ShortestPath, TravelPath } from "../shortest-paths/shortest-path"
 import { GSM } from "src/app/game/game-state-manager.service"
-import { Asset } from "../../../models/asset.model"
+import { PlaceableAsset } from "../../../models/asset.model"
 import { Position } from "src/app/game/models/map"
 
 export class Walking extends Movement {   
   public travelPath: TravelPath = new ShortestPath()
   
-  constructor(public asset: Asset) {
+  constructor(public asset: PlaceableAsset) {
     super(asset.animation, new Position(asset.anchorCell.position.x, asset.anchorCell.position.y, 0))
     this.speed = 1
   }

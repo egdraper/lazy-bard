@@ -1,12 +1,29 @@
 
-import { zip } from "rxjs";
-import { assetAttributes } from "../db/asset-items";
+import { assetAttributes } from "../db/asset-attributes";
+import { SpriteAnimation } from "../extensions/asset/animation/animation";
 import { Movement } from "../extensions/asset/movement.ts/base.movement";
-import { GSM } from "../game-state-manager.service";
-import { Cell, Position, RenderingLayers, Size } from "./map"
-import { AssetTile, BackgroundTile, TerrainTile, SpriteAnimation, Tile } from "./sprite-tile.model"
+import { SpriteOrientation } from "../extensions/asset/orientation.ts/direction";
+import { Cell, RenderingLayers, Size } from "./map";
+import { BackgroundTile, TerrainTile, Tile } from "./sprite-tile.model";
 
 export type Speed = 1 | 2 | 4 | 8 | 16 | 32 | 64
+
+export class AssetAttributes {
+  id: string
+  size: Size
+  drawSize: Size
+  xPosOffset: number
+  yPosOffset: number
+  obstructed: string[]
+}
+
+export class AssetInfo {
+  id: number
+  type: string
+  name: string
+  url: string
+  rule: string
+}
 
 export class BlockEdge {
   north?: boolean
@@ -26,40 +43,39 @@ export class AssetBlock {
   ownerAssetId: string
 }
 
-export class GridAsset<T = any> {
+export class Asset<T = any> {
   id: string; 
-  ownedBlockIds: string[]; 
+  anchorCell: Cell
   tile: T;
   attributesId: string;
   attributes: AssetAttributes // not saved
   layer: RenderingLayers
   baseZIndex: number
-  anchorCell: Cell
+  ownedBlockIds: string[]; 
 }
 
-export class Asset<T = Tile> extends GridAsset {
+export class PlaceableAsset<T = Tile> extends Asset {
   public override tile: T;
   public movement: Movement;
   public animation?: SpriteAnimation;
+  public orientation: SpriteOrientation = new SpriteOrientation();
   public animating = false;
   public hovering = true;
 
-  // location
-  public cellId?: string;
-  public gridId: string; 
-
-  constructor(cell: Cell, assetTypeId: string) {
+  constructor(cell: Cell, assetAttributeId: string) {
     super();
     this.anchorCell = cell
-    this.attributesId = assetTypeId
+    this.attributes = assetAttributes.find(
+      (item) => item.id === assetAttributeId
+    );
   }
-
 }
-export class TerrainAsset extends GridAsset{
+
+export class TerrainAsset extends Asset{
   public override tile: TerrainTile
 }
 
-export class BackgroundAsset extends GridAsset{
+export class BackgroundAsset extends Asset{
   public override tile: BackgroundTile
 
   constructor(
@@ -70,36 +86,4 @@ export class BackgroundAsset extends GridAsset{
     this.anchorCell = cell
     this.tile = tile
   }
-}
-
-export class WalkStepSpritePos {
-  rightFootForward: number
-  neutral: number
-  leftFootForward: number  
-}
-
-export class SpriteDirection {
-  down: number
-  left: number
-  right: number  
-  up: number
-}
-
-export class AssetAttributes {
-  id: string
-  size: Size
-  drawSize: Size
-  xMotionTilePos: number[]
-  yDirectionTilePos: SpriteDirection
-  xPosOffset: number
-  yPosOffset: number
-  obstructed: string[]
-}
-
-export class AssetInfo {
-  id: number
-  type: string
-  name: string
-  url: string
-  rule: string
 }

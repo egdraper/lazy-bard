@@ -1,5 +1,5 @@
-import { assetAttributes } from '../db/asset-items';
-import { SpriteOrientation } from '../extensions/asset/direction.ts/direction';
+import { assetAttributes } from '../db/asset-attributes';
+import { SpriteOrientation } from '../extensions/asset/orientation.ts/direction';
 
 import { AssetAttributes } from './asset.model';
 import { SpriteLocation, Cell, Position, RenderingLayers } from './map';
@@ -40,15 +40,11 @@ export class TerrainTile extends Tile {
 }
 
 export class AssetTile extends Tile {
-  assetDrawRules: AssetAttributes;
   obstacleObstructionX?: number;
   obstacleObstructionY?: number;
 
-  constructor(layer: RenderingLayers, imageUrl: string, drawRuleName: string) {
+  constructor(layer: RenderingLayers, imageUrl: string) {
     super(layer, imageUrl);
-    this.assetDrawRules = assetAttributes.find(
-      (item) => item.id === drawRuleName
-    );
   }
 }
 
@@ -63,12 +59,6 @@ export class DrawableTile {
   staticHeight?: number;
   expandable?: boolean;
   backgroundTerrainId?: string;
-}
-
-export class SpriteAnimation {
-  public changeEveryNthFrame: number = 16;
-  public orientation: SpriteOrientation = new SpriteOrientation();
-  public positionCounter = 0;
 }
 
 export class DrawWhen {

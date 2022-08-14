@@ -1,13 +1,13 @@
 import { Movement } from "./base.movement"
 import { ShortestPath, TravelPath } from "../shortest-paths/shortest-path"
 import { GSM } from "src/app/game/game-state-manager.service"
-import { Asset } from "../../../models/asset.model"
+import { PlaceableAsset } from "../../../models/asset.model"
 import { Position } from "src/app/game/models/map"
 
 export class Skip extends Movement {   
   public travelPath: TravelPath = new ShortestPath()
   
-  constructor(public asset: Asset) {
+  constructor(public asset: PlaceableAsset) {
     super(asset.animation, new Position(asset.ownedBlockIds.position.x, asset.ownedBlockIds.position.y, 0))
   }
 

@@ -1,14 +1,14 @@
 import { drawableItems } from "../../db/drawable-items.db"
 import { GSM } from "../../game-state-manager.service"
-import { GridAsset } from "../../models/asset.model"
+import { Asset } from "../../models/asset.model"
 import { RenderingLayers } from "../../models/map"
 import { TerrainEdgeCalculator } from "./terrain-edge-calculator"
 
-export function terrainCleanup(asset?: GridAsset) {
+export function terrainCleanup(asset?: Asset) {
   let assets = asset ? [...GSM.CellNeighborsController.getAllImmediateNeighbors(asset, RenderingLayers.TerrainLayer), asset] : GSM.AssetController.assetArray
 
   cleanOrphanedTerrain()     
-  assets.forEach((_asset: GridAsset) => {  
+  assets.forEach((_asset: Asset) => {  
     if(_asset?.tile?.layer !== RenderingLayers.TerrainLayer) { return }
     if(_asset.tile.drawableTileId) {
       const itemDetails = drawableItems.find(item => item.id === _asset.tile.drawableTileId)

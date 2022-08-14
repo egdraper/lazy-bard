@@ -1,4 +1,4 @@
-import { Asset } from '../../models/asset.model'
+import { PlaceableAsset } from '../../models/asset.model'
 import { GSM } from '../../game-state-manager.service'
 import { RenderingLayers } from '../../models/map'
 import { Renderer } from '../../models/renderer'
@@ -12,7 +12,7 @@ export class SelectionIndicatorRenderer implements Renderer {
   private width
   private height
 
-  public onDraw(asset: Asset, frame: number): void {
+  public onDraw(asset: PlaceableAsset, frame: number): void {
     if (!asset || !GSM.AssetController.selectedAssets.find(_asset => _asset.id === asset.id)) {
       return
     }
@@ -36,7 +36,7 @@ export class SelectionIndicatorRenderer implements Renderer {
     this.ctx.stroke()
   }
 
-  private animateMarker(asset: Asset, frame: number): void {
+  private animateMarker(asset: PlaceableAsset, frame: number): void {
     const movementOffsetX = asset.movement ? asset?.movement.movementOffset.x : asset.anchorCell.position.x
     const movementOffsetY = asset.movement ? asset?.movement.movementOffset.y : asset.anchorCell.position.y
     

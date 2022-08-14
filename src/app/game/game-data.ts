@@ -1,4 +1,4 @@
-import { GridAsset } from "./models/asset.model";
+import { Asset } from "./models/asset.model";
 import { GameMap } from "./models/map";
 
 export class GameData {

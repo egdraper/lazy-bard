@@ -1,11 +1,12 @@
 import { Cell, RenderingLayers } from 'src/app/game/models/map';
 import { GSM } from '../../game-state-manager.service';
-import { Asset } from '../../models/asset.model';
-import { AssetTile, SpriteAnimation } from '../../models/sprite-tile.model';
+import { PlaceableAsset } from '../../models/asset.model';
+import { AssetTile } from '../../models/sprite-tile.model';
+import { SpriteAnimation } from './animation/animation';
 import { Walking } from './movement.ts/walking.movement';
 
 export class AssetBrush {
-  public selectedPlayableAssets: Asset[] = [];
+  public selectedPlayableAssets: PlaceableAsset[] = [];
 
   constructor() {
     GSM.MouseController.cellClick.subscribe(this.onCellClicked.bind(this));
@@ -13,7 +14,7 @@ export class AssetBrush {
 
   public onCellClicked(): void {
     if (GSM.ActionController.generalActionFire.value.name === 'characterSelected') {    
-      GSM.AssetController.getSelectedAssets().forEach((asset: Asset) => {
+      GSM.AssetController.getSelectedAssets().forEach((asset: PlaceableAsset) => {
         asset.movement.start(asset.anchorCell, GSM.GridController.getCellAtZAxis(GSM.MouseController.hoveringCell, asset.baseZIndex), []);
       });
       return;
@@ -45,14 +46,13 @@ export class AssetBrush {
   // MOCK This will be a database thing
   private addPlayableCharacter(cell: Cell, zIndex: number): void {
     // setup asset
-    const playerAsset = new Asset(cell, 'standardCreature');
+    const playerAsset = new PlaceableAsset(cell, 'standardCreature');
     playerAsset.tile = new AssetTile(
       RenderingLayers.AssetLayer,
-      'assets/images/character_012.png',
-      'standardCreature'
+      'assets/images/character_012.png'
     );
 
-    playerAsset.animation = new SpriteAnimation();
+    playerAsset.animation = new SpriteAnimation("standardCreature");
     playerAsset.movement = new Walking(playerAsset);
     playerAsset.animating = true;
     playerAsset.layer = RenderingLayers.AssetLayer
@@ -65,14 +65,13 @@ export class AssetBrush {
     private addNonPlayableAsset(cell: Cell, zIndex: number): void {
       GSM.RendererController.renderAsAssets()
       // setup asset
-      const newObjectAsset = new Asset(cell, 'standardXLTree');
+      const newObjectAsset = new PlaceableAsset(cell, "standardXLTree");
       newObjectAsset.tile = new AssetTile(
         RenderingLayers.ObjectLayer,
         'assets/images/trees/tree2.png',
-        'standardXLTree'
       );
   
-      newObjectAsset.animation = new SpriteAnimation();
+      newObjectAsset.animation = new SpriteAnimation("noAnimation");
       newObjectAsset.layer = RenderingLayers.ObjectLayer
   
       GSM.AssetController.addAsset(newObjectAsset, cell, zIndex);

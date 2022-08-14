@@ -1,22 +1,27 @@
-import { Asset, AssetInfo, AssetAttributes } from "../models/asset.model";
+import { PlaceableAsset, AssetInfo, AssetAttributes } from "../models/asset.model";
+
 
 export const assetAttributes: AssetAttributes[]  = [
   {
-    id: 'standardCreature',
+    id: 'standardTerrain',
     size: { x: 1, y: 1, z: 1 },
+    drawSize: {x: 16, y: 16 },
+    xPosOffset: -31,
+    yPosOffset: -88,
+    obstructed: ["1"]
+  },
+  {
+    id: 'standardCreature',
+    size: { x: 1, y: 1, z: 2 },
     drawSize: {x: 25, y: 36 },
-    xMotionTilePos: [0, 26, 52, 26],
-    yDirectionTilePos: { down: 0, left: 36, right: 72, up: 108 },
     xPosOffset: -4,
     yPosOffset: -24,
-    obstructed: ["1"]
+    obstructed: ["1","1"]
   },
   {
     id: 'standardLargeMonster',
     size: { x: 2, y: 2, z: 3 },
     drawSize: {x: 32, y: 50 },
-    xMotionTilePos: [0, 32, 64, 32],
-    yDirectionTilePos: { down: 0, left: 50, right: 100, up: 150 },
     xPosOffset: -16,
     yPosOffset: -32,
     obstructed: ["11:11","11:11","11:11"]
@@ -25,8 +30,6 @@ export const assetAttributes: AssetAttributes[]  = [
     id: 'standardSmallItem',
     size: { x: 1, y: 1, z:1 },
     drawSize: {x: 16, y: 16 },
-    xMotionTilePos: [0, 0, 0, 0 ],
-    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
     xPosOffset: 0,
     yPosOffset: 0,
     obstructed: ["1"]
@@ -35,8 +38,6 @@ export const assetAttributes: AssetAttributes[]  = [
     id: 'standardXLTree',
     size: { x: 4, y: 4, z: 4 },
     drawSize: {x: 96, y: 96 },
-    xMotionTilePos: [0, 0, 0, 0 ],
-    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
     xPosOffset: -13,
     yPosOffset: -103,
     obstructed: [
@@ -50,8 +51,6 @@ export const assetAttributes: AssetAttributes[]  = [
     id: 'standardLTree',
     size: { x: 3, y: 3, z: 3 },
     drawSize: {x: 64, y: 64 },
-    xMotionTilePos: [0, 0, 0, 0 ],
-    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
     xPosOffset: -31,
     yPosOffset: -88,
     obstructed: [
@@ -64,28 +63,15 @@ export const assetAttributes: AssetAttributes[]  = [
     id: 'standardLogTree',
     size: { x: 3, y: 1, z: 1 },
     drawSize: {x: 64, y: 64 },
-    xMotionTilePos: [0, 0, 0, 0 ],
-    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
     xPosOffset: -31,
     yPosOffset: -88,
     obstructed: ["111"]
   },
-  {
-    id: 'standardTerrain',
-    size: { x: 1, y: 1, z: 1 },
-    drawSize: {x: 16, y: 16 },
-    xMotionTilePos: [0, 0, 0, 0 ],
-    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
-    xPosOffset: -31,
-    yPosOffset: -88,
-    obstructed: ["1"]
-  },
+
   {
     id: 'standardDrawableTree',
     size: { x: 1, y: 1, z: 1 },
     drawSize: {x: 16, y: 16 },
-    xMotionTilePos: [0, 0, 0, 0 ],
-    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
     xPosOffset: -31,
     yPosOffset: -0,
     obstructed: ["1"]
@@ -94,8 +80,6 @@ export const assetAttributes: AssetAttributes[]  = [
     id: 'standardRoad',
     size: { x: 1, y: 1, z: 0 },
     drawSize: {x: 16, y: 16 },
-    xMotionTilePos: [0, 0, 0, 0 ],
-    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
     xPosOffset: 0,
     yPosOffset: 0,
     obstructed: ["0"]
@@ -104,8 +88,6 @@ export const assetAttributes: AssetAttributes[]  = [
     id: 'hugeTree',
     size: { x: 6, y: 6 , z: 7 },
     drawSize: {x: 144, y: 144 },
-    xMotionTilePos: [0, 0, 0, 0 ],
-    yDirectionTilePos: { down: 0, left: 0, right: 0, up: 0 },
     xPosOffset: -24,
     yPosOffset: -168,
     obstructed: 

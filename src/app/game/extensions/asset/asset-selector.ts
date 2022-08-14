@@ -1,11 +1,8 @@
-import { Cell, RenderingLayers } from 'src/app/game/models/map';
 import { GSM } from '../../game-state-manager.service';
-import { Asset, GridAsset } from '../../models/asset.model';
-import { AssetTile, SpriteAnimation } from '../../models/sprite-tile.model';
-import { Walking } from './movement.ts/walking.movement';
+import { Asset, PlaceableAsset } from '../../models/asset.model';
 
 export class AssetSelector {
-  public selectedPlayableAssets: Asset[] = [];
+  public selectedPlayableAssets: PlaceableAsset[] = [];
 
   constructor() {
     GSM.MouseController.assetClick.subscribe(this.onAssetClicked.bind(this));
@@ -18,7 +15,7 @@ export class AssetSelector {
     })
   }
 
-  public onAssetClicked(asset: GridAsset) {
+  public onAssetClicked(asset: Asset) {
 
     if (GSM.ActionController.generalActionFire.value.name !== 'assetSelect') { 
       return

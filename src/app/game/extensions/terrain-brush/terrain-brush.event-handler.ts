@@ -1,9 +1,9 @@
 import { terrainCleanup } from 'src/app/game/controllers/utils/terrain-cleanup';
 import { NeighborLocation, RenderingLayers } from 'src/app/game/models/map';
 import { DrawableTile, TerrainTile } from 'src/app/game/models/sprite-tile.model';
-import { assetAttributes } from '../../db/asset-items';
+import { assetAttributes } from '../../db/asset-attributes';
 import { GSM } from '../../game-state-manager.service';
-import { GridAsset } from '../../models/asset.model';
+import { Asset } from '../../models/asset.model';
 
 export class TerrainTreeBrushEventHandler {
   constructor() {
@@ -78,16 +78,16 @@ export class TerrainTreeBrushEventHandler {
         for(let i = 0; i < staticHeight; i++) {
           
           cells.forEach(cell => {
-            const newAsset = new GridAsset<TerrainTile>()
+            const newAsset = new Asset<TerrainTile>()
             newAsset.baseZIndex = hoveringZAxis + i
             newAsset.tile = new TerrainTile()
             newAsset.tile.drawableTileId = drawableTile.id
             newAsset.tile.drawableTile = drawableTile
             newAsset.layer = RenderingLayers.TerrainLayer
-            newAsset.attributes = assetAttributes.find(attribute => attribute.id === drawableTile.assetAttributeId)
             newAsset.attributesId = drawableTile.assetAttributeId
+            newAsset.attributes = assetAttributes.find((attribute) => newAsset.attributesId === attribute.id)
             GSM.AssetController.addAsset(newAsset, cell, hoveringZAxis + i)
-            this.removeAllAboveTerrain(newAsset)        
+            this.removeAllAboveTerrain(newAsset)    
           })
         }   
       })  
@@ -103,8 +103,8 @@ export class TerrainTreeBrushEventHandler {
     this.cellClicked()
   }
 
-  private removeAllAboveTerrain(asset: GridAsset): void {
-    GSM.AssetController.getAssetsByCell(asset.anchorCell).forEach((_asset: GridAsset) => {
+  private removeAllAboveTerrain(asset: Asset): void {
+    GSM.AssetController.getAssetsByCell(asset.anchorCell).forEach((_asset: Asset) => {
       const isAboveAssetAnObject = !_asset.tile.drawableTileId
       const isAssetAbove = _asset.baseZIndex > asset.baseZIndex
       const isAboveTerrainTypeDifferent = asset.tile?.drawableTile?.assetAttributeId !== _asset.tile?.drawableTile?.assetAttributeId
