@@ -65,10 +65,10 @@ export class AssetBrush {
     private addNonPlayableAsset(cell: Cell, zIndex: number): void {
       GSM.RendererController.renderAsAssets()
       // setup asset
-      const newObjectAsset = new PlaceableAsset(cell, "standardXLTree");
+      const newObjectAsset = new PlaceableAsset(cell, "standardSmallItemNonObstacle");
       newObjectAsset.tile = new AssetTile(
         RenderingLayers.ObjectLayer,
-        'assets/images/trees/tree2.png',
+        'assets/images/pots/pot3.png',
       );
   
       newObjectAsset.animation = new SpriteAnimation("noAnimation");

@@ -211,9 +211,10 @@ export class AssetController {
 
   public removeAsset(asset: Asset): void {
     asset.ownedBlockIds.forEach(id => { delete this.assetBlocks[id] })
-    delete this.selectedAssets[asset.id]
+    this.selectedAssets = []
     delete this.assets[asset.id]
     this.refreshAssetIterator()
+    GSM.RendererController.renderAsSingleImage()
   }
 
   public refreshAssetIterator(): void {

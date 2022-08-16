@@ -85,10 +85,15 @@ export class RendererController {
   }
 
   private renderAssets(frame: number) {
-    GSM.AssetController.iterateAsset(asset => {
-      this.iterateRenderers(renderer => {
-        if(renderer.renderingLayer === RenderingLayers.BaseLayer) { return }      
-        if(this.renderAsSingeImages[renderer.renderingLayer]) { return }      
+    this.iterateRenderers(renderer => {
+      if(renderer.renderingLayer === RenderingLayers.OverlayLayer) {
+        this.renderOverlayItems(frame, renderer)
+        return
+      }
+      if(renderer.renderingLayer === RenderingLayers.BaseLayer) { return }      
+      if(this.renderAsSingeImages[renderer.renderingLayer]) { return }      
+
+      GSM.AssetController.iterateAsset(asset => {
         if(asset.tile.layer !== renderer.renderingLayer) { return }
         if(renderer.beforeDraw) {
           renderer.beforeDraw(asset, frame)
@@ -101,11 +106,26 @@ export class RendererController {
         if(renderer.afterDraw) {
           renderer.afterDraw(asset, frame)
         }
+
+        if(asset.layer === RenderingLayers.AssetLayer) {
+          this.paintAroundAsset(asset)
+        }
       })
-      if(asset.layer === RenderingLayers.AssetLayer) {
-        this.paintAroundAsset(asset)
-      }
     })
+  }
+
+  private renderOverlayItems(frame: number, renderer) {
+    if(renderer.beforeDraw) {
+      renderer.beforeDraw(null, frame)
+    } 
+
+    if(renderer.onDraw) {
+      renderer.onDraw(null, frame)
+    }
+
+    if(renderer.afterDraw) {
+      renderer.afterDraw(null, frame)
+    }
   }
 
   private paintAroundAsset(asset: Asset) {

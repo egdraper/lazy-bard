@@ -20,7 +20,7 @@ export class AssetSelector {
     if (GSM.ActionController.generalActionFire.value.name !== 'assetSelect') { 
       return
     }
-    GSM.RendererController
+
     if(!asset) { return }
 
     if (!GSM.KeyController.keysPressed.has('MetaLeft')) {

@@ -7,6 +7,7 @@ import { ObjectExtension } from "../extensions/asset/object.extension"
 
 import { SelectionIndicatorExtension } from "../extensions/selection-indicator/selection-indicator.extension"
 import { TerrainBrushExtension } from "../extensions/terrain-brush/terrain-brush.extension"
+import { SelectorExtension } from "../extensions/asset/selector.extension"
 
 export class ForegroundCanvasModule extends RootCanvasModule {
   public ctx = CanvasCTX.Foreground
@@ -18,5 +19,6 @@ export class ForegroundCanvasModule extends RootCanvasModule {
     new TerrainBrushExtension(),
     new ObjectExtension(),
     new AssetExtension(),
+    new SelectorExtension()
   ]
 }

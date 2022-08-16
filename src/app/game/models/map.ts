@@ -53,6 +53,7 @@ export enum RenderingLayers {
   TerrainLayer = "terrainLayer",
   ObjectLayer = "objectLayer",
   AssetLayer = "assetLayer",
+  OverlayLayer = "overlayLayer"
   // StructureLayer = "structureLayer",
   // PartitionLayer = "partitionLayer",
   // CeilingObjectLayer = "ceilingObjectLayer",

@@ -6,8 +6,8 @@ export const assetAttributes: AssetAttributes[]  = [
     id: 'standardTerrain',
     size: { x: 1, y: 1, z: 1 },
     drawSize: {x: 16, y: 16 },
-    xPosOffset: -31,
-    yPosOffset: -88,
+    xPosOffset: 0,
+    yPosOffset: 0,
     obstructed: ["1"]
   },
   {
@@ -33,6 +33,14 @@ export const assetAttributes: AssetAttributes[]  = [
     xPosOffset: 0,
     yPosOffset: 0,
     obstructed: ["1"]
+  },
+  {
+    id: 'standardSmallItemNonObstacle',
+    size: { x: 1, y: 1, z:1 },
+    drawSize: {x: 16, y: 16 },
+    xPosOffset: 0,
+    yPosOffset: 0,
+    obstructed: ["0"]
   },
   {
     id: 'standardXLTree',
