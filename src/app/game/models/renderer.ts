@@ -34,6 +34,5 @@ export class RenderOptionsEvent {
 
 export abstract class CanvasLayerExtension extends Extension {
   public abstract renderer: Renderer
-  public excludeFromIndividualCellPainting = false
 }
 

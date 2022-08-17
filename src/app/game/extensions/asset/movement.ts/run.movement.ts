@@ -1,4 +1,4 @@
-import { Movement } from "./base.movement"
+import { Movement } from "../../../controllers/utils/base.movement"
 import { ShortestPath, TravelPath } from "../shortest-paths/shortest-path"
 import { GSM } from "src/app/game/game-state-manager.service"
 import { PlaceableAsset } from "../../../models/asset.model"

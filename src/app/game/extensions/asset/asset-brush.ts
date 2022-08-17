@@ -13,14 +13,14 @@ export class AssetBrush {
   }
 
   public onCellClicked(): void {
-    if (GSM.ActionController.generalActionFire.value.name === 'characterSelected') {    
+    if (GSM.EventController.generalActionFire.value.name === 'characterSelected') {    
       GSM.AssetController.getSelectedAssets().forEach((asset: PlaceableAsset) => {
         asset.movement.start(asset.anchorCell, GSM.GridController.getCellAtZAxis(GSM.MouseController.hoveringCell, asset.baseZIndex), []);
       });
       return;
     }
 
-    if (GSM.ActionController.generalActionFire.value.name === 'addCharacter') {
+    if (GSM.EventController.generalActionFire.value.name === 'addCharacter') {
       GSM.AssetController.deselectAllAssets();
 
       const a = GSM.AssetController.getTopAssetCoveringCell(GSM.MouseController.hoveringCell, [RenderingLayers.AssetLayer, RenderingLayers.ObjectLayer])
@@ -33,7 +33,7 @@ export class AssetBrush {
       return;
     }
 
-    if (GSM.ActionController.generalActionFire.value.name === 'addObject') {
+    if (GSM.EventController.generalActionFire.value.name === 'addObject') {
       if(GSM.MouseController.hoveringGridAsset?.tile?.drawableTileId) {
         this.addNonPlayableAsset(GSM.MouseController.hoveringCellAtZAxis, GSM.MouseController.hoveringZAxis);
       } else {

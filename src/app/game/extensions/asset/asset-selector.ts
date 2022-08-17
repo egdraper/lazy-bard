@@ -17,7 +17,7 @@ export class AssetSelector {
 
   public onAssetClicked(asset: Asset) {
 
-    if (GSM.ActionController.generalActionFire.value.name !== 'assetSelect') { 
+    if (GSM.EventController.generalActionFire.value.name !== 'assetSelect') { 
       return
     }
 

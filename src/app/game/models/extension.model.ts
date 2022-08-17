@@ -1,9 +1,10 @@
 import { CanvasModules } from "../module.register";
 import { Renderer } from "./renderer";
 
-export class Extension {
+export abstract class Extension {
   public init(): Promise<void> { return null }
-  public dataBag: unknown = {} 
+  public abstract gameMasterView: Boolean
+  public abstract gamePlayerView: Boolean
 }
 
 export enum CanvasCTX {

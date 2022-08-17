@@ -9,9 +9,9 @@ import { BaseTextureRenderer } from "./base-texture.renderer"
 import { BackgroundTile } from "../../models/sprite-tile.model"
 
 export class BaseTextureExtension extends CanvasLayerExtension {
-  public override excludeFromIndividualCellPainting = true
   public renderer = new BaseTextureRenderer()
-  
+  public gameMasterView: Boolean = true
+  public gamePlayerView: Boolean = true
   private baseTexture: TextureSprite
 
   public override async init(): Promise<void> {

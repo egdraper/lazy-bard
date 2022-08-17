@@ -13,13 +13,13 @@ export class TerrainTreeBrushEventHandler {
   }
 
   private cellClicked(): void {
-    if(GSM.ActionController.generalActionFire.value.name === "paintingTerrain") {
+    if(GSM.EventController.generalActionFire.value.name === "paintingTerrain") {
       const cells = GSM.GridController.getCellsWithinRadius(GSM.MouseController.hoveringCellAtZAxisOnMouseDown, GSM.Settings.brushSize)
 
       cells.forEach((cell) => {
         if(!cell) { return }
         GSM.RendererController.renderAsAssets()
-        const drawableTile = GSM.ActionController.generalActionFire.value.data as DrawableTile
+        const drawableTile = GSM.EventController.generalActionFire.value.data as DrawableTile
          
         let hoveringZAxis = GSM.MouseController.hoveringZAxisAtMouseDown
         const newCell = GSM.GridController.getCellByLocation(cell.location.x, cell.location.y)
@@ -96,7 +96,7 @@ export class TerrainTreeBrushEventHandler {
   }
 
   private onMouseEnteredCell(): void {
-    const actionName = GSM.ActionController.generalActionFire.value.name    
+    const actionName = GSM.EventController.generalActionFire.value.name    
     if(actionName !== "paintingTerrain" && actionName !== "deleteTerrain") { return }    
     if(!GSM.KeyController.keysPressed.has("mouseDown")) { return }
 
@@ -124,7 +124,7 @@ export class TerrainTreeBrushEventHandler {
   }
 
   private onMouseUp(): void {
-    if(GSM.ActionController.generalActionFire.value.name === "paintingTerrain") {
+    if(GSM.EventController.generalActionFire.value.name === "paintingTerrain") {
       terrainCleanup()
       setTimeout(() => {
         GSM.RendererController.renderAsSingleImage()

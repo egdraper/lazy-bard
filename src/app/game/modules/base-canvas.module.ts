@@ -6,7 +6,6 @@ import { CanvasCTX } from "../models/extension.model";
 import { RootCanvasModule } from "./root.module";
 import { BaseTextureExtension } from "../extensions/base-texture/base-texture.extension";
 import { GridLineExtension } from "../extensions/grid-lines/grid-lines.extension";
-import { RenderingLayers } from "../models/map";
 
 export class BaseCanvasModule extends RootCanvasModule {
   public ctx = CanvasCTX.Background
@@ -20,7 +19,7 @@ export class BaseCanvasModule extends RootCanvasModule {
 
   constructor() {
     super()
-    GSM.ActionController.generalActionFire.subscribe(this.onGenerateBackground.bind(this))
+    GSM.EventController.generalActionFire.subscribe(this.onGenerateBackground.bind(this))
   }
 
   private onGenerateBackground(event: GeneralAction): void {

@@ -1,9 +1,9 @@
 import { Subscription } from "rxjs"
-import { PlaceableAsset } from "../../../models/asset.model"
-import { GSM } from "../../../game-state-manager.service"
-import { Cell, Position, RenderingLayers } from "../../../models/map"
-import { TravelPath } from "../shortest-paths/shortest-path"
-import { SpriteAnimation } from "../animation/animation"
+import { ActionEvents, PlaceableAsset } from "../../models/asset.model"
+import { GSM } from "../../game-state-manager.service"
+import { Cell, Position, RenderingLayers } from "../../models/map"
+import { TravelPath } from "../../extensions/asset/shortest-paths/shortest-path"
+import { SpriteAnimation } from "../../extensions/asset/animation/animation"
 
 export abstract class Movement {
   protected abstract asset: PlaceableAsset
@@ -105,8 +105,10 @@ export abstract class Movement {
       }
 
       if (!this.nextCell || !this.isNextCellPassable()) {
+        this.asset.action.next({id: ActionEvents.FinishedMotionPath, data: this.previousCell})
         this.endMovement()
        } else {
+        
         this.prepareNextMovement()
       }
     }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanvasController } from './controllers/canvas.controller';
 import { MapController } from './controllers/map.controller';
-import { ActionController } from './controllers/event.controller';
+import { EventController } from './controllers/event.controller';
 import { RendererController } from './controllers/render.controller';
 import { FrameController } from './controllers/timing.controller';
 
@@ -15,6 +15,7 @@ import { MouseController } from './controllers/mouse.controller';
 import { AssetController } from './controllers/asset.controller';
 import { RotationController } from './controllers/rotation.controller';
 import { KeyController } from './controllers/key.controller';
+import { InteractionsController } from './controllers/interactions.controller';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class GSM {
   public static CanvasController: CanvasController
   public static CanvasModuleController: CanvasModuleController
   public static CellNeighborsController: CellNeighborsController
-  public static ActionController: ActionController
+  public static EventController: EventController
   public static Extensions: CanvasModules
   public static FrameController: FrameController
   public static GridController: MapController
@@ -38,6 +39,7 @@ export class GSM {
   public static KeyController: KeyController
   public static AssetController: AssetController
   public static RotationController: RotationController
+  public static InteractionController: InteractionsController
   public static Settings: Settings
   public loadingFinished = false
   
@@ -52,7 +54,7 @@ export class GSM {
     GSM.Settings = new Settings()
     GSM.CanvasController = new CanvasController()
     GSM.FrameController = new FrameController()
-    GSM.ActionController = new ActionController()
+    GSM.EventController = new EventController()
     GSM.CanvasModuleController = new CanvasModuleController()
     GSM.RendererController = new RendererController() 
     GSM.Extensions = new CanvasModules() 
@@ -67,6 +69,7 @@ export class GSM {
     
     //Order Doesn't Matter
     GSM.CellNeighborsController = new CellNeighborsController()
+    GSM.InteractionController = new InteractionsController()
     
     this.loadingFinished = true
     

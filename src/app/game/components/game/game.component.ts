@@ -33,7 +33,7 @@ export class GameComponent implements AfterViewInit {
   public ngAfterViewInit(): void {
     setTimeout(() => {
       this.gameStateManager.newGame('firstGame',30,30, 'forest');
-      GSM.ActionController.generalActionFire.subscribe((action) => {
+      GSM.EventController.generalActionFire.subscribe((action) => {
         this.selected = action.name;
       });
     });
@@ -42,7 +42,7 @@ export class GameComponent implements AfterViewInit {
   @HostListener('document:keyup', ['$event'])
   public keyPress(event: KeyboardEvent) {
     if (event.code === 'Escape') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: '',
         data: null,
       });
@@ -51,31 +51,31 @@ export class GameComponent implements AfterViewInit {
       GSM.KeyController.deletePressed.next(event)
     }
     if (event.code === 'KeyQ') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'addCharacter',
         data: null,
       });
     }
     if (event.code === 'KeyB') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'generateBackground',
         data: null,
       });
     }
     if (event.code === 'KeyO') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'addObject',
         data: null,
       });
     }
     if (event.code === 'KeyZ') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'deleteTerrain',
         data: null,
       });
     }
     if (event.code === 'KeyT') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'generateTerrain',
         data: {
           terrainId: 'Trees-GreenBase',
@@ -84,25 +84,25 @@ export class GameComponent implements AfterViewInit {
       });
     }
     if (event.code === 'KeyE') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'paintingTerrain',
         data: drawableItems.find((item) => item.id === 'StoneCliff-StoneBase3'),
       });
     }
     if (event.code === 'KeyF') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'paintingTerrain',
         data: drawableItems.find((item) => item.id === 'Road'),
       });
     }
     if (event.code === 'KeyR') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'paintingTerrain',
         data: drawableItems.find((item) => item.id === 'StoneCliff-StoneBase2'),
       });
     }
     if (event.code === 'KeyX') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'selectTool',
         data: null,
       });
@@ -113,7 +113,7 @@ export class GameComponent implements AfterViewInit {
     }
     if (event.code === 'KeyG') {
       this.selected = 'starting Game';
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'startGame',
         data: null,
       });
@@ -147,13 +147,13 @@ export class GameComponent implements AfterViewInit {
       GSM.AssetController.changeZAxis('down', asset);
     }
     if (event.code === 'KeyS') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'assetSelect',
         data: null,
       });
     }
     if (event.code === 'KeyA') {
-      GSM.ActionController.generalActionFire.next({
+      GSM.EventController.generalActionFire.next({
         name: 'characterSelected',
         data: null,
       });
