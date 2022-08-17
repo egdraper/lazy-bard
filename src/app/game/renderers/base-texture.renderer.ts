@@ -6,6 +6,7 @@ import { BackgroundRenderer, Renderer } from "../models/renderer"
 export class BaseTextureRenderer implements BackgroundRenderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.backgroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.BaseLayer
+  public enabled: boolean = true
 
   public onDraw(asset: BackgroundAsset): void {
     if(!asset.tile || !asset.tile.imageUrl) { return }

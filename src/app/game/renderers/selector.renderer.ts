@@ -7,6 +7,7 @@ import { AssetTile, TerrainTile } from '../models/sprite-tile.model'
 export class SelectorRenderer implements Renderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.OverlayLayer
+  public enabled: boolean = true
  
   public onDraw(): void {
     if(GSM.AssetController.selectedAssets.length === 0) {

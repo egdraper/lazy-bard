@@ -1,15 +1,13 @@
 import { Cell } from "src/app/game/models/map"
-import { BackgroundAsset } from "../../models/asset.model"
 import { backgroundSprites } from "../../db/background.db"
 import { GSM } from "../../game-state-manager.service"
-import { CanvasLayerExtension } from "../../models/renderer"
+import { BackgroundAsset } from "../../models/asset.model"
+import { Extension } from "../../models/extension.model"
+import { BackgroundTile } from "../../models/sprite-tile.model"
 import { TextureSprite } from "../../models/sprites"
 import { BaseTextureRandomGenerator } from "./base-texture.generator"
-import { BaseTextureRenderer } from "../../renderers/base-texture.renderer"
-import { BackgroundTile } from "../../models/sprite-tile.model"
 
-export class BaseTextureExtension extends CanvasLayerExtension {
-  public renderer = new BaseTextureRenderer()
+export class BaseTextureExtension extends Extension {
   public gameMasterView: Boolean = true
   public gamePlayerView: Boolean = true
   private baseTexture: TextureSprite

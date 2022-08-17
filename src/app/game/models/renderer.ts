@@ -1,11 +1,11 @@
 import { Asset } from "./asset.model"
-import { Extension } from "./extension.model"
 import { RenderingLayers } from "./map"
 import { BackgroundTile, TerrainTile } from "./sprite-tile.model"
 
 export interface Renderer {
   ctx: CanvasRenderingContext2D
   renderingLayer: RenderingLayers
+  enabled: boolean
   beforeDraw?: (asset: Asset, frame?: number, opacity?: number) => void
   onDraw?: (any: Asset, frame?: number, opacity?: number) => void
   afterDraw?: (any: Asset, frame?: number, opacity?: number) => void
@@ -32,7 +32,5 @@ export class RenderOptionsEvent {
 //   onDraw: (cell: Cell, frame?: number) => void
 // }
 
-export abstract class CanvasLayerExtension extends Extension {
-  public abstract renderer: Renderer
-}
+
 

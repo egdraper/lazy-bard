@@ -28,7 +28,7 @@ export class InteractionExtension extends Extension{
     const assets = GSM.AssetController.getAssetsByCellAtZ(adjacentCell, event.asset.baseZIndex)
 
     if(assets.length > 0) {
-
+      
     }
   }
 }

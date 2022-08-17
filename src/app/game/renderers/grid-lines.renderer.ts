@@ -7,6 +7,7 @@ import { BackgroundRenderer } from "../models/renderer";
 export class GridLinesRenderer implements BackgroundRenderer {
   public ctx: CanvasRenderingContext2D;
   public renderingLayer: RenderingLayers = RenderingLayers.BaseLayer
+  public enabled: boolean = true
 
   public onDraw(background: BackgroundAsset): void {
     this.ctx.beginPath()

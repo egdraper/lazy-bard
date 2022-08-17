@@ -6,6 +6,7 @@ import { Renderer } from "../models/renderer"
 export class TerrainRenderer implements Renderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.TerrainLayer
+  public enabled: boolean = true
 
   public onDraw(asset: TerrainAsset, frame: number, opacity: number = 1): void {
     if(!asset.tile || !asset.tile.drawableTileId) { return }  

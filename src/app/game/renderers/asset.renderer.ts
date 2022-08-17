@@ -8,6 +8,8 @@ import { AssetTile } from '../models/sprite-tile.model'
 export class AssetRenderer implements Renderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.AssetLayer
+  public enabled: boolean = true
+
 
   public beforeDraw(asset: PlaceableAsset, frame?: number, opacity: number = 1): void {
     this.ctx.beginPath()

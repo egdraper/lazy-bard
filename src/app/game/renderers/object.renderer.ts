@@ -8,6 +8,7 @@ import { AssetTile } from '../models/sprite-tile.model'
 export class ObjectRenderer implements Renderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.ObjectLayer
+  public enabled: boolean = true
  
   public onDraw(asset: PlaceableAsset<AssetTile>, frame?: number, opacity: number = 1 ): void {
     const movementOffsetX = asset.movement ? asset.movement.movementOffset.x : asset.anchorCell.position.x

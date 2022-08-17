@@ -78,10 +78,6 @@ export class RendererController {
     if(this.renderAsSingeImages[RenderingLayers.TerrainLayer]) {
       this.foregroundCanvasRenderer.draw(GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer])
     }
-    
-    if(this.renderAsSingeImages[RenderingLayers.ObjectLayer]) {
-      this.foregroundCanvasRenderer.draw(GSM.ImageController.renderingLayerImages[RenderingLayers.ObjectLayer])
-    }
   }
 
   private renderAssets(frame: number) {
@@ -91,7 +87,8 @@ export class RendererController {
         return
       }
       if(renderer.renderingLayer === RenderingLayers.BaseLayer) { return }      
-      if(this.renderAsSingeImages[renderer.renderingLayer]) { return }      
+      if(this.renderAsSingeImages[renderer.renderingLayer]) { return }   
+      if(!renderer.enabled) { return }   
 
       GSM.AssetController.iterateAsset(asset => {
         if(asset.tile.layer !== renderer.renderingLayer) { return }

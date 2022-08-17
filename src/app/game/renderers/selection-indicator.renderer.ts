@@ -6,6 +6,7 @@ import { Renderer } from '../models/renderer'
 export class SelectionIndicatorRenderer implements Renderer {
   ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.AssetLayer
+  public enabled: boolean = true
 
   private posX
   private posY

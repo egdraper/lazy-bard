@@ -1,6 +1,6 @@
 import { GSM } from "../game-state-manager.service"
 import { CanvasCTX, Extension } from "../models/extension.model"
-import { CanvasLayerExtension, Renderer } from "../models/renderer"
+import { Renderer } from "../models/renderer"
 
 export abstract class RootCanvasModule {
     public abstract extensions: Extension[]

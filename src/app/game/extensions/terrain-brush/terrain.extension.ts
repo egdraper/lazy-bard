@@ -1,12 +1,9 @@
 import { drawableItems } from '../../db/drawable-items.db';
 import { GSM } from '../../game-state-manager.service';
-import { CanvasLayerExtension } from '../../models/renderer';
+import { Extension } from '../../models/extension.model';
 import { DrawableTile } from '../../models/sprite-tile.model';
-import { TerrainTreeBrushEventHandler } from './terrain-brush';
-import { TerrainRenderer } from '../../renderers/terrain.renderer';
 
-export class TerrainExtension extends CanvasLayerExtension {
-  public renderer = new TerrainRenderer()
+export class TerrainExtension extends Extension {
   public gameMasterView: boolean = true
   public gamePlayerView: Boolean = true
 
