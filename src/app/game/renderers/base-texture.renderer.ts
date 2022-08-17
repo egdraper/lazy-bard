@@ -1,7 +1,7 @@
 import { RenderingLayers } from "src/app/game/models/map"
-import { BackgroundAsset } from "../../models/asset.model"
-import { GSM } from "../../game-state-manager.service"
-import { BackgroundRenderer, Renderer } from "../../models/renderer"
+import { BackgroundAsset } from "../models/asset.model"
+import { GSM } from "../game-state-manager.service"
+import { BackgroundRenderer, Renderer } from "../models/renderer"
 
 export class BaseTextureRenderer implements BackgroundRenderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.backgroundCTX

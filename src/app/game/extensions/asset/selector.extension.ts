@@ -1,6 +1,6 @@
 import { CanvasLayerExtension } from 'src/app/game/models/renderer';
 import { AssetSelector } from './asset-selector';
-import { SelectorRenderer } from './selector.renderer';
+import { SelectorRenderer } from '../../renderers/selector.renderer';
 
 export class SelectorExtension extends CanvasLayerExtension {
   public renderer = new SelectorRenderer();

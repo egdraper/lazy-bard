@@ -1,8 +1,8 @@
 
 import { GSM } from "src/app/game/game-state-manager.service";
-import { BackgroundAsset } from "../../models/asset.model";
-import { RenderingLayers } from "../../models/map";
-import { BackgroundRenderer } from "../../models/renderer";
+import { BackgroundAsset } from "../models/asset.model";
+import { RenderingLayers } from "../models/map";
+import { BackgroundRenderer } from "../models/renderer";
 
 export class GridLinesRenderer implements BackgroundRenderer {
   public ctx: CanvasRenderingContext2D;

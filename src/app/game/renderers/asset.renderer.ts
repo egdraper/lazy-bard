@@ -1,8 +1,8 @@
-import { GSM } from '../../game-state-manager.service'
-import { PlaceableAsset } from '../../models/asset.model'
-import { RenderingLayers } from '../../models/map'
-import { Renderer } from '../../models/renderer'
-import { AssetTile } from '../../models/sprite-tile.model'
+import { GSM } from '../game-state-manager.service'
+import { PlaceableAsset } from '../models/asset.model'
+import { RenderingLayers } from '../models/map'
+import { Renderer } from '../models/renderer'
+import { AssetTile } from '../models/sprite-tile.model'
 
 
 export class AssetRenderer implements Renderer {

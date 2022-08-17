@@ -6,12 +6,9 @@ export abstract class RootCanvasModule {
     public abstract extensions: Extension[]
     public abstract ctx: CanvasCTX 
     public abstract canvasName: string    
+    public abstract renderers: Renderer[]
     
-    private _renderers: Renderer[] = []
-    public get renderers() {
-      return this._renderers
-    }
-  
+
     constructor() {
       GSM.CanvasModuleController.registerModule(this)
     }
@@ -22,7 +19,6 @@ export abstract class RootCanvasModule {
           await extension.init()
         }
       }
-      this._renderers = this.extensions.map((extension: CanvasLayerExtension) => extension.renderer).filter(renderer => renderer)
     }
   }
   

@@ -1,9 +1,9 @@
-import { GSM } from "../../game-state-manager.service"
-import { TerrainAsset } from "../../models/asset.model"
-import { RenderingLayers } from "../../models/map"
-import { Renderer } from "../../models/renderer"
+import { GSM } from "../game-state-manager.service"
+import { TerrainAsset } from "../models/asset.model"
+import { RenderingLayers } from "../models/map"
+import { Renderer } from "../models/renderer"
 
-export class TerrainPaintBrushRenderer implements Renderer {
+export class TerrainRenderer implements Renderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.TerrainLayer
 

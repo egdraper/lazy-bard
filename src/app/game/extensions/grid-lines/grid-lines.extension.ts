@@ -1,5 +1,5 @@
 import { CanvasLayerExtension } from "../../models/renderer";
-import { GridLinesRenderer } from "./grid-lines.renderer";
+import { GridLinesRenderer } from "../../renderers/grid-lines.renderer";
 
 export class GridLineExtension extends CanvasLayerExtension {
   public renderer = new GridLinesRenderer()

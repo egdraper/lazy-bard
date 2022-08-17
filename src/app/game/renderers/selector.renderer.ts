@@ -1,8 +1,8 @@
-import { GSM } from '../../game-state-manager.service'
-import { Asset, PlaceableAsset } from '../../models/asset.model'
-import { RenderingLayers } from '../../models/map'
-import { Renderer } from '../../models/renderer'
-import { AssetTile, TerrainTile } from '../../models/sprite-tile.model'
+import { GSM } from '../game-state-manager.service'
+import { Asset, PlaceableAsset } from '../models/asset.model'
+import { RenderingLayers } from '../models/map'
+import { Renderer } from '../models/renderer'
+import { AssetTile, TerrainTile } from '../models/sprite-tile.model'
 
 export class SelectorRenderer implements Renderer {
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX

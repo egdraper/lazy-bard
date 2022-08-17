@@ -5,7 +5,7 @@ import { GSM } from "../../game-state-manager.service"
 import { CanvasLayerExtension } from "../../models/renderer"
 import { TextureSprite } from "../../models/sprites"
 import { BaseTextureRandomGenerator } from "./base-texture.generator"
-import { BaseTextureRenderer } from "./base-texture.renderer"
+import { BaseTextureRenderer } from "../../renderers/base-texture.renderer"
 import { BackgroundTile } from "../../models/sprite-tile.model"
 
 export class BaseTextureExtension extends CanvasLayerExtension {

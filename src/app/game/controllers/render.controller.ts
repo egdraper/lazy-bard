@@ -95,6 +95,7 @@ export class RendererController {
 
       GSM.AssetController.iterateAsset(asset => {
         if(asset.tile.layer !== renderer.renderingLayer) { return }
+        console.log(asset.id)
         if(renderer.beforeDraw) {
           renderer.beforeDraw(asset, frame)
         } 

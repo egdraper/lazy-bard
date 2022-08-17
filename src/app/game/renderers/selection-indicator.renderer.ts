@@ -1,7 +1,7 @@
-import { PlaceableAsset } from '../../models/asset.model'
-import { GSM } from '../../game-state-manager.service'
-import { RenderingLayers } from '../../models/map'
-import { Renderer } from '../../models/renderer'
+import { PlaceableAsset } from '../models/asset.model'
+import { GSM } from '../game-state-manager.service'
+import { RenderingLayers } from '../models/map'
+import { Renderer } from '../models/renderer'
 
 export class SelectionIndicatorRenderer implements Renderer {
   ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
