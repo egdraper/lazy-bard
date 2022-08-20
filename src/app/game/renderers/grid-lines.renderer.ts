@@ -5,6 +5,7 @@ import { RenderingLayers } from "../models/map";
 import { BackgroundRenderer } from "../models/renderer";
 
 export class GridLinesRenderer implements BackgroundRenderer {
+  public id: string = "GridLinesRenderer"
   public ctx: CanvasRenderingContext2D;
   public renderingLayer: RenderingLayers = RenderingLayers.BaseLayer
   public enabled: boolean = true

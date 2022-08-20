@@ -6,7 +6,7 @@ import { GeneralAction } from "../models/settings";
 export class EventController {
   public generalActionFire: BehaviorSubject<GeneralAction> = new BehaviorSubject({name: "", data: null})
   public assetEnteredCell = new Subject()
-  public assetFinishingMovement = new Subject<Cell>()
+  public assetFinishingMovement = new Subject()
   public assetStartingMovement = new Subject()
   public assetClicked = new Subject()
   public assetDeleted = new Subject()
@@ -16,6 +16,7 @@ export class EventController {
   public TerrainAdded = new Subject
   public playerOrientationChanged = new Subject()
   public assetOrientationChanged = new Subject()
+  public objectInteraction = new Subject()
 
 
 

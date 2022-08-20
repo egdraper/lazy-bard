@@ -15,14 +15,18 @@ import { PlaceableAsset, Asset } from '../../models/asset.model';
 export class GameComponent implements AfterViewInit {
   public selected = 'nothing';
   public mouseController;
-  public assetController
+  public assetController;
+  public interactions = undefined
   public settings
 
   constructor(public gameStateManager: GSM) {
     setTimeout(() => {
-      this.mouseController = GSM.MouseController;
+      this.mouseController = GSM.MouseController
       this.assetController = GSM.AssetController
       this.settings = GSM.Settings
+      GSM.EventController.objectInteraction.subscribe(event => {
+        this.interactions = event
+      })
     }, 150);
   }
 

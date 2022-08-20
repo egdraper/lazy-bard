@@ -3,6 +3,7 @@ import { RenderingLayers } from "./map"
 import { BackgroundTile, TerrainTile } from "./sprite-tile.model"
 
 export interface Renderer {
+  id: string
   ctx: CanvasRenderingContext2D
   renderingLayer: RenderingLayers
   enabled: boolean

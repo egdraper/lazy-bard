@@ -5,6 +5,7 @@ import { Renderer } from '../models/renderer'
 import { AssetTile, TerrainTile } from '../models/sprite-tile.model'
 
 export class SelectorRenderer implements Renderer {
+  public id: string = "SelectorRenderer"
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.OverlayLayer
   public enabled: boolean = true

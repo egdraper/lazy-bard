@@ -4,9 +4,12 @@ import { RenderingLayers } from '../models/map'
 import { Renderer } from '../models/renderer'
 
 export class SelectionIndicatorRenderer implements Renderer {
+  public id: string = "SelectionIndicatorRenderer"
   ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.AssetLayer
   public enabled: boolean = true
+
+  public animate = true
 
   private posX
   private posY
@@ -29,7 +32,15 @@ export class SelectionIndicatorRenderer implements Renderer {
       color = 'rgba(50, 50 , 255, .5)'
     }
 
-    this.animateMarker(asset, frame)
+    if (this.animate) {
+      this.animateMarker(asset, frame)
+    } else {
+      this.posX = asset.movement ? asset?.movement.movementOffset.x : asset.anchorCell.position.x
+      this.posY = asset.movement ? asset?.movement.movementOffset.y : asset.anchorCell.position.y
+      this.width = GSM.Settings.blockSize
+      this.height = GSM.Settings.blockSize
+    }
+
     this.ctx.beginPath()
     this.ctx.rect(this.posX, this.posY - (asset.baseZIndex * GSM.Settings.blockSize) , this.width, this.height)
     this.ctx.lineWidth = 2

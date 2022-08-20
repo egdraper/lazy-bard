@@ -4,6 +4,7 @@ import { RenderingLayers } from "../models/map"
 import { Renderer } from "../models/renderer"
 
 export class TerrainRenderer implements Renderer {
+  public id: string = "TerrainRenderer"
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.foregroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.TerrainLayer
   public enabled: boolean = true

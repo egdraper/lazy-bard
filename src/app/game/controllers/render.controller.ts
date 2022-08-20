@@ -1,6 +1,6 @@
-import { Subscription } from "rxjs"
+import { reduce, Subscription } from "rxjs"
 import { GSM } from "../game-state-manager.service"
-import { AssetBlock, BlockEdge, Asset } from "../models/asset.model"
+import { AssetBlock, Asset } from "../models/asset.model"
 import { CanvasCTX } from "../models/extension.model"
 import { RenderingLayers } from "../models/map"
 import { Renderer } from "../models/renderer"
@@ -13,7 +13,7 @@ export class RendererController {
   public baseCanvasRenderer: AddonRenderer
   public foregroundCanvasRenderer: AddonRenderer
   
-  private renderAsSingeImages: {[layer: string]: boolean } = {}
+  private renderAsSingeImage: boolean = false 
   private subscriptions: Subscription[] = []
   
   public start() {
@@ -32,15 +32,25 @@ export class RendererController {
     const module = GSM.CanvasModuleController.canvasModules.find(module => module.canvasName === "base")
     generateBackgroundImage(module.renderers)
     
-    GSM.RendererController.iterateStaticAssetRenderingLayers(layer => {        
-      generateLayerImage("foreground", layer)
-      this.renderAsSingeImages[layer] = true
+      
+    generateLayerImage()
+    this.renderAsSingeImage = true
+
+
+    const foregroundModule = GSM.CanvasModuleController.canvasModules.find(module => module.canvasName === "foreground")
+    foregroundModule.renderers.forEach(renderer => {
+      if(renderer.renderingLayer === RenderingLayers.BaseLayer || renderer.renderingLayer === RenderingLayers.AssetLayer) { return }
+      renderer.enabled = false
     })
   }
 
   public renderAsAssets() {
-    GSM.RendererController.iterateStaticAssetRenderingLayers(layer => {
-      this.renderAsSingeImages[layer] = false
+    this.renderAsSingeImage = false
+
+    const foregroundModule = GSM.CanvasModuleController.canvasModules.find(module => module.canvasName === "foreground")    
+    foregroundModule.renderers.forEach(renderer => {
+      if(renderer.renderingLayer === RenderingLayers.BaseLayer || renderer.renderingLayer === RenderingLayers.AssetLayer) { return }
+      renderer.enabled = true
     })
   }
 
@@ -63,6 +73,15 @@ export class RendererController {
       module.renderers.forEach(renderer => callback(renderer))
     })
   }
+
+  public getRenderer(id: string): Renderer {
+    let renderer
+    GSM.CanvasModuleController.canvasModules.forEach(module => {
+      let _renderer = module.renderers.find(renderer => renderer.id === id)
+      if(_renderer) { renderer = _renderer }
+    })
+    return renderer
+  }
     
   private onFrameFire(frame: number): void {
     if(!(GSM.CanvasModuleController.canvasModules && GSM.CanvasModuleController.canvasModules.length !== 0)) { return }
@@ -75,24 +94,23 @@ export class RendererController {
     // always render as an image
     this.baseCanvasRenderer.draw(GSM.ImageController.renderingLayerImages[RenderingLayers.BaseLayer])
 
-    if(this.renderAsSingeImages[RenderingLayers.TerrainLayer]) {
-      this.foregroundCanvasRenderer.draw(GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer])
+    if(this.renderAsSingeImage) {
+      this.foregroundCanvasRenderer.draw(GSM.ImageController.renderingLayerImages["static"])
     }
   }
 
   private renderAssets(frame: number) {
     this.iterateRenderers(renderer => {
+      if(!renderer.enabled) { return }   
       if(renderer.renderingLayer === RenderingLayers.OverlayLayer) {
         this.renderOverlayItems(frame, renderer)
         return
       }
       if(renderer.renderingLayer === RenderingLayers.BaseLayer) { return }      
-      if(this.renderAsSingeImages[renderer.renderingLayer]) { return }   
-      if(!renderer.enabled) { return }   
 
       GSM.AssetController.iterateAsset(asset => {
         if(asset.tile.layer !== renderer.renderingLayer) { return }
-        console.log(asset.id)
+
         if(renderer.beforeDraw) {
           renderer.beforeDraw(asset, frame)
         } 
@@ -127,7 +145,7 @@ export class RendererController {
   }
 
   private paintAroundAsset(asset: Asset) {
-    if(!GSM.ImageController.renderingLayerImages[RenderingLayers.TerrainLayer] ) { return }
+    if(!GSM.ImageController.renderingLayerImages["static"] ) { return }
     const ctx = GSM.CanvasController.foregroundCTX
 
     const blocks = GSM.AssetController.getAllAssetBlocksByEdge(asset, {south: true})
@@ -158,7 +176,7 @@ export class RendererController {
 
       ctx.globalAlpha = .44
       ctx.drawImage(
-        GSM.ImageController.renderingLayerImages[layer],
+        GSM.ImageController.renderingLayerImages["static"],
         asset.anchorCell.position.x - 64,
         asset.anchorCell.position.y - offset,
         128,

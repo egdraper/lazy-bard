@@ -187,12 +187,15 @@ export class AssetController {
 
     if (direction === 'up' && upAssets.length === 0) {
       this.updateBlockProperty(asset, asset.anchorCell, ++asset.baseZIndex);
+      GSM.EventController.assetEnteredCell.next({asset: asset, cell: asset.anchorCell})
       return;
     }
     if (direction === 'down' && downAssets.length === 0) {
       this.updateBlockProperty(asset, asset.anchorCell, --asset.baseZIndex);
+      GSM.EventController.assetEnteredCell.next({asset: asset, cell: asset.anchorCell})
       return;
     }
+
   }
 
   public switchAssetToNewCell(asset: Asset, newCell: Cell, newZIndex: number) {
@@ -419,7 +422,9 @@ export class AssetController {
         if (keyEvent.code === 'KeyS') {
           asset.orientation.currentOrientation = Orientation.Down
         }
+
+        GSM.EventController.playerOrientationChanged.next({asset: asset, cell: asset.anchorCell})
       }
-    })
+    })  
   }
 }

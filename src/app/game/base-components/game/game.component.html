@@ -7,7 +7,8 @@
     <gm-canvas></gm-canvas>
   </div>
 
-  <div style="color:white; position: absolute; top: 115px">
+  <div style="color:white; position: absolute; top: 15px">
+    <gm-interaction *ngIf="interactions"></gm-interaction>
     <h6>X: {{ mouseController?.hoveringPosX }} </h6>
     <h6>Y: {{ mouseController?.hoveringPosY }} </h6>
     <h6>HCid: {{ mouseController?.hoveringCell?.id }} </h6>
@@ -20,12 +21,15 @@
     <h6>HCAZ: {{ mouseController?.hoveringCellAtZAxis?.id }} </h6>
     <h6>Z: {{ mouseController?.hoveringZAxis }} </h6>
     <h6>MDZ: {{ mouseController?.hoveringZAxisAtMouseDown }} </h6>
-    <h6>A#: {{ assetController?.assetArray.length }} </h6>
+    <h6>A#: {{ assetController?.assetArray?.length }} </h6>
     <h6>frontBlock#: {{ mouseController?.hoveringAssetBlockFront?.id }} </h6>
 
   <label for="vol">Brush (1-10)</label>
   <input #input type="number" [(ngModel)]="settings.brushSize">
 
     <h1 style="color:white">{{selected}}</h1>
+
   </div>
+
+
 </div>

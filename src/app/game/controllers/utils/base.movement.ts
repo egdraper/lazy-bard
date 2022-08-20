@@ -58,7 +58,7 @@ export abstract class Movement {
     this.moving = true
     
     this.subscribeToFrameTimer()
-    this.asset.orientation.autoSetOrientation(this.asset.anchorCell, this.nextCell)
+    this.prepareNextMovement()
   }
 
   public updateAnimation() {
@@ -105,10 +105,9 @@ export abstract class Movement {
       }
 
       if (!this.nextCell || !this.isNextCellPassable()) {
-        this.asset.action.next({id: ActionEvents.FinishedMotionPath, data: this.previousCell})
+        GSM.EventController.assetFinishingMovement.next({asset: this.asset, cell: this.previousCell})
         this.endMovement()
        } else {
-        
         this.prepareNextMovement()
       }
     }
@@ -117,6 +116,8 @@ export abstract class Movement {
   protected prepareNextMovement(): void {
     this.distanceToNextCell = GSM.Settings.blockSize
     this.asset.orientation.autoSetOrientation(this.asset.anchorCell, this.nextCell)
+    GSM.EventController.assetEnteredCell.next({asset: this.asset, cell: this.nextCell})
+
   }
 
   protected setCurrentPath(startCell: Cell, endCell: Cell): void {

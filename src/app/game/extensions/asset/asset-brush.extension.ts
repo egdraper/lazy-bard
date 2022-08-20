@@ -67,7 +67,7 @@ export class AssetBrushExtension extends Extension {
   private addNonPlayableAsset(cell: Cell, zIndex: number): void {
     GSM.RendererController.renderAsAssets()
     // setup asset
-    const newObjectAsset = new PlaceableAsset(cell, "standardSmallItemNonObstacle");
+    const newObjectAsset = new PlaceableAsset(cell, "standardSmallItem");
     newObjectAsset.tile = new AssetTile(
       RenderingLayers.ObjectLayer,
       'assets/images/pots/pot3.png',

@@ -1,0 +1,6 @@
+<button 
+  *ngFor="let interaction of interactions"
+  (click)="onClick(interaction)"
+  >
+  {{ interaction.displayName }}  
+</button>

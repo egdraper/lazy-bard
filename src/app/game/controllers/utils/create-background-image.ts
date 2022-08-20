@@ -35,7 +35,7 @@ export function generateBackgroundImage(renderers: Renderer[]): void {
     GSM.ImageController.renderingLayerImages[RenderingLayers.BaseLayer] = layerImage
   }
 
-  export function generateLayerImage(canvasName: string, layer: string): void {
+  export function generateLayerImage(): void {
   
     if(!GSM.CanvasController.fullImageCTX) { return null }
 
@@ -92,5 +92,5 @@ export function generateBackgroundImage(renderers: Renderer[]): void {
     const layerImage = new Image()
     layerImage.src = layerImageBase64
 
-    GSM.ImageController.renderingLayerImages[layer] = layerImage
+    GSM.ImageController.renderingLayerImages["static"] = layerImage
   }

@@ -4,6 +4,7 @@ import { GSM } from "../game-state-manager.service"
 import { BackgroundRenderer, Renderer } from "../models/renderer"
 
 export class BaseTextureRenderer implements BackgroundRenderer {
+  public id: string = "BaseTextureRenderer"
   public ctx: CanvasRenderingContext2D = GSM.CanvasController.backgroundCTX
   public renderingLayer: RenderingLayers = RenderingLayers.BaseLayer
   public enabled: boolean = true

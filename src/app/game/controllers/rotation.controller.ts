@@ -171,8 +171,7 @@ export class RotationController {
 
     const module = GSM.CanvasModuleController.canvasModules.find(module => module.canvasName === "base")
     generateBackgroundImage(module.renderers)
-    generateLayerImage("foreground", RenderingLayers.TerrainLayer)
-    generateLayerImage("foreground", RenderingLayers.ObjectLayer)
+    generateLayerImage()
   }
 
   public rotateCounterClockwise(): void {}
