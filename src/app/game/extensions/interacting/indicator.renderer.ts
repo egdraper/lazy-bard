@@ -1,6 +1,6 @@
-import { GSM } from '../game-state-manager.service'
-import { RenderingLayers } from '../models/map'
-import { Renderer } from '../models/renderer'
+import { GSM } from '../../game-state-manager.service'
+import { RenderingLayers } from '../../models/map'
+import { Renderer } from '../../models/renderer'
 
 export class InteractionIndicatorRenderer implements Renderer {
   public id: string = "InteractionIndicatorRenderer"
@@ -12,8 +12,10 @@ export class InteractionIndicatorRenderer implements Renderer {
   public indicatorURL = null
  
   public onDraw(): void {
-    const movementOffsetX = this.asset.movement ? this.asset.movement.movementOffset.x : this.asset.anchorCell.position.x
-    const movementOffsetY = this.asset.movement ? this.asset.movement.movementOffset.y : this.asset.anchorCell.position.y
+    if(!this.asset) { return }
+
+    const movementOffsetX = this.asset?.movement ? this.asset.movement.movementOffset.x : this.asset.anchorCell.position.x
+    const movementOffsetY = this.asset?.movement ? this.asset.movement.movementOffset.y : this.asset.anchorCell.position.y
 
     this.ctx.drawImage(
       GSM.ImageController.getImage(this.indicatorURL),

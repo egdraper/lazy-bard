@@ -4,6 +4,7 @@ export class Settings {
   public blockSize = 16
   public commonTextureWidth = 3
   public commonTextureOdds = 250
+  public indicatorIconUrl = "assets/images/indicators/interaction2.png"
   public speed: number = 6
   public scale: number = 2
   public blockToFeet = 5;

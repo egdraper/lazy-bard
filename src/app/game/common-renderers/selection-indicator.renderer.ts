@@ -21,12 +21,6 @@ export class SelectionIndicatorRenderer implements Renderer {
       return
     }
 
-    // const walkOverAsset = getHoveredOverGridAsset(asset.cell)
-    // let shadowZ = asset.zIndex
-    // if(walkOverAsset && walkOverAsset.zIndex <= shadowZ ) {
-    //    shadowZ = walkOverAsset ? walkOverAsset.zIndex * GSM.Settings.blockSize : 0
-    // } 
-
     let color = 'rgba(255, 0 , 0, .5)'
     if (asset.hovering) {
       color = 'rgba(50, 50 , 255, .5)'

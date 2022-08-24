@@ -8,12 +8,12 @@ import { SelectorExtension } from "../extensions/asset/selector.extension"
 import { InteractionExtension } from "../extensions/interacting/interaction.extension"
 import { TerrainBrushExtension } from "../extensions/terrain-brush/terrain-brush.extension"
 import { TerrainExtension } from "../extensions/terrain-brush/terrain.extension"
-import { AssetRenderer } from "../renderers/asset.renderer"
-import { ObjectRenderer } from "../renderers/object.renderer"
-import { SelectionIndicatorRenderer } from "../renderers/selection-indicator.renderer"
-import { SelectorRenderer } from "../renderers/selector.renderer"
-import { TerrainRenderer } from "../renderers/terrain.renderer"
-import { InteractionIndicatorRenderer } from "../renderers/interaction-indicator.renderer"
+import { AssetRenderer } from "../common-renderers/asset.renderer"
+import { ObjectRenderer } from "../common-renderers/object.renderer"
+import { SelectionIndicatorRenderer } from "../common-renderers/selection-indicator.renderer"
+import { SelectorRenderer } from "../common-renderers/selector.renderer"
+import { TerrainRenderer } from "../common-renderers/terrain.renderer"
+import { InteractionIndicatorRenderer } from "../extensions/interacting/indicator.renderer"
 
 export class ForegroundCanvasModule extends RootCanvasModule {
   public ctx = CanvasCTX.Foreground

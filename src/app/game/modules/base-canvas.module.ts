@@ -4,8 +4,8 @@ import { Renderer } from "src/app/game/models/renderer";
 import { GeneralAction } from "src/app/game/models/settings";
 import { BaseTextureExtension } from "../extensions/base-texture/base-texture.extension";
 import { CanvasCTX, Extension } from "../models/extension.model";
-import { BaseTextureRenderer } from "../renderers/base-texture.renderer";
-import { GridLinesRenderer } from "../renderers/grid-lines.renderer";
+import { BaseTextureRenderer } from "../common-renderers/base-texture.renderer";
+import { GridLinesRenderer } from "../common-renderers/grid-lines.renderer";
 import { RootCanvasModule } from "./root.module";
 
 export class BaseCanvasModule extends RootCanvasModule {

@@ -12,7 +12,7 @@ import { terrainCleanup } from "./utils/terrain-cleanup"
 export class RendererController {
   public baseCanvasRenderer: AddonRenderer
   public foregroundCanvasRenderer: AddonRenderer
-  
+
   private renderAsSingeImage: boolean = false 
   private subscriptions: Subscription[] = []
   
