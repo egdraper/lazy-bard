@@ -3,26 +3,23 @@ import { CanvasCTX, Extension } from "src/app/game/models/extension.model"
 import { Renderer } from "src/app/game/models/renderer"
 import { RootCanvasModule } from "./root.module"
 
-import { AssetBrushExtension } from "../extensions/asset/asset-brush.extension"
-import { SelectorExtension } from "../extensions/asset/selector.extension"
-import { InteractionExtension } from "../extensions/interacting/interaction.extension"
-import { TerrainBrushExtension } from "../extensions/terrain-brush/terrain-brush.extension"
-import { TerrainExtension } from "../extensions/terrain-brush/terrain.extension"
-import { AssetRenderer } from "../common-renderers/asset.renderer"
-import { ObjectRenderer } from "../common-renderers/object.renderer"
-import { SelectionIndicatorRenderer } from "../common-renderers/selection-indicator.renderer"
-import { SelectorRenderer } from "../common-renderers/selector.renderer"
-import { TerrainRenderer } from "../common-renderers/terrain.renderer"
-import { InteractionIndicatorRenderer } from "../extensions/interacting/indicator.renderer"
+import { AssetBrushFeature } from "../core/default-features/brushes/asset-brush.feature"
+import { SelectorExtension } from "../core/default-features/selector/selector.feature"
+import { InteractionExtension } from "../features/interactions/interaction.extension"
+import { TerrainBrushExtension } from "../core/default-features/brushes/terrain-brush.feature"
+import { SelectionIndicatorRenderer } from "../core/default-renderers/selection-indicator.renderer"
+import { SelectorRenderer } from "../core/default-renderers/selector.renderer"
+import { TerrainRenderer } from "../core/default-renderers/terrain.renderer"
+import { AssetRenderer } from "../core/default-renderers/asset.renderer"
+import { ObjectRenderer } from "../core/default-renderers/object.renderer"
 
 export class ForegroundCanvasModule extends RootCanvasModule {
   public ctx = CanvasCTX.Foreground
   public canvasName: string = "foreground"
 
   public extensions: Extension[] = [
-    new TerrainExtension(),
     new TerrainBrushExtension(),
-    new AssetBrushExtension(),
+    new AssetBrushFeature(),
     new SelectorExtension(),
     new InteractionExtension(),
   ]
@@ -34,6 +31,5 @@ export class ForegroundCanvasModule extends RootCanvasModule {
     new ObjectRenderer(),
     new SelectorRenderer(),
     new TerrainRenderer(),
-    new InteractionIndicatorRenderer(),
   ]
 }

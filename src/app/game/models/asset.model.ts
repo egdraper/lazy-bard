@@ -1,9 +1,9 @@
 
 import { Subject } from "rxjs";
 import { assetAttributes } from "../db/asset-attributes";
-import { SpriteAnimation } from "../extensions/asset/animation/animation";
-import { Movement } from "../controllers/utils/base.movement";
-import { SpriteOrientation } from "../extensions/asset/orientation.ts/direction";
+import { AssetMovementAnimation } from "../core/default-features/animation/asset-movement-animation";
+import { Movement } from "../core/default-features/movement/movement";
+import { SpriteOrientation } from "../core/default-features/orientation/orientation";
 import { Cell, RenderingLayers, Size } from "./map";
 import { BackgroundTile, TerrainTile, Tile } from "./sprite-tile.model";
 
@@ -64,7 +64,7 @@ export class PlaceableAsset<T = Tile> extends Asset {
   public override tile: T;
   public action = new Subject<AssetEvent>()
   public movement: Movement;
-  public animation?: SpriteAnimation;
+  public animation?: AssetMovementAnimation;
   public orientation: SpriteOrientation = new SpriteOrientation();
   public animating = false;
   public hovering = true;

@@ -1,4 +1,4 @@
-import { AssetAnimationTile } from "../extensions/asset/animation/animation";
+import { AssetAnimationTile } from "../core/default-features/animation/asset-movement-animation";
 
 export const assetTileAnimation: AssetAnimationTile[] = [
   {

@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { CanvasController } from './controllers/canvas.controller';
-import { MapController } from './controllers/map.controller';
-import { EventController } from './controllers/event.controller';
-import { RendererController } from './controllers/render.controller';
-import { FrameController } from './controllers/timing.controller';
+import { CanvasManager } from './core/canvas.manager';
+import { MapManager } from './core/map.manager';
+import { EventManager } from './core/event.manager';
+import { RendererManager } from './core/render.manager';
+import { FrameManager } from './core/timing.manager';
 
 import { Settings } from './models/settings';
-import { CanvasModuleController } from './controllers/canvas-module.controller';
+import { CanvasModuleManager } from './core/canvas-module.manager';
 import { CanvasModules } from './module.register';
-import { ImagesController } from './controllers/images.controller';
-import { CellNeighborsController } from './controllers/cell-neighbors.controller';
+import { ImagesManager } from './core/images.manager';
+import { CellNeighborsManager } from './core/cell-neighbors.manager';
 import { GameData } from './game-data';
-import { MouseController } from './controllers/mouse.controller';
-import { AssetController } from './controllers/asset.controller';
-import { RotationController } from './controllers/rotation.controller';
-import { KeyController } from './controllers/key.controller';
-import { InteractionsController } from './controllers/interactions.controller';
+import { MouseManager } from './core/mouse.manager';
+import { AssetManager } from './core/asset.manager';
+import { RotationManager } from './core/rotation.manager';
+import { KeyManager } from './core/key.manager';
+import { InteractionsManager } from './core/interactions.manager';
 
 @Injectable({
   providedIn: 'root'
@@ -25,21 +25,21 @@ export class GSM {
   // Persisting Core Data
   public static GameData: GameData
 
-  // App Function Controllers
-  public static CanvasController: CanvasController
-  public static CanvasModuleController: CanvasModuleController
-  public static CellNeighborsController: CellNeighborsController
-  public static EventController: EventController
+  // App Function Managers
+  public static CanvasManager: CanvasManager
+  public static CanvasModuleManager: CanvasModuleManager
+  public static CellNeighborsManager: CellNeighborsManager
+  public static EventManager: EventManager
   public static Extensions: CanvasModules
-  public static FrameController: FrameController
-  public static GridController: MapController
-  public static ImageController: ImagesController
-  public static RendererController: RendererController
-  public static MouseController: MouseController
-  public static KeyController: KeyController
-  public static AssetController: AssetController
-  public static RotationController: RotationController
-  public static InteractionController: InteractionsController
+  public static FrameManager: FrameManager
+  public static GridManager: MapManager
+  public static ImageManager: ImagesManager
+  public static RendererManager: RendererManager
+  public static MouseManager: MouseManager
+  public static KeyManager: KeyManager
+  public static AssetManager: AssetManager
+  public static RotationManager: RotationManager
+  public static InteractionManager: InteractionsManager
   public static Settings: Settings
   public loadingFinished = false
   
@@ -52,28 +52,28 @@ export class GSM {
     // Order Matters
     GSM.GameData = new GameData()
     GSM.Settings = new Settings()
-    GSM.CanvasController = new CanvasController()
-    GSM.FrameController = new FrameController()
-    GSM.EventController = new EventController()
-    GSM.CanvasModuleController = new CanvasModuleController()
-    GSM.RendererController = new RendererController() 
+    GSM.CanvasManager = new CanvasManager()
+    GSM.FrameManager = new FrameManager()
+    GSM.EventManager = new EventManager()
+    GSM.CanvasModuleManager = new CanvasModuleManager()
+    GSM.RendererManager = new RendererManager() 
     GSM.Extensions = new CanvasModules() 
-    GSM.GridController = new MapController()
-    GSM.RotationController = new RotationController()
-    GSM.GridController.createGameMap({x: width, y: height})
-    GSM.ImageController = new ImagesController()   
-    GSM.KeyController = new KeyController()
-    GSM.MouseController = new MouseController()
-    GSM.AssetController = new AssetController()
-    GSM.GridController.map.baseTexture = baseTexture
+    GSM.GridManager = new MapManager()
+    GSM.RotationManager = new RotationManager()
+    GSM.GridManager.createGameMap({x: width, y: height})
+    GSM.ImageManager = new ImagesManager()   
+    GSM.KeyManager = new KeyManager()
+    GSM.MouseManager = new MouseManager()
+    GSM.AssetManager = new AssetManager()
+    GSM.GridManager.map.baseTexture = baseTexture
     
     //Order Doesn't Matter
-    GSM.CellNeighborsController = new CellNeighborsController()
-    GSM.InteractionController = new InteractionsController()
+    GSM.CellNeighborsManager = new CellNeighborsManager()
+    GSM.InteractionManager = new InteractionsManager()
     
     this.loadingFinished = true
     
-    GSM.CanvasController.setupComplete.subscribe(() => {            
+    GSM.CanvasManager.setupComplete.subscribe(() => {            
       setTimeout(async ()=> {        
         await GSM.Extensions.init()
       })

@@ -1,6 +1,6 @@
 import { BaseCanvasModule } from './modules/base-canvas.module';
 import { ForegroundCanvasModule } from './modules/forground-canvas.module';
-import { TerrainBrushExtension } from './extensions/terrain-brush/terrain-brush.extension';
+import { TerrainBrushExtension } from './core/default-features/brushes/terrain-brush.feature';
 
 export class CanvasModules {
     public modules = [

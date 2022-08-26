@@ -10,13 +10,14 @@ export abstract class RootCanvasModule {
     
 
     constructor() {
-      GSM.CanvasModuleController.registerModule(this)
+      GSM.CanvasModuleManager.registerModule(this)
     }
     
     public async init(): Promise<void> {      
       for(const extension of this.extensions) {
         if(extension.init) {
           await extension.init()
+          extension.module = this
         }
       }
     }

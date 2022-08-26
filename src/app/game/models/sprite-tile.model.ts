@@ -1,5 +1,5 @@
 import { assetAttributes } from '../db/asset-attributes';
-import { SpriteOrientation } from '../extensions/asset/orientation.ts/direction';
+import { SpriteOrientation } from '../core/default-features/orientation/orientation';
 
 import { AssetAttributes } from './asset.model';
 import { SpriteLocation, Cell, Position, RenderingLayers } from './map';

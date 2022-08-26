@@ -1,12 +1,11 @@
-import { generateBackgroundImage } from "src/app/game/controllers/utils/create-background-image";
 import { GSM } from "src/app/game/game-state-manager.service";
 import { Renderer } from "src/app/game/models/renderer";
 import { GeneralAction } from "src/app/game/models/settings";
-import { BaseTextureExtension } from "../extensions/base-texture/base-texture.extension";
 import { CanvasCTX, Extension } from "../models/extension.model";
-import { BaseTextureRenderer } from "../common-renderers/base-texture.renderer";
-import { GridLinesRenderer } from "../common-renderers/grid-lines.renderer";
 import { RootCanvasModule } from "./root.module";
+import { FullImageGenerator } from "../core/utils/create-background-image";
+import { BaseTextureRenderer } from "../core/default-renderers/base-texture.renderer";
+import { GridLinesRenderer } from "../core/default-renderers/grid-lines.renderer";
 
 export class BaseCanvasModule extends RootCanvasModule {
   public ctx = CanvasCTX.Background
@@ -14,7 +13,7 @@ export class BaseCanvasModule extends RootCanvasModule {
  
   // order matters for rendering
   public extensions: Extension[] = [
-    new BaseTextureExtension(),
+
   ]
 
   public renderers: Renderer[] = [
@@ -24,11 +23,11 @@ export class BaseCanvasModule extends RootCanvasModule {
 
   constructor() {
     super()
-    GSM.EventController.generalActionFire.subscribe(this.onGenerateBackground.bind(this))
+    GSM.EventManager.generalActionFire.subscribe(this.onGenerateBackground.bind(this))
   }
 
   private onGenerateBackground(event: GeneralAction): void {
     if (event.name !== "startGame") { return }
-    generateBackgroundImage(this.renderers)
+    FullImageGenerator.generateBackgroundImage(this.renderers)
   }
 }
