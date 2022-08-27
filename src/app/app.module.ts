@@ -10,7 +10,7 @@ import { EditorSideNavComponent } from './game/base-components/editor-side-nav/e
 import { GameComponent } from './game/base-components/game/game.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { InteractionComponent } from './game/features/interactions/interaction-component/interaction.component';
+import { InteractionComponent } from './game/base-components/action-list-component/action-list.component';
 
 @NgModule({
   declarations: [

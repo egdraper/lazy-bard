@@ -39,8 +39,9 @@ export class RendererManager {
 
     const foregroundModule = GSM.CanvasModuleManager.canvasModules.find(module => module.canvasName === "foreground")
     foregroundModule.renderers.forEach(renderer => {
-      if(renderer.renderingLayer === RenderingLayers.BaseLayer || renderer.renderingLayer === RenderingLayers.AssetLayer) { return }
-      renderer.enabled = false
+      if(renderer.renderingLayer === RenderingLayers.TerrainLayer || renderer.renderingLayer === RenderingLayers.ObjectLayer) { 
+        renderer.enabled = false
+      }
     })
   }
 
@@ -49,8 +50,9 @@ export class RendererManager {
 
     const foregroundModule = GSM.CanvasModuleManager.canvasModules.find(module => module.canvasName === "foreground")    
     foregroundModule.renderers.forEach(renderer => {
-      if(renderer.renderingLayer === RenderingLayers.BaseLayer || renderer.renderingLayer === RenderingLayers.AssetLayer) { return }
-      renderer.enabled = true
+      if(renderer.renderingLayer === RenderingLayers.TerrainLayer || renderer.renderingLayer === RenderingLayers.ObjectLayer) { 
+        renderer.enabled = true
+      }
     })
   }
 

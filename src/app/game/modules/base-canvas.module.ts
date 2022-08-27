@@ -6,6 +6,7 @@ import { RootCanvasModule } from "./root.module";
 import { FullImageGenerator } from "../core/utils/create-background-image";
 import { BaseTextureRenderer } from "../core/default-renderers/base-texture.renderer";
 import { GridLinesRenderer } from "../core/default-renderers/grid-lines.renderer";
+import { Action } from "../models/base.interaction";
 
 export class BaseCanvasModule extends RootCanvasModule {
   public ctx = CanvasCTX.Background

@@ -84,11 +84,11 @@ export class MapManager {
     return GSM.GridManager.getCellByLocation(cellOver.location.x, cellOver.location.y + zIndex)
   }
  
-  public createGameMap(size: Size): void {
+  public createGameMap(size: Size, texture: string): void {
     GSM.GridManager.map = new GameMap(size)
     GSM.GridManager.map.id = Math.floor(Math.random() * 100000000).toString()
     this.setupMap()
-    BaseTexture.addBackgroundAssets(this.map.baseTexture, this.gridIterator[GSM.RotationManager.currentRotationIndex])
+    BaseTexture.addBackgroundAssets(texture, this.gridIterator[GSM.RotationManager.currentRotationIndex])
     TerrainTexture.setupImages()
 
     Object.keys(RenderingLayers).forEach(key => {

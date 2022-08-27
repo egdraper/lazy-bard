@@ -1,3 +1,4 @@
+import { Action } from "./base.interaction";
 import { RootCanvasModule } from "../modules/root.module";
 import { Renderer } from "./renderer";
 

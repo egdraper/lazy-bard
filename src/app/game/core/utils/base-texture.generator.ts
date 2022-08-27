@@ -38,7 +38,7 @@ export class BaseTexture {
   }
 
   private static setSpriteTexture(textureSprites: TextureSprite[], baseTextureId: string): void {
-    const textureSprite = textureSprites.find(sprite => sprite.baseTexture === baseTextureId)
+    const textureSprite = textureSprites.find(sprite => sprite.id === baseTextureId)
     if(textureSprite) {
       this.baseTexture = textureSprite
     } else {
@@ -50,8 +50,9 @@ export class BaseTexture {
     cells.forEach(cell => {
       const backgroundAsset = new BackgroundAsset(cell, new BackgroundTile(this.baseTexture?.imageUrl || ""))
       this.addRandomTextureToBackgroundTile(backgroundAsset.tile, this.baseTexture)
+      const a = GSM.AssetManager
       GSM.AssetManager.addBackgroundAsset(backgroundAsset, 0)
-    })
+    })    
   }
 
   private static addRandomTextureToBackgroundTile(tile: TerrainTile, baseTexture: TextureSprite) {

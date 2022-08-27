@@ -16,18 +16,11 @@ export class GameComponent implements AfterViewInit {
   public selected = 'nothing';
   public mouseController;
   public assetController;
-  public interactions = undefined
   public settings
+  public loadingFinished = false
 
   constructor(public gameStateManager: GSM) {
-    setTimeout(() => {
-      this.mouseController = GSM.MouseManager
-      this.assetController = GSM.AssetManager
-      this.settings = GSM.Settings
-      GSM.EventManager.objectInteraction.subscribe(event => {
-        this.interactions = event
-      })
-    }, 150);
+
   }
 
   public onChange(value): void {
@@ -36,15 +29,12 @@ export class GameComponent implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      this.gameStateManager.newGame('firstGame',30,30, 'forest');
-      GSM.EventManager.generalActionFire.subscribe((action) => {
-        this.selected = action.name;
-      });
+
     });
   }
 
   @HostListener('document:keyup', ['$event'])
-  public keyPress(event: KeyboardEvent) {
+  public async keyPress(event: KeyboardEvent) {
     if (event.code === 'Escape') {
       GSM.EventManager.generalActionFire.next({
         name: '',
@@ -117,6 +107,18 @@ export class GameComponent implements AfterViewInit {
     }
     if (event.code === 'KeyG') {
       this.selected = 'starting Game';
+
+      await this.gameStateManager.newGame('firstGame', 30, 30, 'greenGrass');
+
+
+        GSM.EventManager.generalActionFire.subscribe((action) => {
+          this.selected = action.name;
+        });
+
+        this.mouseController = GSM.MouseManager
+        this.assetController = GSM.AssetManager
+        this.settings = GSM.Settings
+
       GSM.EventManager.generalActionFire.next({
         name: 'startGame',
         data: null,
@@ -124,7 +126,9 @@ export class GameComponent implements AfterViewInit {
 
       GSM.RendererManager.start();
       GSM.FrameManager.start();
+      GSM.ImageManager.addImageBySrcUrl(GSM.Settings.indicatorIconUrl)
     }
+
     if (event.code === 'KeyH') {
       const asset = GSM.AssetManager.getSelectedAssets()[0] as PlaceableAsset;
       asset.hovering = true;
@@ -159,6 +163,12 @@ export class GameComponent implements AfterViewInit {
     if (event.code === 'KeyA') {
       GSM.EventManager.generalActionFire.next({
         name: 'characterSelected',
+        data: null,
+      });
+    }
+    if (event.code === 'KeyI') {
+      GSM.EventManager.generalActionFire.next({
+        name: 'addingPortal',
         data: null,
       });
     }

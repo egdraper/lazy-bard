@@ -3,7 +3,6 @@ import { BackgroundAsset, Asset } from "./asset.model"
 export class GameMap {
   public id: string
   public name: string
-  public baseTexture: string
   public grid: {[cellId: string]: Cell } = {}
   // public backgroundTiles?: {[cellId: string]:  BackgroundTile} = {}  
 

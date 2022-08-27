@@ -12,8 +12,6 @@ export class AssetManager {
   public assetBlocks: { [coordinate: string]: AssetBlock } = {}   // coordinate format:  "x1:y1:z2:character"
   public backgroundAssets: BackgroundAsset[] = []
 
-  public assetClickedAtZIndex = new Subject<Asset>();
-
   constructor() {
     GSM.FrameManager.frameFire.subscribe(this.animateAsset.bind(this));
     GSM.KeyManager.keyDown.subscribe(this.setDirectionByKey.bind(this))
@@ -198,16 +196,12 @@ export class AssetManager {
 
   }
 
-  public switchAssetToNewCell(asset: Asset, newCell: Cell, newZIndex: number) {
+  public moveAssetToNewCell(asset: Asset, newCell: Cell, newZIndex: number) {
     asset.ownedBlockIds.forEach(blockId => {
       delete this.assetBlocks[blockId]
     })
 
-    delete this.assets[asset.id]
-
     asset.anchorCell = newCell
-    asset.id = `map:${GSM.GridManager.map.id}-cell:${newCell.id}:z${newZIndex}:${asset.layer}`;
-    this.assets[asset.id] = asset
     this.updateBlockProperty(asset, asset.anchorCell, newZIndex)
     this.refreshAssetIterator()
   }

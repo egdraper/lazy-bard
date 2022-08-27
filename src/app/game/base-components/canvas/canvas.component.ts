@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core'
 import { GSM } from '../../game-state-manager.service'
 import { CanvasSpecs } from '../../models/settings'
 

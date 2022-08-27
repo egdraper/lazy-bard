@@ -3,9 +3,10 @@ import { Asset } from "../../models/asset.model";
 import { Extension } from "../../models/extension.model";
 import { Cell } from "../../models/map";
 import { Orientation } from "../../core/default-features/orientation/orientation";
-import { InteractionIndicatorRenderer } from "./indicator.renderer";
+import { ClimbAction } from "./interactions/climb/climb.action";
+import { PickUpAction } from "./interactions/pick-up/pick-up.action";
 
-export class InteractionEvent {
+export class ActionEvent {
   asset: Asset
   cell: Cell
   playerAsset: Asset
@@ -15,15 +16,17 @@ export class InteractionExtension extends Extension {
   public gameMasterView: Boolean = false
   public gamePlayerView: Boolean = true
 
-  private interactionIndicatorRenderer = new InteractionIndicatorRenderer()
+  private interactingAssets = []
+  private climbAction = new ClimbAction()
+  private pickUpAction = new PickUpAction()
 
   public override async init(): Promise<void> {
     GSM.EventManager.assetEnteredCell.subscribe(this.findAdjacentAsset.bind(this))
     GSM.EventManager.playerOrientationChanged.subscribe(this.findAdjacentAsset.bind(this))
     GSM.EventManager.assetFinishingMovement.subscribe(this.findAdjacentAsset.bind(this))
-    GSM.ImageManager.addImageBySrcUrl("assets/images/indicators/interaction2.png")
-    
-    this.registerRenderer([this.interactionIndicatorRenderer])
+
+    GSM.ActionManager.registerAction(this.climbAction)
+    GSM.ActionManager.registerAction(this.pickUpAction)
   }
 
   private findAdjacentAsset(event: any): void {
@@ -48,21 +51,24 @@ export class InteractionExtension extends Extension {
     const assets = GSM.AssetManager.getAssetsByCellAtZ(adjacentCell, event.asset.baseZIndex)    
     
     if(assets.length === 0) {
-      this.interactionIndicatorRenderer.enabled = false
-      GSM.EventManager.objectInteraction.next(null)
+      this.interactingAssets.forEach(asset => {
+        GSM.ActionManager.removeAssetOfInterest(asset.asset)
+      })
+
+      GSM.ActionManager.disableAction(this.climbAction)
+      GSM.ActionManager.disableAction(this.pickUpAction)
+
+      this.interactingAssets = []
       return 
     }
 
-    const assetBeingInteractedWith = assets.pop().asset
+    this.interactingAssets = assets
     
-    this.interactionIndicatorRenderer.indicatorURL = GSM.Settings.indicatorIconUrl
-    this.interactionIndicatorRenderer.enabled = true
-    this.interactionIndicatorRenderer.asset = GSM.AssetManager.selectedAssets[0]
-      
-    GSM.EventManager.objectInteraction.next({ 
-      asset: assetBeingInteractedWith, 
-      playerAsset: event.asset,
-      cell: adjacentCell,  
+    GSM.ActionManager.enableAction(this.climbAction)
+    GSM.ActionManager.enableAction(this.pickUpAction)
+    
+    this.interactingAssets.forEach(asset => {
+      GSM.ActionManager.addAssetOfInterest(asset.asset)
     })
   }
 }

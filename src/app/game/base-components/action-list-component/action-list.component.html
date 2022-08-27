@@ -1,0 +1,6 @@
+<button 
+  *ngFor="let action of actionManager.enabledActions"
+  (click)="onClick(action)"
+  >
+  {{ action.displayName }}  
+</button>

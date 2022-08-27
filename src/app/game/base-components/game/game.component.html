@@ -8,7 +8,7 @@
   </div>
 
   <div style="color:white; position: absolute; top: 15px">
-    <gm-interaction *ngIf="interactions"></gm-interaction>
+    <gm-action-list></gm-action-list>
     <h6>X: {{ mouseController?.hoveringPosX }} </h6>
     <h6>Y: {{ mouseController?.hoveringPosY }} </h6>
     <h6>HCid: {{ mouseController?.hoveringCell?.id }} </h6>
@@ -25,7 +25,7 @@
     <h6>frontBlock#: {{ mouseController?.hoveringAssetBlockFront?.id }} </h6>
 
   <label for="vol">Brush (1-10)</label>
-  <input #input type="number" [(ngModel)]="settings.brushSize">
+  <!-- <input #input type="number" [(ngModel)]="settings.brushSize"> -->
 
     <h1 style="color:white">{{selected}}</h1>
 

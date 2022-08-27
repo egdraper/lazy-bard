@@ -16,7 +16,6 @@ export class EventManager {
   public TerrainAdded = new Subject
   public playerOrientationChanged = new Subject()
   public assetOrientationChanged = new Subject()
-  public objectInteraction = new Subject()
 
 
 

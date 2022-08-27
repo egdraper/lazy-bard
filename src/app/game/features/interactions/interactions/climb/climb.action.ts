@@ -1,13 +1,13 @@
 import { ArgumentOutOfRangeError } from 'rxjs';
 import { GSM } from 'src/app/game/game-state-manager.service';
 import { Asset, PlaceableAsset } from 'src/app/game/models/asset.model';
-import { InteractionEvent } from '../../interaction.extension';
-import { Interaction } from '../base.interaction';
+import { ActionEvent } from '../../interaction.feature';
+import { Action } from '../../../../models/base.interaction';
 
-export class ClimbInteraction extends Interaction {
+export class ClimbAction extends Action {
   public displayName: string = 'Climb';
 
-  public interact(event: InteractionEvent): void {
+  public execute(event: ActionEvent): void {
     const object = event.asset
     const asset = event.playerAsset as PlaceableAsset
     asset.hovering = true

@@ -85,7 +85,7 @@ export abstract class Movement {
     if (this.cellTrackPosX % (GSM.Settings.blockSize) === 0 && this.cellTrackPosY % (GSM.Settings.blockSize) === 0) {
       const newCell = GSM.GridManager.getCellByPosition(this.cellTrackPosX, this.cellTrackPosY)
       
-      GSM.AssetManager.switchAssetToNewCell(
+      GSM.AssetManager.moveAssetToNewCell(
         this.asset,
         newCell,
         this.asset.baseZIndex

@@ -4,7 +4,6 @@ export const backgroundSprites: TextureSprite[] = [
   {
     id: 'greenGrass',
     textureType: 'background',
-    baseTexture: 'forest',
     imageUrl: 'assets/images/terrain-grass-strip.png',
     fullImageWidth: 23,
     fullImageHeight: 0,
@@ -12,7 +11,6 @@ export const backgroundSprites: TextureSprite[] = [
   {
     id: 'dessert1',
     textureType: 'background',
-    baseTexture: 'forest',
     imageUrl: 'assets/images/terrain-dessert-strip.png',
     fullImageWidth: 29,
     fullImageHeight: 0,

@@ -6,6 +6,5 @@ export class Sprite {
 }
 
 export class TextureSprite extends Sprite {
-  baseTexture: string
   textureType: string
 }
